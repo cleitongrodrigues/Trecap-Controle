@@ -5,7 +5,7 @@ const UsuarioController = require('../controllers/Usuario');
 
 router.get('/Usuarios', UsuarioController.ListarUSuario);
 router.post('/Usuarios', UsuarioController.CadastrarUsuario);
-router.patch('/Usuario', UsuarioController.EditarUsuario);
-router.delete('/Usuario', UsuarioController.ApagarUsuario);
+router.patch('/Usuarios', UsuarioController.EditarUsuario);
+router.delete('/Usuarios', UsuarioController.ApagarUsuario);
 
 module.exports = router;
