@@ -38,13 +38,13 @@ module.exports = {
         try {
             return response.status(200).json({
                 sucesso: true,
-                mensagem: 'Usuário cadastro com sucesso!',
+                mensagem: 'Usuário editado com sucesso!',
                 dados: null
             });
         } catch (error) {
             return response.status(500).json({
                 sucesso: false,
-                mensagem: 'Erro ao cadastrar usuário',
+                mensagem: 'Erro ao editar usuário',
                 dados: error.mensagem
             });
         }
