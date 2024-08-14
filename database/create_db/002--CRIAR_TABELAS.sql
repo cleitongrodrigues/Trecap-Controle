@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS Usuario (
 	usu_nome varchar(100) NOT NULL,
 	usu_CPF varchar(11) NOT NULL,
 	tipo_usuario_id int NOT NULL,
+	usu_ativo bit(1) NOT NULL,
 	PRIMARY KEY (usu_id),
     FOREIGN KEY (tipo_usuario_id) REFERENCES TipoUsuario(tipo_usuario_id)
 );
