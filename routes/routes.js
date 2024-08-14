@@ -11,8 +11,8 @@ const TurmaColaboradoresController = require('../controllers/TurmaColaboradores'
 
 router.get('/Usuarios', UsuarioController.ListarUSuario);
 router.post('/Usuarios', UsuarioController.CadastrarUsuario);
-router.patch('/Usuarios', UsuarioController.EditarUsuario);
-router.delete('/Usuarios', UsuarioController.ApagarUsuario);
+router.patch('/Usuarios/:usu_id', UsuarioController.EditarUsuario);
+router.delete('/Usuarios/:usu_id', UsuarioController.ApagarUsuario);
 
 router.get('/Colaboradores', ColaboradorController.ListarColaboradores);
 router.post('/Colaboradores', ColaboradorController.CadastrarColaboradores);

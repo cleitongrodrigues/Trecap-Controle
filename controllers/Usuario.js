@@ -3,10 +3,17 @@ const db = require('../database/connection');
 module.exports = {
     async ListarUSuario(request, response){
         try {
+            const sql = `SELECT usu_id, usu_nome, 
+                usu_CPF, tipo_usuario_id FROM Usuario;`;
+
+            const usuarios = await db.query(sql)
+
+            const nItens = usuarios[0].length;
             return response.status(200).json({
                 sucesso: true,
                 mensagem: 'Lista de Usuários',
-                dados: null
+                dados: usuarios[0],
+                nItens
             });
             
         } catch (error) {
@@ -20,10 +27,21 @@ module.exports = {
 
     async CadastrarUsuario(request, response){
         try {
+            const {usu_nome, usu_CPF, tipo_usuario_id} = request.body;
+
+            const sql = `INSERT INTO Usuario
+                (usu_nome, usu_CPF, tipo_usuario_id) 
+                VALUES (?, ?, ?);`;
+
+            const values = [usu_nome, usu_CPF, tipo_usuario_id];
+
+            const execSql = await db.query(sql, values);
+
+            const usu_id = execSql[0].insertId;
             return response.status(200).json({
                 sucesso: true,
-                mensagem: 'Usuário cadastro com sucesso!',
-                dados: null
+                mensagem: 'Usuário cadastrado com sucesso!',
+                dados: usu_id
             });
         } catch (error) {
             return response.status(500).json({
@@ -36,10 +54,22 @@ module.exports = {
 
     async EditarUsuario(request, response){
         try {
+
+            const {usu_nome, usu_CPF, tipo_usuario_id} = request.body;
+
+            const {usu_id} = request.params;
+
+            const sql = `UPDATE Usuario SET usu_nome = ?,
+                 usu_CPF = ?, tipo_usuario_id = ?
+                WHERE usu_id = ?;`;
+
+            const values = [usu_nome, usu_CPF, tipo_usuario_id, usu_id];
+
+            const atualizaDados = await db.query(sql, values);
             return response.status(200).json({
                 sucesso: true,
                 mensagem: 'Usuário editado com sucesso!',
-                dados: null
+                dados: atualizaDados[0].affectedRows
             });
         } catch (error) {
             return response.status(500).json({
@@ -52,10 +82,18 @@ module.exports = {
 
     async ApagarUsuario(request, response){
         try {
+
+            const {usu_id} = request.params;
+
+            const sql = `DELETE FROM Usuario WHERE usu_id = ?;`;
+
+            const values = [usu_id];
+
+            const excluir = await db.query(sql, values);
             return response.status(200).json({
                 sucesso: true,
-                mensagem: 'Usuário deletado com sucesso!',
-                dados: null
+                mensagem: `Usuário ${usu_id}deletado com sucesso!`,
+                dados: excluir[0].affectedRows
             });
         } catch (error) {
             return response.status(500).json({
