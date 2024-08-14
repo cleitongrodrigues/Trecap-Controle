@@ -4,7 +4,8 @@ module.exports = {
     async ListarUSuario(request, response){
         try {
             const sql = `SELECT usu_id, usu_nome, 
-                usu_CPF, tipo_usuario_id FROM Usuario;`;
+                usu_CPF, tipo_usuario_id, usu_ativo = 1 AS usu_ativo FROM Usuario
+                WHERE usu_ativo = 1;`;
 
             const usuarios = await db.query(sql)
 
@@ -27,13 +28,13 @@ module.exports = {
 
     async CadastrarUsuario(request, response){
         try {
-            const {usu_nome, usu_CPF, tipo_usuario_id} = request.body;
+            const {usu_nome, usu_CPF, tipo_usuario_id, usu_ativo} = request.body;
 
             const sql = `INSERT INTO Usuario
-                (usu_nome, usu_CPF, tipo_usuario_id) 
-                VALUES (?, ?, ?);`;
+                (usu_nome, usu_CPF, tipo_usuario_id, usu_ativo) 
+                VALUES (?, ?, ?, ?);`;
 
-            const values = [usu_nome, usu_CPF, tipo_usuario_id];
+            const values = [usu_nome, usu_CPF, tipo_usuario_id, usu_ativo];
 
             const execSql = await db.query(sql, values);
 
@@ -55,15 +56,15 @@ module.exports = {
     async EditarUsuario(request, response){
         try {
 
-            const {usu_nome, usu_CPF, tipo_usuario_id} = request.body;
+            const {usu_nome, usu_CPF, tipo_usuario_id, usu_ativo} = request.body;
 
             const {usu_id} = request.params;
 
             const sql = `UPDATE Usuario SET usu_nome = ?,
-                 usu_CPF = ?, tipo_usuario_id = ?
+                 usu_CPF = ?, tipo_usuario_id = ?, usu_ativo = ?
                 WHERE usu_id = ?;`;
 
-            const values = [usu_nome, usu_CPF, tipo_usuario_id, usu_id];
+            const values = [usu_nome, usu_CPF, tipo_usuario_id, usu_ativo, usu_id];
 
             const atualizaDados = await db.query(sql, values);
             return response.status(200).json({
@@ -82,18 +83,20 @@ module.exports = {
 
     async ApagarUsuario(request, response){
         try {
+            const usu_ativo = false;
 
             const {usu_id} = request.params;
 
-            const sql = `DELETE FROM Usuario WHERE usu_id = ?;`;
+            const sql = `UPDATE Usuario SET usu_ativo = ?
+                WHERE usu_id = ?;`;
 
-            const values = [usu_id];
+            const values = [usu_ativo, usu_id];
 
-            const excluir = await db.query(sql, values);
+            const atualizacao = await db.query(sql, values);
             return response.status(200).json({
                 sucesso: true,
-                mensagem: `Usuário ${usu_id}deletado com sucesso!`,
-                dados: excluir[0].affectedRows
+                mensagem: `Usuário ${usu_id} deletado com sucesso!`,
+                dados: atualizacao[0].affectedRows
             });
         } catch (error) {
             return response.status(500).json({
