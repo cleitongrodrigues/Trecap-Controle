@@ -41,7 +41,7 @@ module.exports = {
             const usu_id = execSql[0].insertId;
             return response.status(200).json({
                 sucesso: true,
-                mensagem: 'Usuário cadastrado com sucesso!',
+                mensagem: `Usuário ${usu_id} cadastrado com sucesso!`,
                 dados: usu_id
             });
         } catch (error) {
@@ -69,7 +69,7 @@ module.exports = {
             const atualizaDados = await db.query(sql, values);
             return response.status(200).json({
                 sucesso: true,
-                mensagem: 'Usuário editado com sucesso!',
+                mensagem: `Usuário ${usu_id} editado com sucesso!`,
                 dados: atualizaDados[0].affectedRows
             });
         } catch (error) {

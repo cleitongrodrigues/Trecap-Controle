@@ -3,10 +3,18 @@ const db = require('../database/connection');
 module.exports = {
     async ListarEvento(request, response){
         try {
+            const sql = `SELECT evento_id, evento_nome, evento_data, 
+                evento_local, evento_hora_inicio, 
+                evento_hora_termino FROM Eventos;`;
+
+            const evento = await db.query(sql)
+
+            const nItens = evento[0].length;
             return response.status(200).json({
                 sucesso: true,
                 mensagem: 'Listar de evento',
-                dados: null
+                dados: evento[0],
+                nItens
             });
             
         } catch (error) {
@@ -20,10 +28,22 @@ module.exports = {
 
     async CadastrarEvento(request, response){
         try {
+            const {evento_nome, evento_data, evento_local, evento_hora_inicio, evento_hora_termino} = request.body;
+
+            const sql = `INSERT INTO Eventos
+                (evento_nome, evento_data, evento_local, 
+                evento_hora_inicio, evento_hora_termino) 
+                VALUES (?, ?, ?, ?, ?);`;
+
+            const values = [evento_nome, evento_data, evento_local, evento_hora_inicio, evento_hora_termino];
+
+            const execSql = await db.query(sql, values);
+
+            const evento_id = execSql[0].insertId;
             return response.status(200).json({
                 sucesso: true,
-                mensagem: 'Evento cadastro com sucesso!',
-                dados: null
+                mensagem: `Evento ${evento_id} cadastro com sucesso!`,
+                dados: evento_id
             });
         } catch (error) {
             return response.status(500).json({
@@ -36,10 +56,21 @@ module.exports = {
 
     async EditarEvento(request, response){
         try {
+            const {evento_nome, evento_data, evento_local, evento_hora_inicio, evento_hora_termino} = request.body;
+
+            const {evento_id} = request.params;
+
+            const sql = `UPDATE Eventos SET evento_nome = ?, evento_data = ?,
+                evento_local = ?, evento_hora_inicio = ?, evento_hora_termino = ?
+                WHERE evento_id = ?;`;
+
+            const values = [evento_nome, evento_data, evento_local, evento_hora_inicio, evento_hora_termino, evento_id];
+
+            const atualizaDados = await db.query(sql, values);
             return response.status(200).json({
                 sucesso: true,
-                mensagem: 'Evento editado com sucesso!',
-                dados: null
+                mensagem: `Evento ${evento_id} editado com sucesso!`,
+                dados: atualizaDados[0].affectedRows
             });
         } catch (error) {
             return response.status(500).json({
@@ -52,10 +83,17 @@ module.exports = {
 
     async ApagarEvento(request, response){
         try {
+            const {evento_id} = request.params;
+
+            const sql = `DELETE FROM Eventos WHERE evento_id = ?;`;
+
+            const values = [evento_id];
+
+            const apagar = await db.query(sql, values);
             return response.status(200).json({
                 sucesso: true,
-                mensagem: 'Evento deletado com sucesso!',
-                dados: null
+                mensagem: `Evento ${evento_id} deletado com sucesso!`,
+                dados: apagar[0].affectedRows
             });
         } catch (error) {
             return response.status(500).json({

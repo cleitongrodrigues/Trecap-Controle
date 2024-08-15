@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS Colaboradores (
 	colaborador_CPF varchar(11) NOT NULL,
 	colaborador_endereco varchar(100) NOT NULL,
 	colaborador_biometria varchar(1024) NOT NULL,
+	colaborador_ativo bit(1) NOT NULL,
 	PRIMARY KEY (colaborador_id)
 );
 

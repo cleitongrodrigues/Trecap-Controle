@@ -3,10 +3,19 @@ const db = require('../database/connection');
 module.exports = {
     async ListarTipoUSuario(request, response){
         try {
+            const sql = `SELECT tipo_usuario_id, tipo_usuario_descricao, 
+            tipo_usuario_ativo = 1 AS tipo_usuario_ativo 
+            FROM TipoUsuario
+            WHERE tipo_usuario_ativo = 1;`;
+
+        const usuarios = await db.query(sql)
+
+        const nItens = usuarios[0].length;
             return response.status(200).json({
                 sucesso: true,
-                mensagem: 'Lista de TipoUsuário',
-                dados: null
+                mensagem: 'Lista de Tipos de usuários',
+                dados: usuarios[0],
+                nItens
             });
             
         } catch (error) {
@@ -20,10 +29,21 @@ module.exports = {
 
     async CadastrarTipoUsuario(request, response){
         try {
+            const {tipo_usuario_descricao, tipo_usuario_ativo} = request.body;
+
+            const sql = `INSERT INTO TipoUsuario
+                (tipo_usuario_descricao, tipo_usuario_ativo) 
+                VALUES (?, ?);`;
+
+            const values = [tipo_usuario_descricao, tipo_usuario_ativo];
+
+            const execSql = await db.query(sql, values);
+
+            const tipo_usuario_id = execSql[0].insertId;
             return response.status(200).json({
                 sucesso: true,
-                mensagem: 'TipoUsuário cadastro com sucesso!',
-                dados: null
+                mensagem: `Tipo de usuário ${tipo_usuario_id} cadastrado com sucesso!`,
+                dados: tipo_usuario_id
             });
         } catch (error) {
             return response.status(500).json({
@@ -36,10 +56,21 @@ module.exports = {
 
     async EditarTipoUsuario(request, response){
         try {
+            const {tipo_usuario_descricao, tipo_usuario_ativo} = request.body;
+
+            const {tipo_usuario_id} = request.params;
+
+            const sql = `UPDATE TipoUsuario SET tipo_usuario_descricao = ?,
+                tipo_usuario_ativo = ?
+                WHERE tipo_usuario_id = ?;`;
+
+            const values = [tipo_usuario_descricao, tipo_usuario_ativo, tipo_usuario_id];
+
+            const atualizaDados = await db.query(sql, values);
             return response.status(200).json({
                 sucesso: true,
-                mensagem: 'TipoUsuário editado com sucesso!',
-                dados: null
+                mensagem: `Tipo de usuário ${tipo_usuario_id} editado com sucesso!`,
+                dados: atualizaDados.affectedRows
             });
         } catch (error) {
             return response.status(500).json({
@@ -52,10 +83,20 @@ module.exports = {
 
     async ApagarTipoUsuario(request, response){
         try {
+            const tipo_usuario_ativo = false;
+
+            const {tipo_usuario_id} = request.params;
+
+            const sql = `UPDATE TipoUsuario SET tipo_usuario_ativo = ?
+                WHERE tipo_usuario_id = ?;`;
+
+            const values = [tipo_usuario_ativo, tipo_usuario_id];
+
+            const atualizacao = await db.query(sql, values);
             return response.status(200).json({
                 sucesso: true,
-                mensagem: 'TipoUsuário deletado com sucesso!',
-                dados: null
+                mensagem: `Tipo de usuário ${tipo_usuario_id} deletado com sucesso!`,
+                dados: atualizacao[0].affectedRows
             });
         } catch (error) {
             return response.status(500).json({
