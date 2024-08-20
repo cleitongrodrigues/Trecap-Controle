@@ -1,0 +1,23 @@
+.Container{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+.ContainerDivs{
+    display: block;
+}
+.Titulo{
+    color: var(--purpleMain);
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.Teste{
+    display: flex;
+    margin: 10rem;
+    gap: 10rem;
+}
+.ContainerEventos{
+    background-color: var(--purpleMain);
+    max-width: 25rem;
+    height: auto;
+}
