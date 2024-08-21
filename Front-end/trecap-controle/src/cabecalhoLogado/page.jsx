@@ -13,7 +13,7 @@ export default function CabecalhoLogado(){
                 <h2>Olá Gestor</h2>
             </div>
             <div>
-            <button className={styles.loginButton}>Sair</button>
+            <button className={styles.SairButton}>Sair</button>
             </div>
         </div>
         </header>

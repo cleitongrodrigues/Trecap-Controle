@@ -23,7 +23,7 @@
     height: auto;
     width: 2.5rem;
 }
-.loginButton{
+.SairButton{
     border: none;
     background-color: var(--purpleButton);
     color: white;
