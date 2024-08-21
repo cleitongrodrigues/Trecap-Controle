@@ -1,0 +1,50 @@
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 1.5rem ;
+    position: sticky;
+    top: 0;
+    box-shadow: 0 0 2px 3px rgba(0,0,0,0.2);
+    background-color: white;
+    padding-left: 15rem;
+}
+.logo{
+    display: flex;
+    align-items: center;
+}
+.logoTexto{
+    color: var(--purpleMain);
+    font-weight: 700;
+    font-size: 2rem;
+}
+.logoImage{
+    max-width: 100%;
+    height: auto;
+    width: 2.5rem;
+}
+.loginButton{
+    border: none;
+    background-color: var(--purpleButton);
+    color: white;
+    font-weight: 400;
+    border-radius: .325rem;
+    padding: .5rem 2rem;
+    cursor: pointer;
+}
+.buttonContainer{
+    display: flex;
+    gap: 0.5rem;
+    padding-right: 15rem;
+}
+.registerButton{
+    border: none;
+    background-color: white;
+    color: var(--purpleButton);
+    font-weight: 400;
+    border-radius: .325rem;
+    border: var(--purpleButton) 1px solid;
+    padding: .5rem 2rem;
+    cursor: pointer;
+}
+
