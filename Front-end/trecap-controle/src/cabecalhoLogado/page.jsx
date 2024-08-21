@@ -1,8 +1,7 @@
-import styles from '../cabecalho/page.module.css';
+import styles from './page.module.css'
 import Image from 'next/image';
 import logo from '../assets/logo.png';
-
-export default function Cabecalho(){
+export default function CabecalhoLogado(){
     return(
         <header className={styles.header}>
         <div className={styles.logo}>
@@ -10,8 +9,12 @@ export default function Cabecalho(){
             <Image src={logo} className={styles.logoImage}/>
         </div>
         <div className={styles.buttonContainer}>
-            <button className={styles.loginButton}>Login</button>
-            <button className={styles.registerButton}>Cadastrar</button>
+            <div>
+                <h2>Olá Gestor</h2>
+            </div>
+            <div>
+            <button className={styles.loginButton}>Sair</button>
+            </div>
         </div>
         </header>
     )

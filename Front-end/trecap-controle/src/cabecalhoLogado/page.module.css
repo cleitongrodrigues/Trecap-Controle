@@ -36,15 +36,7 @@
     display: flex;
     gap: 0.5rem;
     padding-right: 15rem;
-}
-.registerButton{
-    border: none;
-    background-color: white;
-    color: var(--purpleButton);
-    font-weight: 400;
-    border-radius: .325rem;
-    border: var(--purpleButton) 1px solid;
-    padding: .5rem 2rem;
-    cursor: pointer;
+    align-items: center;
+    
 }
 

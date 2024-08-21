@@ -11,10 +11,12 @@ export default function Gestor(){
                 <h1 className={style.Titulo}>Bem Vindo Gestor!</h1>
                 <div className={style.Teste}>
                     <div>
+                        
                         <IconContext.Provider value={{size:100}}>
                             <MdEventNote />
                        </IconContext.Provider>
-                        Eventos</div>
+                        Eventos
+                    </div>
                     <div>
                         <IconContext.Provider value={{size:100}}>
                             <MdHourglassBottom />

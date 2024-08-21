@@ -1,0 +1,40 @@
+.Geral{
+    display: flex;
+    justify-content: center;
+    margin-top: 5rem;
+}
+.Container{
+    display: flex;
+    flex-direction: column;
+    background-color: #D5BFFF;
+    justify-content: center;
+    min-width: 80%;
+    align-items: center;
+    border-radius: 1rem;
+}
+.Titulo{
+    color: white;
+    margin: 1rem;
+    font-size: 2rem;
+    font-weight: bold;
+}
+.ContainerDivs{
+    display: flex;
+    background-color: #8E7AB5;
+    min-width: 58rem;
+    box-shadow: 0 0 2px 3px #8E7AB5;
+    flex-direction: row;
+    color: white;
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 1rem;
+    align-items: center;
+    gap: 1rem;
+}
+.ContainerDivs svg{
+    max-width: 5rem;
+}
+.ContainerLabel{
+    display: flex;
+    flex-direction: column;
+}
