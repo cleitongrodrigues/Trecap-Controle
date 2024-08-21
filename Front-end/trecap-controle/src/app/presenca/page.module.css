@@ -1,0 +1,5 @@
+.checkin h1 {
+    display: flex;
+    color: var(--purpleMain);
+    justify-items: center;
+}

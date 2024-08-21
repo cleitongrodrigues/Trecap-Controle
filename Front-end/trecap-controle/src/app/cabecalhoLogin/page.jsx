@@ -2,7 +2,7 @@ import styles from '../cabecalho/page.module.css';
 import Image from 'next/image';
 import logo from '../assets/logo.png';
 
-export default function CheckinEvento(){
+export default function Cabecalho(){
     return(
         <header className={styles.header}>
         <div className={styles.logo}>

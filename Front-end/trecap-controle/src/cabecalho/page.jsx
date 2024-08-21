@@ -9,10 +9,6 @@ export default function Cabecalho(){
             <h1 className={styles.logoTexto}>Trecap</h1>
             <Image src={logo} className={styles.logoImage}/>
         </div>
-        <div className={styles.buttonContainer}>
-            <button className={styles.loginButton}>Login</button>
-            <button className={styles.registerButton}>Cadastrar</button>
-        </div>
         </header>
     )
 }
