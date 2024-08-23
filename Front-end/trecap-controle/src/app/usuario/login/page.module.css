@@ -68,6 +68,7 @@
 }
 
 .campos{
+    padding-left: 2rem;
     font-size: 2rem;
     color: white;
     font-family: "Poppins", sans-serif;
@@ -92,6 +93,8 @@
 }
 
 .botao{
+    text-align: lef;
+    height: 3rem;
     position: absolute;
     right: 0;
     top: 0;
