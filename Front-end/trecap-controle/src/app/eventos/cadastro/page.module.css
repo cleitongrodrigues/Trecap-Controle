@@ -39,6 +39,7 @@
     min-width:100rem;
     min-height:auto;
     /* background-color: antiquewhite; */
+    padding: 0 3rem;
 }
 .Button{
     border: none;
@@ -65,4 +66,8 @@
     flex-direction: column;
     justify-content: center;
     margin: auto;   
+}
+.ContainerButton{
+    display: flex;
+    justify-content: center;
 }

@@ -27,7 +27,7 @@ export default function CadastrarEvento(){
                         <label>Mentor do evento:</label>
                         <input type="text" name="" id="" />
                     </div>
-                    <div className={style.ContainerTudo}>
+                    <div className={style.ContainerButton}>
                         <button className={style.Button}>Concluir</button>
                     </div>
                 </div>
