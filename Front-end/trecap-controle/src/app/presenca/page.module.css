@@ -1,5 +1,11 @@
 .checkin h1 {
     display: flex;
     color: var(--purpleMain);
-    justify-items: center;
+    justify-content: center;
+    font-size: large;
+    margin-top: 50px;
+    border-radius: 20px;
+    border: 10px solid var(--purpleMain);
+    min-width: 70rem;
+    max-width: 70rem;
 }
