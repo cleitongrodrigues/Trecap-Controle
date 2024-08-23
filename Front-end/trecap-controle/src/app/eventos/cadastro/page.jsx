@@ -16,7 +16,7 @@ export default function CadastrarEvento(){
                             <label>Local do Evento</label>
                             <input type="text" name="" id="" />
                         </div>
-                        <div className={style.Teste}>
+                        <div className={style.TesteT}>
                         <label>Hora do início do evento:</label>
                         <input type="time" name="" id="" />
                         <label>Hora do término do evento:</label>
