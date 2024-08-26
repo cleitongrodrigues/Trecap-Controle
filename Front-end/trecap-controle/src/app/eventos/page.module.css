@@ -49,3 +49,10 @@
 .ClasseIcone{
     cursor: pointer;
 }
+.ContainerTeste{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background-color: aquamarine;
+}
