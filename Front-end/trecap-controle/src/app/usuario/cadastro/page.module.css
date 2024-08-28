@@ -1,0 +1,83 @@
+.Geral{
+    display: flex;
+    justify-content: center;
+    margin-top: 5rem;
+}
+.Container{
+    display: flex;
+    flex-direction: column;
+    background-color: #D5BFFF;
+    justify-content: center;
+    min-width: 60%;
+    align-items: center;
+    border-radius: 1rem;
+    gap: 1rem;
+}
+.Container input{
+    border-radius: 0.5rem;
+    border: none;
+    height: 2rem;
+    margin-top: .5rem;
+    max-width: 100%;
+}
+.Container input:focus{
+    outline: none;
+}
+.Titulo{
+    color: white;
+    margin: 1rem;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+.ContainerTudo{
+    display: flex;
+    flex-direction: column ;
+    gap: 1rem;
+    margin: auto;
+    font-size: 1.5rem;
+    font-weight: bold;
+    min-width:100rem;
+    min-height:auto;
+    /* background-color: antiquewhite; */
+    padding: 0 3rem;
+}
+.Button{
+    border: none;
+    background-color: var(--purpleButton);
+    color: white;
+    font-weight: 400;
+    border-radius: .325rem;
+    padding: .5rem 2rem;
+    cursor: pointer;
+    margin-bottom: 2rem;
+}
+.Teste{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.TesteD{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+.TesteT{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: auto;   
+}
+.ContainerButton{
+    display: flex;
+    justify-content: center;
+}
+.Estado{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    gap: 1rem;
+}
+.InputEstado{
+    width: 5rem;
+}
