@@ -20,6 +20,10 @@ export default function CheckinEvento(){
                
             </div>
 
+            <div>
+                
+            </div>
+
         
     </div>
         
