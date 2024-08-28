@@ -1,6 +1,7 @@
 .Header {
     display: flex;
     justify-content: center;
+    font-size: 2rem ;
 }
 
 
@@ -17,6 +18,27 @@
     justify-content: center;
 }
 
+.alerta {
+    padding: 16px;
+    margin: 80px 0;
+    border: 1px solid var(--purpleMain); /* Borda vermelha */
+    background-color: #8E7AB5; /* Fundo vermelho claro */
+    color: white; /* Texto vermelho escuro */
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column; /* Adiciona layout em coluna para o texto e o botão */
+    align-items: center; /* Centraliza horizontalmente os itens dentro do alerta */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para destacar o alerta */
+  }
+  
+  .botaoFechar {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
 .cadastro {
     display: flex;
     margin-top: 10px;
@@ -24,8 +46,8 @@
     justify-content: center;
     background-color: var(--purpleMain);
     border-radius: 20px;
-    width: 300px;
-    height: 200px;
+    width: 500px;
+    height: 500px;
 }
 
 .cadastro h2 {
@@ -42,14 +64,13 @@
 .botaoCadastro {
     display: block;
     border-radius: 20px;
-    margin: auto;
     align-items: center;
     justify-content: center;
     background-color: var(--purpleMain);
     color: white;
     margin-top: 10px;
-    width: 200px;
-    height: 20px;
+    width: auto;
+    height: auto;
     cursor: pointer;
     border: none;
 }
