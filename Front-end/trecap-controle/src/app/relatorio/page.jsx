@@ -1,3 +1,4 @@
+import CabecalhoLogado from '@/cabecalhoLogado/page'
 import style from './page.module.css'
 
 const funcionarios = [
@@ -42,6 +43,8 @@ const funcionarios = [
 
 export default function Relatorio() {
     return (
+        <>
+        <CabecalhoLogado/>
         <div className={style.ContainerGeral}>
             <div className={style.ContainerTitulo}>
                 <h1 className={style.Titulo}>Treinamento sobre Higiene</h1>
@@ -53,7 +56,7 @@ export default function Relatorio() {
             <div className={`${style.ContainerRegistros} ${style.Titulo}`}>
                 <div className={style.ContainerTituloRelatorio}>
                     <h2>Nome do Colaborador</h2>
-                    <h2>Horario da Leitura</h2>
+                    <h2>Horário de Leitura</h2>
                 </div>
                 <div className={style.ContainerListrado}>
                     {funcionarios.map((funcionario)=>{
@@ -67,5 +70,6 @@ export default function Relatorio() {
                 </div>
             </div>
         </div>
+        </>
     )
 }

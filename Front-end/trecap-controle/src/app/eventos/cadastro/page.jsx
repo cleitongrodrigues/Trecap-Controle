@@ -1,6 +1,9 @@
+import CabecalhoLogado from '@/cabecalhoLogado/page'
 import style from './page.module.css'
 export default function CadastrarEvento(){
     return(
+        <>
+        <CabecalhoLogado/>
         <div className={style.Geral}>
             <div className={style.Container}>
                 <h1 className={style.Titulo}>Cadastro de Eventos</h1>
@@ -33,5 +36,6 @@ export default function CadastrarEvento(){
                 </div>
             </div>
         </div>
+        </>
     )
 }

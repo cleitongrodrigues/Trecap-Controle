@@ -2,10 +2,13 @@
 import { IconContext } from 'react-icons';
 import style from './page.module.css'
 import { MdCalendarMonth, MdHourglassBottom, MdEventNote, MdPeople } from "react-icons/md";
+import CabecalhoLogado from '@/cabecalhoLogado/page';
 
 
 export default function Gestor(){
     return(
+        <>
+        <CabecalhoLogado/>
         <div className={style.Container}>
             <div>
                 <h1 className={style.Titulo}>Bem Vindo Gestor!</h1>
@@ -37,5 +40,6 @@ export default function Gestor(){
                 </div>
             </div>
         </div>
+        </>
     )
 }
