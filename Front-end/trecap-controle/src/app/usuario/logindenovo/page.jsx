@@ -11,6 +11,17 @@ export default function esqueceuSenha() {
   const [ocult, setOcult] = useState(<IoEyeOffOutline className={styles.icon}/>);
   const [keytype, setKeytype] = useState('password')
 
+  function verifOcult(){
+    if (ocult === <IoEyeOffOutline className={styles.icon}/>){
+      setOcult(<IoEye className={styles.icon}/>);
+      setKeytype('');
+    }
+    else{
+      setOcult(<IoEyeOffOutline className={styles.icon}/>)
+      setKeytype('password')
+      }
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.divflexbox}>
@@ -48,7 +59,7 @@ export default function esqueceuSenha() {
               />
 
               <button 
-                onClick={() => setOcult( ocult=<IoEyeOffOutline/> ? setOcult(<IoEye/>) : setOcult(<IoEyeOffOutline/>)}
+                onClick={verifOcult}
                 className={styles.botao}  
               >
                 {ocult}
