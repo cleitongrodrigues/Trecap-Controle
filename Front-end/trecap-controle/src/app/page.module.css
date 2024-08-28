@@ -120,6 +120,10 @@
   }
 }
 
+.html{
+  size: 67.5%;
+}
+
 @media (prefers-reduced-motion) {
   .card:hover span {
     transform: none;

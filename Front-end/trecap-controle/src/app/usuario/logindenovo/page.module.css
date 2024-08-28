@@ -37,8 +37,10 @@
 }
 
 .containerClaro{
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1;
+    grid-template-rows: 4;
+    justify-content: center;
     align-items: center;
     background-color: white;
     max-width: 35rem;
@@ -103,12 +105,11 @@
 .textBox{
     width: 24rem;
     height: 2.5rem;
-    margin: 1.5rem;
     border-radius: 2.5rem;
     flood-opacity: 54%;
     font-size: 1.2rem;
     opacity: 75%;
-    padding-left: 1rem;
+
 }
 
 .button{
@@ -136,6 +137,45 @@
     margin-left: 0.2rem;    
 }
 
+.login{
+    color: #8E7AB5;
+    font-size: 4rem;
+    font-weight: bold;
+    font-family: "Poppins", sans-serif;
+    font-style: normal;
+}
+
+.gridcontainer{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button{
+    height: 3rem;
+}
+
+.containerBotao{
+
+    position: relative;
+}
+
+.botao{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2.3rem;
+    width: 1.5rem;
+    position: absolute;
+    right: 1.4rem;
+    top: 0.4rem;
+}
+
+.icon{
+    width: 2rem;
+    height: 100%;
+}
 
 
 
