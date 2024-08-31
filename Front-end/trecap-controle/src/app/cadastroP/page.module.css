@@ -1,10 +1,17 @@
 
 .container {
-    width: 40.rem;
-    height: 45.rem;
+    width: 50rem;
+    height: 40rem;
     color:#8E7AB5;
-    border: 6px solid #000;
+    border: 2px solid #000;
     align-items: center;
+    margin: 0%;
+    flex-direction: column;
+    
      
    
+}
+
+.Titulo {
+    align-items: center;
 }
