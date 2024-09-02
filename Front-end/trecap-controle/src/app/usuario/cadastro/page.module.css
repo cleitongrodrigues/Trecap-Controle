@@ -1,4 +1,11 @@
-.Geral{
+/* colocar imagem {
+        background-image: url('https://criticalhits.com.br/wp-content/uploads/2023/02/goku-entry-image.jpg');
+        background-size: cover; /* Faz com que a imagem cubra toda a área */
+        /* background-position: center; /* Centraliza a imagem */
+        /* background-repeat: no-repeat; /* Evita a repetição da imagem */
+        /* margin: 0; */
+        /* padding: 0; */ 
+.ContainerGeral{
     display: flex;
     justify-content: center;
     margin-top: 5rem;
@@ -13,17 +20,7 @@
     border-radius: 1rem;
     gap: 1rem;
 }
-.Container input{
-    border-radius: 0.5rem;
-    border: none;
-    height: 2rem;
-    margin-top: .5rem;
-    max-width: 100%;
-}
-.Container input:focus{
-    outline: none;
-}
-.Titulo{
+.Container h1{
     color: white;
     margin: 1rem;
     font-size: 2.5rem;
@@ -32,14 +29,60 @@
 .ContainerTudo{
     display: flex;
     flex-direction: column ;
-    gap: 1rem;
-    margin: auto;
     font-size: 1.5rem;
     font-weight: bold;
     min-width:100rem;
     min-height:auto;
-    /* background-color: antiquewhite; */
     padding: 0 3rem;
+}
+.FormDados{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+}
+.FormEndereco{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+}
+.FormEndereco input{
+    min-width: 40rem;
+}
+.FormDados input{
+    min-width: 40rem;
+}
+.CentralizaDados{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    grid-template-rows: repeat(1,1fr);
+    gap: 5rem;
+    margin: 3rem 0rem;
+}
+.CentralizaEndereco{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    grid-template-rows: repeat(1,1fr);
+    gap: 5rem;
+}
+.DadosPessoais{
+    display: flex;
+    flex-direction: column;
+}
+.DadosEndereco{
+    display: flex;
+    flex-direction: column;
+}
+.Container input{
+    border-radius: 0.5rem;
+    border: none;
+    height: 2rem;
+    margin-top: .5rem;
+    /* max-width: 100%; */
+}
+.Container input:focus{
+    outline: none;
 }
 .Button{
     border: none;
@@ -51,33 +94,14 @@
     cursor: pointer;
     margin-bottom: 2rem;
 }
-.Teste{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-.TesteD{
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-}
-.TesteT{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin: auto;   
-}
+
 .ContainerButton{
     display: flex;
     justify-content: center;
+    padding: 3rem 0rem 0rem;
 }
-.Estado{
+.Teste{
     display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 1rem;
-    gap: 1rem;
+    padding: 2rem 0rem;
 }
-.InputEstado{
-    width: 5rem;
-}
+
