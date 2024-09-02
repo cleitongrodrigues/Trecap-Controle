@@ -1,10 +1,67 @@
 
 .container {
-    width: 40.rem;
-    height: 45.rem;
-    color:#8E7AB5;
-    border: 6px solid #000;
-    align-items: center;
-     
+max-width: 400px;
+margin: auto;
+padding: 20px;
+border-radius: 8px;
+background-color:#e0d4f7;
+box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
    
 }
+
+.header h1 {
+    text-align: center;
+    color:#7a4dff;
+    font: size 24px;
+    
+}
+
+.content h2 {
+    text-align: center;
+    color: #7a4dff;
+    font-size: 20px;
+    margin-bottom: 20px;
+
+}
+
+.setores {
+    background-color: #c4abf5;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.label {
+    display: flex;
+    align-items: center;
+    font-size:16px;
+    color:#4b00a7;
+}
+
+.input[type='checkbox'] {
+    margin-right: 10px;
+}
+
+.button {
+display: block;
+width: 100%;
+padding: 10px;
+background-color: #7a4dff;
+color: #fff;
+border: none;
+border-radius: 8px;
+cursor: pointer;
+font-size: 16px;
+font-weight: bold;
+}
+
+.button:hover {
+    background-color: #5f2df7;
+}
+
