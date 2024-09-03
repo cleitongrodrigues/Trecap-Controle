@@ -8,7 +8,7 @@
 .ContainerGeral{
     display: flex;
     justify-content: center;
-    margin-top: 5rem;
+    margin-top: 3rem;
 }
 .Container{
     display: flex;
@@ -41,6 +41,10 @@
     justify-content: start;
     align-items: center;
 }
+.Titulos{
+    text-decoration: underline;
+    font-size: 2rem;
+}
 .FormEndereco{
     display: flex;
     flex-direction: row;
@@ -65,6 +69,7 @@
     grid-template-columns: repeat(2,1fr);
     grid-template-rows: repeat(1,1fr);
     gap: 5rem;
+    margin: 2rem 0rem;
 }
 .DadosPessoais{
     display: flex;
@@ -78,7 +83,8 @@
     border-radius: 0.5rem;
     border: none;
     height: 2rem;
-    margin-top: .5rem;
+    margin: 1rem 0rem;
+    padding: 1.5rem;
     /* max-width: 100%; */
 }
 .Container input:focus{
@@ -88,9 +94,10 @@
     border: none;
     background-color: var(--purpleButton);
     color: white;
-    font-weight: 400;
+    font-weight: bold;
+    font-size: 1.5rem;
     border-radius: .325rem;
-    padding: .5rem 2rem;
+    padding: 0.5rem 2rem;
     cursor: pointer;
     margin-bottom: 2rem;
 }

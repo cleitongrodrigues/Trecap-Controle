@@ -10,7 +10,7 @@ export default function CadastrarEvento() {
           <div className={style.ContainerTudo}>
             <div className={style.FormDados}>
               <form action="">
-                <label>Dados pessoais</label>
+                <label className={style.Titulos}>Dados pessoais</label>
                 <div className={style.CentralizaDados}>
                   <div className={style.DadosPessoais}>
                     <label>Nome do colaborador:</label>
@@ -32,7 +32,7 @@ export default function CadastrarEvento() {
             <div className={style.FormEndereco}>
               <form action="">
                 <div className={style.Teste}>
-                  <label>Endereço</label>
+                  <label className={style.Titulos}>Endereço</label>
                 </div>
                 <div className={style.CentralizaEndereco}>
                   <div className={style.DadosEndereco}>
