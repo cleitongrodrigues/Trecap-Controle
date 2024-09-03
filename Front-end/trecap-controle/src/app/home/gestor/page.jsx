@@ -14,30 +14,34 @@ export default function Gestor(){
             <div>
                 <h1 className={style.Titulo}>Bem Vindo Gestor!</h1>
                 <div className={style.Teste}>
-                    <div>
-                        
-                        <IconContext.Provider value={{size:100}}>
-                            <MdEventNote />
-                       </IconContext.Provider>
-                        <Link href="/eventos">Eventos</Link>
+                    <div className={style.Centralizar}>
+                        <Link href="/eventos">
+                            <IconContext.Provider value={{size:100}}>
+                                <MdEventNote />
+                        </IconContext.Provider>
+                        Eventos</Link>
                     </div>
-                    <div>
-                        <IconContext.Provider value={{size:100}}>
-                            <MdHourglassBottom />
-                       </IconContext.Provider>
-                        Histórico
+                    <div className={style.Centralizar}>
+                        <Link href="/eventos">
+                            <IconContext.Provider value={{size:100}}>
+                                <MdHourglassBottom />
+                        </IconContext.Provider>
+                        Histórico</Link>
                         </div>
-                    <div>
-                       <IconContext.Provider value={{size:100}}>
-                            <MdCalendarMonth />
-                       </IconContext.Provider>
-                       Calendário
+                    <div className={style.Centralizar}>
+                        <Link href="/eventos">
+                            <IconContext.Provider value={{size:100}}>
+                                    <MdCalendarMonth />
+                            </IconContext.Provider>
+                       Calendário</Link>
                     </div>
-                    <div>
+                    <div className={style.Centralizar}>
+                        <Link href="/eventos">
                         <IconContext.Provider value={{size:100}}>
                             <MdPeople />
                        </IconContext.Provider>
-                        Setor</div>
+                        Setor</Link>
+                    </div>
                 </div>
             </div>
         </div>

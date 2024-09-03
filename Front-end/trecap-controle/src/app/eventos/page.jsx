@@ -3,6 +3,7 @@
 import style from './page.module.css';
 import { MdWash, MdPsychology, MdEdit, MdSearch, MdCheck, MdTimer } from "react-icons/md";
 import { IconContext } from 'react-icons';
+import CabecalhoLogado from '@/cabecalhoLogado/page';
 
 const eventos = [
     {
@@ -44,6 +45,8 @@ const Icones = {
 
 export default function Evento() {
     return (
+        <>
+        <CabecalhoLogado/>
         <div className={style.Geral}>
             <div className={style.Container}>
                 <h1 className={style.Titulo}>Eventos</h1>
@@ -69,5 +72,6 @@ export default function Evento() {
                 </div>
             </div>
         </div>
+        </>
     );
 }
