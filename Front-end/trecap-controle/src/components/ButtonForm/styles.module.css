@@ -1,0 +1,19 @@
+.button{
+    padding: 1rem;
+    border-radius: 1.5rem;
+    border: none;
+    background-color: var(--purple-200);
+    color: var(--white);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .1s ease-in;
+}
+
+.button:disabled{
+    opacity: 0.2;
+    cursor: wait;
+}
+
+.button:hover{
+    background-color: var(--purpleMain);
+}

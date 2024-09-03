@@ -1,0 +1,60 @@
+.container{
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 2rem 1rem;
+}
+
+.containerLogin{
+    width: 100%;
+    min-height: 12rem;
+    max-width: 62rem;
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-radius: 1.5rem;
+    overflow: clip;
+    box-shadow: rgba(23, 21, 59, 0.15) 0px 4px 8px;
+    position: relative;
+}
+
+.containerLogo{
+    display: grid;
+    place-items: center;
+    flex-grow: 1;
+    background-color: var(--purpleMain);
+}
+
+.logoHome {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+}
+
+.logoHome svg{
+    color: var(--white);
+    font-size: 1.5rem;
+}
+
+.logoHome svg{
+    color: var(--white);
+    font-size: 1.5rem;
+}
+
+.containerLogo h2{
+    color: var(--white);
+    font-size: 2.5rem;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.containerLogo p{
+    color: var(--white);
+    text-align: center;
+}
+
+.containerForm{
+    padding: 2rem 1.5rem;
+    background-color: var(--white);
+    display: grid;
+    grid-column: 2 / span 2;
+}
