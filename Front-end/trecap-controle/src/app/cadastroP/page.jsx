@@ -1,5 +1,5 @@
 "use client";
-import style from './page.module.css'
+import styles from './page.module.css'
 import {useState} from 'react'
 
 export default function CadastroP () {
@@ -14,7 +14,7 @@ export default function CadastroP () {
   
   const handleCheckboxChange = (e) => {
     const {name, checked } = e.target;
-    selectedSetores((prev) => ({
+    selectedSetoresSetores((prev) => ({
      ...prev,
      [name]: checked,       
 
@@ -26,15 +26,15 @@ export default function CadastroP () {
   };
   
   return(
-    <div className='container'>
-        <div className='header'>
+    <div className={styles.container}>
+        <div className={styles.header}>
             <h1>Treinamento sobre Higiene no Trabalho</h1>
         </div>
-        <div className='content'>
+        <div className={styles.content}>
             <h2>Cadastro de Participantes</h2>
-            <div className='setores'>
+            <div className={styles.setores}>
                 <h3>Selecione setores participantes</h3>
-                <div className='checkbox-group'>
+                <div className={styles.checkbox}>
                     <label>
                         <input
                         type="checkbox"
@@ -65,7 +65,7 @@ export default function CadastroP () {
                 </div>
             </div>
         </div>
-        <button onClick={handleLIstar}>Listar</button> 
+        <button className={styles.button}onClick={handleLIstar}>Listar</button> 
     </div> 
 
   )

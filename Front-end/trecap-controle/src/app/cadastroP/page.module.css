@@ -1,85 +1,76 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
+
 .container {
-<<<<<<< HEAD
-max-width: 400px;
-margin: auto;
-padding: 20px;
-border-radius: 8px;
-background-color:#e0d4f7;
-box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-   
-}
+    max-width: 80rem;
+    min-height: 70rem;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  }
 
-.header h1 {
+  .header h1 {
     text-align: center;
-    color:#7a4dff;
-    font: size 24px;
-    
-}
+    color: #694C9F;
+    font-size: 24px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+  }
 
-.content h2 {
+ 
+  .content{
+    background-color: #D5BFFF;
+    height: 100%;
+  }
+
+  .content h2 {
     text-align: center;
-    color: #7a4dff;
+    color: #fff;
     font-size: 20px;
     margin-bottom: 20px;
+  }
 
-}
-
-.setores {
-    background-color: #c4abf5;
+  .setores {
+    background-color: #D5BFFF;
     padding: 15px;
     border-radius: 8px;
     margin-bottom: 20px;
-}
+  }
 
-.checkbox-group {
+  .checkbox {
     display: flex;
     flex-direction: column;
     gap: 10px;
-}
+  }
 
-.label {
+  .label {
     display: flex;
     align-items: center;
-    font-size:16px;
-    color:#4b00a7;
-}
+    font-size: 16px;
+    color: #4b00a7;
+  }
 
-.input[type='checkbox'] {
+  .input[type='checkbox'] {
     margin-right: 10px;
-}
+  }
 
-.button {
-display: block;
-width: 100%;
-padding: 10px;
-background-color: #7a4dff;
-color: #fff;
-border: none;
-border-radius: 8px;
-cursor: pointer;
-font-size: 16px;
-font-weight: bold;
-}
+  .button {
+    display: flex;
+    width: 30%;
+    padding: 10px;
+    background-color: #8E7AB5;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+  }
 
-.button:hover {
-    background-color: #5f2df7;
-}
-
-=======
-    width: 50rem;
-    height: 40rem;
-    color:#8E7AB5;
-    border: 2px solid #000;
-    align-items: center;
-    margin: 0%;
-    flex-direction: column;
-    
-     
-   
-}
-
-.Titulo {
-    align-items: center;
-}
->>>>>>> e07d948cddd7a9448944d8ba8a4a8016a742656a
+  .button:hover {
+    background-color: #D5BFFF;
+  }
