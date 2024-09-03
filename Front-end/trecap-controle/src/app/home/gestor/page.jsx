@@ -1,6 +1,7 @@
 'use client'
 import { IconContext } from 'react-icons';
 import style from './page.module.css'
+import Link from 'next/link'
 import { MdCalendarMonth, MdHourglassBottom, MdEventNote, MdPeople } from "react-icons/md";
 import CabecalhoLogado from '@/cabecalhoLogado/page';
 
@@ -18,7 +19,7 @@ export default function Gestor(){
                         <IconContext.Provider value={{size:100}}>
                             <MdEventNote />
                        </IconContext.Provider>
-                        Eventos
+                        <Link href="/eventos">Eventos</Link>
                     </div>
                     <div>
                         <IconContext.Provider value={{size:100}}>
