@@ -22,21 +22,21 @@ export default function Gestor(){
                         Eventos</Link>
                     </div>
                     <div className={style.Centralizar}>
-                        <Link href="/eventos">
+                        <Link href="">
                             <IconContext.Provider value={{size:100}}>
                                 <MdHourglassBottom />
                         </IconContext.Provider>
                         Histórico</Link>
                         </div>
                     <div className={style.Centralizar}>
-                        <Link href="/eventos">
+                        <Link href="">
                             <IconContext.Provider value={{size:100}}>
                                     <MdCalendarMonth />
                             </IconContext.Provider>
                        Calendário</Link>
                     </div>
                     <div className={style.Centralizar}>
-                        <Link href="/eventos">
+                        <Link href="">
                         <IconContext.Provider value={{size:100}}>
                             <MdPeople />
                        </IconContext.Provider>
