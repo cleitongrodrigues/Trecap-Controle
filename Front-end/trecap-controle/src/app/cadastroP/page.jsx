@@ -33,7 +33,9 @@ export default function CadastroP () {
         <div className={styles.content}>
             <h2>Cadastro de Participantes</h2>
             <div className={styles.setores}>
-                <h3>Selecione setores participantes</h3>
+              <div className={styles.set} >
+                  <h3>Selecione setores participantes</h3>
+              </div>
                 <div className={styles.checkbox}>
                     <label>
                         <input

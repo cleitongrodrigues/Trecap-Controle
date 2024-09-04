@@ -15,7 +15,7 @@
   .header h1 {
     text-align: center;
     color: #694C9F;
-    font-size: 24px;
+    font-size: 48px;
     font-family: "Poppins", sans-serif;
     font-weight: 300;
     font-style: normal;
@@ -25,27 +25,38 @@
   .content{
     background-color: #D5BFFF;
     height: 100%;
-    border-radius: 8px;
+    border-radius: 18px;
   }
 
   .content h2 {
     text-align: center;
     color: #fff;
-    font-size: 20px;
+    font-size: 40px;
     margin-bottom: 20px;
     font-family: "Poppins", sans-serif;
     font-weight: 300;
     font-style: normal;
   }
 
+  .set{
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+
+  }
+
   .setores {
     background-color: #D5BFFF;
     padding: 15px;
+    padding-left: 325px;
+    height: 500px;
     border-radius: 8px;
     margin-bottom: 20px;
     font-family: "Poppins", sans-serif;
     font-weight: 300;
     font-style: normal;
+    font-size: 15px;
+    
   }
 
   .checkbox {
