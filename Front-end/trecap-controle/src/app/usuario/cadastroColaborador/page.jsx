@@ -1,6 +1,24 @@
+'use client'
 import CabecalhoLogado from "@/cabecalhoLogado/page";
 import style from "./page.module.css";
+import { useState } from "react";
+import axios from "axios";
 export default function CadastrarEvento() {
+
+  const [cep, setCep ] = useState('');
+  const [cidade, setCidade] = useState('');
+
+  async function getEstado(){
+    try {
+      const response = await axios.get('https://viacep.com.br/ws/' + cep + '/json')
+      const cidade = response.data.localidade
+      setCidade(response.data.localidade)
+        console.log(cidade)
+    } catch (error) {
+      console.log(error)
+    }
+    axios.get('https://viacep.com.br/ws/' + cep + '/json')
+  }
   return (
     <>
       <CabecalhoLogado />
@@ -37,7 +55,7 @@ export default function CadastrarEvento() {
                 <div className={style.CentralizaEndereco}>
                   <div className={style.DadosEndereco}>
                     <label>CEP:</label>
-                    <input type="text" name="" id="" />
+                    <input type="text" name="" id="" value={cep} onBlur={getEstado} onChange={({target}) => setCep(target.value)}/>
                             <label>Rua:</label>
                             <input type="text" name="" id="" />
                             <label>Estado:</label>
@@ -47,7 +65,7 @@ export default function CadastrarEvento() {
                   </div>
                   <div className={style.DadosEndereco}>
                     <label>Cidade:</label>
-                    <input type="text" name="" id="" />
+                    <input type="text" name="" id="" value={cidade} onChange={({target}) => setCidade(target.value)}/>
                     <label>Número:</label>
                     <input type="number" name="" id="" />
                     <label>Complemento:</label>
