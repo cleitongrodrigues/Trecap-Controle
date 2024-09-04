@@ -1,115 +1,113 @@
 /* colocar imagem {
         background-image: url('https://criticalhits.com.br/wp-content/uploads/2023/02/goku-entry-image.jpg');
         background-size: cover; /* Faz com que a imagem cubra toda a área */
-        /* background-position: center; /* Centraliza a imagem */
-        /* background-repeat: no-repeat; /* Evita a repetição da imagem */
-        /* margin: 0; */
-        /* padding: 0; */ 
-.ContainerGeral{
-    display: flex;
-    justify-content: center;
-    margin-top: 3rem;
+/* background-position: center; /* Centraliza a imagem */
+/* background-repeat: no-repeat; /* Evita a repetição da imagem */
+/* margin: 0; */
+/* padding: 0; */
+.ContainerGeral {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
 }
-.Container{
-    display: flex;
-    flex-direction: column;
-    background-color: #D5BFFF;
-    justify-content: center;
-    min-width: 60%;
-    align-items: center;
-    border-radius: 1rem;
-    gap: 1rem;
+.Container {
+  display: flex;
+  flex-direction: column;
+  background-color: #d5bfff;
+  justify-content: center;
+  min-width: 60%;
+  align-items: center;
+  border-radius: 1rem;
+  gap: 1rem;
 }
-.Container h1{
-    color: white;
-    margin: 1rem;
-    font-size: 2.5rem;
-    font-weight: bold;
+.Container h1 {
+  color: white;
+  margin: 1rem;
+  font-size: 2.5rem;
+  font-weight: bold;
 }
-.ContainerTudo{
-    display: flex;
-    flex-direction: column ;
-    font-size: 1.5rem;
-    font-weight: bold;
-    min-width:100rem;
-    min-height:auto;
-    padding: 0 3rem;
+.ContainerTudo {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.5rem;
+  font-weight: bold;
+  min-width: 100rem;
+  min-height: auto;
+  padding: 0 3rem;
 }
-.FormDados{
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-    align-items: center;
+.FormDados {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
 }
-.Titulos{
-    text-decoration: underline;
-    font-size: 2rem;
+.Titulos {
+  text-decoration: underline;
+  font-size: 2rem;
 }
-.FormEndereco{
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-    align-items: center;
+.FormEndereco {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
 }
-.FormEndereco input{
-    min-width: 40rem;
+.FormEndereco input {
+  min-width: 40rem;
 }
-.FormDados input{
-    min-width: 40rem;
+.FormDados input {
+  min-width: 40rem;
 }
-.CentralizaDados{
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
-    grid-template-rows: repeat(1,1fr);
-    gap: 5rem;
-    margin: 3rem 0rem;
+.CentralizaDados {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(1, 1fr);
+  gap: 5rem;
+  margin: 3rem 0rem;
 }
-.CentralizaEndereco{
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
-    grid-template-rows: repeat(1,1fr);
-    gap: 5rem;
-    margin: 2rem 0rem;
+.CentralizaEndereco {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(1, 1fr);
+  gap: 5rem;
+  margin: 2rem 0rem;
 }
-.DadosPessoais{
-    display: flex;
-    flex-direction: column;
+.DadosPessoais {
+  display: flex;
+  flex-direction: column;
 }
-.DadosEndereco{
-    display: flex;
-    flex-direction: column;
+.DadosEndereco {
+  display: flex;
+  flex-direction: column;
 }
-.Container input{
-    border-radius: 0.5rem;
-    border: none;
-    height: 2rem;
-    margin: 1rem 0rem;
-    padding: 1.5rem;
-    /* max-width: 100%; */
+.Container input {
+  border-radius: 0.5rem;
+  border: none;
+  height: 2rem;
+  margin: 1rem 0rem;
+  padding: 1.5rem;
+  /* max-width: 100%; */
 }
-.Container input:focus{
-    outline: none;
+.Container input:focus {
+  outline: none;
 }
-.Button{
-    border: none;
-    background-color: var(--purpleButton);
-    color: white;
-    font-weight: bold;
-    font-size: 1.5rem;
-    border-radius: .325rem;
-    padding: 0.5rem 2rem;
-    cursor: pointer;
-    margin-bottom: 2rem;
-}
-
-.ContainerButton{
-    display: flex;
-    justify-content: center;
-    padding: 3rem 0rem 0rem;
-}
-.Teste{
-    display: flex;
-    padding: 2rem 0rem;
+.Button {
+  border: none;
+  background-color: var(--purpleButton);
+  color: white;
+  font-weight: bold;
+  font-size: 1.5rem;
+  border-radius: 0.325rem;
+  padding: 0.5rem 2rem;
+  cursor: pointer;
+  margin-bottom: 2rem;
 }
 
-
+.ContainerButton {
+  display: flex;
+  justify-content: center;
+  padding: 3rem 0rem 0rem;
+}
+.Teste {
+  display: flex;
+  padding: 2rem 0rem;
+}
