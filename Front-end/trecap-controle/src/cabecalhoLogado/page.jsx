@@ -14,9 +14,6 @@ export default function CabecalhoLogado(){
         </div>
         <div className={styles.buttonContainer}>
             <div>
-                <h2>Olá Gestor</h2>
-            </div>
-            <div>
             <button className={styles.SairButton}>Sair</button>
             </div>
         </div>

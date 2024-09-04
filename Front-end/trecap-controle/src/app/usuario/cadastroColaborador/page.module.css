@@ -111,4 +111,8 @@
     display: flex;
     padding: 2rem 0rem;
 }
+.Leitura {
+    background-color: #f0f0f0; /* Cor de fundo para indicar que o campo é somente leitura */
+    color: #888; /* Cor do texto mais clara */
+  }
 

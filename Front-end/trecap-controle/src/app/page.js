@@ -8,7 +8,6 @@ import Evento from "./eventos/page";
 export default function Home() {
   return (
    <>
-    <CabecalhoLogado/>
     {/* <Gestor/> */}
     <Evento/>
    </>
