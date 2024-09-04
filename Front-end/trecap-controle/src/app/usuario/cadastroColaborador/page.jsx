@@ -67,7 +67,7 @@ export default function CadastrarEvento() {
                     <label>Setor:</label>
                     <input type="text" name="" id="" placeholder="Digite o setor do colaborador"/>
                     <label>Biometria:</label>
-                    <input type="text" className={style.Leitura}  id="" placeholder="Biometria do colaborador" readOnly/>
+                    <input type="text" id="" placeholder="Biometria do colaborador"/>
                     <label htmlFor="phone">Telefone:</label>
                     <InputMask 
                       mask="(99) 99999-9999" 
@@ -96,37 +96,37 @@ export default function CadastrarEvento() {
                       onBlur={getEndereco}
                       placeholder="Digite o CEP"
                     >
-                      {(inputProps) => <input {...inputProps} type="text" id="" />}
                     </InputMask>
                     <label>Rua:</label>
                     <input 
                       type="text" 
-                      value={rua} onChange={([target]) => setRua(target.value)} placeholder="Digite o nome da Rua" 
+                      value={rua}
+                      onChange={({target}) => setRua(target.value)}
+                      placeholder="Digite o nome da Rua" 
                     />
                     <label>Estado:</label>
                     <input 
                       type="text" 
-                      className={style.Leitura} 
-                      value={estado} readOnly onChange={([target]) => setEstado(target.value)} 
+                      value={estado} onChange={({target}) => setEstado(target.value)} 
                       placeholder="Nome do Estado"
                     />
                     <label>Bairro:</label>
                     <input 
                       type="text" 
-                      value={bairro} onChange={([target]) => setBairro(target.value)} placeholder="Digite o nome do Bairro" 
+                      value={bairro} onChange={({target}) => setBairro(target.value)} 
+                      placeholder="Digite o nome do Bairro" 
                     />
                   </div>
                   <div className={style.DadosEndereco}>
                     <label>Cidade:</label>
                     <input 
                       type="text" 
-                      className={style.Leitura} 
-                      value={cidade} readOnly onChange={({ target }) => setCidade(target.value)}
+                      value={cidade} onChange={({ target }) => setCidade(target.value)}
                       placeholder="Nome da Cidade"
                     />
                     <label>Número:</label>
                     <input 
-                      type="number" 
+                      type="text" 
                       placeholder="Ex: 01" />
                     <label>Complemento:</label>
                     <input 
