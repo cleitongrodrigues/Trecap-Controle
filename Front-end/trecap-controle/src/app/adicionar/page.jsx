@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import styles from "../presenca/page.module.css";
+import styles from "../adicionar/page.module.css";
 import CabecalhoLogado from "@/CabecalhoLogado/page";
 
 export default function CheckinEvento() {
@@ -31,6 +31,7 @@ export default function CheckinEvento() {
 
           <div className={styles.cadastro}>
             <h2>Adicionar Participantes</h2>
+            <h3>Setor Selecionado: Produção</h3>
             <div>
               {mostrarAlerta && (
                 <div className={styles.alerta}>
@@ -44,12 +45,11 @@ export default function CheckinEvento() {
               <div className={styles.listaParticipantes}>
                 <ul className={styles.participantes}>
                   {participantes.map((participante, index) => (
-                    <li key={index} className={styles.participanteItem}>
-                      <p className={styles.participantes}>
-                      {participante}</p>
+                    <p key={index} className={styles.participanteItem}>
+                      <p>{participante}</p>
                       
-                      <input type="checkbox" />
-                    </li>
+                      <input type="checkbox" className={styles.checkbox} />
+                    </p>
                   ))}
                 </ul>
               </div>
