@@ -49,10 +49,15 @@
     /* justify-content: center; */
     margin-top: 10px;
     color: white;
+<<<<<<< Updated upstream
+=======
+    align-items: center;
+>>>>>>> Stashed changes
     background-color: var(--purpleMain);
     border-radius: 20px;
     width: 500px;
     height: 500px;
+    flex-direction: column;
 }
 
 .cadastro h2 {
