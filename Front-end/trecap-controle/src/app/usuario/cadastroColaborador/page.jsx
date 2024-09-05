@@ -12,15 +12,21 @@ export default function CadastrarEvento() {
   const [erroCep, setErroCep] = useState('');
 
   const [cidade, setCidade] = useState('');
+  const [erroCidade, setErroCidade] = useState('');
+
   const [bairro, setBairro] = useState('');
+  const [erroBairro, setErroBairro] = useState('');
+
   const [estado, setEstado] = useState('');
+  const [erroEstado, setErroEstado] = useState('');
 
   const [rua, setRua] = useState('');
   const [erroRua, setErroRua] = useState("");
 
-  const showAlert = () => {
-    alert('Colaborador Cadastrado com sucesso!');
-  };
+  const [numero, setNumero] = useState('');
+  const [erroNumero, setErroNumero] = useState('');
+
+  const campo = 'Este campo é obrigatório!';
 
   async function getEndereco() {
     try {
@@ -33,7 +39,7 @@ export default function CadastrarEvento() {
         setCidade('');
       } else {
         setRua(response.data.logradouro);
-        setEstado(response.data.uf); 
+        setEstado(response.data.uf);
         setBairro(response.data.bairro);
         setCidade(response.data.localidade);
         setErroCep(''); // Limpa o erro se encontrar o endereço
@@ -48,38 +54,106 @@ export default function CadastrarEvento() {
   }
 
   // Validação do campo de rua
-const validaCep = () => {
-  
-  console.log(cep.length)
-    setErroCep('O número do Cep é obrigatório!')
-    return false
-  
-  // setErroCep('');
-  // return true;
-}
-const handleBlurCep = () => {
-  validaCep()// Função de validação
-  //getEndereco(); // Função para buscar o endereço
+  const validaCep = () => {
 
-};
+    const cepSemMascara = cep.replace(/\D/g, '');
+
+    console.log(cepSemMascara.length);
+
+    if (cepSemMascara.length === 0) {
+      setErroCep(campo);
+      return false;
+    }
+
+    // Se o CEP estiver correto
+    setErroCep('');
+    return true;
+  }
+  const handleBlurCep = async () => {
+    if (validaCep()) {// Função de validação
+      await getEndereco(); // Função para buscar o endereço
+    }
+    validaRua()
+    
+    validaEstado()
+    
+    validaBairro()
+    
+    validaCidade()
+    
+    validaNumero();
+    
+
+  };
 
   const validaRua = () => {
-    if (rua.trim() === '') {
-      setErroRua('O nome da rua é obrigatório!');
+    console.log(rua.length)
+    if (rua.length === 0) {
+      setErroRua(campo);
       return false;
     }
     setErroRua(''); // Limpa o erro se a validação for bem-sucedida
     return true;
   };
 
+  const validaEstado = () => {
+    if (estado.length === 0) {
+      setErroEstado(campo);
+      return false;
+    }
+    setErroEstado('');
+    return true;
+  }
+
+  const validaBairro = () => {
+    if (bairro.length === 0) {
+      setErroBairro(campo);
+      return false;
+    }
+    setErroBairro('');
+    return true;
+  }
+
+  const validaCidade = () => {
+    if (cidade.length === 0) {
+      setErroCidade(campo);
+      return false;
+    }
+    setErroCidade('');
+    return true;
+  }
+
+  const validaNumero = () => {
+    if (numero.length === 0) {
+      setErroNumero(campo);
+      return false;
+    }
+    setErroNumero('');
+    return true;
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault(); // Evita o reload da página
-    if (validaCep() && validaRua){
+    if (validaCep()) {
       showAlert();
     }
     if (validaRua()) {
-      // Se for válido, você pode continuar o processo, como enviar o formulário
       showAlert();
+    }
+    if (validaEstado()) {
+      showAlert();
+    }
+    if (validaBairro()) {
+      showAlert();
+    }
+    if (validaCidade()) {
+      showAlert();
+    }
+    if (validaNumero()) {
+      showAlert();
+    }
+    else {
+      alert('certo');
     }
   };
 
@@ -96,26 +170,26 @@ const handleBlurCep = () => {
                 <div className={style.CentralizaDados}>
                   <div className={style.DadosPessoais}>
                     <label>Nome do colaborador:</label>
-                    <input type="text" placeholder="Digite o nome do colaborador"/>
+                    <input type="text" placeholder="Digite o nome do colaborador" />
                     <label>RG:</label>
                     <InputMask mask="99.999.999-9" id="rg">
-                      {(inputProps) => <input {...inputProps} type="text" placeholder="Digite o RG do colaborador"/>}
+                      {(inputProps) => <input {...inputProps} type="text" placeholder="Digite o RG do colaborador" />}
                     </InputMask>
                     <label>CPF:</label>
                     <InputMask mask="999.999.999-99" id="cpf">
-                      {(inputProps) => <input {...inputProps} type="text" placeholder="Digite o CPF do colaborador"/>}
+                      {(inputProps) => <input {...inputProps} type="text" placeholder="Digite o CPF do colaborador" />}
                     </InputMask>
                   </div>
                   <div className={style.DadosPessoais}>
                     <label>Setor:</label>
-                    <input type="text" placeholder="Digite o setor do colaborador"/>
+                    <input type="text" placeholder="Digite o setor do colaborador" />
                     <label>Biometria:</label>
-                    <input type="text" placeholder="Biometria do colaborador"/>
+                    <input type="text" placeholder="Biometria do colaborador" />
                     <label htmlFor="phone">Telefone:</label>
-                    <InputMask 
-                      mask="(99) 99999-9999" 
+                    <InputMask
+                      mask="(99) 99999-9999"
                       id="phone">
-                      {(inputProps) => <input {...inputProps} type="tel" placeholder="Digite o telefone do colaborador"/>}
+                      {(inputProps) => <input {...inputProps} type="tel" placeholder="Digite o telefone do colaborador" />}
                     </InputMask>
                   </div>
                 </div>
@@ -136,40 +210,56 @@ const handleBlurCep = () => {
                       onBlur={handleBlurCep}
                       placeholder="Digite o CEP"
                     />
-                    {erroCep && <p style={{ color: "red" }}>{erroCep}</p>} {/* Exibe a mensagem de erro */}
+                    {erroCep && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroCep}</p>} {/* Exibe a mensagem de erro */}
 
                     <label>Rua:</label>
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       value={rua}
                       onChange={({ target }) => setRua(target.value)}
                       onBlur={validaRua} // Chama validação ao sair do campo
                       placeholder="Digite o nome da Rua"
                     />
-                    {erroRua && <p style={{ color: "red" }}>{erroRua}</p>} {/* Exibe a mensagem de erro */}
+                    {erroRua && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroRua}</p>} {/* Exibe a mensagem de erro */}
 
                     <label>Estado:</label>
-                    <input 
-                      type="text" 
-                      value={estado} 
+                    <input
+                      type="text"
+                      value={estado}
+                      onChange={({ target }) => setEstado(target.value)}
+                      onBlur={validaEstado}
                       placeholder="Nome do Estado"
                     />
+                    {erroEstado && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroEstado}</p>} {/* Exibe a mensagem de erro */}
                     <label>Bairro:</label>
-                    <input 
-                      type="text" 
-                      value={bairro} 
+                    <input
+                      type="text"
+                      value={bairro}
+                      onChange={({ target }) => setBairro(target.value)}
+                      onBlur={validaBairro}
                       placeholder="Digite o nome do Bairro"
                     />
+                    {erroBairro && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroBairro}</p>} {/* Exibe a mensagem de erro */}
                   </div>
                   <div className={style.DadosEndereco}>
                     <label>Cidade:</label>
-                    <input 
-                      type="text" 
-                      value={cidade} 
+                    <input
+                      type="text"
+                      value={cidade}
+                      onChange={({ target }) => setBairro(target.value)}
+                      onBlur={validaCidade}
                       placeholder="Nome da Cidade"
                     />
+                    {erroCidade && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroCidade}</p>} {/* Exibe a mensagem de erro */}
+
                     <label>Número:</label>
-                    <input type="text" placeholder="Ex: 01" />
+                    <input type="text"
+                      onChange={({ target }) => setNumero(target.value)}
+                      onBlur={validaNumero}
+                      placeholder="Ex: 01"
+                    />
+                    {erroNumero && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroNumero}</p>} {/* Exibe a mensagem de erro */}
+
                     <label>Complemento:</label>
                     <input type="text" placeholder="Ex: Casa, Apto" />
                   </div>
