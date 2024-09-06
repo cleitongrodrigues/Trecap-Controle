@@ -133,3 +133,25 @@
 .botaoCadastro:hover {
   background-color: #6a1b9a;
 }
+
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #6c49b8; /* Escolha a cor que desejar */
+  color: white;
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.mainContent {
+  flex: 1; /* Isso vai garantir que o conteúdo principal ocupe o espaço correto */
+}

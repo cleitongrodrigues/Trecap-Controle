@@ -13,16 +13,6 @@ export default function CheckinEvento() {
   const [mensagemErro, setMensagemErro] = useState("");
   const [setor, setSetor] = useState("");
 
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    // Ler o setor selecionado da URL
-    const setorSelecionado = searchParams.get('setor');
-    if (setorSelecionado) {
-      setSetor(setorSelecionado);
-    }
-  }, [searchParams]);
 
   useEffect(() => {
     // Dados mockados
@@ -35,6 +25,7 @@ export default function CheckinEvento() {
       { nome: "Ronaldinho" },
       { nome: "Romarinhooooooooooo" },
     ];
+    
 
     setParticipantes(participantesMock);
     setParticipantesSelecionados(new Array(participantesMock.length).fill(false));
@@ -137,6 +128,9 @@ export default function CheckinEvento() {
         <button className={styles.botaoCadastro} onClick={salvarParticipantes}>Salvar</button>
       </div>
     </div>
+    <footer className={styles.footer}>
+      <p>&copy; 2024 TRECAP. Todos os direitos reservados.</p>
+    </footer>
     </>
   );
 }
