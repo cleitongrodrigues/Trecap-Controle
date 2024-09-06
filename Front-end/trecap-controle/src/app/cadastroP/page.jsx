@@ -67,12 +67,22 @@ export default function CadastroP() {
                   onChange={handleCheckboxChange}
                 />
                 Almoxarifado
+                <label>
+                  <input
+                  type='checkbox'
+                  name='encarregados'
+                  checked={selectedSetores.encarregados}
+                  onChange={handleCheckboxChange}
+                  />
+                  Encarregados
+                </label>
               </label>
+              <button className={styles.button} onClick={handleLIstar}>Listar</button>
             </div>
           </div>
           </div>
         </div>
-        <button className={styles.button} onClick={handleLIstar}>Listar</button>
+     
       </div>
     </>
   )
