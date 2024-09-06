@@ -135,25 +135,11 @@ export default function CadastrarEvento() {
   const handleSubmit = (e) => {
     e.preventDefault(); // Evita o reload da página
     if (validaCep()) {
-      showAlert();
-    }
-    if (validaRua()) {
-      showAlert();
-    }
-    if (validaEstado()) {
-      showAlert();
-    }
-    if (validaBairro()) {
-      showAlert();
-    }
-    if (validaCidade()) {
-      showAlert();
-    }
-    if (validaNumero()) {
-      showAlert();
-    }
-    else {
-      alert('certo');
+      validaRua();
+    validaEstado();
+    validaBairro();
+    validaCidade();
+    validaNumero();
     }
   };
 
