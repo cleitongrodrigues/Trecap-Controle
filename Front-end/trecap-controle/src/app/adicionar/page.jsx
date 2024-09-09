@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/router";
+import { useRouter } from "next/navigation";
 import styles from "./page.module.css"; // Ajuste o caminho se necessário
 import CabecalhoLogado from "@/CabecalhoLogado/page";
 
@@ -12,7 +12,7 @@ export default function CheckinEvento() {
   const [participantesSelecionados, setParticipantesSelecionados] = useState([]);
   const [mensagemErro, setMensagemErro] = useState("");
   const [setor, setSetor] = useState("");
-
+  const router = useRouter()
 
   useEffect(() => {
     // Dados mockados
@@ -54,28 +54,25 @@ export default function CheckinEvento() {
     }
 
     try {
-      // Enviar dados para o backend (opcional)
-      const response = await fetch('/api/salvarParticipantes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ participantes: selecionados }),
-      });
+      // // Enviar dados para o backend (opcional)
+      // const response = await fetch('/api/salvarParticipantes', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({ participantes: selecionados }),
+      // });
 
-      if (!response.ok) {
-        throw new Error('Falha ao salvar participantes');
-      }
+      // if (!response.ok) {
+      //   throw new Error('Falha ao salvar participantes');
+      // }
 
-      const result = await response.json();
-      console.log('Participantes salvos:', result);
-      setMensagemErro(""); // Limpar a mensagem de erro em caso de sucesso
+      // const result = await response.json();
+      // console.log('Participantes salvos:', result);
+      // setMensagemErro(""); // Limpar a mensagem de erro em caso de sucesso
 
       // Redirecionar para a página de confirmação com os participantes selecionados
-      router.push({
-        pathname: '/adicionar/confirmacao',
-        query: { participantes: JSON.stringify(selecionados) },
-      });
+      router.push('/confirmacao');
     } catch (error) {
       console.error('Erro ao salvar participantes:', error);
       setMensagemErro("Ocorreu um erro ao salvar os participantes.");

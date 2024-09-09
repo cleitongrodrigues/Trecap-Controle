@@ -24,6 +24,15 @@
     margin-bottom: 20px;
     color: #ffffff;
   }
+
+  .listaParticipantes {
+    font-size: medium ;
+  }
+
+  .participanteItem {
+    font-size: 2rem;
+    
+  }
   
   /* Estilo da seção de cadastro */
   .cadastro {
@@ -54,14 +63,15 @@
     color: #fff;  
     padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 7rem;
     cursor: pointer; 
-    width: auto;
+    width: 20rem;
     height: auto;
     font-size: 1.6rem;
     text-align: center;
     margin: auto;
-    margin-top: 10px;
+    margin-top: -20rem;
+    opacity: 0.8;
   }
   
   .botaoCadastro:hover {
@@ -94,6 +104,7 @@
     text-align: center;
     margin: auto;
     margin-top: 10px;
+    opacity: 0.8;
   }
   
   .botaoCancelar:hover {
