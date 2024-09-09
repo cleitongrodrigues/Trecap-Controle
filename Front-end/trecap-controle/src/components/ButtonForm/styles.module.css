@@ -16,4 +16,5 @@
 
 .button:hover{
     background-color: var(--purpleMain);
+    color: white;
 }
