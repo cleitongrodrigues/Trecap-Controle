@@ -157,9 +157,9 @@ export default function CadastrarEvento() {
                   <div className={style.DadosPessoais}>
                     <label>Nome do colaborador:</label>
                     <input type="text" placeholder="Digite o nome do colaborador" />
-                    <label>RG:</label>
-                    <InputMask mask="99.999.999-9" id="rg">
-                      {(inputProps) => <input {...inputProps} type="text" placeholder="Digite o RG do colaborador" />}
+                    <label>Email:</label>
+                    <InputMask id="email">
+                      {(inputProps) => <input {...inputProps} type="email" placeholder="Digite o email do colaborador" />}
                     </InputMask>
                     <label>CPF:</label>
                     <InputMask mask="999.999.999-99" id="cpf">
