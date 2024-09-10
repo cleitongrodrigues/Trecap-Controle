@@ -5,7 +5,7 @@ module.exports = {
         try {
             const sql = `SELECT feedback_evento_id, evento_id, 
             colaborador_id, feedback_comentario, feedback_nota
-            FROM FeedbackEvento;`;
+            FROM feedbackevento;`;
 
             const feedbackEvento = await db.query(sql)
 
@@ -30,7 +30,7 @@ module.exports = {
         try {
             const { evento_id, colaborador_id, feedback_comentario, feedback_nota } = request.body;
 
-            const sql = `INSERT INTO FeedbackEventos
+            const sql = `INSERT INTO feedbackevento
                 (evento_id, colaborador_id, feedback_comentario, feedback_nota) 
                 VALUES (?, ?, ?, ?);`;
 
@@ -45,6 +45,7 @@ module.exports = {
                 dados: feedbackEvento_id
             });
         } catch (error) {
+            console.log(error)
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao cadastrar o Feedback :(',
@@ -59,19 +60,21 @@ module.exports = {
 
             const { feedback_evento_id } = request.params;
 
-            const sql = `UPDATE FeedbackEventos SET FeedbackEvento_nome = ?, FeedbackEvento_data = ?, FeedbackEvento_local = ?, 
-            FeedbackEvento_hora_inicio = ?, FeedbackEvento_hora_termino = ?, FeedbackEvento_capacidade = ?, usu_id = ?
-                WHERE FeedbackEvento_id = ?;`;
+            const sql = `UPDATE FeedbackEvento SET evento_id = ?,
+            colaborador_id = ?, feedback_comentario = ?, feedback_nota = ?
+            WHERE feedback_evento_id = ?;`;
 
             const values = [evento_id, colaborador_id, feedback_comentario, feedback_nota, feedback_evento_id];
 
             const atualizaDados = await db.query(sql, values);
+            console.log(atualizaDados)
             return response.status(200).json({
                 sucesso: true,
                 mensagem: `Feedback ${feedback_evento_id} editado com sucesso!`,
                 dados: atualizaDados[0].affectedRows
             });
         } catch (error) {
+            console.log(error)
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao editar Feedback',
@@ -82,16 +85,16 @@ module.exports = {
 
     async ApagarFeedbackEvento(request, response) {
         try {
-            const { feedbackEvento_id } = request.params;
+            const { feedback_evento_id } = request.params;
 
-            const sql = `DELETE FROM FeedbackEventos WHERE feedback_evento_id = ?;`;
+            const sql = `DELETE FROM FeedbackEvento WHERE feedback_evento_id = ?;`;
 
-            const values = [feedbackEvento_id];
+            const values = [feedback_evento_id];
 
             const apagar = await db.query(sql, values);
             return response.status(200).json({
                 sucesso: true,
-                mensagem: `Feedback ${feedbackEvento_id} deletado com sucesso!`,
+                mensagem: `Feedback ${feedback_evento_id} deletado com sucesso!`,
                 dados: apagar[0].affectedRows
             });
         } catch (error) {
