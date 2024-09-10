@@ -65,12 +65,12 @@
     border: none;
     border-radius: 7rem;
     cursor: pointer; 
-    width: 20rem;
+    width: auto;
     height: auto;
     font-size: 1.6rem;
     text-align: center;
     margin: auto;
-    margin-top: -20rem;
+    margin-top: 1rem;
     opacity: 0.8;
   }
   

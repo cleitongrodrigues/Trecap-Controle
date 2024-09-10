@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import CabecalhoLogado from "@/CabecalhoLogado/page";
 
-export default function CheckinEvento() {
-  const router = useRouter();
+export default function ParticipantesSelecionados() {
   const [participantesSelecionados, setParticipantesSelecionados] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     // Garantir que estamos no cliente antes de acessar o localStorage
@@ -21,13 +21,8 @@ export default function CheckinEvento() {
     }
   }, []);
 
-  // Função para salvar a lista de participantes e redirecionar para a página de participantes salvos
-  const salvarParticipantes = () => {
-    // Salvar os participantes selecionados no localStorage com uma chave específica para os finalizados
-    localStorage.setItem('participantesSelecionados', JSON.stringify(participantesSelecionados));
-
-    // Redirecionar para a página que mostrará os participantes salvos
-    router.push('/participantes-selecionados');
+  const iniciarChamada = () => {
+    router.push('/registrarPresenca');
   };
 
   return (
@@ -53,12 +48,9 @@ export default function CheckinEvento() {
               )}
             </ul>
           </div>
-        </div>
 
-        {/* Botão "Salvar" para registrar os participantes */}
-        <div className={styles.botaoContainer}>
-          <button className={styles.botaoCadastro} onClick={salvarParticipantes}>
-            Salvar
+          <button className={styles.botaoCadastro} onClick={iniciarChamada}>
+            Iniciar Chamada para Evento
           </button>
         </div>
       </div>

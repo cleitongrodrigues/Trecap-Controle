@@ -1,9 +1,10 @@
 // app/adicionar/page.jsx
+
 "use client";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import styles from "./page.module.css"; // Ajuste o caminho se necessário
+import styles from "./page.module.css"; 
 import CabecalhoLogado from "@/CabecalhoLogado/page";
 
 export default function CheckinEvento() {
@@ -12,7 +13,7 @@ export default function CheckinEvento() {
   const [participantesSelecionados, setParticipantesSelecionados] = useState([]);
   const [mensagemErro, setMensagemErro] = useState("");
   const [setor, setSetor] = useState("");
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     // Dados mockados
@@ -25,7 +26,6 @@ export default function CheckinEvento() {
       { nome: "Ronaldinho" },
       { nome: "Romarinhooooooooooo" },
     ];
-    
 
     setParticipantes(participantesMock);
     setParticipantesSelecionados(new Array(participantesMock.length).fill(false));
@@ -54,22 +54,11 @@ export default function CheckinEvento() {
     }
 
     try {
-      // // Enviar dados para o backend (opcional)
-      // const response = await fetch('/api/salvarParticipantes', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({ participantes: selecionados }),
-      // });
+      // Salvar os participantes selecionados no localStorage
+      localStorage.setItem('participantesSelecionados', JSON.stringify(selecionados));
 
-      // if (!response.ok) {
-      //   throw new Error('Falha ao salvar participantes');
-      // }
-
-      // const result = await response.json();
-      // console.log('Participantes salvos:', result);
-      // setMensagemErro(""); // Limpar a mensagem de erro em caso de sucesso
+      // Verifique se os participantes estão sendo salvos corretamente
+      console.log('Participantes selecionados salvos:', selecionados);
 
       // Redirecionar para a página de confirmação com os participantes selecionados
       router.push('/confirmacao');
@@ -81,53 +70,54 @@ export default function CheckinEvento() {
 
   return (
     <>
-    <CabecalhoLogado />
+      <CabecalhoLogado />
     
-    <div className={styles.Header}>
-      <div className={styles.checkin}>
-        <h1>TREINAMENTO SOBRE HIGIENE NO TRABALHO</h1>
+      <div className={styles.Header}>
+        <div className={styles.checkin}>
+          <h1>TREINAMENTO SOBRE HIGIENE NO TRABALHO</h1>
 
-        <div className={styles.cadastro}>
-          <h2>Adicionar Participantes</h2>
-          <h3>Setor Selecionado: {setor}</h3>
-          <div>
-            {mostrarAlerta && (
-              <div className={styles.alerta}>
-                <p>Selecione os participantes.</p>
-                <button onClick={fecharAlerta} className={styles.botaoFechar}>
-                  Ok
-                </button>
+          <div className={styles.cadastro}>
+            <h2>Adicionar Participantes</h2>
+            <h3>Setor Selecionado: {setor}</h3>
+            <div>
+              {mostrarAlerta && (
+                <div className={styles.alerta}>
+                  <p>Selecione os participantes.</p>
+                  <button onClick={fecharAlerta} className={styles.botaoFechar}>
+                    Ok
+                  </button>
+                </div>
+              )}
+
+              <div className={styles.listaParticipantes}>
+                <ul className={styles.participantes}>
+                  {participantes.map((participante, index) => (
+                    <li key={index} className={styles.participanteItem}>
+                      <label>
+                        <input
+                          type="checkbox"
+                          className={styles.checkbox}
+                          checked={participantesSelecionados[index]}
+                          onChange={() => handleCheckboxChange(index)}
+                        />
+                        {participante.nome}
+                      </label>
+                    </li>
+                  ))}
+                </ul>
               </div>
-            )}
 
-            <div className={styles.listaParticipantes}>
-              <ul className={styles.participantes}>
-                {participantes.map((participante, index) => (
-                  <li key={index} className={styles.participanteItem}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        className={styles.checkbox}
-                        checked={participantesSelecionados[index]}
-                        onChange={() => handleCheckboxChange(index)}
-                      />
-                      {participante.nome}
-                    </label>
-                  </li>
-                ))}
-              </ul>
+              {mensagemErro && <div className={styles.mensagemErro}>{mensagemErro}</div>}
             </div>
-
-            {mensagemErro && <div className={styles.mensagemErro}>{mensagemErro}</div>}
           </div>
-        </div>
 
-        <button className={styles.botaoCadastro} onClick={salvarParticipantes}>Salvar</button>
+          <button className={styles.botaoCadastro} onClick={salvarParticipantes}>Salvar</button>
+        </div>
       </div>
-    </div>
-    <footer className={styles.footer}>
-      <p>&copy; 2024 TRECAP. Todos os direitos reservados.</p>
-    </footer>
+
+      <footer className={styles.footer}>
+        <p>&copy; 2024 TRECAP. Todos os direitos reservados.</p>
+      </footer>
     </>
   );
 }
