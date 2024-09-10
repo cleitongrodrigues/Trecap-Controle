@@ -52,6 +52,9 @@ export default function ParticipantesSelecionados() {
           <button className={styles.botaoCadastro} onClick={iniciarChamada}>
             Iniciar Chamada para Evento
           </button>
+          <button className={styles.botaoCadastro} onClick={router.back}>
+            Voltar
+          </button>
         </div>
       </div>
     </>

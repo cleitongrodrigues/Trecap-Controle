@@ -60,6 +60,9 @@ export default function CheckinEvento() {
           <button className={styles.botaoCadastro} onClick={salvarParticipantes}>
             Salvar
           </button>
+          <button className={styles.botaoCadastro} onClick={router.back}>
+            Voltar
+          </button>
         </div>
       </div>
     </>

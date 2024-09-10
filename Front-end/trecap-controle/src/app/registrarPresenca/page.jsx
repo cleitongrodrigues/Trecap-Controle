@@ -84,6 +84,9 @@ export default function RegistrarPresenca() {
           <button className={styles.botaoCadastro} onClick={salvarPresenca}>
             Salvar
           </button>
+          <button className={styles.botaoCadastro} onClick={router.back}>
+            Voltar
+          </button>
         </div>
       </div>
     </>

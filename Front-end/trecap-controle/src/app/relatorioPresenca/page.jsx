@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { jsPDF } from "jspdf"; // Importa jsPDF
 import styles from "./page.module.css";
 import CabecalhoLogado from "@/CabecalhoLogado/page";
 
@@ -22,8 +23,25 @@ export default function RelatorioPresenca() {
     }
   }, []);
 
+  // Função para imprimir o relatório
   const imprimirRelatorio = () => {
     window.print(); // Abre a caixa de diálogo de impressão do navegador
+  };
+
+  // Função para salvar o relatório como PDF
+  const salvarRelatorioPDF = () => {
+    const doc = new jsPDF();
+
+    // Adicionar título
+    doc.text("Relatório de Presença", 10, 10);
+
+    // Adicionar lista de participantes presentes no PDF
+    participantesPresentes.forEach((participante, index) => {
+      doc.text(`${index + 1}. ${participante.nome} - Chegada: ${participante.horario}`, 10, 20 + index * 10);
+    });
+
+    // Salvar o PDF
+    doc.save("relatorio-presenca.pdf");
   };
 
   return (
@@ -54,8 +72,14 @@ export default function RelatorioPresenca() {
             </div>
           </div>
 
+          {/* Botão para imprimir o relatório */}
           <button className={styles.botaoImprimir} onClick={imprimirRelatorio}>
             Imprimir Relatório
+          </button>
+
+          {/* Botão para salvar o relatório em PDF */}
+          <button className={styles.botaoImprimir} onClick={salvarRelatorioPDF}>
+            Salvar Relatório
           </button>
         </div>
       </div>
