@@ -8,6 +8,21 @@ import InputMask from 'react-input-mask';
 
 export default function CadastrarEvento() {
 
+  const [nomeColaborador, setNomeColaborador] = useState('');
+  const [erroNomeColaborador, setErroNomeColaborador] = useState('');
+
+  const [email, setEmail] = useState('');
+  const [erroEmail, setErroEmail] = useState('');
+
+  const [cpf, setCpf] = useState('');
+  const [erroCpf, setErroCpf] = useState('');
+
+  const [biometria, setBiometria] = useState('');
+  const [erroBiometria, setErroBiometria] = useState('');
+
+  const [telefone, setTelefone] = useState('');
+  const [erroTelefone, setErroTelefone] = useState('');
+
   const [cep, setCep] = useState('');
   const [erroCep, setErroCep] = useState('');
 
@@ -53,7 +68,58 @@ export default function CadastrarEvento() {
     }
   }
 
-  // Validação do campo de rua
+  // Validação parte dados pessoais
+  const validaNome = () => {
+    console.log(nomeColaborador.length)
+    if (nomeColaborador.length === 0 || nomeColaborador.length < 3) {
+      setErroNomeColaborador(campo);
+      return false;
+    }
+    setErroNomeColaborador(''); 
+    return true;
+  };
+ 
+  const validaEmail = () => {
+    console.log(email.length)
+    if (email.length === 0) {
+      setErroEmail(campo);
+      return false;
+    }
+    setErroEmail(''); 
+    return true;
+  };
+  
+  const validaCpf = () => {
+    console.log(cpf.length)
+    if (cpf.length === 0) {
+      setErroCpf(campo);
+      return false;
+    }
+    setErroCpf(''); 
+    return true;
+  };
+  
+  const validaBiometria = () => {
+    console.log(biometria.length)
+    if (biometria.length === 0) {
+      setErroBiometria(campo);
+      return false;
+    }
+    setErroBiometria(''); 
+    return true;
+  };
+  
+  const validaTelefone = () => {
+    console.log(telefone.length)
+    if (telefone.length === 0) {
+      setErroTelefone(campo);
+      return false;
+    }
+    setErroTelefone(''); 
+    return true;
+  };
+
+  // Validação parte do endereço
   const validaCep = () => {
 
     const cepSemMascara = cep.replace(/\D/g, '');
@@ -73,17 +139,6 @@ export default function CadastrarEvento() {
     if (validaCep()) {// Função de validação
       await getEndereco(); // Função para buscar o endereço
     }
-    validaRua()
-    
-    validaEstado()
-    
-    validaBairro()
-    
-    validaCidade()
-    
-    validaNumero();
-    
-
   };
 
   const validaRua = () => {
@@ -135,6 +190,11 @@ export default function CadastrarEvento() {
   const handleSubmit = (e) => {
     e.preventDefault(); // Evita o reload da página
     if (validaCep()) {
+      validaNome();
+      validaEmail();
+      validaCpf();
+      validaBiometria();
+      validaTelefone();
       validaRua();
     validaEstado();
     validaBairro();
@@ -157,6 +217,15 @@ export default function CadastrarEvento() {
                   <div className={style.DadosPessoais}>
                     <label>Nome do colaborador:</label>
                     <input type="text" placeholder="Digite o nome do colaborador" />
+                    <input
+                      type="text"
+                      value={nomeColaborador}
+                      onChange={({ target }) => setEstado(target.value)}
+                      onBlur={validaNome}
+                      placeholder="Digite o nome completo do colaborador"
+                    />
+                    {erroEstado && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroEstado}</p>} {/* Exibe a mensagem de erro */}
+
                     <label>Email:</label>
                     <InputMask id="email">
                       {(inputProps) => <input {...inputProps} type="email" placeholder="Digite o email do colaborador" />}
@@ -167,8 +236,6 @@ export default function CadastrarEvento() {
                     </InputMask>
                   </div>
                   <div className={style.DadosPessoais}>
-                    <label>Setor:</label>
-                    <input type="text" placeholder="Digite o setor do colaborador" />
                     <label>Biometria:</label>
                     <input type="text" placeholder="Biometria do colaborador" />
                     <label htmlFor="phone">Telefone:</label>
@@ -253,7 +320,7 @@ export default function CadastrarEvento() {
               </form>
             </div>
             <div className={style.ContainerButton}>
-              <button type="submit" className={style.Button} onClick={handleSubmit}>Concluir</button>
+              <button type="submit" className={style.Button} onClick={handleSubmit}>Cadastrar</button>
             </div>
           </div>
         </div>
