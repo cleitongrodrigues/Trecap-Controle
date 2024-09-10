@@ -36,53 +36,66 @@ export default function CadastroP() {
         <div className={styles.content}>
           <h2>Cadastro de Participantes</h2>
           <div className={styles.content2}>
-          <div className={styles.setores}>
-            <div className={styles.set} >
-              <h3>Selecione setores participantes</h3>
-            </div>
-            <div className={styles.checkbox}>
-              <label>
-                <input
-                  type="checkbox"
-                  name="producao"
-                  checked={selectedSetores.producao}
-                  onChange={handleCheckboxChange}
-                />
-                Produção
-              </label>
-              <label>
-                <input
-                  type='checkbox'
-                  name='cargaDescarga'
-                  checked={selectedSetores.cargaDescarga}
-                  onChange={handleCheckboxChange}
-                />
-                Carga e Descarga
-              </label>
-              <label>
-                <input
-                  type='checkbox'
-                  name='almoxarifado'
-                  checked={selectedSetores.almoxarifado}
-                  onChange={handleCheckboxChange}
-                />
-                Almoxarifado
-                <label>
+            <div className={styles.setores}>
+              <div className={styles.set} >
+                <h3>Selecione setores participantes</h3>
+              </div>
+              <div className={styles.checkbox}>
+                <div className={styles.containerInput}>
+                  <label className={styles.label} htmlFor='producao'>
+                    Produção
+                  </label>
                   <input
-                  type='checkbox'
-                  name='encarregados'
-                  checked={selectedSetores.encarregados}
-                  onChange={handleCheckboxChange}
+                    type="checkbox"
+                    name="producao"
+                    id="producao"
+                    checked={selectedSetores.producao}
+                    onChange={handleCheckboxChange}
                   />
-                  Encarregados
-                </label>
-              </label>
-              <button className={styles.button} onClick={handleLIstar}>Listar</button>
+                </div>
+                <div  className={styles.containerInput}>
+                  <label className={styles.label} htmlFor='cargaDescarga'>
+                    Carga e Descarga
+                  </label>
+                  <input
+                    type='checkbox'
+                    name='cargaDescarga'
+                    id='cargaDescarga'
+                    checked={selectedSetores.cargaDescarga}
+                    onChange={handleCheckboxChange}
+                  />
+                </div>
+                <div  className={styles.containerInput}>
+                  <label className={styles.label} htmlFor='almoxarifado'>
+                    Almoxarifado
+                  </label>
+                  <input
+                    type='checkbox'
+                    name='almoxarifado'
+                    id='almoxarifado'
+                    checked={selectedSetores.almoxarifado}
+                    onChange={handleCheckboxChange}
+                  />
+                </div>
+                <div  className={styles.containerInput}>
+                  <label className={styles.label} htmlFor='encarregados'>
+                    Encarregados
+                  </label>
+                  <input
+                    type='checkbox'
+                    name='encarregados'
+                    id='encarregados'
+                    checked={selectedSetores.encarregados}
+                    onChange={handleCheckboxChange}
+                  />
+                </div>
+
+                <button className={styles.button} onClick={handleLIstar}>Listar</button>
+              </div>
             </div>
-          </div>
           </div>
         </div>
-     
+
       </div>
     </>
   )
