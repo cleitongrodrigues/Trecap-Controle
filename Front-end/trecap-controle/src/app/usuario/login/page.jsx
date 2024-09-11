@@ -1,10 +1,20 @@
+'use client'
+
 import style from "../login/page.module.css";
 import Image from "next/image";
 import logoBranca from "../../../assets/logoBranca.svg";
 import Input from "@/components/Input";
 import ButtonForm from "@/components/ButtonForm";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
+  const router = useRouter()
+
+  const handleClick = (e) => {
+    e.preventDefault()
+    router.push('/eventos')
+  }
+  
   return (
     <div className={style.ContainerGeral}>
       <main>
@@ -30,7 +40,7 @@ export default function Login() {
               typeInput='password'
             />
           </div>
-          <ButtonForm>Entrar</ButtonForm>
+          <ButtonForm onClick={handleClick}>Entrar</ButtonForm>
         </form>
       </main>
     </div>

@@ -1,40 +1,55 @@
 .Geral{
-    display: flex;
-    justify-content: center;
-    margin-top: 5rem;
+    padding-inline: 2rem;
 }
+
 .Container{
     display: flex;
     flex-direction: column;
     background-color: #D5BFFF;
-    justify-content: center;
-    min-width: 80%;
+    justify-content: center;   
+    max-width: 70rem;
     align-items: center;
     border-radius: 1rem;
+    margin: 6rem auto 0;
+    padding: 2rem;
 }
+
 .Titulo{
     color: white;
     margin: 1rem;
-    font-size: 2rem;
+    font-size: 4rem;
     font-weight: bold;
 }
+
 .ContainerDivs{
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 60px 1fr 150px;
     background-color: #8E7AB5;
-    min-width: 58rem;
     box-shadow: 0 0 2px 3px #8E7AB5;
     flex-direction: row;
     color: white;
     padding: 1rem;
-    margin: 1rem;
     border-radius: 1rem;
     align-items: center;
     gap: 1rem;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
 }
+
+.ContainerDivs:hover{
+    transform: scale(1.02);
+}
+
 .ContainerDivs svg{
     max-width: 5rem;
 }
+
+.containerContent{
+    display: grid;
+    gap: 2rem 0;
+    width: 100%;
+}
+
 .ContainerLabel{
     display: flex;
     flex-direction: column;
@@ -42,13 +57,17 @@
     font-weight: bold;
     gap: 2rem;
 }
+
 .Icones{
     display: flex;
+    justify-content: space-between;
     gap: 1rem;
 }
+
 .ClasseIcone{
     cursor: pointer;
 }
+
 .ContainerTeste{
     display: flex;
     align-items: center;

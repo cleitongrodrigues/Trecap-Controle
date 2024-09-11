@@ -5,8 +5,11 @@ import style from "./page.module.css";
 import { useState } from "react";
 import axios from "axios";
 import InputMask from 'react-input-mask';
+import { useRouter } from "next/navigation";
 
 export default function CadastrarEvento() {
+
+  const router = useRouter()
 
   const [cep, setCep] = useState('');
   const [erroCep, setErroCep] = useState('');
@@ -134,6 +137,7 @@ export default function CadastrarEvento() {
 
   const handleSubmit = (e) => {
     e.preventDefault(); // Evita o reload da página
+    router.push('/usuario/login')
     if (validaCep()) {
       validaRua();
     validaEstado();
@@ -141,6 +145,7 @@ export default function CadastrarEvento() {
     validaCidade();
     validaNumero();
     }
+    
   };
 
   return (

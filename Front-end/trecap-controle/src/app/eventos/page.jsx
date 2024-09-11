@@ -50,7 +50,7 @@ export default function Evento() {
         <div className={style.Geral}>
             <div className={style.Container}>
                 <h1 className={style.Titulo}>Eventos</h1>
-                <div className={style.TesteDiv}>
+                <div className={style.containerContent}>
                     {eventos.map((evento, index) => (
                         <div key={index} className={style.ContainerDivs}>
                             <IconContext.Provider value={{ size: 100 }}>
