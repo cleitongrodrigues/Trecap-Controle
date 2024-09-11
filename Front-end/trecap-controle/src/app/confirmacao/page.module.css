@@ -1,0 +1,112 @@
+/* Estilo geral do container */
+.Header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff; /* Cor de fundo roxa clara */
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .checkin {
+    width: 100%;
+    max-width: 600px;
+    color: var(--purpleMain);
+    background-color:#e0c6f8;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Estilo do cabeçalho */
+  .checkin h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #ffffff;
+  }
+
+  .listaParticipantes {
+    font-size: medium ;
+  }
+
+  .participanteItem {
+    font-size: 2rem;
+    
+  }
+  
+  /* Estilo da seção de cadastro */
+  .cadastro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+    color: white;
+    background-color: var(--purpleMain);
+    border-radius: 20px;
+    width: auto;
+    height: 40rem;
+  }
+  
+  .cadastro h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: white;
+    margin-top: 10px;
+  }
+  
+  .botaoCadastro {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--purpleMain);
+    color: #fff;  
+    padding: 10px 20px;
+    border: none;
+    border-radius: 7rem;
+    cursor: pointer; 
+    width: auto;
+    height: auto;
+    font-size: 1.6rem;
+    text-align: center;
+    margin: auto;
+    margin-top: 1rem;
+    opacity: 0.8;
+  }
+  
+  .botaoCadastro:hover {
+    background-color: #6a1b9a;
+  }
+
+  .biometriaIcon {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: '30px';
+    height: '30px';
+    margin-left: '15px';
+  }
+  
+  .botaoCancelar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--purpleMain);
+    color: #fff;  
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer; 
+    width: auto;
+    height: auto;
+    font-size: 1.6rem;
+    text-align: center;
+    margin: auto;
+    margin-top: 10px;
+    opacity: 0.8;
+  }
+  
+  .botaoCancelar:hover {
+    background-color: #6a1b9a;
+  }
