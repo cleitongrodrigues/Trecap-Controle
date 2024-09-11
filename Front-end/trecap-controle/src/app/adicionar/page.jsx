@@ -18,16 +18,21 @@ export default function CheckinEvento() {
   useEffect(() => {
     // Dados mockados
     const participantesMock = [
-      { nome: "Arlindo Goveia Santos" },
+      { nome: "Sebastião Maradona" },
       { nome: "Artur Fernandes Silva" },
       { nome: "Bruno Alves Souza" },
       { nome: "Carlos Emanuel Santos" },
       { nome: "Douglas Bispo" },
-      { nome: "Ronaldinho" },
-      { nome: "Romarinhooooooooooo" },
+      { nome: "Onofre Cleiton Mariano" },
+      { nome: "Bezerra Cabral Secundo" },
     ];
 
-    setParticipantes(participantesMock);
+    // Ordenar os participantes por nome
+    const participantesOrdenados = participantesMock.sort((a, b) => 
+      a.nome.localeCompare(b.nome)
+    );
+
+    setParticipantes(participantesOrdenados);
     setParticipantesSelecionados(new Array(participantesMock.length).fill(false));
   }, []);
 
