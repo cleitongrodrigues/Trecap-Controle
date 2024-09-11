@@ -2,8 +2,11 @@
 import styles from './page.module.css'
 import { useState } from 'react'
 import CabecalhoLogado from '@/cabecalhoLogado/page';
+import { useRouter } from 'next/navigation';
 
 export default function CadastroP() {
+
+  const router = useRouter()
 
   const [selectedSetores, selectedSetoresSetores] = useState({
     producao: true,
@@ -25,6 +28,10 @@ export default function CadastroP() {
   const handleLIstar = () => {
     console.log('Setores selecionados:', selectedSetores);
   };
+
+  const handleClick = () =>{
+    router.push('/participantes-selecionados')
+  }
 
   return (
     <>
@@ -90,7 +97,7 @@ export default function CadastroP() {
                   />
                 </div>
 
-                <button className={styles.button} onClick={handleLIstar}>Listar</button>
+                <button className={styles.button} onClick={handleClick}>Listar</button>
               </div>
             </div>
           </div>

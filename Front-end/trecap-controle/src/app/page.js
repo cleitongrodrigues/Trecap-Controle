@@ -4,12 +4,13 @@ import Login from "@/app/usuario/login/page";
 import CabecalhoLogado from "@/cabecalhoLogado/page";
 import Gestor from "./home/gestor/page";
 import Evento from "./eventos/page";
+import Cadastrar from "./usuario/login/cadastrar/page";
 
 export default function Home() {
   return (
    <>
     {/* <Gestor/> */}
-    <Evento/>
+    <Cadastrar />
    </>
   );
 }
