@@ -34,8 +34,7 @@
   color: white;
   background-color: var(--purpleMain);
   border-radius: 20px;
-  width: auto;
-  height: auto;
+  padding: 2rem;
 }
 
 .cadastro h2 {
@@ -59,17 +58,20 @@
 .alerta {
   display: flex;
   justify-content: center;
-  align-items: center;
   text-align: center;
   padding: 16px;
   margin: auto;
-  min-width: 75%;
-  max-width: 80%;
   border: 0.1rem solid var(--purpleMain);
   background-color: #8E7AB5;
   color: white;
   border-radius: 20px;
   flex-direction: column;
+  max-width: 20rem;
+}
+
+.alerta p{
+  font-size: 1.2rem;
+  margin-block-end: .5rem;
 }
 
 .botaoFechar {
@@ -81,6 +83,14 @@
   cursor: pointer;
 }
 
+.containerContent{
+  width: 100%;
+}
+
+.listaParticipantes{
+  width: 100%;
+}
+
 /* Estilo da lista de participantes */
 .participantes {
   display: flex;
@@ -89,20 +99,24 @@
   list-style-type: none;
   padding: 0;
   margin: 20px 0 0;
+  gap: .5rem;
+  width: 100%;
 }
 
 .participanteItem {
   display: flex;
   align-items: center; /* Centraliza o checkbox e o texto verticalmente */
   width: 100%; /* Garante que cada item ocupe toda a largura disponível */
-  max-width: 300px; /* Define uma largura máxima para melhor centralização */
   padding: 0.5rem;
   border-radius: 5px;
   font-size: 2rem;
+  background-color: white;
+  color: black;
 }
 
 .participanteItem input[type="checkbox"] {
   margin-right: 10px; /* Espaçamento entre o checkbox e o texto */
+  transform: scale(1.1);
   cursor: pointer;
 }
 
@@ -154,4 +168,9 @@
 
 .mainContent {
   flex: 1; /* Isso vai garantir que o conteúdo principal ocupe o espaço correto */
+}
+
+.mensagemErro{
+  margin-block-start: .5rem;
+  font-size: 1.5rem;
 }

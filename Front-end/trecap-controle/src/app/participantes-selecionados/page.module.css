@@ -38,7 +38,7 @@
     background-color: #4a148c; /* Cor principal */
     border-radius: 20px;
     width: 100%;
-    padding: auto;
+    padding: 1rem;
   }
   
   .cadastro h2 {
@@ -50,9 +50,8 @@
   /* Estilo da lista de participantes */
   .listaParticipantes {
     list-style-type: none;
-    padding: 0;
     margin: 20px 0 0;
-    max-width: auto;
+    width: 100%;
   }
   
   .participanteItem {
@@ -64,6 +63,7 @@
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 1.5rem;
+    width: 100%;
   }
   
   .participanteItem label {

@@ -54,6 +54,10 @@
     width: 100%;
     max-width: 600px;
   }
+
+  .listaParticipantes h3{
+    font-size: 1.5rem;
+  }
   
   .participanteItem {
     display: flex;

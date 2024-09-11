@@ -30,7 +30,7 @@ export default function CadastroP() {
   };
 
   const handleClick = () =>{
-    router.push('/participantes-selecionados')
+    router.push('/adicionar')
   }
 
   return (

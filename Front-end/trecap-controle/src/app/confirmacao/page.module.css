@@ -26,12 +26,20 @@
   }
 
   .listaParticipantes {
+    width: 100%;
     font-size: medium ;
+    padding: 1rem;
   }
 
   .participanteItem {
+    width: 100%;
     font-size: 2rem;
-    
+    background-color: white;
+    color: black;
+    margin-block-end: .5rem;
+    padding: .5rem 1rem;
+    text-align: center;
+    border-radius: 1rem;
   }
   
   /* Estilo da seção de cadastro */

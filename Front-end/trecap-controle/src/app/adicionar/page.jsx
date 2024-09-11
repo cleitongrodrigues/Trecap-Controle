@@ -79,7 +79,7 @@ export default function CheckinEvento() {
           <div className={styles.cadastro}>
             <h2>Adicionar Participantes</h2>
             <h3>Setor Selecionado: {setor}</h3>
-            <div>
+            <div className={styles.containerContent}>
               {mostrarAlerta && (
                 <div className={styles.alerta}>
                   <p>Selecione os participantes.</p>
