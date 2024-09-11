@@ -91,12 +91,16 @@ export default function CadastrarEvento() {
   
   const validaCpf = () => {
     console.log(cpf.length)
+    const cpfSemMascara = cep.replace(/\D/g, '');
+    console.log(cpfSemMascara.length);
+
     if (cpf.length === 0) {
       setErroCpf(campo);
       return false;
     }
     setErroCpf(''); 
     return true;
+
   };
   
   const validaBiometria = () => {
@@ -216,28 +220,48 @@ export default function CadastrarEvento() {
                 <div className={style.CentralizaDados}>
                   <div className={style.DadosPessoais}>
                     <label>Nome do colaborador:</label>
-                    <input type="text" placeholder="Digite o nome do colaborador" />
                     <input
                       type="text"
                       value={nomeColaborador}
-                      onChange={({ target }) => setEstado(target.value)}
+                      onChange={({ target }) => setNomeColaborador(target.value)}
                       onBlur={validaNome}
                       placeholder="Digite o nome completo do colaborador"
                     />
-                    {erroEstado && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroEstado}</p>} {/* Exibe a mensagem de erro */}
+                    {erroNomeColaborador && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroNomeColaborador}</p>} {/* Exibe a mensagem de erro */}
 
                     <label>Email:</label>
-                    <InputMask id="email">
-                      {(inputProps) => <input {...inputProps} type="email" placeholder="Digite o email do colaborador" />}
-                    </InputMask>
+                    <input
+                      type="text"
+                      value={email}
+                      onChange={({ target }) => setEmail(target.value)}
+                      onBlur={validaEmail}
+                      placeholder="Digite o email do colaborador"
+                    />
+                    {erroEmail && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroEmail}</p>} {/* Exibe a mensagem de erro */}
+
                     <label>CPF:</label>
-                    <InputMask mask="999.999.999-99" id="cpf">
-                      {(inputProps) => <input {...inputProps} type="text" placeholder="Digite o CPF do colaborador" />}
-                    </InputMask>
+                    <InputMask 
+                      mask="999.999.999-99"
+                      type="text" 
+                      value={cpf}
+                      onChange={({ target }) => setCpf(target.value)}
+                      onBlur={validaCpf} // Chama validação ao sair do campo
+                      placeholder="Digite o CPF do colaborador"
+                    />
+                    {erroCpf && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroCpf}</p>} {/* Exibe a mensagem de erro */}
+                  
                   </div>
                   <div className={style.DadosPessoais}>
                     <label>Biometria:</label>
-                    <input type="text" placeholder="Biometria do colaborador" />
+                    <input
+                      type="text"
+                      value={biometria}
+                      onChange={({ target }) => setBiometria(target.value)}
+                      onBlur={validaBiometria} // Chama validação ao sair do campo
+                      placeholder="Digite o nome da Rua"
+                    />
+                    {erroBiometria && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroBiometria}</p>} {/* Exibe a mensagem de erro */}
+
                     <label htmlFor="phone">Telefone:</label>
                     <InputMask
                       mask="(99) 99999-9999"
