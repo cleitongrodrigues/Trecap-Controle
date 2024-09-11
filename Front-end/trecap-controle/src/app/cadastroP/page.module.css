@@ -1,0 +1,121 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
+
+.container {
+    max-width: 80rem;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .header h1 {
+    text-align: center;
+    color: #694C9F;
+    font-size: 48px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    
+  }
+
+ 
+  .content{
+    background-color: #694C9F;
+    border-radius: 18px;
+    padding: 1rem;
+  }
+
+  .content h2 {
+    text-align: center;
+    color: #DADADA;
+    font-size: 40px;
+    margin-bottom: 20px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+  }
+
+  .content2{
+    max-width: 60rem;
+    margin: 10px auto;
+    border-radius: 18px;
+    padding: 20px;
+    background-color: #D9D9D9;
+    margin-top: 10px;
+    display: grid;
+    place-items: center;
+    
+  }
+
+  .set{
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 30px;
+    padding: 20px;
+
+  }
+
+  .setores {
+    width: 100%;
+    background-color: #D5BFFF;
+    padding: 1rem;
+    border-radius: 8px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 20px;
+  }
+
+  .checkbox {
+    width: 100%;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    display: grid;
+    place-items: center;
+  }
+
+  .label {
+    flex:1;
+    font-size: 16px;
+    color: #4b00a7;
+    cursor: pointer;
+  }
+
+  .input[type='checkbox'] {
+    margin-right: 10px;
+  }
+
+  .button {
+    padding: .5rem 2rem;
+    background-color: #7C00FE;
+    color: #fff;
+    border: none;
+    border-radius: 1rem;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+  }
+
+  .button:hover {
+    background-color: #8E7AB5;
+  }
+
+  .containerInput{
+    background-color: #FFFF;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-block-end: .8rem;
+    padding: .5rem;
+  }
+
+  .containerInput input{
+    transform: scale(1.2);
+  }

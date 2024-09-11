@@ -5,8 +5,11 @@ import style from "./page.module.css";
 import { useState } from "react";
 import axios from "axios";
 import InputMask from 'react-input-mask';
+import { useRouter } from "next/navigation";
 
 export default function CadastrarEvento() {
+
+  const router = useRouter()
 
   const [nomeColaborador, setNomeColaborador] = useState('');
   const [erroNomeColaborador, setErroNomeColaborador] = useState('');
@@ -75,20 +78,20 @@ export default function CadastrarEvento() {
       setErroNomeColaborador(campo);
       return false;
     }
-    setErroNomeColaborador(''); 
+    setErroNomeColaborador('');
     return true;
   };
- 
+
   const validaEmail = () => {
     console.log(email.length)
     if (email.length === 0) {
       setErroEmail(campo);
       return false;
     }
-    setErroEmail(''); 
+    setErroEmail('');
     return true;
   };
-  
+
   const validaCpf = () => {
     console.log(cpf.length)
     const cpfSemMascara = cep.replace(/\D/g, '');
@@ -98,28 +101,28 @@ export default function CadastrarEvento() {
       setErroCpf(campo);
       return false;
     }
-    setErroCpf(''); 
+    setErroCpf('');
     return true;
 
   };
-  
+
   const validaBiometria = () => {
     console.log(biometria.length)
     if (biometria.length === 0) {
       setErroBiometria(campo);
       return false;
     }
-    setErroBiometria(''); 
+    setErroBiometria('');
     return true;
   };
-  
+
   const validaTelefone = () => {
     console.log(telefone.length)
     if (telefone.length === 0) {
       setErroTelefone(campo);
       return false;
     }
-    setErroTelefone(''); 
+    setErroTelefone('');
     return true;
   };
 
@@ -193,6 +196,7 @@ export default function CadastrarEvento() {
 
   const handleSubmit = (e) => {
     e.preventDefault(); // Evita o reload da página
+    router.push('/usuario/login')
     if (validaCep()) {
       validaNome();
       validaEmail();
@@ -200,11 +204,12 @@ export default function CadastrarEvento() {
       validaBiometria();
       validaTelefone();
       validaRua();
-    validaEstado();
-    validaBairro();
-    validaCidade();
-    validaNumero();
+      validaEstado();
+      validaBairro();
+      validaCidade();
+      validaNumero();
     }
+
   };
 
   return (
@@ -240,16 +245,16 @@ export default function CadastrarEvento() {
                     {erroEmail && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroEmail}</p>} {/* Exibe a mensagem de erro */}
 
                     <label>CPF:</label>
-                    <InputMask 
+                    <InputMask
                       mask="999.999.999-99"
-                      type="text" 
+                      type="text"
                       value={cpf}
                       onChange={({ target }) => setCpf(target.value)}
                       onBlur={validaCpf} // Chama validação ao sair do campo
                       placeholder="Digite o CPF do colaborador"
                     />
                     {erroCpf && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroCpf}</p>} {/* Exibe a mensagem de erro */}
-                  
+
                   </div>
                   <div className={style.DadosPessoais}>
                     <label>Biometria:</label>

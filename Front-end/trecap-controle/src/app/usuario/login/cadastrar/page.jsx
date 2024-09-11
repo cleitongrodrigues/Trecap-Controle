@@ -8,9 +8,13 @@ import ButtonForm from '@/components/ButtonForm'
 import { useState } from 'react'
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import strengthPasswordVerify from '../../../../utils/strengthPassword'
+import { useRouter } from 'next/navigation'
 
 
 export default function Cadastrar() {
+
+  const router = useRouter()
+
   const email = useForm('email')
   const nome = useForm()
   const CPF = useForm('CPF')
@@ -28,6 +32,7 @@ export default function Cadastrar() {
   const handleSubmit = (event) => {
     event.preventDefault()
     console.log('Submit!')
+    router.push('./usuario/login')
   }
 
   const {messagestrengthPassword, strengthPassword} = strengthPasswordVerify(password.value)

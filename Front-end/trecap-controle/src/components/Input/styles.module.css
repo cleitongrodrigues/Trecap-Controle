@@ -7,7 +7,7 @@
 
 .label {
     display: block;
-    background-color: var(--white);
+    background-color: white;
     z-index: 100;
     margin-inline-start: 1rem;
     pointer-events: none;
@@ -17,10 +17,10 @@
 
 .input {
     width: 100%;
-    font-size: 1rem;
+    font-size: 2rem;
     padding: .825rem 1rem;
     border-radius: 1rem;
-    border: 1px solid var(--purple-700);
+    border: 1px solid black;
 }
 
 .containerInput label,
@@ -40,7 +40,7 @@
 .input:focus ~ .label,
 input:not(:placeholder-shown) ~ .label{
     transform: translateY(-150%);
-    font-size: 1rem;
+    font-size: 1.25rem;
     padding-inline: .625rem;
 }
 

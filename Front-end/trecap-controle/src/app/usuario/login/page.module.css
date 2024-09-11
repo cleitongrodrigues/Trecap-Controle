@@ -1,99 +1,82 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+.form{
+    display: grid;
+}
 
-.ContainerGeral{
+.formHeader{
     display: flex;
-    background-color: #8E7AB5;
-    min-height: 100vh;
-    flex-direction: column;
     align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    isolation: isolate;
 }
 
-.titulo{
-    font-size: 5rem;
-    color: white;
-    font-weight: bold;
-    margin-top: 4rem;
-    font-family: "Poppins", sans-serif;
-    font-style: normal;
-}
-
-.subtitulo{
-    font-size: 1.5rem;
-    color: white;
-    font-family: "Poppins", sans-serif;
-    font-weight: 300;
-    font-style: normal;
-    margin-left: 1rem;
-}
-
-.login{
-    color:white;
-    font-size: 3rem;
-    padding-top: 5rem;
-    padding-bottom: 3rem ;
-    font-family: "Poppins", sans-serif;
-    font-style: normal;
-    font-weight: 500;
-}
-
-.containerImage{
-    display: flex;
-    flex-direction:row ;
-}
-
-.containerTitulo{
-    justify-content: center;
-    align-items: center;
-}
-
-.Image{
-    width: 9.5rem;
-    height:9.5rem;
-    padding-top: 1.5rem;
-}
-
-.input{
-    margin-top: 0.5rem;
-    width: 30rem;
-    height: 3rem;
-    background-color: #8E7AB5;
-    border-color: white;
-    border-width: 0.2rem;
-    border-radius: 1rem;
+.formHeader h2{
     font-size: 2rem;
-    font-family: "Poppins", sans-serif;
-    font-style: normal;
-    font-weight: 300;
-    color: white;
-}
-
-.campos{
-    font-size: 2rem;
-    color: white;
-    font-family: "Poppins", sans-serif;
-    font-style: normal;
-    font-weight: 300;
-    text-align: left;
-    margin-left: 0.2rem;    
-}
-
-.containerInput{
-    padding: 4rem;
-}
-
-.input::placeholder{
-    color: white;
-    opacity: 60%;
-}
-
-.containerBotao{
-
     position: relative;
 }
 
-.botao{
+.formHeader h2::after{
+    content: '';
     position: absolute;
-    right: 0;
-    top: 0;
+    width: 1rem;
+    height: 1rem;
     bottom: 0;
+    left: -0.2rem;
+    background-color: var(--purpleMain);
+    z-index: -1;
 }
+
+.formHeader a{
+    position: relative;
+    transition: all .3s;
+}
+
+.formHeader a::after{
+    content: '';
+    position: absolute;
+    background-color: var(--purpleMain);
+    width: 0%;
+    bottom: -4px;
+    right: 0;
+    left: 0;
+    height: 1px;
+    transition: all .3s;
+}
+
+.formHeader a:hover{
+    color: var(--purpleMain);
+}
+
+.formHeader a:hover::after{
+    width: 100%;
+}
+
+.remember{
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+}
+
+.remember input{
+    width: 18px;
+    height: 18px;
+}
+
+.remember label{
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.containerFooter{
+    display: flex;
+    margin-bottom: 1rem;
+    gap: 1rem;
+    justify-content: space-between;
+}
+
+
+.containerFooter a{
+    margin-block: 1rem;
+}
+
