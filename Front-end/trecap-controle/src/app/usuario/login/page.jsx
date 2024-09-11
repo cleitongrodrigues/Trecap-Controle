@@ -6,43 +6,51 @@ import logoBranca from "../../../assets/logoBranca.svg";
 import Input from "@/components/Input";
 import ButtonForm from "@/components/ButtonForm";
 import { useRouter } from "next/navigation";
+import Form from "@/components/Form";
+import Link from "next/link";
+import useForm from "@/hooks/useForm";
 
 export default function Login() {
+  const email = useForm();
+  const password = useForm();
+
   const router = useRouter()
 
   const handleClick = (e) => {
     e.preventDefault()
     router.push('/eventos')
   }
-  
+
   return (
-    <div className={style.ContainerGeral}>
-      <main>
-        <div className={style.containerImage}>
-          <div className={style.containerTitulo}>
-            <h1 className={style.titulo}>TreCap</h1>
-            <h3 className={style.subtitulo}>Presence Controler</h3>
+    <Form message={'Por favor, faça login!'}>
+      <div className={style.formHeader}>
+        <h2>Login</h2>
+        <Link href="/cadastrar">Criar nova conta</Link>
+      </div>
+      <form className={style.form}>
+        <Input
+          labelText={'Email:'}
+          inputPlaceholderText={'email@company.com'}
+          typeInput={'text'}
+          name={'email'}
+          {...email}
+        />
+        <Input
+          labelText={'Password:'}
+          typeInput={'password'}
+          name={'password'}
+          inputPlaceholderText=''
+          {...password}
+        />
+        <div className={style.containerFooter}>
+          <div className={style.remember}>
+            <input id="remember" type="checkbox" />
+            <label htmlFor='remember'>Lembrar de mim</label>
           </div>
-          <Image className={style.Image} src={logoBranca} />
+          <Link href="/esqueceusenha">Esqueceu a senha</Link>
         </div>
-        <form className={style.form}>
-          <h1 className={style.login}>Login</h1>
-          <div className={style.containerInput}>
-            <Input
-              labelText='Email:'
-              inputPlaceholderText='Digite seu email...'
-            />
-          </div>
-          <div className={style.containerInputPassword}>
-            <Input
-              labelText='Senha:'
-              inputPlaceholderText='Digite seu email...'
-              typeInput='password'
-            />
-          </div>
-          <ButtonForm onClick={handleClick}>Entrar</ButtonForm>
-        </form>
-      </main>
-    </div>
+        <ButtonForm onClick={handleClick}>Cadastrar</ButtonForm>
+      </form>
+    </Form>
   );
 }

@@ -92,7 +92,7 @@
 
   .button {
     padding: .5rem 2rem;
-    background-color: #8E7AB5;
+    background-color: #7C00FE;
     color: #fff;
     border: none;
     border-radius: 1rem;
@@ -104,7 +104,7 @@
   }
 
   .button:hover {
-    background-color: #D5BFFF;
+    background-color: #8E7AB5;
   }
 
   .containerInput{

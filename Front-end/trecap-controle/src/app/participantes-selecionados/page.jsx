@@ -14,6 +14,8 @@ export default function ParticipantesSelecionados() {
     if (typeof window !== 'undefined') {
       // Recuperar os participantes selecionados do localStorage
       const selecionados = JSON.parse(localStorage.getItem('participantesSelecionados')) || [];
+      // const selecionados = ['Ana Silva', 'João Pereira', 'Carlos Oliveira', 'Maria Santos', 'Sofia Costa']
+      // localStorage.setItem('participantesSelecionados',selecionados )
       setParticipantesSelecionados(selecionados);
 
       // Verifique se os participantes estão sendo carregados corretamente
