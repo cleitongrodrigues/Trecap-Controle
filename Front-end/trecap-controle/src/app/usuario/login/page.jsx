@@ -18,7 +18,7 @@ export default function Login() {
 
   const handleClick = (e) => {
     e.preventDefault()
-    router.push('/eventos')
+    router.push('/home/gestor')
   }
 
   return (

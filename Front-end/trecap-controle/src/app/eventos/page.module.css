@@ -63,10 +63,12 @@
 .labelTitle{
     font-size: 1.8rem;
     margin-block-end: .5rem;
+    cursor: pointer;
 }
 
 .labelData{
     font-size: 1.2rem;
+    cursor: pointer;
 }
 
 .Icones{
