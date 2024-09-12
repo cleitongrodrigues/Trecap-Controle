@@ -44,7 +44,11 @@ export default function CadastrarEvento() {
   const [numero, setNumero] = useState('');
   const [erroNumero, setErroNumero] = useState('');
 
+  const [complemento, setComplemento] = useState('');
+  const [erroComplemento, setErroComplemento] = useState('');
+
   const campo = 'Este campo é obrigatório!';
+  const mensagem = 'Este campo não deve conter menos que 4 caracteres';
 
   async function getEndereco() {
     try {
@@ -94,7 +98,7 @@ export default function CadastrarEvento() {
 
   const validaCpf = () => {
     console.log(cpf.length)
-    const cpfSemMascara = cep.replace(/\D/g, '');
+    const cpfSemMascara = cpf.replace(/\D/g, '');
     console.log(cpfSemMascara.length);
 
     if (cpf.length === 0) {
@@ -154,7 +158,7 @@ export default function CadastrarEvento() {
       setErroRua(campo);
       return false;
     }
-    setErroRua(''); // Limpa o erro se a validação for bem-sucedida
+    setErroRua(''); 
     return true;
   };
 
@@ -187,16 +191,29 @@ export default function CadastrarEvento() {
 
   const validaNumero = () => {
     if (numero.length === 0) {
-      setErroNumero(campo);
+      setErroNumero(`${campo} e deve ser maior que zero`);
       return false;
     }
     setErroNumero('');
     return true;
   }
 
+  const validaComplemento = () =>{
+    if (complemento.length == 0) {
+      setErroComplemento(campo);
+      return false;
+    }
+    if (complemento.length < 4){
+      setErroComplemento(mensagem);
+      return false
+    }
+    setErroComplemento('');
+    return true;
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault(); // Evita o reload da página
-    router.push('/usuario/login')
+    // router.push('/usuario/login')
     if (validaCep()) {
       validaNome();
       validaEmail();
@@ -208,6 +225,7 @@ export default function CadastrarEvento() {
       validaBairro();
       validaCidade();
       validaNumero();
+      validaComplemento();
     }
 
   };
@@ -229,7 +247,7 @@ export default function CadastrarEvento() {
                       type="text"
                       value={nomeColaborador}
                       onChange={({ target }) => setNomeColaborador(target.value)}
-                      onBlur={validaNome}
+                      // onBlur={validaNome}
                       placeholder="Digite o nome completo do colaborador"
                     />
                     {erroNomeColaborador && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroNomeColaborador}</p>} {/* Exibe a mensagem de erro */}
@@ -239,7 +257,7 @@ export default function CadastrarEvento() {
                       type="text"
                       value={email}
                       onChange={({ target }) => setEmail(target.value)}
-                      onBlur={validaEmail}
+                      // onBlur={validaEmail}
                       placeholder="Digite o email do colaborador"
                     />
                     {erroEmail && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroEmail}</p>} {/* Exibe a mensagem de erro */}
@@ -250,7 +268,7 @@ export default function CadastrarEvento() {
                       type="text"
                       value={cpf}
                       onChange={({ target }) => setCpf(target.value)}
-                      onBlur={validaCpf} // Chama validação ao sair do campo
+                      // onBlur={validaCpf}
                       placeholder="Digite o CPF do colaborador"
                     />
                     {erroCpf && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroCpf}</p>} {/* Exibe a mensagem de erro */}
@@ -262,7 +280,7 @@ export default function CadastrarEvento() {
                       type="text"
                       value={biometria}
                       onChange={({ target }) => setBiometria(target.value)}
-                      onBlur={validaBiometria} // Chama validação ao sair do campo
+                      // onBlur={validaBiometria} 
                       placeholder="Digite o nome da Rua"
                     />
                     {erroBiometria && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroBiometria}</p>} {/* Exibe a mensagem de erro */}
@@ -270,9 +288,13 @@ export default function CadastrarEvento() {
                     <label htmlFor="phone">Telefone:</label>
                     <InputMask
                       mask="(99) 99999-9999"
-                      id="phone">
-                      {(inputProps) => <input {...inputProps} type="tel" placeholder="Digite o telefone do colaborador" />}
-                    </InputMask>
+                      type="text"
+                      value={telefone}
+                      onChange={({ target }) => setTelefone(target.value)}
+                      // onBlur={validaTelefone} 
+                      placeholder="Digite o telefone do colaborador"
+                    />
+                    {erroTelefone && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroTelefone}</p>}
                   </div>
                 </div>
               </form>
@@ -299,7 +321,7 @@ export default function CadastrarEvento() {
                       type="text"
                       value={rua}
                       onChange={({ target }) => setRua(target.value)}
-                      onBlur={validaRua} // Chama validação ao sair do campo
+                      // onBlur={validaRua} 
                       placeholder="Digite o nome da Rua"
                     />
                     {erroRua && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroRua}</p>} {/* Exibe a mensagem de erro */}
@@ -309,7 +331,7 @@ export default function CadastrarEvento() {
                       type="text"
                       value={estado}
                       onChange={({ target }) => setEstado(target.value)}
-                      onBlur={validaEstado}
+                      // onBlur={validaEstado}
                       placeholder="Nome do Estado"
                     />
                     {erroEstado && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroEstado}</p>} {/* Exibe a mensagem de erro */}
@@ -318,7 +340,7 @@ export default function CadastrarEvento() {
                       type="text"
                       value={bairro}
                       onChange={({ target }) => setBairro(target.value)}
-                      onBlur={validaBairro}
+                      // onBlur={validaBairro}
                       placeholder="Digite o nome do Bairro"
                     />
                     {erroBairro && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroBairro}</p>} {/* Exibe a mensagem de erro */}
@@ -328,8 +350,8 @@ export default function CadastrarEvento() {
                     <input
                       type="text"
                       value={cidade}
-                      onChange={({ target }) => setBairro(target.value)}
-                      onBlur={validaCidade}
+                      onChange={({ target }) => setCidade(target.value)}
+                      // onBlur={validaCidade}
                       placeholder="Nome da Cidade"
                     />
                     {erroCidade && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroCidade}</p>} {/* Exibe a mensagem de erro */}
@@ -337,13 +359,20 @@ export default function CadastrarEvento() {
                     <label>Número:</label>
                     <input type="text"
                       onChange={({ target }) => setNumero(target.value)}
-                      onBlur={validaNumero}
+                      // onBlur={validaNumero}
                       placeholder="Ex: 01"
                     />
                     {erroNumero && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroNumero}</p>} {/* Exibe a mensagem de erro */}
 
                     <label>Complemento:</label>
-                    <input type="text" placeholder="Ex: Casa, Apto" />
+                    <input
+                      type="text"
+                      value={complemento}
+                      onChange={({target}) => setComplemento(target.value)}
+                      // onBlur={validaComplemento}
+                      placeholder="Ex: Casa, Apto"
+                    />
+                    {erroComplemento && <p style={{color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem'}}>{erroComplemento}</p>}
                   </div>
                 </div>
               </form>
