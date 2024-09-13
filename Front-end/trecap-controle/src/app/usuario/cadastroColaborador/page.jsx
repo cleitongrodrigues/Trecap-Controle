@@ -6,19 +6,18 @@ import { useState } from "react";
 import axios from "axios";
 import InputMask from 'react-input-mask';
 import { useRouter } from "next/navigation";
+import useForm from "@/hooks/useForm";
 
 export default function CadastrarEvento() {
-
+// passar as validações para op useForm
   const router = useRouter()
 
   const [nomeColaborador, setNomeColaborador] = useState('');
   const [erroNomeColaborador, setErroNomeColaborador] = useState('');
 
-  const [email, setEmail] = useState('');
-  const [erroEmail, setErroEmail] = useState('');
+  const email = useForm('email');
 
-  const [cpf, setCpf] = useState('');
-  const [erroCpf, setErroCpf] = useState('');
+  const CPF = useForm('CPF');
 
   const [biometria, setBiometria] = useState('');
   const [erroBiometria, setErroBiometria] = useState('');
@@ -26,8 +25,7 @@ export default function CadastrarEvento() {
   const [telefone, setTelefone] = useState('');
   const [erroTelefone, setErroTelefone] = useState('');
 
-  const [cep, setCep] = useState('');
-  const [erroCep, setErroCep] = useState('');
+  const CEP = useForm('CEP');
 
   const [cidade, setCidade] = useState('');
   const [erroCidade, setErroCidade] = useState('');
@@ -52,9 +50,8 @@ export default function CadastrarEvento() {
 
   async function getEndereco() {
     try {
-      const response = await axios.get(`https://viacep.com.br/ws/${cep}/json`);
+      const response = await axios.get(`https://viacep.com.br/ws/${CEP.value}/json`);
       if (response.data.erro) {
-        setErroCep('CEP não encontrado.');
         setRua('');
         setEstado('');
         setBairro('');
@@ -64,12 +61,7 @@ export default function CadastrarEvento() {
         setEstado(response.data.uf);
         setBairro(response.data.bairro);
         setCidade(response.data.localidade);
-        setErroCep(''); // Limpa o erro se encontrar o endereço
       }
-      // setRua(response.data.logradouro);
-      // setEstado(response.data.uf); // Corrigido o campo de estado (deveria ser "uf" na resposta da API)
-      // setBairro(response.data.bairro);
-      // setCidade(response.data.localidade);
     } catch (error) {
       console.log(error);
     }
@@ -84,30 +76,6 @@ export default function CadastrarEvento() {
     }
     setErroNomeColaborador('');
     return true;
-  };
-
-  const validaEmail = () => {
-    console.log(email.length)
-    if (email.length === 0) {
-      setErroEmail(campo);
-      return false;
-    }
-    setErroEmail('');
-    return true;
-  };
-
-  const validaCpf = () => {
-    console.log(cpf.length)
-    const cpfSemMascara = cpf.replace(/\D/g, '');
-    console.log(cpfSemMascara.length);
-
-    if (cpf.length === 0) {
-      setErroCpf(campo);
-      return false;
-    }
-    setErroCpf('');
-    return true;
-
   };
 
   const validaBiometria = () => {
@@ -129,29 +97,6 @@ export default function CadastrarEvento() {
     setErroTelefone('');
     return true;
   };
-
-  // Validação parte do endereço
-  const validaCep = () => {
-
-    const cepSemMascara = cep.replace(/\D/g, '');
-
-    console.log(cepSemMascara.length);
-
-    if (cepSemMascara.length === 0) {
-      setErroCep(campo);
-      return false;
-    }
-
-    // Se o CEP estiver correto
-    setErroCep('');
-    return true;
-  }
-  const handleBlurCep = async () => {
-    if (validaCep()) {// Função de validação
-      await getEndereco(); // Função para buscar o endereço
-    }
-  };
-
   const validaRua = () => {
     console.log(rua.length)
     if (rua.length === 0) {
@@ -214,21 +159,23 @@ export default function CadastrarEvento() {
   const handleSubmit = (e) => {
     e.preventDefault(); // Evita o reload da página
     // router.push('/usuario/login')
-    if (validaCep()) {
-      validaNome();
-      validaEmail();
-      validaCpf();
-      validaBiometria();
-      validaTelefone();
-      validaRua();
-      validaEstado();
-      validaBairro();
-      validaCidade();
-      validaNumero();
-      validaComplemento();
+    if (CEP.isValid()) {
+     validaTudo();
     }
 
   };
+
+  const validaTudo = () => {
+    validaNome();
+    validaBiometria();
+    validaTelefone();
+    validaRua();
+    validaEstado();
+    validaBairro();
+    validaCidade();
+    validaNumero();
+    validaComplemento();
+  }
 
   return (
     <>
@@ -255,23 +202,24 @@ export default function CadastrarEvento() {
                     <label>Email:</label>
                     <input
                       type="text"
-                      value={email}
-                      onChange={({ target }) => setEmail(target.value)}
-                      // onBlur={validaEmail}
+                      value={email.value}
+                      onChange={email.onChange}
+                      onBlur={email.onBlur}
                       placeholder="Digite o email do colaborador"
+
                     />
-                    {erroEmail && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroEmail}</p>} {/* Exibe a mensagem de erro */}
+                    {email.error && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{email.error}</p>} {/* Exibe a mensagem de erro */}
 
                     <label>CPF:</label>
                     <InputMask
                       mask="999.999.999-99"
                       type="text"
-                      value={cpf}
-                      onChange={({ target }) => setCpf(target.value)}
-                      // onBlur={validaCpf}
+                      value={CPF.value}
+                      onChange={CPF.onChange}
+                      onBlur={CPF.onBlur}
                       placeholder="Digite o CPF do colaborador"
                     />
-                    {erroCpf && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroCpf}</p>} {/* Exibe a mensagem de erro */}
+                    {CPF.error && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{CPF.error}</p>} {/* Exibe a mensagem de erro */}
 
                   </div>
                   <div className={style.DadosPessoais}>
@@ -309,12 +257,18 @@ export default function CadastrarEvento() {
                     <label>CEP:</label>
                     <InputMask
                       mask="99999-999"
-                      value={cep}
-                      onChange={({ target }) => setCep(target.value)}
-                      onBlur={handleBlurCep}
+                      value={CEP.value}
+                      onChange={CEP.onChange}
+                      onBlur={ async () => {
+                        CEP.onBlur()
+                        if (CEP.isValid()) {
+                          await getEndereco(); 
+                        }
+                        validaTudo()
+                      }}
                       placeholder="Digite o CEP"
                     />
-                    {erroCep && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroCep}</p>} {/* Exibe a mensagem de erro */}
+                    {CEP.error && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{CEP.error}</p>} {/* Exibe a mensagem de erro */}
 
                     <label>Rua:</label>
                     <input

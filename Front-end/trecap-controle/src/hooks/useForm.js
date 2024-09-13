@@ -29,7 +29,17 @@ const typesValidations = {
         },
         messageError: 'CNPJ inválido!'
     },
+    CEP: {
+        validate(value) {
+            const cepSemMascara = value.replace(/\D/g, '');
+
+            const regex = /^[0-9]{8}$/;
+            return regex.test(cepSemMascara)
+        },
+        messageError : 'O CEP está incorreto!'
+    }
 }
+
 
 const useForm = (type, validationFunction = null) => {
     const [value, setValue] = useState('')
