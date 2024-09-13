@@ -36,8 +36,30 @@ const typesValidations = {
             const regex = /^[0-9]{8}$/;
             return regex.test(cepSemMascara)
         },
-        messageError : 'O CEP está incorreto!'
+        messageError: 'O CEP está incorreto!'
+    },
+    nome: {
+        validate(value) {
+            const regex = /^[a-zA-ZÀ-ÿ]+$/;
+            return regex.test(value);
+        },
+        messageError: 'Nome inválido! Use apenas letras e espaços.'
+    },
+    biometria: {
+        validate(value){
+            const regex = /^\d+$/;
+            return regex.test(value)
+        },
+        messageError: 'Biometria está inválida'
+    },
+    telefone: {
+        validate(value) {
+            const regex = /^\(?\d{2}\)?[\s-]?9?\d{4}[-]?\d{4}$/;
+            return regex.test(value)
+        },
+        messageError: 'Digite um número válido!'
     }
+
 }
 
 
@@ -56,7 +78,7 @@ const useForm = (type, validationFunction = null) => {
         console.log(value)
         if (type === false) return true
         if (value.length === 0) {
-            setError('Preecha um valor!')
+            setError('Preencha um valor!')
             return false
         } else if (typesValidations[type] && !typesValidations[type].validate(value)) {
             setError(typesValidations[type].messageError)

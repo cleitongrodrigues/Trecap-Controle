@@ -12,18 +12,15 @@ export default function CadastrarEvento() {
 // passar as validações para op useForm
   const router = useRouter()
 
-  const [nomeColaborador, setNomeColaborador] = useState('');
-  const [erroNomeColaborador, setErroNomeColaborador] = useState('');
+  const nome = useForm('nome');
 
   const email = useForm('email');
 
   const CPF = useForm('CPF');
 
-  const [biometria, setBiometria] = useState('');
-  const [erroBiometria, setErroBiometria] = useState('');
+  const biometria = useForm('biometria');
 
-  const [telefone, setTelefone] = useState('');
-  const [erroTelefone, setErroTelefone] = useState('');
+  const telefone = useForm('telefone');
 
   const CEP = useForm('CEP');
 
@@ -40,7 +37,6 @@ export default function CadastrarEvento() {
   const [erroRua, setErroRua] = useState("");
 
   const [numero, setNumero] = useState('');
-  const [erroNumero, setErroNumero] = useState('');
 
   const [complemento, setComplemento] = useState('');
   const [erroComplemento, setErroComplemento] = useState('');
@@ -67,36 +63,16 @@ export default function CadastrarEvento() {
     }
   }
 
-  // Validação parte dados pessoais
-  const validaNome = () => {
-    console.log(nomeColaborador.length)
-    if (nomeColaborador.length === 0 || nomeColaborador.length < 3) {
-      setErroNomeColaborador(campo);
-      return false;
-    }
-    setErroNomeColaborador('');
-    return true;
-  };
+  // const validaTelefone = () => {
+  //   console.log(telefone.length)
+  //   if (telefone.length === 0) {
+  //     setErroTelefone(campo);
+  //     return false;
+  //   }
+  //   setErroTelefone('');
+  //   return true;
+  // };
 
-  const validaBiometria = () => {
-    console.log(biometria.length)
-    if (biometria.length === 0) {
-      setErroBiometria(campo);
-      return false;
-    }
-    setErroBiometria('');
-    return true;
-  };
-
-  const validaTelefone = () => {
-    console.log(telefone.length)
-    if (telefone.length === 0) {
-      setErroTelefone(campo);
-      return false;
-    }
-    setErroTelefone('');
-    return true;
-  };
   const validaRua = () => {
     console.log(rua.length)
     if (rua.length === 0) {
@@ -158,17 +134,20 @@ export default function CadastrarEvento() {
 
   const handleSubmit = (e) => {
     e.preventDefault(); // Evita o reload da página
-    // router.push('/usuario/login')
-    if (CEP.isValid()) {
-     validaTudo();
-    }
-
-  };
+    // router.push('/usuario/login')  
+      if (CEP.isValid() && nome.isValid() && biometria.isValid() && telefone.isValid() && 
+          validaRua() && validaEstado() && validaBairro() && validaCidade() && validaNumero() && validaComplemento()) {
+        // Realiza o envio do formulário se todos os campos forem válidos
+        console.log('Formulário válido, enviar dados.');
+      } else {
+        console.log('Formulário inválido, exibir erros.');
+      }
+    };
 
   const validaTudo = () => {
-    validaNome();
-    validaBiometria();
-    validaTelefone();
+    nome.isValid();
+    biometria.isValid();
+    telefone.isValid();
     validaRua();
     validaEstado();
     validaBairro();
@@ -192,12 +171,12 @@ export default function CadastrarEvento() {
                     <label>Nome do colaborador:</label>
                     <input
                       type="text"
-                      value={nomeColaborador}
-                      onChange={({ target }) => setNomeColaborador(target.value)}
-                      // onBlur={validaNome}
+                      value={nome.value}
+                      onChange={nome.onChange}
+                      onBlur={nome.onBlur}
                       placeholder="Digite o nome completo do colaborador"
                     />
-                    {erroNomeColaborador && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroNomeColaborador}</p>} {/* Exibe a mensagem de erro */}
+                    {nome.error && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{nome.error}</p>} {/* Exibe a mensagem de erro */}
 
                     <label>Email:</label>
                     <input
@@ -226,23 +205,24 @@ export default function CadastrarEvento() {
                     <label>Biometria:</label>
                     <input
                       type="text"
-                      value={biometria}
-                      onChange={({ target }) => setBiometria(target.value)}
-                      // onBlur={validaBiometria} 
+                      value={biometria.value}
+                      onChange={biometria.onChange}
+                      onBlur={biometria.onBlur} 
                       placeholder="Digite o nome da Rua"
                     />
-                    {erroBiometria && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroBiometria}</p>} {/* Exibe a mensagem de erro */}
+                    {biometria.error && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{biometria.error}</p>} {/* Exibe a mensagem de erro */}
 
-                    <label htmlFor="phone">Telefone:</label>
+                    <label>Telefone:</label>
                     <InputMask
                       mask="(99) 99999-9999"
                       type="text"
-                      value={telefone}
-                      onChange={({ target }) => setTelefone(target.value)}
-                      // onBlur={validaTelefone} 
+                      value={telefone.value}
+                      onChange={telefone.onChange}
+                      onBlur={ telefone.onBlur} 
                       placeholder="Digite o telefone do colaborador"
                     />
-                    {erroTelefone && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroTelefone}</p>}
+                    {telefone.error && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{telefone.error}</p>}
+
                   </div>
                 </div>
               </form>
@@ -263,8 +243,8 @@ export default function CadastrarEvento() {
                         CEP.onBlur()
                         if (CEP.isValid()) {
                           await getEndereco(); 
+                          validaTudo()
                         }
-                        validaTudo()
                       }}
                       placeholder="Digite o CEP"
                     />
@@ -312,11 +292,12 @@ export default function CadastrarEvento() {
 
                     <label>Número:</label>
                     <input type="text"
+                    value={numero}
                       onChange={({ target }) => setNumero(target.value)}
                       // onBlur={validaNumero}
                       placeholder="Ex: 01"
                     />
-                    {erroNumero && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroNumero}</p>} {/* Exibe a mensagem de erro */}
+                    {/* {erroNumero && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroNumero}</p>} Exibe a mensagem de erro */}
 
                     <label>Complemento:</label>
                     <input
