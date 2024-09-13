@@ -1,5 +1,3 @@
-// app/adicionar/page.jsx
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -12,10 +10,16 @@ export default function CheckinEvento() {
   const [participantes, setParticipantes] = useState([]);
   const [participantesSelecionados, setParticipantesSelecionados] = useState([]);
   const [mensagemErro, setMensagemErro] = useState("");
-  const [setor, setSetor] = useState("");
+  const [setor, setSetor] = useState(""); // Armazenar o setor selecionado
   const router = useRouter();
 
   useEffect(() => {
+    // Recupera o setor selecionado do localStorage
+    const setorSelecionado = localStorage.getItem('setorSelecionado');
+    if (setorSelecionado) {
+      setSetor(setorSelecionado);
+    }
+
     // Dados mockados
     const participantesMock = [
       { nome: "Sebastião Maradona" },
@@ -83,7 +87,7 @@ export default function CheckinEvento() {
 
           <div className={styles.cadastro}>
             <h2>Adicionar Participantes</h2>
-            <h3>Setor Selecionado: {setor}</h3>
+            <h3>Setor Selecionado: {setor || "Nenhum setor selecionado"}</h3>
             <div className={styles.containerContent}>
               {mostrarAlerta && (
                 <div className={styles.alerta}>

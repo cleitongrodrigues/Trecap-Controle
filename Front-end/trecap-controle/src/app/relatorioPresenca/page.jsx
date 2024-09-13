@@ -67,14 +67,14 @@ export default function RelatorioPresenca() {
     // Adicionar informações adicionais
     const agora = new Date();
     const dataGeracao = `Data e Hora de Geração: ${agora.toLocaleDateString()} ${agora.toLocaleTimeString()}`;
-    const metodoGeracao = 'Relatório gerado usando o sistema de gestão de presença.';
+    const metodoGeracao = 'Relatório gerado usando o sistema de gestão de presença. Trecap';
     doc.setFontSize(8);
 
     doc.text(dataGeracao, 10, doc.internal.pageSize.height - 20);
     doc.text(metodoGeracao, 10, doc.internal.pageSize.height - 15);
 
     // Adicionar assinatura digital com fonte pequena e no rodapé
-    const assinatura = 'Assinado digitalmente por: Sistema de Gestão de Presença';
+    const assinatura = 'Assinado digitalmente por: Sistema de Gestão de Presença Trecap';
     doc.setFontSize(8); // Define o tamanho da fonte para 8
     doc.text(assinatura, 10, doc.internal.pageSize.height - 10); // Posiciona o texto no rodapé
 
