@@ -38,6 +38,27 @@ const typesValidations = {
         },
         messageError: 'O CEP está incorreto!'
     },
+    cidade: {
+        validate(value) {
+            const regex = /\S+/;
+            return regex.test(value)
+        },
+        messageError: 'A cidade não pode estar vazia!'
+    },
+    estado: {
+        validate(value) {
+            const regex = /[a-zA-Z\u00C0-\u00FF ]+/i;
+            return regex.test(value)
+        },
+        messageError: 'O estado não pode estar vazio!'
+    },
+    bairro: {
+        validate(value) {
+            const regex = /[a-zA-Z\u00C0-\u00FF ]+/i;
+            return regex.test(value)
+        },
+        messageError: 'O bairro não pode estar vazio'
+    },
     nome: {
         validate(value) {
             const regex = /^[a-zA-ZÀ-ÿ]+$/;
@@ -47,7 +68,7 @@ const typesValidations = {
     },
     biometria: {
         validate(value){
-            const regex = /^\d+$/;
+            const regex = /^[a-zA-ZÀ-ÿ]+$/;
             return regex.test(value)
         },
         messageError: 'Biometria está inválida'
@@ -58,6 +79,13 @@ const typesValidations = {
             return regex.test(value)
         },
         messageError: 'Digite um número válido!'
+    },
+    rua: {
+        validate(value){
+            const regex =  /\S+/;
+            return regex.test(value)
+        },
+        messageError: 'Rua inválida!'
     }
 
 }
