@@ -49,7 +49,7 @@ export default function Login() {
           </div>
           <Link href="/esqueceusenha">Esqueceu a senha</Link>
         </div>
-        <ButtonForm onClick={handleClick}>Cadastrar</ButtonForm>
+        <ButtonForm onClick={handleClick}>Entrar</ButtonForm>
       </form>
     </Form>
   );

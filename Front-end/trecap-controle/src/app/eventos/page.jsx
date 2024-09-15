@@ -45,15 +45,15 @@ export default function Evento() {
     const router = useRouter();
 
     // Função para editar o evento
-    const handleEdit = (id) => {
+    const handleEdit = (titulo) => {
         // Redireciona para a página de edição do evento passando o ID
-        router.push(`/editarEvento/${id}`);
+        router.push(`/editarEvento/${titulo}`);
     };
 
     // Função para iniciar o evento e redirecionar para a página de seleção de setores
-    const handleStart = (id) => {
+    const handleStart = (titulo) => {
         // Exibe uma mensagem que o evento foi iniciado
-        alert(`Evento ${id} iniciado!`);
+        alert(`Evento ${titulo} iniciado!`);
         
         // Redireciona para a página de seleção de setores do evento
         router.push(`/cadastroP/`);
@@ -78,10 +78,10 @@ export default function Evento() {
                                 <div className={style.Icones}>
                                     <IconContext.Provider value={{ size: 45 }}>
                                         {/* Ícone de editar */}
-                                        <MdEdit onClick={() => handleEdit(evento.id)} style={{ cursor: 'pointer' }} />
+                                        <MdEdit onClick={() => handleEdit(evento.titulo)} style={{ cursor: 'pointer' }} />
                                         
                                         {/* Ícone de iniciar evento */}
-                                        <MdTimer onClick={() => handleStart(evento.id)} style={{ cursor: 'pointer' }} />
+                                        <MdTimer onClick={() => handleStart(evento.titulo)} style={{ cursor: 'pointer' }} />
                                     </IconContext.Provider>
                                 </div>
                             </div>
