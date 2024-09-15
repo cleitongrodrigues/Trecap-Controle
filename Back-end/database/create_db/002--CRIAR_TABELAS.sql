@@ -137,3 +137,22 @@ CREATE TABLE IF NOT EXISTS FeedbackEvento (
     FOREIGN KEY (evento_id) REFERENCES Eventos(evento_id),
     FOREIGN KEY (colaborador_id) REFERENCES Colaboradores(colaborador_id)
 );
+
+ --Tabela Setores
+CREATE TABLE IF NOT EXISTS Setores (
+    setor_id INT AUTO_INCREMENT NOT NULL,
+    setor_nome VARCHAR(100) NOT NULL,
+    setor_descricao TEXT,
+    PRIMARY KEY (setor_id)
+);
+
+
+-- Tabela Cargos
+CREATE TABLE IF NOT EXISTS Cargos (
+    cargo_id INT AUTO_INCREMENT NOT NULL,
+    cargo_nome VARCHAR(100) NOT NULL,
+    cargo_descricao TEXT,
+    setor_id INT NOT NULL,
+    PRIMARY KEY (cargo_id),
+    FOREIGN KEY (setor_id) REFERENCES Setores(setor_id)
+);

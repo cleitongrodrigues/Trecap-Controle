@@ -65,3 +65,20 @@ VALUES
 INSERT INTO FeedbackEvento (evento_id, colaborador_id, feedback_comentario, feedback_nota) VALUES (1, 1, 'Ótimo evento!', 9);
 INSERT INTO FeedbackEvento (evento_id, colaborador_id, feedback_comentario, feedback_nota) VALUES (2, 2, 'Muito bom.', 8);
 INSERT INTO FeedbackEvento (evento_id, colaborador_id, feedback_comentario, feedback_nota) VALUES (3, 3, 'Excelente conteúdo!', 10);
+
+
+-- Setores
+INSERT INTO Setores (setor_nome, setor_descricao) VALUES
+('Recursos Humanos', 'Responsável pela gestão de pessoas e políticas de recursos humanos.'),
+('Financeiro', 'Gerencia as finanças, contabilidade e orçamentos da empresa.'),
+('Tecnologia da Informação', 'Cuida da infraestrutura tecnológica e suporte técnico.'),
+('Marketing', 'Responsável por estratégias de marketing e comunicação.'),
+('Operações', 'Gerencia as operações diárias e processos produtivos.');
+
+-- Cargos
+INSERT INTO Cargos (cargo_nome, cargo_descricao, setor_id) VALUES
+('Analista de Recursos Humanos', 'Responsável pelo recrutamento, seleção e gestão de pessoal.', 1),
+('Assistente Financeiro', 'Auxilia na contabilidade e no controle financeiro.', 2),
+('Desenvolvedor de Sistemas', 'Desenvolve e mantém sistemas e aplicações tecnológicas.', 3),
+('Coordenador de Marketing', 'Elabora e implementa estratégias de marketing e campanhas publicitárias.', 4),
+('Supervisor de Operações', 'Coordena as atividades diárias e processos produtivos.', 5);

@@ -3,18 +3,21 @@ const db = require('../database/connection');
 module.exports = {
     async ListarColaboradores(request, response) {
         try {
-            const sql = `SELECT colaborador_id, colaborador_nome, colaborador_CPF, 
-            colaborador_endereco, colaborador_biometria, colaborador_ativo = 1 AS colaborador_ativo, 
-            colaborador_telefone, colaborador_email, colaborador_historico_treinamento
-            FROM Colaboradores
-            WHERE colaborador_ativo = 1`;
+            const sql = `SELECT c.colaborador_id, c.colaborador_nome, c.colaborador_CPF, 
+                c.colaborador_endereco, c.colaborador_biometria, c.colaborador_ativo, 
+                c.colaborador_telefone, c.colaborador_email, c.colaborador_historico_treinamento,
+                car.cargo_nome, s.setor_nome
+                FROM Colaboradores c
+                JOIN Cargos car ON c.cargo_id = car.cargo_id
+                JOIN Setores s ON car.setor_id = s.setor_id
+                WHERE c.colaborador_ativo = 1`;
 
-            const colaboradores = await db.query(sql)
+            const colaboradores = await db.query(sql);
 
             const nItens = colaboradores[0].length;
             return response.status(200).json({
                 sucesso: true,
-                mensagem: `Lista de colaboradores`,
+                mensagem: 'Lista de colaboradores',
                 dados: colaboradores[0],
                 nItens
             });
@@ -22,61 +25,49 @@ module.exports = {
         } catch (error) {
             return response.status(500).json({
                 sucesso: false,
-                mensagem: 'Erro ao listar colaborador',
-                dados: error.mensagem
+                mensagem: 'Erro ao listar colaboradores',
+                dados: error.message
             });
         }
     },
 
+
     async CadastrarColaboradores(request, response) {
         try {
-            const { colaborador_nome, colaborador_CPF,
-                colaborador_endereco, colaborador_biometria, colaborador_ativo,
-                colaborador_telefone, colaborador_email, colaborador_historico_treinamento } = request.body;
+            const { colaborador_nome, colaborador_CPF, colaborador_endereco, colaborador_biometria, colaborador_ativo, colaborador_telefone, colaborador_email, colaborador_historico_treinamento, cargo_id } = request.body;
 
             const sql = `INSERT INTO Colaboradores
-                (colaborador_nome, colaborador_CPF, 
-            colaborador_endereco, colaborador_biometria, colaborador_ativo, 
-            colaborador_telefone, colaborador_email, colaborador_historico_treinamento) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
+                (colaborador_nome, colaborador_CPF, colaborador_endereco, colaborador_biometria, colaborador_ativo, colaborador_telefone, colaborador_email, colaborador_historico_treinamento, cargo_id) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
 
-            const values = [colaborador_nome, colaborador_CPF,
-                colaborador_endereco, colaborador_biometria, colaborador_ativo,
-                colaborador_telefone, colaborador_email, colaborador_historico_treinamento];
+            const values = [colaborador_nome, colaborador_CPF, colaborador_endereco, colaborador_biometria, colaborador_ativo, colaborador_telefone, colaborador_email, colaborador_historico_treinamento, cargo_id];
 
             const execSql = await db.query(sql, values);
 
             const colaborador_id = execSql[0].insertId;
             return response.status(200).json({
                 sucesso: true,
-                mensagem: `Colaborador ${colaborador_id} cadastro com sucesso!`,
+                mensagem: `Colaborador ${colaborador_id} cadastrado com sucesso!`,
                 dados: colaborador_id
             });
         } catch (error) {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao cadastrar colaborador',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     },
 
     async EditarColaboradores(request, response) {
         try {
-            const { colaborador_nome, colaborador_CPF,
-                colaborador_endereco, colaborador_biometria, colaborador_ativo,
-                colaborador_telefone, colaborador_email, colaborador_historico_treinamento } = request.body;
-
+            const { colaborador_nome, colaborador_CPF, colaborador_endereco, colaborador_biometria, colaborador_ativo, colaborador_telefone, colaborador_email, colaborador_historico_treinamento, cargo_id } = request.body;
             const { colaborador_id } = request.params;
 
-            const sql = `UPDATE Colaboradores SET colaborador_nome = ?, colaborador_CPF = ?,
-                colaborador_endereco = ?, colaborador_biometria = ?, colaborador_ativo = ?,
-                colaborador_telefone = ?, colaborador_email = ?, colaborador_historico_treinamento = ?
+            const sql = `UPDATE Colaboradores SET colaborador_nome = ?, colaborador_CPF = ?, colaborador_endereco = ?, colaborador_biometria = ?, colaborador_ativo = ?, colaborador_telefone = ?, colaborador_email = ?, colaborador_historico_treinamento = ?, cargo_id = ?
                 WHERE colaborador_id = ?;`;
 
-            const values = [colaborador_nome, colaborador_CPF,
-                colaborador_endereco, colaborador_biometria, colaborador_ativo,
-                colaborador_telefone, colaborador_email, colaborador_historico_treinamento, colaborador_id];
+            const values = [colaborador_nome, colaborador_CPF, colaborador_endereco, colaborador_biometria, colaborador_ativo, colaborador_telefone, colaborador_email, colaborador_historico_treinamento, cargo_id, colaborador_id];
 
             const atualizaDados = await db.query(sql, values);
             return response.status(200).json({
@@ -88,14 +79,14 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao editar colaborador',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     },
 
     async ApagarColaboradores(request, response) {
         try {
-            const colaborador_ativo = false;
+            const colaborador_ativo = 0; // Para marcar como inativo
 
             const { colaborador_id } = request.params;
 
@@ -107,15 +98,15 @@ module.exports = {
             const atualizacao = await db.query(sql, values);
             return response.status(200).json({
                 sucesso: true,
-                mensagem: `colaborador ${colaborador_id} deletado com sucesso!`,
+                mensagem: `Colaborador ${colaborador_id} desativado com sucesso!`,
                 dados: atualizacao[0].affectedRows
             });
         } catch (error) {
             return response.status(500).json({
                 sucesso: false,
-                mensagem: 'Erro ao apagar colaborador',
-                dados: error.mensagem
+                mensagem: 'Erro ao desativar colaborador',
+                dados: error.message
             });
         }
     }
-}
+}    
