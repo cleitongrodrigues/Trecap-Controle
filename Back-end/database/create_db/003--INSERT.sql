@@ -24,14 +24,14 @@ INSERT INTO Endereco (endereco_logradouro, endereco_numero, endereco_complemento
 INSERT INTO Endereco (endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, endereco_tipo, entidade_id) VALUES ('Rua C', '789', 'Sala 3', 'Bela Vista', 'Belo Horizonte', 'MG', '30030000', 'Usuario', 3);
 
 -- Endereços para Empresas
-INSERT INTO Endereco (endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, endereco_tipo, entidade_id) VALUES ('Av. Paulista', '1000', '10º Andar', 'Centro', 'São Paulo', 'SP', '01310000', 'Empresa', 1);
-INSERT INTO Endereco (endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, endereco_tipo, entidade_id) VALUES ('Av. Rio Branco', '500', '5º Andar', 'Centro', 'Rio de Janeiro', 'RJ', '20040000', 'Empresa', 2);
-INSERT INTO Endereco (endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, endereco_tipo, entidade_id) VALUES ('Av. Afonso Pena', '300', 'Sala 20', 'Centro', 'Belo Horizonte', 'MG', '30130000', 'Empresa', 3);
+INSERT INTO Endereco (endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, entidade_id) VALUES ('Av. Paulista', '1000', '10º Andar', 'Centro', 'São Paulo', 'SP', '01310000',1);
+INSERT INTO Endereco (endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, entidade_id) VALUES ('Av. Rio Branco', '500', '5º Andar', 'Centro', 'Rio de Janeiro', 'RJ', '20040000',2);
+INSERT INTO Endereco (endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, entidade_id) VALUES ('Av. Afonso Pena', '300', 'Sala 20', 'Centro', 'Belo Horizonte', 'MG', '30130000',3);
 
 -- Endereços para Colaboradores
-INSERT INTO Endereco (endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, endereco_tipo, entidade_id) VALUES ('Rua G', '101', 'Apto 10', 'Vila Nova', 'Curitiba', 'PR', '80010000', 'Colaborador', 1);
-INSERT INTO Endereco (endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, endereco_tipo, entidade_id) VALUES ('Rua H', '202', 'Casa 5', 'Centro', 'Porto Alegre', 'RS', '90020000', 'Colaborador', 2);
-INSERT INTO Endereco (endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, endereco_tipo, entidade_id) VALUES ('Rua I', '303', 'Sala 1', 'Jardim América', 'Fortaleza', 'CE', '60030000', 'Colaborador', 3);
+INSERT INTO Endereco (endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, entidade_id) VALUES ('Rua G', '101', 'Apto 10', 'Vila Nova', 'Curitiba', 'PR', '80010000', 1);
+INSERT INTO Endereco (endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, entidade_id) VALUES ('Rua H', '202', 'Casa 5', 'Centro', 'Porto Alegre', 'RS', '90020000', 2);
+INSERT INTO Endereco (endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, entidade_id) VALUES ('Rua I', '303', 'Sala 1', 'Jardim América', 'Fortaleza', 'CE', '60030000', 3);
 
 -- Eventos
 INSERT INTO Eventos (evento_nome, evento_data, evento_local, evento_hora_inicio, evento_hora_termino, evento_capacidade, usu_id) VALUES ('Evento Tech', '2024-10-10', 'Auditório Central', '2024-10-10 09:00:00', '2024-10-10 18:00:00', 200, 1);

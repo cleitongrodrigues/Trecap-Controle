@@ -59,7 +59,6 @@ CREATE TABLE IF NOT EXISTS Endereco (
     endereco_cidade varchar(50) NOT NULL,
     endereco_estado varchar(2) NOT NULL,
     endereco_cep varchar(8) NOT NULL,
-    endereco_tipo varchar(20) NOT NULL, -- 'Usuario', 'Empresa' ou 'Colaborador'
     entidade_id int NOT NULL, -- id do Usuário, Empresa ou Colaborador
     PRIMARY KEY (endereco_id),
     CONSTRAINT fk_usuario FOREIGN KEY (entidade_id) REFERENCES Usuario(usu_id) ON DELETE CASCADE ON UPDATE CASCADE,

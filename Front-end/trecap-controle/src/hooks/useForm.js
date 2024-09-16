@@ -121,6 +121,7 @@ const useForm = (type, validationFunction = null) => {
         setValue,
         onChange,
         error,
+        setError,
         isValid: () => isValid(value),
         onBlur: () => isValid(value)
     }
