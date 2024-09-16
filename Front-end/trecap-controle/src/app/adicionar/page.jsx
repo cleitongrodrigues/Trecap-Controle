@@ -70,7 +70,7 @@ export default function CheckinEvento() {
       console.log('Participantes selecionados salvos:', selecionados);
 
       // Redirecionar para a página de confirmação com os participantes selecionados
-      router.push('/confirmacao');
+      router.push('/participantes-selecionados');
     } catch (error) {
       console.error('Erro ao salvar participantes:', error);
       setMensagemErro("Ocorreu um erro ao salvar os participantes.");
