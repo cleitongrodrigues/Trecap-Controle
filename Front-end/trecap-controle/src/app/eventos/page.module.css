@@ -5,7 +5,7 @@
 .Container{
     display: flex;
     flex-direction: column;
-    background-color: #D5BFFF;
+    background-color: var(--purple-300);
     justify-content: center;   
     max-width: 70rem;
     align-items: center;
@@ -25,8 +25,8 @@
 .ContainerDivs{
     display: grid;
     grid-template-columns: 60px 1fr 150px;
-    background-color: #8E7AB5;
-    box-shadow: 0 0 2px 3px #8E7AB5;
+    background-color: var(--purpleMain);
+    box-shadow: 0 0 2px 3px var(--purple-300);
     flex-direction: row;
     color: white;
     border-radius: 1rem;
@@ -77,12 +77,4 @@
 
 .ClasseIcone{
     cursor: pointer;
-}
-
-.ContainerTeste{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    background-color: aquamarine;
 }

@@ -23,14 +23,14 @@
 
  
   .content{
-    background-color: #694C9F;
+    background-color: var(--purple-300);
     border-radius: 18px;
     padding: 1rem;
   }
 
   .content h2 {
     text-align: center;
-    color: #DADADA;
+    color: white;
     font-size: 40px;
     margin-bottom: 20px;
     font-family: "Poppins", sans-serif;
@@ -43,7 +43,7 @@
     margin: 10px auto;
     border-radius: 18px;
     padding: 20px;
-    background-color: #D9D9D9;
+    background-color: var(--purpleMain);
     margin-top: 10px;
     display: grid;
     place-items: center;
@@ -61,7 +61,7 @@
 
   .setores {
     width: 100%;
-    background-color: #D5BFFF;
+    background-color: var(--purpleMain);
     padding: 1rem;
     border-radius: 8px;
     font-family: "Poppins", sans-serif;
@@ -92,7 +92,7 @@
 
   .button {
     padding: .5rem 2rem;
-    background-color: #7C00FE;
+    background-color: var(--purpleButton);
     color: #fff;
     border: none;
     border-radius: 1rem;
@@ -104,7 +104,7 @@
   }
 
   .button:hover {
-    background-color: #8E7AB5;
+    background-color: var(--purpleMain);
   }
 
   .containerInput{

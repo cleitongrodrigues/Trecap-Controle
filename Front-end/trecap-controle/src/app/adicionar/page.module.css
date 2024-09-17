@@ -12,7 +12,7 @@
   width: 100%;
   max-width: 600px;
   color: var(--purpleMain);
-  background-color:#e0c6f8;
+  background-color: var(--purple-300);
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -75,7 +75,7 @@
 }
 
 .botaoFechar {
-  background-color: #721c24;
+  background-color: var(--purpleButton);
   color: #fff;
   border: none;
   padding: 5px 10px;
@@ -131,7 +131,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--purpleMain);
+  background-color: var(--purpleButton);
   color: #fff;  
   padding: 10px 20px;
   border: none;
@@ -145,7 +145,7 @@
 }
 
 .botaoCadastro:hover {
-  background-color: #6a1b9a;
+  background-color: var(--purpleMain);
 }
 
 

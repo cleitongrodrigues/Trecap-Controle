@@ -14,7 +14,7 @@
     width: 100%;
     max-width: 600px;
     color: #4a148c; /* Cor principal */
-    background-color: #e0c6f8; /* Fundo lilás claro */
+    background-color: var(--purple-300); /* Fundo lilás claro */
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -35,7 +35,7 @@
     justify-content: center;
     margin-top: 2rem;
     color: white;
-    background-color: #4a148c; /* Cor principal */
+    background-color: var(--purpleMain); /* Cor principal */
     border-radius: 20px;
     width: 100%;
     padding: 1rem;
@@ -100,7 +100,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #4a148c; /* Cor principal */
+    background-color: var(--purpleButton); /* Cor principal */
     color: #fff;
     padding: 10px 20px;
     border: none;
@@ -113,3 +113,6 @@
     margin-top: 10px;
   }
   
+  .botaoCadastro:hover {
+    background-color: var(--purpleMain);
+  }
