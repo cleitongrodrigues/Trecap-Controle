@@ -1,0 +1,72 @@
+/* calendar.css */
+
+.calendar-container {
+    display: flex;
+    padding-top: 10rem;
+  }
+  
+  .calendar {
+    flex: 1;
+  }
+  
+  .event-list {
+    flex: 0.3;
+    padding: 1rem;
+    border-left: 1px solid #ccc;
+    background-color: #f5f5f5;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+  }
+  
+  .event-list h2 {
+    color: #D5BFFF;
+  }
+  
+  .event-list ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .event-list li {
+    padding: 0.5rem;
+    border-bottom: 1px solid #ddd;
+    color: #694C9F;
+  }
+  
+  /* Estiliza o FullCalendar */
+  .fc-toolbar {
+    background-color: #8E7AB5;
+    color: #fff;
+    
+  }
+  
+  .fc-toolbar-title {
+    color: #fff;
+  }
+  
+  .fc-daygrid-day-number {
+    color: #8E7AB5;
+  }
+  
+  .fc-daygrid-day-top {
+    background-color: #e6e6e6;
+  }
+  
+  .fc-daygrid-day-top.fc-day-today {
+    background-color: #d4baff;
+  }
+  
+  .fc-event {
+    background-color: #694C9F;
+    color: #fff;
+  }
+  
+  .fc-daygrid-day:hover {
+    background-color: #f0e6ff;
+  }
+  
+  .fc-daygrid-day.fc-day-today {
+    border: 2px solid #7f00ff;
+  }
+  
