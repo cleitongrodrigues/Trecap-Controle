@@ -8,18 +8,18 @@ import { Dialog, Transition } from '@headlessui/react'
 import { CheckIcon, ExclamationTriangleIcon } from '@heroicons/react/20/solid'
 
 export default function Home() {
-  const [events, setEvents] = useState([
+  const [eventos, setEventos] = useState([
     { title: 'evento 1', id: '1' },
     { title: 'evento 2', id: '2' },
     { title: 'evento 3', id: '3' },
     { title: 'evento 4', id: '4' },
     { title: 'evento 5', id: '5' },
   ])
-  const [allEvents, setAllEvents] = useState([])
-  const [showModal, setShowModal] = useState(false)
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
-  const [idToDelete, setIdToDelete] = useState(null)
-  const [newEvent, setNewEvent] = useState({
+  const [todosEventos, setTodosEventos] = useState([])
+  const [mostrarModal, setMostrarModal] = useState(false)
+  const [mostrarModalDeletar, setMostrarModalDeletar] = useState(false)
+  const [idParaDeletar, setIdParaDeletar] = useState(null)
+  const [novoEvento, setNovoEvento] = useState({
     title: '',
     start: '',
     allDay: false,
@@ -27,9 +27,9 @@ export default function Home() {
   })
 
   useEffect(() => {
-    let draggableEl = document.getElementById('draggable-el')
-    if (draggableEl) {
-      new Draggable(draggableEl, {
+    let elementoArrastavel = document.getElementById('elemento-arrastavel')
+    if (elementoArrastavel) {
+      new Draggable(elementoArrastavel, {
         itemSelector: ".fc-event",
         eventData: function (eventEl) {
           let title = eventEl.getAttribute("title")
@@ -42,50 +42,50 @@ export default function Home() {
   }, [])
 
   function handleDateClick(arg) {
-    setNewEvent({ ...newEvent, start: arg.date, allDay: arg.allDay, id: new Date().getTime() })
-    setShowModal(true)
+    setNovoEvento({ ...novoEvento, start: arg.date, allDay: arg.allDay, id: new Date().getTime() })
+    setMostrarModal(true)
   }
 
-  function addEvent(data) {
-    const event = { ...newEvent, start: data.date.toISOString(), title: data.draggedEl.innerText, allDay: data.allDay, id: new Date().getTime() }
-    setAllEvents([...allEvents, event])
+  function adicionarEvento(data) {
+    const evento = { ...novoEvento, start: data.date.toISOString(), title: data.draggedEl.innerText, allDay: data.allDay, id: new Date().getTime() }
+    setTodosEventos([...todosEventos, evento])
   }
 
-  function handleDeleteModal(data) {
-    setShowDeleteModal(true)
-    setIdToDelete(Number(data.event.id))
+  function abrirModalDeletar(data) {
+    setMostrarModalDeletar(true)
+    setIdParaDeletar(Number(data.event.id))
   }
 
-  function handleDelete() {
-    setAllEvents(allEvents.filter(event => Number(event.id) !== Number(idToDelete)))
-    setShowDeleteModal(false)
-    setIdToDelete(null)
+  function deletarEvento() {
+    setTodosEventos(todosEventos.filter(evento => Number(evento.id) !== Number(idParaDeletar)))
+    setMostrarModalDeletar(false)
+    setIdParaDeletar(null)
   }
 
-  function handleCloseModal() {
-    setShowModal(false)
-    setNewEvent({
+  function fecharModal() {
+    setMostrarModal(false)
+    setNovoEvento({
       title: '',
       start: '',
       allDay: false,
       id: 0
     })
-    setShowDeleteModal(false)
-    setIdToDelete(null)
+    setMostrarModalDeletar(false)
+    setIdParaDeletar(null)
   }
 
   const handleChange = (e) => {
-    setNewEvent({
-      ...newEvent,
+    setNovoEvento({
+      ...novoEvento,
       title: e.target.value
     })
   }
 
   function handleSubmit(e) {
     e.preventDefault()
-    setAllEvents([...allEvents, newEvent])
-    setShowModal(false)
-    setNewEvent({
+    setTodosEventos([...todosEventos, novoEvento])
+    setMostrarModal(false)
+    setNovoEvento({
       title: '',
       start: '',
       allDay: false,
@@ -96,7 +96,7 @@ export default function Home() {
   return (
     <>
       <nav className="flex justify-between mb-12 border-b border-violet-100 p-4">
-        <h1 className="font-bold text-2xl text-gray-700">Calendar</h1>
+        <h1 className="font-bold text-2xl text-gray-700">Calendário</h1>
       </nav>
       <main className="flex min-h-screen flex-col items-center justify-between p-24">
         <div className="grid grid-cols-10">
@@ -108,34 +108,34 @@ export default function Home() {
                 center: 'title',
                 right: 'resourceTimelineWook, dayGridMonth,timeGridWeek'
               }}
-              events={allEvents}
+              events={todosEventos}
               nowIndicator={true}
               editable={true}
               droppable={true}
               selectable={true}
               selectMirror={true}
               dateClick={handleDateClick}
-              drop={(data) => addEvent(data)}
-              eventClick={(data) => handleDeleteModal(data)}
+              drop={(data) => adicionarEvento(data)}
+              eventClick={(data) => abrirModalDeletar(data)}
             />
           </div>
-          <div id="draggable-el" className="ml-8 w-full border-2 p-2 rounded-md mt-16 lg:h-1/2 bg-violet-50">
-            <h1 className="font-bold text-lg text-center">Drag Event</h1>
-            {events.map(event => (
+          <div id="elemento-arrastavel" className="ml-8 w-full border-2 p-2 rounded-md mt-16 lg:h-1/2 bg-violet-50">
+            <h1 className="font-bold text-lg text-center">Arraste o Evento</h1>
+            {eventos.map(evento => (
               <div
                 className="fc-event border-2 p-1 m-2 w-full rounded-md ml-auto text-center bg-white"
-                title={event.title}
-                key={event.id}
+                title={evento.title}
+                key={evento.id}
               >
-                {event.title}
+                {evento.title}
               </div>
             ))}
           </div>
         </div>
 
-        {/* Delete Modal */}
-        <Transition.Root show={showDeleteModal} as={Fragment}>
-          <Dialog as="div" className="relative z-10" onClose={setShowDeleteModal}>
+        {/* Modal Deletar */}
+        <Transition.Root show={mostrarModalDeletar} as={Fragment}>
+          <Dialog as="div" className="relative z-10" onClose={setMostrarModalDeletar}>
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -167,24 +167,24 @@ export default function Home() {
                         </div>
                         <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                           <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                            Delete Event
+                            Deletar Evento
                           </Dialog.Title>
                           <div className="mt-2">
                             <p className="text-sm text-gray-500">
-                              Are you sure you want to delete this event?
+                              Tem certeza de que deseja deletar este evento?
                             </p>
                           </div>
                         </div>
                       </div>
                     </div>
                     <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                      <button type="button" className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto" onClick={handleDelete}>
-                        Delete
+                      <button type="button" className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto" onClick={deletarEvento}>
+                        Deletar
                       </button>
                       <button type="button" className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                        onClick={handleCloseModal}
+                        onClick={fecharModal}
                       >
-                        Cancel
+                        Cancelar
                       </button>
                     </div>
                   </Dialog.Panel>
@@ -194,9 +194,9 @@ export default function Home() {
           </Dialog>
         </Transition.Root>
 
-        {/* Add Event Modal */}
-        <Transition.Root show={showModal} as={Fragment}>
-          <Dialog as="div" className="relative z-10" onClose={setShowModal}>
+        {/* Modal Adicionar Evento */}
+        <Transition.Root show={mostrarModal} as={Fragment}>
+          <Dialog as="div" className="relative z-10" onClose={setMostrarModal}>
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -228,22 +228,35 @@ export default function Home() {
                         </div>
                         <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                           <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                            Add Event
+                            Adicionar Evento
                           </Dialog.Title>
                           <div className="mt-2">
-                            <input type="text" placeholder="Event Title" className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" onChange={handleChange} />
+                            <form onSubmit={handleSubmit}>
+                              <input
+                                value={novoEvento.title}
+                                onChange={handleChange}
+                                required
+                                type="text"
+                                name="title"
+                                className="w-full border-2 border-violet-300 p-2 mt-2 rounded-md"
+                                placeholder="Nome do Evento"
+                              />
+                              <button
+                                type="submit"
+                                className="w-full rounded-md bg-green-600 text-white p-2 mt-4 hover:bg-green-500"
+                              >
+                                Adicionar Evento
+                              </button>
+                            </form>
                           </div>
                         </div>
                       </div>
                     </div>
                     <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                      <button type="button" className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto" onClick={handleSubmit}>
-                        Add
-                      </button>
                       <button type="button" className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                        onClick={handleCloseModal}
+                        onClick={fecharModal}
                       >
-                        Cancel
+                        Cancelar
                       </button>
                     </div>
                   </Dialog.Panel>
