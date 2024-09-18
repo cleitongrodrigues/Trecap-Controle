@@ -1,40 +1,46 @@
 import InMemoryUserRepository from "../../database/repositories/InMemoryUserRepository.js";
-import getUsersCase from "../../Application/UseCases/User/getUsersCase.js";
-import createUserCase from "../../Application/UseCases/User/createUser.js";
-import getUserByIdCase from "../../Application/UseCases/User/getUserByIdCase.js";
+// import getUsersCase from "../../Application/UseCases/User/getUsersCase.js";
+// import createUserCase from "../../Application/UseCases/User/createUser.js";
+// import getUserByIdCase from "../../Application/UseCases/User/getUserByIdCase.js";
+import UserService from "../../Application/UseCases/User/UserService.js";
 
 export const UsuarioController = {
-    async ListarUsuarios(request, response){
+    async ListarUsuarios(request, response) {
         try {
-            const users = getUsersCase(InMemoryUserRepository)
+            const users = await UserService.getUsers()
+
             return response.status(200).json({
                 sucesso: true,
                 mensagem: 'Lista de Usuários',
                 dados: users,
             });
-            
+
         } catch (error) {
             return response.status(500).send(error.message);
         }
     },
 
-    async ListarUsuario(request, response){
+    async ListarUsuario(request, response) {
         try {
             const { id } = request.params
 
-            const user = getUserByIdCase(id, InMemoryUserRepository)
+            const user = await UserService.getUserById(id)
+
+            if (!user) return response.status(404).send('Usuário não encontrado!')
+
             return response.status(200).json({
-                dados: user,
+                dados: user
             });
-            
+
         } catch (error) {
             return response.status(500).send(error.message);
         }
     },
 
-    async CadastrarUsuario(request, response){
+    async CadastrarUsuario(request, response) {
         try {
-            const newUser = createUserCase(request.body, InMemoryUserRepository)
+            const newUser = await UserService.createUser(request.body)
+
             return response.status(200).json({
                 sucesso: true,
                 mensagem: `Usuário ${newUser.userID} cadastrado com sucesso!`,

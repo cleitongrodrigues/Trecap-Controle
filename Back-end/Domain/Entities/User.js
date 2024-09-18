@@ -9,4 +9,9 @@ export default class User{
         this.telefone = telefone
         this.registerDate = registerDate
     }
+
+    cancel(){
+        if(this.status == 0) throw new Error('Usuário inexistente!')
+        this.status = 0
+    }
 }
