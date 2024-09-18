@@ -174,3 +174,9 @@
   margin-block-start: .5rem;
   font-size: 1.5rem;
 }
+
+.layout {
+  display: flex;
+  margin-top: 1rem; /* Espaço abaixo do cabeçalho */
+}
+

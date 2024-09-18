@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import styles from "./page.module.css"; 
+import styles from "./page.module.css";
 import CabecalhoLogado from "@/CabecalhoLogado/page";
+import MenuLateral from '@/components/menuLateral/page';
 
 export default function CheckinEvento() {
   const [mostrarAlerta, setMostrarAlerta] = useState(true);
@@ -78,55 +79,61 @@ export default function CheckinEvento() {
   };
 
   return (
-    <>
+    <div className={styles.body}>
       <CabecalhoLogado />
-    
-      <div className={styles.Header}>
-        <div className={styles.checkin}>
-          <h1>TREINAMENTO SOBRE HIGIENE NO TRABALHO</h1>
+      <div className={styles.layout}>
+        {/* Usa o componente MenuLateral */}
+        <MenuLateral />
 
-          <div className={styles.cadastro}>
-            <h2>Adicionar Participantes</h2>
-            <h3>Setor Selecionado: {setor || "Nenhum setor selecionado"}</h3>
-            <div className={styles.containerContent}>
-              {mostrarAlerta && (
-                <div className={styles.alerta}>
-                  <p>Selecione os participantes.</p>
-                  <button onClick={fecharAlerta} className={styles.botaoFechar}>
-                    Ok
-                  </button>
+        <div className={styles.mainContent}>
+          <div className={styles.Header}>
+            <div className={styles.checkin}>
+              <h1>TREINAMENTO SOBRE HIGIENE NO TRABALHO</h1>
+
+              <div className={styles.cadastro}>
+                <h2>Adicionar Participantes</h2>
+                <h3>Setor Selecionado: {setor || "Nenhum setor selecionado"}</h3>
+                <div className={styles.containerContent}>
+                  {mostrarAlerta && (
+                    <div className={styles.alerta}>
+                      <p>Selecione os participantes.</p>
+                      <button onClick={fecharAlerta} className={styles.botaoFechar}>
+                        Ok
+                      </button>
+                    </div>
+                  )}
+
+                  <div className={styles.listaParticipantes}>
+                    <ul className={styles.participantes}>
+                      {participantes.map((participante, index) => (
+                        <li key={index} className={styles.participanteItem}>
+                          <label>
+                            <input
+                              type="checkbox"
+                              className={styles.checkbox}
+                              checked={participantesSelecionados[index]}
+                              onChange={() => handleCheckboxChange(index)}
+                            />
+                            {participante.nome}
+                          </label>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {mensagemErro && <div className={styles.mensagemErro}>{mensagemErro}</div>}
                 </div>
-              )}
-
-              <div className={styles.listaParticipantes}>
-                <ul className={styles.participantes}>
-                  {participantes.map((participante, index) => (
-                    <li key={index} className={styles.participanteItem}>
-                      <label>
-                        <input
-                          type="checkbox"
-                          className={styles.checkbox}
-                          checked={participantesSelecionados[index]}
-                          onChange={() => handleCheckboxChange(index)}
-                        />
-                        {participante.nome}
-                      </label>
-                    </li>
-                  ))}
-                </ul>
               </div>
 
-              {mensagemErro && <div className={styles.mensagemErro}>{mensagemErro}</div>}
+              <button className={styles.botaoCadastro} onClick={salvarParticipantes}>Salvar</button>
             </div>
           </div>
-
-          <button className={styles.botaoCadastro} onClick={salvarParticipantes}>Salvar</button>
         </div>
       </div>
 
       <footer className={styles.footer}>
         <p>&copy; 2024 TRECAP. Todos os direitos reservados.</p>
       </footer>
-    </>
+    </div>
   );
 }

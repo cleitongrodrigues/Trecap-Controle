@@ -119,3 +119,45 @@
   .containerInput input{
     transform: scale(1.2);
   }
+
+  /* Layout flex para alinhar o menu e o conteúdo */
+.layout {
+  display: flex;
+  margin-top: 1rem; /* Espaço abaixo do cabeçalho */
+}
+
+/* Estilo do menu lateral */
+.menuLateral {
+  width: 250px;
+  background-color: var(--purple-300);
+  padding: 2rem;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 80px); /* Ajuste da altura para não cobrir o cabeçalho */
+}
+
+.menuLateral a {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  text-decoration: none;
+  color: white;
+  font-size: 1.5rem;
+  transition: color 0.3s;
+}
+
+.menuLateral a:hover {
+  color: var(--purpleMain);
+}
+
+.menuLateral a svg {
+  font-size: 2rem;
+}
+
+/* Estilo do conteúdo principal */
+.container {
+  flex-grow: 1;
+  padding: 2rem;
+}
