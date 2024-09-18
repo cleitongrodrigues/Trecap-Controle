@@ -3,6 +3,8 @@
 .calendar-container {
     display: flex;
     padding-top: 10rem;
+    padding-left: 10rem;
+    padding-right: 10rem;
   }
   
   .calendar {
