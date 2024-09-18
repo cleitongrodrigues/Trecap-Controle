@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS Usuario (
     tipo_usuario_id int NOT NULL,
     usu_ativo bit(1) NOT NULL,
     usu_email varchar(100),
+    usu_senha varchar(100)
     usu_telefone varchar(15),
     usu_data_cadastro datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     usu_ultimo_login datetime,
