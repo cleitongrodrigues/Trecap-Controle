@@ -1,4 +1,4 @@
-const mysql = require('mysql2/promise'); 
+import mysql from 'mysql2/promise'
 
 const bd_usuario = 'us_tecdes_223_g1'; // usuário
 // const bd_usuario = 'root';
@@ -38,4 +38,4 @@ try {
     console.log(error); 
 } 
 
-module.exports = connection;
+export default connection;
