@@ -1,4 +1,4 @@
-import InMemoryUserRepository from "../../../database/repositories/InMemoryUserRepository"
+import InMemoryUserRepository from "../../../Infrastructure/database/repositories/InMemoryUserRepository.js"
 
 class UserService{
     constructor(repository){
@@ -8,9 +8,6 @@ class UserService{
     async createUser(userCreateDTO){
         const existUserWithSameEmail = await this.repository.getUserByEmail(userCreateDTO.email)
         const existUserWithSameCPF = await this.repository.getUserByCPF(userCreateDTO.cpf)
-
-        console.log(existUserWithSameEmail, 1)
-        console.log(existUserWithSameCPF, 2)
     
         if(existUserWithSameEmail) throw new Error("Já existe um usuário cadastrado com esse Email!")
         if(existUserWithSameCPF) throw new Error("Já existe um usuário cadastrado com esse CPF!")
@@ -40,7 +37,13 @@ class UserService{
         await this.repository.updateUser(user)
     }
 
+    async updateUser(newInfoUser){
+        const existUserWithThisId = this.repository.getUserById(newInfoUser.userID)
 
+        if(!existUserWithThisId) throw new Error('Não existe esse usuário!')
+
+        this.repository.updateUser(newInfoUser)
+    }
 
 }
 

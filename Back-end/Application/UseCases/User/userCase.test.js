@@ -1,60 +1,103 @@
-import createUserCase from "./createUser.js"
-import InMemoryUserRepository from "../../../database/repositories/InMemoryUserRepository.js"
-import User from "../../../Domain/Entities/User.js"
-import getUserByIdCase from "./getUserByIdCase.js"
-import getUsersCase from "./getUsersCase.js"
 import UserService from "./UserService.js"
 
 describe('Criar um usuario', () => {
-    test('Verifica se o usuário foi de fato inserido', async () => {
-        const user = await UserService.createUser({
-            name: "Teste",
+    it('Verifica se o usuário foi criado corretamente com todas propriedades', async () => {
+        const userInfo = {
+            name: "userOne",
             cpf: "98765432189",
             userType: 1,
             status: 1,
             email: "teste.teste@email.com",
             telefone: "11987654341",
             registerDate: "2024-11-12",
-        })
+        }
+        const user = await UserService.createUser(userInfo)
 
-        expect(user).toEqual(await InMemoryUserRepository.getUserById(user.userID))
+        expect(user).toHaveProperty('userID')
+        expect(user).toMatchObject(userInfo)
     })
 
-    test('Não é para inserir dois usuários com o mesmo email', async () => {
-        await UserService.createUser({
-            name: "userOne",
-            cpf: "98165432149",
+    it('Verifica que não é possível criar um usuário com mesmo email', async () => {
+        const userInfo = {
+            name: "userTwo",
+            cpf: "91165432189",
             userType: 1,
             status: 1,
-            email: "sameEmaile@email.com",
+            email: "teste.teste@email.com",
             telefone: "11987654341",
             registerDate: "2024-11-12",
-        })
+        }
 
 
-        expect(async ()=> await UserService.createUser({
-                name: "userTwo",
-                cpf: "91763432159",
-                userType: 1,
-                status: 1,
-                email: "sameEmaile@email.com",
-                telefone: "11987654341",
-                registerDate: "2024-11-12",
-            }))
-            .toThrow("Já existe um usuário cadastrado com esse Email!")
+        await expect(UserService.createUser(userInfo)).rejects.toThrow();
+    })
+
+    it('Verifica que não é possível criar um usuário com mesmo CPF', async () => {
+        const userInfo = {
+            name: "userThree",
+            cpf: "91165432189",
+            userType: 1,
+            status: 1,
+            email: "teste.teste@email.com",
+            telefone: "11987654341",
+            registerDate: "2024-11-12",
+        }
+
+
+        await expect(UserService.createUser(userInfo)).rejects.toThrow();
     })
 })
 
-// describe('Burcar por usuários', () => {
-//     test('Buscar todos usuários',()=>{
-//         expect(getUsersCase(InMemoryUserRepository)).toBeDefined()
-//     })
+describe('Busca usuário', () => {
+    it('Busca por todos usuários', async () => {
+        const users = await UserService.getUsers()
 
-//     test('Buscar um usuário por ID existente', ()=>{
-//         expect(getUserByIdCase(1, InMemoryUserRepository)).toBeDefined()
-//     })
+        expect(users.length).toBeGreaterThanOrEqual(0)
+    })
 
-//     test('Lançar erro ao buscar um usuário por ID inexistente', ()=>{
-//         expect(getUserByIdCase(100, InMemoryUserRepository)).toBeNull();
-//     })
-// })
+    it('Buscar um por ID(1) de um usuário ja cadastrado', async () => {
+        const user = await UserService.getUserById(1)
+
+        expect(user).toBeDefined()
+    })
+
+    it('Retorna null caso o ID do usuário não seja encontrado', async () => {
+        const user = await UserService.getUserById(1000)
+
+        expect(user).toBeNull()
+    })
+})
+
+describe('Update usuário', () => {
+    it('Modificar nome de um usuário', async () => {
+        const lastUser = {
+            userID: 1,
+            name: "Lucas Oliveira da Silva",
+            cpf: "98765432100",
+            userType: 1,
+            status: 1,
+            email: "lucas.oliveira@email.com",
+            telefone: "11987654321",
+            registerDate: "2024-01-15",
+        }
+
+        await UserService.updateUser(lastUser)
+
+        const newUser = await UserService.getUserById(lastUser.userID)
+
+        expect(newUser).toMatchObject({name: 'Lucas Oliveira da Silva'}) 
+    })
+})
+
+
+describe('Deleta um usuário', () => {
+    it('Deleta um usuário ativo', async () => {
+        await UserService.deleteUser(1)
+        const firstUser = await UserService.getUserById(1)
+        expect(firstUser).toBeNull()
+    })
+
+    it('Se tentar deletar um usuário inexistente lança um erro', async () => {
+        await expect(UserService.deleteUser(100)).rejects.toThrow()
+    })
+})

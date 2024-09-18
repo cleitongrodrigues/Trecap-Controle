@@ -1,4 +1,4 @@
-import User from "../../Domain/Entities/User.js"
+import User from "../../../Domain/Entities/User.js"
 
 class InMemoryUserRepository {
     constructor() {
@@ -37,31 +37,26 @@ class InMemoryUserRepository {
     }
 
     async getUserById(ID) {
-        for (let user of this.userList){
-            if(user.userID == ID){
-                return user
-            }
-        }
+        const userData = this.userList.find(user => user.userID == ID && user.status === 1)
+        if(!userData) return null
 
-        return null
+        const user = new User(userData.userID, userData.name, userData.cpf, userData.userType, userData.status, userData.email, userData.telefone, userData.registerDate )
+
+        return user
     }
 
     async getUserByCPF(cpf) {
-        for (let user of this.userList){
-            if(user.cpf == cpf){
-                return user
-            }
-        }
+        const user = this.userList.find(user => user.cpf === cpf)
+
+        if(user) return user
 
         return null
     }
 
     async getUserByEmail(email) {
-        for (const user of this.userList){
-            if(user.email === email){
-                return user
-            }
-        }
+        const user = this.userList.find(user => user.email === email)
+
+        if(user) return user
 
         return null
     }
@@ -85,12 +80,10 @@ class InMemoryUserRepository {
 
     async updateUser(userData){
         for (let i = 0; i < this.userList.length; i++) {
-            if (this.userList[i].userID === userData.ID) {
+            if (this.userList[i].userID === userData.userID) {
                 this.userList[i] = userData;
-                return userData; 
             }
         }
-        return null
     }
 
     async getUsers(){
