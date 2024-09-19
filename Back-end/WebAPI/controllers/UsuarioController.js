@@ -36,8 +36,7 @@ export const UsuarioController = {
         try {
             const newUser = await UserService.createUser(request.body)
 
-            return response.status(200).json({
-                sucesso: true,
+            return response.status(201).json({
                 mensagem: `Usuário ${newUser.userID} cadastrado com sucesso!`,
             });
         } catch (error) {
@@ -75,31 +74,19 @@ export const UsuarioController = {
     //     }
     // },
 
-    // async ApagarUsuario(request, response){
-    //     try {
-    //         const usu_ativo = false;
+    async ApagarUsuario(request, response) {
+        try {
+            const { id } = request.params
 
-    //         const {usu_id} = request.params;
-
-    //         const sql = `UPDATE Usuario SET usu_ativo = ?
-    //             WHERE usu_id = ?;`;
-
-    //         const values = [usu_ativo, usu_id];
-
-    //         const atualizacao = await db.query(sql, values);
-    //         return response.status(200).json({
-    //             sucesso: true,
-    //             mensagem: `Usuário ${usu_id} deletado com sucesso!`,
-    //             dados: atualizacao[0].affectedRows
-    //         });
-    //     } catch (error) {
-    //         return response.status(500).json({
-    //             sucesso: false,
-    //             mensagem: 'Erro ao apagar usuário',
-    //             dados: error.mensagem
-    //         });
-    //     }
-    // }
+            await UserService.deleteUser(id)
+            return response.status(200).json({
+                sucesso: true,
+                mensagem: `Usuário ${id} deletado com sucesso!`,
+            });
+        } catch (error) {
+            return response.status(500).send(error.mensagem);
+        }
+    }
 }
 
 

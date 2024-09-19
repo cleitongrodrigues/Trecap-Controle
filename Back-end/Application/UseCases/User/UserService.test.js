@@ -101,3 +101,20 @@ describe('Deleta um usuário', () => {
         await expect(UserService.deleteUser(100)).rejects.toThrow()
     })
 })
+
+describe("Criar Evento", ()=>{
+    it("Cria um usuário e verifica se ele foi adicionado de fato", async () => {
+        const eventoData = {
+            nome: 'Treinamento de operação de despeliculadoras',
+            data: '2024-05-12',
+            local: 'Amenco',
+            startTime: '14:00:00',
+            endTime: '17:00:00',
+            capacity: 100,
+            userID: 1,
+        }
+
+        const newEvento = await UserService.createEvento(10, eventoData)
+        console.log(newEvento)
+    })
+})

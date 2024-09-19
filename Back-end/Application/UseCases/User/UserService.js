@@ -1,14 +1,17 @@
+import Evento from "../../../Domain/Entities/Evento.js"
 import InMemoryUserRepository from "../../../Infrastructure/database/repositories/InMemoryUserRepository.js"
+import InMemoryEventoRepository from "../../../Infrastructure/database/repositories/InMemoryEventoRepository.js"
 
 class UserService{
-    constructor(repository){
+    constructor(repository, repositoryEvento){
         this.repository = repository
+        this.repositoryEvento = repositoryEvento
     }
 
     async createUser(userCreateDTO){
         const existUserWithSameEmail = await this.repository.getUserByEmail(userCreateDTO.email)
         const existUserWithSameCPF = await this.repository.getUserByCPF(userCreateDTO.cpf)
-    
+
         if(existUserWithSameEmail) throw new Error("Já existe um usuário cadastrado com esse Email!")
         if(existUserWithSameCPF) throw new Error("Já existe um usuário cadastrado com esse CPF!")
 
@@ -45,6 +48,10 @@ class UserService{
         this.repository.updateUser(newInfoUser)
     }
 
+    async createEvento(userID, eventoData){
+        const newEvento = await this.repositoryEvento.createEvento(userID, eventoData)
+        return newEvento
+    }
 }
 
-export default new UserService(InMemoryUserRepository)
+export default new UserService(InMemoryUserRepository, InMemoryEventoRepository)

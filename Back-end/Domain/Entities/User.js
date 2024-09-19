@@ -1,3 +1,5 @@
+import Evento from "./Evento.js"
+
 export default class User{
     constructor(userID, name, cpf, userType, status, email, telefone, registerDate){
         this.userID = userID
@@ -14,4 +16,5 @@ export default class User{
         if(this.status == 0) throw new Error('Usuário inexistente!')
         this.status = 0
     }
+
 }

@@ -46,7 +46,7 @@ class InMemoryUserRepository {
     }
 
     async getUserByCPF(cpf) {
-        const user = this.userList.find(user => user.cpf === cpf)
+        const user = this.userList.find(user => user.cpf == cpf)
 
         if(user) return user
 
@@ -54,7 +54,7 @@ class InMemoryUserRepository {
     }
 
     async getUserByEmail(email) {
-        const user = this.userList.find(user => user.email === email)
+        const user = this.userList.find(user => user.email == email)
 
         if(user) return user
 
