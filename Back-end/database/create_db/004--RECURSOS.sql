@@ -4,7 +4,7 @@ SELECT tipo_usuario_id, tipo_usuario_descricao, tipo_usuario_ativo
 FROM TipoUsuario;
 
 SELECT * FROM Usuario;
-SELECT usu_id, usu_nome, usu_CPF, tipo_usuario_id, usu_ativo, usu_email, usu_telefone, usu_data_cadastro, usu_ultimo_login
+SELECT usu_id, usu_nome, usu_CPF, tipo_usuario_id, usu_ativo, usu_email, usu_senha, usu_telefone, usu_data_cadastro, usu_ultimo_login
 FROM Usuario;
 
 SELECT * FROM Empresa;
@@ -47,27 +47,27 @@ FROM FeedbackEvento;
 -- Tabelas sem dependências
 -- Drop das tabelas na ordem inversa à criação para garantir a integridade referencial
 
-DROP TABLE IF EXISTS TurmaColaboradores;
+DROP TABLE FeedbackEvento;
 
-DROP TABLE IF EXISTS FeedbackEvento;
+DROP TABLE TurmaColaboradores;
 
-DROP TABLE IF EXISTS EventoTurma;
+DROP TABLE EventoTurma;
 
-DROP TABLE IF EXISTS TurmaResponsaveis;
+DROP TABLE TurmaResponsaveis;
 
-DROP TABLE IF EXISTS Turma;
+DROP TABLE Eventos;
 
-DROP TABLE IF EXISTS Eventos;
+DROP TABLE Turma;
 
-DROP TABLE IF EXISTS Empresa;
+DROP TABLE Endereco;
 
-DROP TABLE IF EXISTS Usuario;
+DROP TABLE Colaboradores;
 
-DROP TABLE IF EXISTS Endereco;
+DROP TABLE Empresa;
 
-DROP TABLE IF EXISTS Colaboradores;
+DROP TABLE Usuario;
 
-DROP TABLE IF EXISTS TipoUsuario;
+DROP TABLE TipoUsuario;
 
 
 -- DESCRIBE DE TODOS AS TABELAS
