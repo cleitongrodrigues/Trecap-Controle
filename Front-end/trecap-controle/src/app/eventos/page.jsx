@@ -1,10 +1,11 @@
-'use client'; // Certifique-se de que esta linha está no início do arquivo se estiver usando Next.js com o modo "use client"
+'use client'; 
 
 import style from './page.module.css';
 import { MdWash, MdPsychology, MdEdit, MdSearch, MdCheck, MdTimer } from "react-icons/md";
 import { IconContext } from 'react-icons';
 import CabecalhoLogado from '@/cabecalhoLogado/page';
 import { useRouter } from 'next/navigation';
+import MenuLateral from '@/components/menuLateral/page';
 
 const eventos = [
     {
@@ -13,14 +14,12 @@ const eventos = [
         data: 'Data: 20/08/2024',
         IconeTipo: "Psicologia"
     },
-
     {
         id: 2,
         titulo: 'Treinamento Sobre lavagem de Mãos',
         data: 'Data: 20/08/2024',
         IconeTipo: "Wash"
     },
-
     {
         id: 3,
         titulo: 'Treinamento teste',
@@ -44,18 +43,12 @@ const Icones = {
 export default function Evento() {
     const router = useRouter();
 
-    // Função para editar o evento
     const handleEdit = (titulo) => {
-        // Redireciona para a página de edição do evento passando o ID
         router.push(`/editarEvento/${titulo}`);
     };
 
-    // Função para iniciar o evento e redirecionar para a página de seleção de setores
     const handleStart = (titulo) => {
-        // Exibe uma mensagem que o evento foi iniciado
         alert(`Evento ${titulo} iniciado!`);
-        
-        // Redireciona para a página de seleção de setores do evento
         router.push(`/cadastroP/`);
     };
 
@@ -63,6 +56,7 @@ export default function Evento() {
         <>
             <CabecalhoLogado />
             <div className={style.Geral}>
+                <MenuLateral />
                 <div className={style.Container}>
                     <h1 className={style.Titulo}>Eventos</h1>
                     <div className={style.containerContent}>
@@ -77,10 +71,7 @@ export default function Evento() {
                                 </div>
                                 <div className={style.Icones}>
                                     <IconContext.Provider value={{ size: 45 }}>
-                                        {/* Ícone de editar */}
                                         <MdEdit onClick={() => handleEdit(evento.titulo)} style={{ cursor: 'pointer' }} />
-                                        
-                                        {/* Ícone de iniciar evento */}
                                         <MdTimer onClick={() => handleStart(evento.titulo)} style={{ cursor: 'pointer' }} />
                                     </IconContext.Provider>
                                 </div>
@@ -88,6 +79,9 @@ export default function Evento() {
                         ))}
                     </div>
                 </div>
+                <footer className={style.footer}>
+        <p>&copy; 2024 TRECAP. Todos os direitos reservados.</p>
+      </footer>
             </div>
         </>
     );
