@@ -22,7 +22,7 @@ export default function CadastroP() {
       [name]: checked,
     }));
   };
-
+  
   const handleClick = () => {
     const setoresSelecionados = Object.keys(selectedSetores).filter(
       (setor) => selectedSetores[setor]

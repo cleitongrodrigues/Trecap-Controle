@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import CabecalhoLogado from "@/CabecalhoLogado/page";
+import MenuLateral from '@/components/menuLateral/page';
 
 export default function RegistrarPresenca() {
   const [participantesSelecionados, setParticipantesSelecionados] = useState([]);
@@ -45,6 +46,8 @@ export default function RegistrarPresenca() {
   return (
     <>
       <CabecalhoLogado />
+    <div className={styles.layout}>
+      <MenuLateral />
 
       <div className={styles.Header}>
         <div className={styles.checkin}>
@@ -88,6 +91,7 @@ export default function RegistrarPresenca() {
             Voltar
           </button>
         </div>
+      </div>
       </div>
     </>
   );

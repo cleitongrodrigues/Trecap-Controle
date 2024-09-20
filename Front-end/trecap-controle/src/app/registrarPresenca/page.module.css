@@ -1,152 +1,124 @@
+/* Estilo geral da página */
+.layout {
+  display: flex;
+  margin-top: 1rem;
+}
 
-  /* Estilo do Header */
-  .Header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #ffffff; /* Cor de fundo branca */
-    padding: 20px;
-    border-radius: 10px;
-  }
-  
-  /* Estilo do checkin */
-  .checkin {
-    width: 100%;
-    max-width: 600px;
-    color: #4a148c; /* Cor principal */
-    background-color: var(--purple-300); /* Fundo lilás claro */
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Estilo do cabeçalho */
-  .checkin h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #ffffff;
-  }
-  
-  /* Estilo da seção de cadastro */
-  .cadastro {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 2rem;
-    color: white;
-    background-color: var(--purpleMain); /* Cor principal */
-    border-radius: 20px;
-    width: 100%;
-    padding: 1rem;
-  }
-  
-  .cadastro h2 {
-    font-size: 20px;
-    margin-bottom: 15px;
-    color: #ffffff;
-  }
-  
-  /* Estilo da lista de participantes */
-  .listaParticipantes {
-    list-style-type: none;
-    padding: 0;
-    margin: 20px 0 0;
-    width: 100%;
-    max-width: 600px;
-  }
+/* Estilo do cabeçalho */
+.Header {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
 
-  .listaParticipantes h3{
-    font-size: 1.5rem;
-  }
-  
-  .participanteItem {
-    display: flex;
-    align-items: center;
-    padding: 0.5rem;
-    margin: 0.5rem 0;
-    background-color: #ffffff; /* Cor de fundo do item */
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1.5rem;
-  }
-  
-  .participanteItem label {
-    margin: 0;
-    color: #333;
-    flex: 1;
-    text-align: left;
-  }
-  
-  /* Estilo dos botões */
-  .botaoCadastro {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--purpleButton); /* Cor principal */
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: auto;
-    font-size: 16px;
-    text-align: center;
-    margin: auto;
-    margin-top: 10px;
-  }
-  
-  .botaoCadastro:hover {
-    background-color: #6a1b9a; /* Cor do botão ao passar o mouse */
-  }
-  
-  .botaoCancelar {
-    display: flex;
-    background-color: #e53935; /* Cor do botão cancelar */
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: auto;
-    font-size: 16px;
-    text-align: center;
-    margin: auto;
-    margin-top: 10px;
-  }
-  
-  .botaoCancelar:hover {
-    background-color: #c62828; /* Cor do botão ao passar o mouse */
-  }
-  
-  /* Estilo do ícone de biometria */
-  .biometriaIcon {
-    width: 24px;
-    height: 24px;
-    margin-right: 10px;
-  }
-  
-  /* Estilo do footer */
-  .footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: #6c49b8; /* Cor do footer */
-    color: white;
-    text-align: center;
-    padding: 10px;
-    font-size: 14px;
-  }
-  
-  /* Estilo do corpo da página */
-  .body {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .mainContent {
-    flex: 1;
-  }
-  
+/* Estilo da seção de check-in */
+.checkin {
+  width: 100%;
+  max-width: 60rem;
+  margin: 20px auto;
+  padding: 2rem;
+  background-color: var(--purple-300); /* Cor lilás clara */
+  border-radius: 18px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  display: grid;
+  place-items: center;
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+}
+
+/* Estilo do título do evento */
+.checkin h1 {
+  text-align: center;
+  color: white;
+  font-size: 32px; /* Tamanho ajustado */
+  margin-bottom: 20px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+}
+
+/* Estilo da seção de cadastro */
+.cadastro {
+  max-width: 60rem;
+  margin: 10px auto;
+  border-radius: 18px;
+  padding: 20px;
+  background-color: var(--purpleMain); /* Cor lilás escura */
+  margin-top: 10px;
+  display: grid;
+  place-items: center;
+}
+
+/* Estilo do título da seção de presença */
+.cadastro h2 {
+  text-align: center;
+  color: white;
+  font-size: 28px; /* Tamanho ajustado */
+  margin-bottom: 20px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+}
+
+/* Estilo da lista de participantes */
+.listaParticipantes {
+  width: 100%;
+}
+
+.listaParticipantes h3 {
+  font-size: 20px; /* Tamanho ajustado */
+  color: white;
+  text-align: center;
+}
+
+/* Estilo dos itens da lista de participantes */
+.participanteItem {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  background-color: #ffffff; /* Cor de fundo do item */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px; /* Tamanho ajustado */
+  width: 100%;
+  max-width: 600px;
+  justify-content: space-between;
+}
+
+/* Estilo do checkbox e label */
+.participanteItem label {
+  flex: 1;
+  font-size: 16px; /* Mantido consistente */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.participanteItem input[type='checkbox'] {
+  margin-right: 10px;
+  transform: scale(1.1); /* Tamanho ajustado */
+}
+
+.horario {
+  font-size: 14px; /* Tamanho ajustado */
+  margin-left: 10px;
+}
+
+/* Estilo dos botões */
+.botaoCadastro {
+  padding: 0.5rem 2rem;
+  background-color: var(--purpleButton); /* Cor do botão */
+  color: #fff;
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  font-size: 16px; /* Tamanho consistente */
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  margin-top: 1rem;
+}
+
+.botaoCadastro:hover {
+  background-color: var(--purpleMain);
+}
