@@ -1,50 +1,98 @@
 import Evento from "./Evento"
 
-describe('Criar Evento', ()=>{
+describe('Criar Evento', () => {
     it("Tenta criar um evento válido", () => {
         const eventoData = {
             id: 1,
             nome: 'Treinamento de operação de despeliculadoras',
-            data: '2024-05-12',
             local: 'Amenco',
-            startTime: '14:00:00',
-            endTime: '17:00:00',
+            dateStartTime: '2024-10-11T14:00:00',
+            dateEndTime: '2024-10-11T17:00:00',
             capacity: 100,
             userID: 1,
         }
 
         const newEvento = new Evento(
-            eventoData.id, 
-            eventoData.nome, 
-            eventoData.data, 
+            eventoData.id,
+            eventoData.nome,
+            eventoData.dateStartTime,
+            eventoData.dateEndTime,
             eventoData.local,
-            eventoData.startTime,
-            eventoData.endTime,
             eventoData.capacity,
             eventoData.userID
         )
-        expect(newEvento).toBeDefined()
+
+        expect(newEvento).toMatchObject({
+            id: 1,
+            name: 'Treinamento de operação de despeliculadoras',
+            local: 'Amenco',
+            capacity: 100,
+            userID: 1,
+        })
     })
 
-    it("Tenta criar um evento inválido", () => {
+    it("Tenta criar um evento com data de início de tarde e termino de manhã", () => {
         const eventoData = {
             id: 1,
             nome: 'Treinamento de operação de despeliculadoras',
-            data: '2024-05-12',
             local: 'Amenco',
-            startTime: '14:00:00',
-            endTime: '10:00:00',
+            dateStartTime: '2024-10-11T14:00:00',
+            dateEndTime: '2024-10-11T10:00:00',
             capacity: 100,
             userID: 1,
         }
 
-        expect(()=>new Evento(
-            eventoData.id, 
-            eventoData.nome, 
-            eventoData.data, 
+        expect(() => new Evento(
+            eventoData.id,
+            eventoData.nome,
+            eventoData.dateStartTime,
+            eventoData.dateEndTime,
             eventoData.local,
-            eventoData.startTime,
-            eventoData.endTime,
+            eventoData.capacity,
+            eventoData.userID
+        )).toThrow()
+    })
+
+    it("Tenta criar um evento inválido com data de início de manhã e termino de manhã", () => {
+        const eventoData = {
+            id: 1,
+            nome: 'Treinamento de operação de despeliculadoras',
+            local: 'Amenco',
+            dateStartTime: '2024-10-11T08:00:00',
+            dateEndTime: '2024-10-11T05:00:00',
+            capacity: 100,
+            userID: 1,
+        }
+
+        expect(() => new Evento(
+            eventoData.id,
+            eventoData.nome,
+            eventoData.dateStartTime,
+            eventoData.dateEndTime,
+            eventoData.local,
+            eventoData.capacity,
+            eventoData.userID
+        )).toThrow()
+    })
+
+    
+    it("Tenta criar um evento inválido com data de início de tarde e termino de tarde", () => {
+        const eventoData = {
+            id: 1,
+            nome: 'Treinamento de operação de despeliculadoras',
+            local: 'Amenco',
+            dateStartTime: '2024-10-11T18:00:00',
+            dateEndTime: '2024-10-11T15:00:00',
+            capacity: 100,
+            userID: 1,
+        }
+
+        expect(() => new Evento(
+            eventoData.id,
+            eventoData.nome,
+            eventoData.dateStartTime,
+            eventoData.dateEndTime,
+            eventoData.local,
             eventoData.capacity,
             eventoData.userID
         )).toThrow()
