@@ -11,13 +11,13 @@
 
 
 export default class Evento {
-    constructor(id, name, dateStartTime, dateEndTime, local, capacity, userID){
+    constructor(id, name, dateStartTime, dateEndTime, local, status,userID){
         this.id = id
         this.name = name
-        this.local  = local
         this.dateStartTime = new Date(dateStartTime)
         this.dateEndTime = new Date(dateEndTime)
-        this.capacity = capacity
+        this.local = local
+        this.status = status
         this.userID = userID
 
         if(this.dateStartTime >= this.dateEndTime) throw new Error('A data de inicio ocorre depois da data de término')

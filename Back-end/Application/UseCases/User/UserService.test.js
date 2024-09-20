@@ -8,6 +8,7 @@ describe('Criar um usuario', () => {
             userType: 1,
             status: 1,
             email: "teste.teste@email.com",
+            password: 'teste123',
             telefone: "11987654341",
             registerDate: "2024-11-12",
         }

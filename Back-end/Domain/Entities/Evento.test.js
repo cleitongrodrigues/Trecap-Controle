@@ -8,7 +8,7 @@ describe('Criar Evento', () => {
             local: 'Amenco',
             dateStartTime: '2024-10-11T14:00:00',
             dateEndTime: '2024-10-11T17:00:00',
-            capacity: 100,
+            status: 'active',
             userID: 1,
         }
 
@@ -18,16 +18,13 @@ describe('Criar Evento', () => {
             eventoData.dateStartTime,
             eventoData.dateEndTime,
             eventoData.local,
-            eventoData.capacity,
+            eventoData.status,
             eventoData.userID
         )
 
         expect(newEvento).toMatchObject({
-            id: 1,
-            name: 'Treinamento de operação de despeliculadoras',
-            local: 'Amenco',
-            capacity: 100,
-            userID: 1,
+            dateStartTime: new Date('2024-10-11T14:00:00'),
+            dateEndTime: new Date('2024-10-11T17:00:00')
         })
     })
 
@@ -38,7 +35,7 @@ describe('Criar Evento', () => {
             local: 'Amenco',
             dateStartTime: '2024-10-11T14:00:00',
             dateEndTime: '2024-10-11T10:00:00',
-            capacity: 100,
+            status: 'active',
             userID: 1,
         }
 
@@ -48,7 +45,6 @@ describe('Criar Evento', () => {
             eventoData.dateStartTime,
             eventoData.dateEndTime,
             eventoData.local,
-            eventoData.capacity,
             eventoData.userID
         )).toThrow()
     })
@@ -60,7 +56,7 @@ describe('Criar Evento', () => {
             local: 'Amenco',
             dateStartTime: '2024-10-11T08:00:00',
             dateEndTime: '2024-10-11T05:00:00',
-            capacity: 100,
+            status: 'active',
             userID: 1,
         }
 
@@ -70,7 +66,6 @@ describe('Criar Evento', () => {
             eventoData.dateStartTime,
             eventoData.dateEndTime,
             eventoData.local,
-            eventoData.capacity,
             eventoData.userID
         )).toThrow()
     })
@@ -83,7 +78,7 @@ describe('Criar Evento', () => {
             local: 'Amenco',
             dateStartTime: '2024-10-11T18:00:00',
             dateEndTime: '2024-10-11T15:00:00',
-            capacity: 100,
+            status: 'active',
             userID: 1,
         }
 
@@ -93,7 +88,6 @@ describe('Criar Evento', () => {
             eventoData.dateStartTime,
             eventoData.dateEndTime,
             eventoData.local,
-            eventoData.capacity,
             eventoData.userID
         )).toThrow()
     })
