@@ -2,7 +2,6 @@
 CREATE TABLE IF NOT EXISTS TipoUsuario (
     tipo_usuario_id int AUTO_INCREMENT NOT NULL,
     tipo_usuario_descricao varchar(250) NOT NULL,
-    tipo_usuario_ativo bit(1) NOT NULL,
     PRIMARY KEY (tipo_usuario_id)
 );
 
@@ -27,7 +26,6 @@ CREATE TABLE IF NOT EXISTS Empresa (
     empresa_id int AUTO_INCREMENT NOT NULL,
     empresa_nome varchar(100) NOT NULL,
     empresa_CNPJ varchar(14) NOT NULL,
-    empresa_endereco varchar(150) NOT NULL,
     empresa_telefone varchar(15),
     empresa_email varchar(100),
     empresa_ativo bit(1) NOT NULL,
@@ -41,7 +39,6 @@ CREATE TABLE IF NOT EXISTS Colaboradores (
     colaborador_id int AUTO_INCREMENT NOT NULL,
     colaborador_nome varchar(100) NOT NULL,
     colaborador_CPF varchar(11) NOT NULL,
-    colaborador_endereco varchar(100) NOT NULL,
     colaborador_biometria varchar(1024) NOT NULL,
     colaborador_ativo bit(1) NOT NULL,
     colaborador_telefone varchar(15),
@@ -86,6 +83,7 @@ CREATE TABLE IF NOT EXISTS Eventos (
 CREATE TABLE IF NOT EXISTS Turma (
     turma_id int AUTO_INCREMENT NOT NULL,
     turma_descricao varchar(250) NOT NULL,
+    turma_ativo bit(1) not null,
     PRIMARY KEY (turma_id)
 );
 
@@ -96,6 +94,7 @@ CREATE TABLE IF NOT EXISTS TurmaResponsaveis (
     turma_responsavel_docente varchar(100) not null,
     turma_id int NOT NULL,
     usu_id int NOT NULL,
+    turma_responsavel_status bit (1) not null,
     PRIMARY KEY (turma_responsavel_id),
     FOREIGN KEY (turma_id) REFERENCES Turma(turma_id),
     FOREIGN KEY (usu_id) REFERENCES Usuario(usu_id)
