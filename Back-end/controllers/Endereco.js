@@ -4,9 +4,9 @@ module.exports = {
     async ListarEndereco(request, response) {
         try {
             const sql = `SELECT endereco_id, endereco_logradouro, endereco_numero, endereco_complemento, 
-            endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, entidade_id
+            endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, empresa_id, colaborador_id, usu_id 
             FROM Endereco;`;
-
+           
             const Endereco = await db.query(sql)
 
             const nItens = Endereco[0].length;
@@ -29,15 +29,15 @@ module.exports = {
     async CadastrarEndereco(request, response) {
         try {
             const { endereco_logradouro, endereco_numero, endereco_complemento, 
-                endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, entidade_id } = request.body;
+                endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, empresa_id, colaborador_id, usu_id } = request.body;
 
             const sql = `INSERT INTO Endereco
                 (endereco_logradouro, endereco_numero, endereco_complemento, 
-            endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, entidade_id) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+            endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, empresa_id, colaborador_id, usu_id) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
 
             const values = [endereco_logradouro, endereco_numero, endereco_complemento, 
-                endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, entidade_id];
+                endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, empresa_id, colaborador_id, usu_id];
 
             const execSql = await db.query(sql, values);
 
@@ -59,16 +59,16 @@ module.exports = {
     async EditarEndereco(request, response) {
         try {
             const { endereco_logradouro, endereco_numero, endereco_complemento, 
-                endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, entidade_id } = request.body;
+                endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, empresa_id, colaborador_id, usu_id } = request.body;
 
             const { endereco_id } = request.params;
 
             const sql = `UPDATE Endereco SET endereco_logradouro = ?, endereco_numero = ?, endereco_complemento = ?, 
-            endereco_bairro = ?, endereco_cidade = ?, endereco_estado = ?, endereco_cep = ?,  ?, entidade_id = ?
-                WHERE Endereco_id = ?;`;
+            endereco_bairro = ?, endereco_cidade = ?, endereco_estado = ?, endereco_cep = ?,  ?, empresa_id = ?, colaborador_id = ?,
+            usu_id = ? WHERE Endereco_id = ?;`;
 
             const values = [endereco_logradouro, endereco_numero, endereco_complemento, 
-                endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, entidade_id, endereco_id];
+                endereco_bairro, endereco_cidade, endereco_estado, endereco_cep, empresa_id, colaborador_id, usu_id, endereco_id];
 
             const atualizaDados = await db.query(sql, values);
             return response.status(200).json({

@@ -4,9 +4,7 @@ module.exports = {
     async ListarTipoUSuario(request, response){
         try {
             const sql = `SELECT tipo_usuario_id, tipo_usuario_descricao, 
-            tipo_usuario_ativo = 1 AS tipo_usuario_ativo 
-            FROM TipoUsuario
-            WHERE tipo_usuario_ativo = 1;`;
+            FROM TipoUsuario`;
 
         const usuarios = await db.query(sql)
 
@@ -29,13 +27,13 @@ module.exports = {
 
     async CadastrarTipoUsuario(request, response){
         try {
-            const {tipo_usuario_descricao, tipo_usuario_ativo} = request.body;
+            const {tipo_usuario_descricao} = request.body;
 
             const sql = `INSERT INTO TipoUsuario
-                (tipo_usuario_descricao, tipo_usuario_ativo) 
-                VALUES (?, ?);`;
+                (tipo_usuario_descricao) 
+                VALUES (?);`;
 
-            const values = [tipo_usuario_descricao, tipo_usuario_ativo];
+            const values = [tipo_usuario_descricao];
 
             const execSql = await db.query(sql, values);
 
@@ -56,15 +54,14 @@ module.exports = {
 
     async EditarTipoUsuario(request, response){
         try {
-            const {tipo_usuario_descricao, tipo_usuario_ativo} = request.body;
+            const {tipo_usuario_descricao} = request.body;
 
             const {tipo_usuario_id} = request.params;
 
-            const sql = `UPDATE TipoUsuario SET tipo_usuario_descricao = ?,
-                tipo_usuario_ativo = ?
+            const sql = `UPDATE TipoUsuario SET tipo_usuario_descricao = ?
                 WHERE tipo_usuario_id = ?;`;
 
-            const values = [tipo_usuario_descricao, tipo_usuario_ativo, tipo_usuario_id];
+            const values = [tipo_usuario_descricao, tipo_usuario_id];
 
             const atualizaDados = await db.query(sql, values);
             return response.status(200).json({
@@ -83,14 +80,12 @@ module.exports = {
 
     async ApagarTipoUsuario(request, response){
         try {
-            const tipo_usuario_ativo = false;
-
             const {tipo_usuario_id} = request.params;
 
-            const sql = `UPDATE TipoUsuario SET tipo_usuario_ativo = ?
-                WHERE tipo_usuario_id = ?;`;
+            const sql = `DELETE FROM TipoUsuario
+            WHERE tipo_usuario_id = ?`;
 
-            const values = [tipo_usuario_ativo, tipo_usuario_id];
+            const values = [tipo_usuario_id];
 
             const atualizacao = await db.query(sql, values);
             return response.status(200).json({

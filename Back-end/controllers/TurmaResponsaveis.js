@@ -3,7 +3,8 @@ const db = require('../database/connection');
 module.exports = {
     async ListarTurmaResponsaveis(request, response) {
         try {
-            const sql = `SELECT turma_responsavel_id, turma_id, usu_id
+            const sql = `SELECT turma_responsavel_id, turma_responsavel_docente,
+            turma_id, usu_id, turma_responsavel_status 
             FROM TurmaResponsaveis;`;
 
             const turmaResponsaveis = await db.query(sql)
@@ -27,13 +28,16 @@ module.exports = {
 
     async CadastrarTurmaResponsaveis(request, response) {
         try {
-            const { turma_id, usu_id } = request.body;
+            const { turma_responsavel_docente,
+            turma_id, usu_id, turma_responsavel_status  } = request.body;
 
             const sql = `INSERT INTO TurmaResponsaveis
-                (turma_id, usu_id) 
-                VALUES (?, ?);`;
+                (turma_responsavel_docente, turma_id, usu_id, 
+                turma_responsavel_status , turma_responsavel_status ) 
+                VALUES (?, ?, ?, ?, ?);`;
 
-            const values = [turma_id, usu_id];
+            const values = [turma_responsavel_docente,
+            turma_id, usu_id, turma_responsavel_status ];
 
             const execSql = await db.query(sql, values);
 
@@ -54,14 +58,15 @@ module.exports = {
 
     async EditarTurmaResponsaveis(request, response) {
         try {
-            const { turma_id, usu_id } = request.body;
+            const {  turma_responsavel_docente,turma_id, usu_id, turma_responsavel_status  } = request.body;
 
             const { turma_responsavel_id } = request.params;
 
-            const sql = `UPDATE TurmaResponsaveis SET turma_id = ?, usu_id = ?
+            const sql = `UPDATE TurmaResponsaveis SET  turma_responsavel_docente = ?,
+                turma_id = ?, usu_id = ?, turma_responsavel_status = ?
                 WHERE turma_responsavel_id = ?;`;
 
-            const values = [turma_id, usu_id, turma_responsavel_id];
+            const values = [ turma_responsavel_docente, turma_id, usu_id, turma_responsavel_status , turma_responsavel_id];
 
             const atualizaDados = await db.query(sql, values);
             return response.status(200).json({
@@ -80,11 +85,14 @@ module.exports = {
 
     async ApagarTurmaResponsaveis(request, response) {
         try {
+            const turma_responsavel_status = false;
+
             const { turma_responsavel_id } = request.params;
 
-            const sql = `DELETE FROM TurmaResponsaveis WHERE turma_responsavel_id = ?;`;
+            const sql = `UPDATE Colaboradores SET turma_responsavel_status = ?
+                WHERE turma_responsavel_id = ?;`;
 
-            const values = [turma_responsavel_id];
+            const values = [turma_responsavel_status, turma_responsavel_id];
 
             const apagar = await db.query(sql, values);
             return response.status(200).json({
