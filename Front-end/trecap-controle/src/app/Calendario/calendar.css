@@ -1,74 +1,97 @@
 /* calendar.css */
 
+/* Estilizando o contêiner principal do calendário */
 .calendar-container {
-    display: flex;
-    padding-top: 10rem;
-    padding-left: 10rem;
-    padding-right: 10rem;
-  }
-  
-  .calendar {
-    flex: 1;
-  }
-  
-  .event-list {
-    flex: 0.3;
-    padding: 1rem;
-    border-left: 1px solid #ccc;
-    background-color: #f5f5f5;
-    font-family: "Poppins", sans-serif;
-    font-weight: 300;
-    font-style: normal;
-  }
-  
-  .event-list h2 {
-    color: #D5BFFF;
-  }
-  
-  .event-list ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .event-list li {
-    padding: 0.5rem;
-    border-bottom: 1px solid #ddd;
-    color: #694C9F;
-  }
-  
-  /* Estiliza o FullCalendar */
-  .fc-toolbar {
-    background-color: #8E7AB5;
-    color: #fff;
-    
-  }
-  
-  .fc-toolbar-title {
-    color: #fff;
-  }
-  
-  .fc-daygrid-day-number {
-    color: #8E7AB5;
-  }
-  
-  .fc-daygrid-day-top {
-    background-color: #e6e6e6;
-  }
-  
-  .fc-daygrid-day-top.fc-day-today {
-    background-color: #d4baff;
-  }
-  
-  .fc-event {
-    background-color: #694C9F;
-    color: #fff;
-  }
-  
-  .fc-daygrid-day:hover {
-    background-color: #f0e6ff;
-  }
-  
-  .fc-daygrid-day.fc-day-today {
-    border: 2px solid #7f00ff;
-  }
-  
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+/* Estilo para o próprio calendário */
+.calendar {
+  width: 75%;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Barra de navegação do calendário */
+.fc-toolbar {
+  background-color: #6a0dad;
+  color: white;
+  padding: 10px;
+  border-radius: 8px 8px 0 0;
+}
+
+.fc-button {
+  background-color: #7f00ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 14px;
+  margin-right: 5px;
+}
+
+.fc-button:hover {
+  background-color: #9b30ff;
+}
+
+.fc-toolbar-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Estilo dos eventos */
+.fc-event {
+  background-color: #6a0dad;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+
+/* Estilo para o dia atual */
+.fc-day-today {
+  background-color: #f3e8ff !important;
+}
+
+/* Estilo para os números do dia */
+.fc-daygrid-day-number {
+  color: #6a0dad;
+}
+
+/* Estilo da lista de eventos lateral */
+.event-list {
+  width: 20%;
+  background-color: #f7f5f8;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.event-list h2 {
+  color: #6a0dad;
+  margin-bottom: 10px;
+}
+
+.event-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.event-list li {
+  margin-bottom: 8px;
+  background-color: #7f00ff;
+  color: white;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+/* Botão 'Today' customizado */
+.fc-button.fc-today-button {
+  background-color: #6a0dad;
+  color: white;
+  border-radius: 4px;
+}
