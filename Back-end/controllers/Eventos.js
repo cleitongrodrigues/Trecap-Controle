@@ -3,8 +3,8 @@ const db = require('../database/connection');
 module.exports = {
     async ListarEvento(request, response){
         try {
-            const sql = `SELECT evento_id, evento_nome, evento_data, evento_local, 
-            evento_hora_inicio, evento_hora_termino, evento_capacidade, usu_id
+            const sql = ` SELECT evento_id, evento_nome, evento_data_inicio, 
+            evento_data_termino, evento_local, evento_status, usu_id 
             FROM Eventos;`;
 
             const evento = await db.query(sql)
@@ -28,16 +28,16 @@ module.exports = {
 
     async CadastrarEvento(request, response){
         try {
-            const {evento_nome, evento_data, evento_local, 
-                evento_hora_inicio, evento_hora_termino, evento_capacidade, usu_id} = request.body;
+            const {evento_nome, evento_data_inicio, 
+                evento_data_termino, evento_local, evento_status, usu_id } = request.body;
 
             const sql = `INSERT INTO Eventos
-                (evento_nome, evento_data, evento_local, 
-            evento_hora_inicio, evento_hora_termino, evento_capacidade, usu_id) 
-                VALUES (?, ?, ?, ?, ?, ?, ?);`;
+                (evento_nome, evento_data_inicio, 
+            evento_data_termino, evento_local, evento_status, usu_id ) 
+                VALUES (?, ?, ?, ?, ?, ?);`;
 
-            const values = [evento_nome, evento_data, evento_local, 
-                evento_hora_inicio, evento_hora_termino, evento_capacidade, usu_id];
+            const values = [evento_nome, evento_data_inicio, 
+                evento_data_termino, evento_local, evento_status, usu_id ];
 
             const execSql = await db.query(sql, values);
 
@@ -58,17 +58,17 @@ module.exports = {
 
     async EditarEvento(request, response){
         try {
-            const {evento_nome, evento_data, evento_local, 
-                evento_hora_inicio, evento_hora_termino, evento_capacidade, usu_id} = request.body;
+            const {evento_nome, evento_data_inicio, 
+                evento_data_termino, evento_local, evento_status, usu_id } = request.body;
 
             const {evento_id} = request.params;
 
-            const sql = `UPDATE Eventos SET evento_nome = ?, evento_data = ?, evento_local = ?, 
-            evento_hora_inicio = ?, evento_hora_termino = ?, evento_capacidade = ?, usu_id = ?
+            const sql = `UPDATE Eventos SET evento_nome = ?, evento_data_inicio = ?, 
+            evento_data_termino = ?, evento_local = ?, evento_status = ?, usu_id = ? 
                 WHERE evento_id = ?;`;
 
-            const values = [evento_nome, evento_data, evento_local, 
-                evento_hora_inicio, evento_hora_termino, evento_capacidade, usu_id, evento_id];
+            const values = [evento_nome, evento_data_inicio, 
+                evento_data_termino, evento_local, evento_status, usu_id , evento_id];
 
             const atualizaDados = await db.query(sql, values);
             return response.status(200).json({
