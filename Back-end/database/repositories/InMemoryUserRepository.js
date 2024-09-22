@@ -37,9 +37,18 @@ class InMemoryUserRepository {
     }
 
     async getUserById(ID) {
-        for (let user of this.userList){
-            if(user.userID == ID){
-                return user
+        for (let user of this.userList) {
+            if (user.userID == ID) {
+                return new User(
+                    user.userID,
+                    user.name,
+                    user.cpf,
+                    user.userType,
+                    user.status,
+                    user.email,
+                    user.telefone,
+                    user.registerDate
+                )
             }
         }
 
@@ -47,9 +56,18 @@ class InMemoryUserRepository {
     }
 
     async getUserByCPF(cpf) {
-        for (let user of this.userList){
-            if(user.cpf == cpf){
-                return user
+        for (let user of this.userList) {
+            if (user.cpf == cpf) {
+                return new User(
+                    user.userID,
+                    user.name,
+                    user.cpf,
+                    user.userType,
+                    user.status,
+                    user.email,
+                    user.telefone,
+                    user.registerDate
+                )
             }
         }
 
@@ -57,20 +75,37 @@ class InMemoryUserRepository {
     }
 
     async getUserByEmail(email) {
-        for (const user of this.userList){
-            if(user.email === email){
-                return user
+        for (const user of this.userList) {
+            if (user.email === email) {
+                return new User(
+                    user.userID,
+                    user.name,
+                    user.cpf,
+                    user.userType,
+                    user.status,
+                    user.email,
+                    user.telefone,
+                    user.registerDate
+                )
             }
         }
 
         return null
     }
 
-    async createUser(userCreateDTO){
+    async save(user) {
+        this.userList.push(user)
+    }
+
+    async count() {
+        return this.userList.length
+    }
+
+    async createUser(userCreateDTO) {
         const newUser = new User(
             this.userList.length + 1,
-            userCreateDTO.name, 
-            userCreateDTO.cpf, 
+            userCreateDTO.name,
+            userCreateDTO.cpf,
             userCreateDTO.userType,
             userCreateDTO.status,
             userCreateDTO.email,
@@ -83,17 +118,17 @@ class InMemoryUserRepository {
         return newUser
     }
 
-    async updateUser(userData){
+    async updateUser(userData) {
         for (let i = 0; i < this.userList.length; i++) {
             if (this.userList[i].userID === userData.ID) {
                 this.userList[i] = userData;
-                return userData; 
+                return userData;
             }
         }
         return null
     }
 
-    async getUsers(){
+    async getUsers() {
         return this.userList
     }
 }
