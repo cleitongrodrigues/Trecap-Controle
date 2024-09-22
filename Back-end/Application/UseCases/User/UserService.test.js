@@ -15,7 +15,7 @@ describe('Criar um usuario', () => {
         const user = await UserService.createUser(userInfo)
 
         expect(user).toHaveProperty('userID')
-        expect(user).toMatchObject(userInfo)
+        expect(user).toMatchObject({...userInfo, registerDate: new Date(userInfo.registerDate)})
     })
 
     it('Verifica que não é possível criar um usuário com mesmo email', async () => {

@@ -2,6 +2,7 @@ import Evento from "../../../Domain/Entities/Evento.js"
 import InMemoryUserRepository from "../../../Infrastructure/database/repositories/InMemoryUserRepository.js"
 import InMemoryEventoRepository from "../../../Infrastructure/database/repositories/InMemoryEventoRepository.js"
 import User from "../../../Domain/Entities/User.js"
+import userAdress from "../../../Domain/Value Objects/userAdress.js"
 
 class UserService{
     constructor(repository, repositoryEvento){
@@ -9,15 +10,22 @@ class UserService{
         this.repositoryEvento = repositoryEvento
     }
 
-    async createUser(userCreateDTO){
-        const existUserWithSameEmail = await this.repository.getUserByEmail(userCreateDTO.email)
-        const existUserWithSameCPF = await this.repository.getUserByCPF(userCreateDTO.cpf)
+    async createUser(input){
+        const existUserWithSameEmail = await this.repository.getUserByEmail(input.email)
+        const existUserWithSameCPF = await this.repository.getUserByCPF(input.cpf)
+
         if(existUserWithSameEmail) throw new Error("Já existe um usuário cadastrado com esse Email!")
         if(existUserWithSameCPF) throw new Error("Já existe um usuário cadastrado com esse CPF!")
 
-        const user = new User(userCreateDTO)
+        const userID = await this.repository.count() + 1
 
-        // const user = await this.repository.createUser(userCreateDTO)
+        // userID, name, cpf, userType, status, email, password, telefone, registerDate
+        const andressInfo = input.adress
+
+        const adress = new userAdress()
+
+        const user = new User(userID, input.name, input.cpf, input.userType, input.status, input.email, input.password, input.telefone, input.registerDate, adress)
+        await this.repository.save(user)
       
         return user
     }
