@@ -20,7 +20,7 @@ router.get('/usuarios', UsuarioController.ListarUsuarios);
 router.get('/usuarios/:id', UsuarioController.ListarUsuario)
 router.post('/usuarios', UsuarioController.CadastrarUsuario);
 // router.patch('/Usuarios/:usu_id', UsuarioController.EditarUsuario);
-// router.delete('/Usuarios/:usu_id', UsuarioController.ApagarUsuario);
+router.delete('/usuarios/:id', UsuarioController.ApagarUsuario);
 
 // router.get('/Colaboradores', ColaboradorController.ListarColaboradores);
 // router.post('/Colaboradores', ColaboradorController.CadastrarColaboradores);
