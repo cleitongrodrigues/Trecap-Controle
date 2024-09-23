@@ -103,9 +103,9 @@
     font-style: normal;
   }
 
-  .button:hover {
-    background-color: #D9D9D9;
-  }
+.button:hover {
+  background-color: #D9D9D9;
+}
 
   .containerInput{
     background-color: #FFFF;
