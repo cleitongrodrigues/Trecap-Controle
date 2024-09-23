@@ -1,10 +1,7 @@
-import userAdress from "../Value Objects/userAdress.js"
-import Evento from "./Evento.js"
-
 export default class User{
-    constructor(userID, name, cpf, userType, status, email, password, telefone, registerDate, adress = null)
+    constructor(userId, name, cpf, userType, status, email, password, telefone, registerDate, adress = null)
     {
-        this.userID = userID
+        this.userId = userId
         this.name = name
         this.cpf = cpf
         this.userType = userType
@@ -12,7 +9,7 @@ export default class User{
         this.email = email
         this.password = password
         this.telefone = telefone
-        this.registerDate = new Date(registerDate)
+        this.registerDate = registerDate
         this.adress = adress
     }
 
