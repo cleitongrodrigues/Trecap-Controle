@@ -46,27 +46,17 @@ FROM FeedbackEvento;
 -- Tabelas sem dependências
 -- Drop das tabelas na ordem inversa à criação para garantir a integridade referencial
 
-DROP TABLE FeedbackEvento;
-
-DROP TABLE TurmaColaboradores;
-
-DROP TABLE EventoTurma;
-
-DROP TABLE TurmaResponsaveis;
+DROP TABLE Registros;
 
 DROP TABLE Eventos;
 
-DROP TABLE Turma;
-
-DROP TABLE Endereco;
-
 DROP TABLE Colaboradores;
-
-DROP TABLE Empresa;
 
 DROP TABLE Usuario;
 
-DROP TABLE TipoUsuario;
+DROP TABLE Setores;
+
+DROP TABLE Empresa;
 
 
 -- DESCRIBE DE TODOS AS TABELAS
