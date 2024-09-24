@@ -1,0 +1,123 @@
+.formHeader{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    isolation: isolate;
+}
+
+.formHeader h2{
+    font-size: 2rem;
+    position: relative;
+}
+
+.formHeader h2::after{
+    content: '';
+    position: absolute;
+    width: 1rem;
+    height: 1rem;
+    bottom: 0;
+    left: -0.2rem;
+    background-color: var(--purpleMain);
+    z-index: -1;
+}
+
+.formHeader a{
+    position: relative;
+    transition: all .3s;
+}
+
+.formHeader a::after{
+    content: '';
+    position: absolute;
+    background-color: var(--purpleMain);
+    width: 0%;
+    bottom: -4px;
+    right: 0;
+    left: 0;
+    height: 1px;
+    transition: all .3s;
+}
+
+.formHeader a:hover{
+    color: var(--purpleMain);
+}
+
+.formHeader a:hover::after{
+    width: 100%;
+}
+
+.form{
+    display: grid;
+    gap: .825rem 0px;
+}
+
+.containerInputs{
+    display: flex;
+    gap: 1rem;
+}
+
+.containerInputs > div{
+    flex: 1;
+}
+
+.containerInputsPassword{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0px 1rem;
+}
+
+.passwordRequiremts{
+    margin-block-end: 1rem;
+}
+
+.passwordRequiremts p{
+    margin-block-end: .5rem;
+}
+
+.containerLevelPassword{
+    display: flex;
+    gap: .5rem;
+}
+
+.levelPassword{
+    flex: 1;
+    background-color: rgba(133, 118, 255, 0.2);
+    height: .5rem;
+    border-radius: .5rem;
+}
+
+.active[data-strong="weak"]{
+    background-color: var(--purple-500);
+    opacity: 0.4;
+}
+
+.active[data-strong="medium"]{
+    background-color: var(--purple-500);
+    opacity: 0.6;
+}
+
+.active[data-strong="strong"]{
+    background-color: var(--purple-500);
+    opacity: 0.8;
+}
+
+.active[data-strong="very-strong"]{
+    background-color: var(--purple-500);
+    opacity: 1;
+}
+
+.passwordEye{
+    position: absolute;
+    grid-template: 1/1;
+    justify-self: end;
+    margin-inline-end: .5rem;
+    cursor: pointer;
+    background-color: white;
+}
+
+.passwordEye svg{
+    color: var(--purple-700);
+    font-size: 1.5rem;
+}

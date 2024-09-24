@@ -3,9 +3,9 @@ const db = require('../database/connection');
 module.exports = {
     async ListarEvento(request, response){
         try {
-            const sql = `SELECT evento_id, evento_nome, evento_data, 
-                evento_local, evento_hora_inicio, 
-                evento_hora_termino FROM Eventos;`;
+            const sql = ` SELECT evento_id, evento_nome, evento_data_inicio, 
+            evento_data_termino, evento_local, evento_status, usu_id 
+            FROM Eventos;`;
 
             const evento = await db.query(sql)
 
@@ -20,7 +20,7 @@ module.exports = {
         } catch (error) {
             return response.status(500).json({
                 sucesso: false,
-                mensagem: 'Erro ao listar evento',
+                mensagem: 'Erro ao listar evento :(',
                 dados: error.mensagem
             });
         }
@@ -28,14 +28,16 @@ module.exports = {
 
     async CadastrarEvento(request, response){
         try {
-            const {evento_nome, evento_data, evento_local, evento_hora_inicio, evento_hora_termino} = request.body;
+            const {evento_nome, evento_data_inicio, 
+                evento_data_termino, evento_local, evento_status, usu_id } = request.body;
 
             const sql = `INSERT INTO Eventos
-                (evento_nome, evento_data, evento_local, 
-                evento_hora_inicio, evento_hora_termino) 
-                VALUES (?, ?, ?, ?, ?);`;
+                (evento_nome, evento_data_inicio, 
+            evento_data_termino, evento_local, evento_status, usu_id ) 
+                VALUES (?, ?, ?, ?, ?, ?);`;
 
-            const values = [evento_nome, evento_data, evento_local, evento_hora_inicio, evento_hora_termino];
+            const values = [evento_nome, evento_data_inicio, 
+                evento_data_termino, evento_local, evento_status, usu_id ];
 
             const execSql = await db.query(sql, values);
 
@@ -48,7 +50,7 @@ module.exports = {
         } catch (error) {
             return response.status(500).json({
                 sucesso: false,
-                mensagem: 'Erro ao cadastrar evento',
+                mensagem: 'Erro ao cadastrar evento :(',
                 dados: error.mensagem
             });
         }
@@ -56,15 +58,17 @@ module.exports = {
 
     async EditarEvento(request, response){
         try {
-            const {evento_nome, evento_data, evento_local, evento_hora_inicio, evento_hora_termino} = request.body;
+            const {evento_nome, evento_data_inicio, 
+                evento_data_termino, evento_local, evento_status, usu_id } = request.body;
 
             const {evento_id} = request.params;
 
-            const sql = `UPDATE Eventos SET evento_nome = ?, evento_data = ?,
-                evento_local = ?, evento_hora_inicio = ?, evento_hora_termino = ?
+            const sql = `UPDATE Eventos SET evento_nome = ?, evento_data_inicio = ?, 
+            evento_data_termino = ?, evento_local = ?, evento_status = ?, usu_id = ? 
                 WHERE evento_id = ?;`;
 
-            const values = [evento_nome, evento_data, evento_local, evento_hora_inicio, evento_hora_termino, evento_id];
+            const values = [evento_nome, evento_data_inicio, 
+                evento_data_termino, evento_local, evento_status, usu_id , evento_id];
 
             const atualizaDados = await db.query(sql, values);
             return response.status(200).json({
@@ -98,7 +102,7 @@ module.exports = {
         } catch (error) {
             return response.status(500).json({
                 sucesso: false,
-                mensagem: 'Erro ao apagar evento',
+                mensagem: 'Erro ao apagar evento :(',
                 dados: error.mensagem
             });
         }

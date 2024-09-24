@@ -7,7 +7,7 @@ const bd_senha = 'ab1506'; // senha
 const bd_servidor = '10.67.22.216'; // servidor
 // const bd_servidor = 'localhost';
 const bd_porta = '3306'; // porta
-const bd_banco = 'bd_tcc_tecdes_223_g1'; // nome do banco
+const bd_banco = 'bd2_tcc_tecdes_223_g1'; // nome do banco
 // const bd_banco = 'trecap_controle';
 let connection;
     

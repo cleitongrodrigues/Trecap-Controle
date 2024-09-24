@@ -1,11 +1,13 @@
 const db = require('../database/connection');
 
 module.exports = {
-    async ListarColaboradores(request, response){
+    async ListarColaboradores(request, response) {
         try {
             const sql = `SELECT colaborador_id, colaborador_nome, colaborador_CPF, 
-                colaborador_endereco, colaborador_biometria, colaborador_ativo = 1 AS colaborador_ativo FROM Colaboradores
-                WHERE colaborador_ativo = 1;`;
+            colaborador_endereco, colaborador_biometria, colaborador_ativo = 1 AS colaborador_ativo, 
+            colaborador_telefone, colaborador_email, colaborador_historico_treinamento
+            FROM Colaboradores
+            WHERE colaborador_ativo = 1`;
 
             const colaboradores = await db.query(sql)
 
@@ -16,7 +18,7 @@ module.exports = {
                 dados: colaboradores[0],
                 nItens
             });
-            
+
         } catch (error) {
             return response.status(500).json({
                 sucesso: false,
@@ -26,16 +28,21 @@ module.exports = {
         }
     },
 
-    async CadastrarColaboradores(request, response){
+    async CadastrarColaboradores(request, response) {
         try {
-            const {colaborador_nome, colaborador_CPF, colaborador_endereco, colaborador_biometria, colaborador_ativo} = request.body;
+            const { colaborador_nome, colaborador_CPF,
+                colaborador_endereco, colaborador_biometria, colaborador_ativo,
+                colaborador_telefone, colaborador_email, colaborador_historico_treinamento } = request.body;
 
             const sql = `INSERT INTO Colaboradores
                 (colaborador_nome, colaborador_CPF, 
-                colaborador_endereco, colaborador_biometria, colaborador_ativo) 
-                VALUES (?, ?, ?, ?, ?);`;
+            colaborador_endereco, colaborador_biometria, colaborador_ativo, 
+            colaborador_telefone, colaborador_email, colaborador_historico_treinamento) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
 
-            const values = [colaborador_nome, colaborador_CPF, colaborador_endereco, colaborador_biometria, colaborador_ativo];
+            const values = [colaborador_nome, colaborador_CPF,
+                colaborador_endereco, colaborador_biometria, colaborador_ativo,
+                colaborador_telefone, colaborador_email, colaborador_historico_treinamento];
 
             const execSql = await db.query(sql, values);
 
@@ -54,17 +61,22 @@ module.exports = {
         }
     },
 
-    async EditarColaboradores(request, response){
+    async EditarColaboradores(request, response) {
         try {
-            const {colaborador_nome, colaborador_CPF, colaborador_endereco, colaborador_biometria, colaborador_ativo} = request.body;
+            const { colaborador_nome, colaborador_CPF,
+                colaborador_endereco, colaborador_biometria, colaborador_ativo,
+                colaborador_telefone, colaborador_email, colaborador_historico_treinamento } = request.body;
 
-            const {colaborador_id} = request.params;
+            const { colaborador_id } = request.params;
 
             const sql = `UPDATE Colaboradores SET colaborador_nome = ?, colaborador_CPF = ?,
-                colaborador_endereco = ?, colaborador_biometria = ?, colaborador_ativo = ?
+                colaborador_endereco = ?, colaborador_biometria = ?, colaborador_ativo = ?,
+                colaborador_telefone = ?, colaborador_email = ?, colaborador_historico_treinamento = ?
                 WHERE colaborador_id = ?;`;
 
-            const values = [colaborador_nome, colaborador_CPF, colaborador_endereco, colaborador_biometria, colaborador_ativo, colaborador_id];
+            const values = [colaborador_nome, colaborador_CPF,
+                colaborador_endereco, colaborador_biometria, colaborador_ativo,
+                colaborador_telefone, colaborador_email, colaborador_historico_treinamento, colaborador_id];
 
             const atualizaDados = await db.query(sql, values);
             return response.status(200).json({
@@ -81,11 +93,11 @@ module.exports = {
         }
     },
 
-    async ApagarColaboradores(request, response){
+    async ApagarColaboradores(request, response) {
         try {
             const colaborador_ativo = false;
 
-            const {colaborador_id} = request.params;
+            const { colaborador_id } = request.params;
 
             const sql = `UPDATE Colaboradores SET colaborador_ativo = ?
                 WHERE colaborador_id = ?;`;

@@ -1,0 +1,52 @@
+.containerInput {
+    display: grid;
+    margin-bottom: 2rem;
+    align-items: center;
+    position: relative;
+}
+
+.label {
+    display: block;
+    background-color: white;
+    z-index: 100;
+    margin-inline-start: 1rem;
+    pointer-events: none;
+    justify-self: start;
+    transition: all .25s;
+}
+
+.input {
+    width: 100%;
+    font-size: 2rem;
+    padding: .825rem 1rem;
+    border-radius: 1rem;
+    border: 1px solid black;
+}
+
+.containerInput label,
+.input {
+    grid-column-start: 1;
+    grid-row-start: 1;
+}
+
+.input:focus {
+    outline: none;
+}
+
+.input::placeholder{
+    color: transparent;
+}
+
+.input:focus ~ .label,
+input:not(:placeholder-shown) ~ .label{
+    transform: translateY(-150%);
+    font-size: 1.25rem;
+    padding-inline: .625rem;
+}
+
+.error {
+    position: absolute;
+    left: 0;
+    bottom: -1.225rem;
+    color: red;
+}

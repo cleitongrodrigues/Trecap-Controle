@@ -1,0 +1,89 @@
+.Header {
+    display: flex;
+    justify-content: center;
+    font-size: 2rem ;
+}
+
+
+.checkin {
+    display: flex;
+    color: var(--purpleMain);
+    margin-top: 50px;
+    border-radius: 20px;
+    flex-direction: column;
+}
+
+.checkin h1 {
+    display: flex;
+    justify-content: center;
+}
+
+.alerta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 16px;
+    margin: auto;
+    min-width: 75%;
+    max-width: 80%;
+    border: 1px solid var(--purpleMain);
+    background-color: #8E7AB5;
+    color: white;
+    border-radius: 20px;
+    flex-direction: column; /* Adiciona layout em coluna para o texto e o botão */
+  }
+  
+  .botaoFechar {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+.cadastro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+    margin-top: 10px;
+    color: white;
+    align-items: center;
+    background-color: var(--purpleMain);
+    border-radius: 20px;
+    width: 500px;
+    height: 500px;
+    flex-direction: column;
+}
+
+.cadastro h2 {
+    margin-top: 10px;
+}
+
+.dentro {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.cadastro button {
+    display: flex;
+    justify-content: center;
+}
+
+
+.botaoCadastro {
+    display: block;
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--purpleMain);
+    color: white;
+    margin-top: 10px;
+    width: auto;
+    height: auto;
+    cursor: pointer;
+    border: none;
+}

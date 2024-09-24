@@ -92,7 +92,7 @@
 
   .button {
     padding: .5rem 2rem;
-    background-color: #8E7AB5;
+    background-color: #7C00FE;
     color: #fff;
     border: none;
     border-radius: 1rem;
@@ -106,6 +106,9 @@
 .button:hover {
   background-color: #D9D9D9;
 }
+  .button:hover {
+    background-color: #8E7AB5;
+  }
 
   .containerInput{
     background-color: #FFFF;

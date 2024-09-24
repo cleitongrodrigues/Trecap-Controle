@@ -3,7 +3,7 @@ const db = require('../database/connection');
 module.exports = {
     async ListarTurma(request, response){
         try {
-            const sql = `SELECT turma_id, turma_descricao FROM Turma;`;
+            const sql = `SELECT turma_id, turma_descricao, turma_ativo FROM Turma;`;
 
             const turma = await db.query(sql)
 
@@ -29,8 +29,8 @@ module.exports = {
             const {turma_descricao} = request.body;
 
             const sql = `INSERT INTO Turma
-                (turma_descricao) 
-                VALUES (?);`;
+                (turma_descricao, turma_ativo) 
+                VALUES (?, ?);`;
 
             const values = [turma_descricao];
 
@@ -53,14 +53,14 @@ module.exports = {
 
     async EditarTurma(request, response){
         try {
-            const {turma_descricao} = request.body;
+            const {turma_descricao, turma_ativo} = request.body;
 
             const {turma_id} = request.params;
 
-            const sql = `UPDATE Turma SET turma_descricao = ?
+            const sql = `UPDATE Turma SET turma_descricao = ?, turma_ativo = ?
                 WHERE turma_id = ?;`;
 
-            const values = [turma_descricao, turma_id];
+            const values = [turma_descricao, turma_ativo , turma_id];
 
             const atualizaDados = await db.query(sql, values);
             return response.status(200).json({
