@@ -22,77 +22,6 @@ export default function CadastrarEvento() {
 
   const telefone = useForm("telefone");
 
-  const CEP = useForm("CEP");
-
-  const rua = useForm("rua");
-
-  const cidade = useForm("cidade");
-
-  const bairro = useForm("bairro");
-
-  const estado = useForm("estado");
-
-  const [numero, setNumero] = useState("");
-  const [erroNumero, setErroNumero] = useState("");
-
-  const [complemento, setComplemento] = useState("");
-  const [erroComplemento, setErroComplemento] = useState("");
-
-  const campo = "Este campo é obrigatório!";
-  const mensagem = "Este campo não deve conter menos que 4 caracteres";
-
-  const getEndereco = async () => {
-    try {
-      const response = await axios.get(
-        `https://viacep.com.br/ws/${CEP.value}/json`
-      );
-      if (response.data.erro) {
-        rua.setValue("");
-        estado.setValue("");
-        bairro.setValue("");
-        cidade.setValue("");
-      } else {
-        rua.setValue(response.data.logradouro);
-        rua.setError(null);
-        estado.setValue(response.data.uf);
-        estado.setError(null);
-        bairro.setValue(response.data.bairro);
-        bairro.setError(null);
-        cidade.setValue(response.data.localidade);
-        cidade.setError(null);
-      }
-    } catch (error) {
-      console.log("Erro ao buscar", error);
-    }
-  };
-
-  useEffect(() => {
-    if (!CEP.error) {
-    }
-  }, [CEP.value]);
-
-  const validaNumero = () => {
-    if (numero.length === 0) {
-      setErroNumero(`${campo} e deve ser maior que zero`);
-      return false;
-    }
-    setErroNumero("");
-    return true;
-  };
-
-  const validaComplemento = () => {
-    if (complemento.length == 0) {
-      setErroComplemento(campo);
-      return false;
-    }
-    if (complemento.length < 4) {
-      setErroComplemento(mensagem);
-      return false;
-    }
-    setErroComplemento("");
-    return true;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault(); // Evita o reload da página
     validaTudo();
@@ -100,41 +29,35 @@ export default function CadastrarEvento() {
     const colaboradorData = {
       colaborador_nome: nome.value,
       colaborador_email: email.value,
-      colaborador_CPF: CPF.value,
+      colaborador_CPF: CPF.value.replace(/[.-]/g, ''),
       colaborador_biometria: biometria.value,
       colaborador_telefone: telefone.value,
-      endereco: {
-        CEP: CEP.value,
-        rua: rua.value,
-        estado: estado.value,
-        bairro: bairro.value,
-        cidade: cidade.value,
-        numero: numero,
-        complemento: complemento,
-      },
+      colaborador_ativo : 1,
+      empresa_id : 1,
+      setor_id : 1
     };
-    try {
-      const response = await axios.post(`http://localhost:3333/Colaboradores`, colaboradorData);
 
-      console.log(response)
+    console.log(colaboradorData)
+    try {
+      const response = await axios.post(`http://localhost:3333/colaboradores`, colaboradorData);
+      console.log(colaboradorData)
+      // console.log(response)
+      CPF.setValue('')
+      email.setValue('')
+      nome.setValue('')
+      biometria.setValue('')
+      telefone.setValue('')
     } catch (error) {
       console.log("Erro ao cadastrar colaborador", error);
     }
   };
 
   const validaTudo = () => {
-    CEP.isValid();
     nome.isValid();
     biometria.isValid();
     telefone.isValid();
-    rua.isValid();
-    estado.isValid();
-    bairro.isValid();
-    cidade.isValid();
     email.isValid();
     CPF.isValid();
-    validaNumero();
-    validaComplemento();
   };
 
   return (

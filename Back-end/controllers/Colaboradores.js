@@ -4,7 +4,7 @@ module.exports = {
     async ListarColaboradores(request, response) {
         try {
             const sql = `SELECT colaborador_id, colaborador_nome, colaborador_CPF, colaborador_biometria, 
-            colaborador_ativo = 1 AS colaborador_ativo = 1, colaborador_telefone, colaborador_email, empresa_id, setor_id 
+            colaborador_ativo = 1 AS colaborador_ativo , colaborador_telefone, colaborador_email, empresa_id, setor_id 
             FROM Colaboradores WHERE colaborador_ativo = 1`;
 
             const colaboradores = await db.query(sql)
@@ -21,7 +21,7 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao listar colaborador',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     },
@@ -48,10 +48,11 @@ module.exports = {
                 dados: colaborador_id
             });
         } catch (error) {
+            console.log(error.message)
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao cadastrar colaborador',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     },
@@ -80,7 +81,7 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao editar colaborador',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     },
@@ -106,7 +107,7 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao apagar colaborador',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     }

@@ -4,15 +4,15 @@ module.exports = {
     async ListarEmpresa(request, response) {
         try {
             const sql = `SELECT empresa_id, empresa_nome, empresa_CNPJ, empresa_telefone, 
-            empresa_email, empresa_ativo = 1 AS empresa_ativo = 1, usu_id FROM Empresa WHERE empresa_ativo = 1`;
+            empresa_email, empresa_ativo = 1 AS empresa_ativo, usu_id FROM Empresa WHERE empresa_ativo = 1`;
 
-            const Empresa = await db.query(sql)
+            const empresa = await db.query(sql)
 
-            const nItens = Empresa[0].length;
+            const nItens = empresa[0].length;
             return response.status(200).json({
                 sucesso: true,
                 mensagem: `Lista de Empresas!`,
-                dados: Empresa[0],
+                dados: empresa[0],
                 nItens
             });
 
@@ -20,7 +20,7 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao listar empresas :(',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     },
@@ -50,7 +50,7 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao cadastrar empresa :(',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     },
@@ -79,7 +79,7 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao editar empresa :(',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     },
@@ -105,7 +105,7 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao apagar empresa :(',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     }

@@ -3,7 +3,8 @@ const db = require('../database/connection');
 module.exports = {
     async ListarRegistros(request, response){
         try {
-            const sql = `SELECT registros_id, registros_presenca, registros_hora_entrada, registros_hora_saida, evento_id, colaborador_id FROM Registros;`;
+            const sql = `SELECT registros_id, registros_presenca = 1 AS registro_presenca, registros_hora_entrada, 
+            registros_hora_saida, evento_id, colaborador_id FROM Registros;`;
 
             const registros = await db.query(sql)
 
@@ -19,7 +20,7 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao listar usuário :(',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     },
@@ -46,7 +47,7 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao cadastrar usuário :(',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     },
@@ -74,7 +75,7 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao editar usuário :(',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     },
@@ -97,7 +98,7 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao apagar usuário',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     }

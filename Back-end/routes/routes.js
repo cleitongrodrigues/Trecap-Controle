@@ -5,6 +5,7 @@ const UsuarioController = require('../controllers/Usuario');
 const ColaboradorController = require('../controllers/Colaboradores');
 const EmpresaController = require('../controllers/Empresa');
 const EventoController = require('../controllers/Eventos');
+const RegistroController = require('../controllers/Registros');
 
 router.get('/Usuario', UsuarioController.ListarUSuario);
 router.post('/Usuario', UsuarioController.CadastrarUsuario);
@@ -25,4 +26,9 @@ router.get('/Evento', EventoController.ListarEvento);
 router.post('/Evento', EventoController.CadastrarEvento);
 router.patch('/Evento/:evento_id', EventoController.EditarEvento);
 router.delete('/Evento/:evento_id', EventoController.ApagarEvento);
+
+router.get('/Registro', RegistroController.ListarRegistros);
+router.post('/Registro', RegistroController.CadastrarRegistros);
+router.patch('/Registro/:registros_id', RegistroController.EditarRegistros);
+router.delete('/Registro/:registros_id', RegistroController.ApagarRegistros);
 module.exports = router;

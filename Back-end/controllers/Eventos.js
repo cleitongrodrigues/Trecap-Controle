@@ -4,7 +4,7 @@ module.exports = {
     async ListarEvento(request, response){
         try {
             const sql = ` SELECT evento_id, evento_nome, evento_data_inicio, 
-            evento_data_termino, evento_local, evento_status = 1 AS evento_status = 1, usu_id, evento_professor FROM Eventos
+            evento_data_termino, evento_local, evento_status = 1 AS evento_status, usu_id, evento_professor FROM Eventos
             WHERE evento_status = 1`;
 
             const evento = await db.query(sql)
@@ -21,7 +21,7 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao listar evento :(',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     },
@@ -49,7 +49,7 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao cadastrar evento :(',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     },
@@ -78,7 +78,7 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao editar evento',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     },
@@ -101,7 +101,7 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao apagar evento :(',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     }
