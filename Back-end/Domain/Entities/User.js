@@ -1,5 +1,5 @@
 export default class User{
-    constructor(userId, name, cpf, userType, status, email, password, telefone, registerDate, adress = null)
+    constructor(userId, name, cpf, userType, status, email, password, telefone, registerDate, companyId)
     {
         this.userId = userId
         this.name = name
@@ -10,7 +10,7 @@ export default class User{
         this.password = password
         this.telefone = telefone
         this.registerDate = registerDate
-        this.adress = adress
+        this.companyId = companyId
     }
 
     cancel(){

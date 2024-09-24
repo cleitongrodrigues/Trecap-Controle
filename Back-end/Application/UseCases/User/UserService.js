@@ -1,15 +1,10 @@
-import Evento from "../../../Domain/Entities/Evento.js"
-import InMemoryUserRepository from "../../../Infrastructure/database/repositories/InMemoryUserRepository.js"
-import InMemoryEventoRepository from "../../../Infrastructure/database/repositories/InMemoryEventoRepository.js"
 import User from "../../../Domain/Entities/User.js"
-import Adress from "../../../Domain/Entities/Adress.js"
-import inMemoryAdressRepository from "../../../Infrastructure/database/repositories/inMemoryAdressRepository.js"
+import userRepository from "../../../Infrastructure/database/repositories/userRepository.js"
+
 
 class UserService {
-    constructor(repository, repositoryEvento, repositoryAdress) {
+    constructor(repository) {
         this.repository = repository
-        this.repositoryEvento = repositoryEvento
-        this.repositoryAdress = repositoryAdress
     }
 
     async createUser(input) {
@@ -21,13 +16,9 @@ class UserService {
 
         const userID = await this.repository.count() + 1
 
-        const adressId = await this.repository.count() + 1
-
-        const adressInfo = input.adress
-        const adress = new Adress(adressId, adressInfo.logradouro, adressInfo.numero, adressInfo.complemento, adressInfo.bairro, adressInfo.cidade, adressInfo.estado, adressInfo.cep)
         const user = new User(userID, input.name, input.cpf, input.userType, input.status, input.email, input.password, input.telefone, input.registerDate, adress)
         await this.repository.save(user)
-
+        
         return user
     }
 
@@ -65,4 +56,4 @@ class UserService {
     }
 }
 
-export default new UserService(InMemoryUserRepository, InMemoryEventoRepository, inMemoryAdressRepository)
+export default new UserService(userRepository)
