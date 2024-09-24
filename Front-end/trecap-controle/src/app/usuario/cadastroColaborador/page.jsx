@@ -150,13 +150,6 @@ export default function CadastrarEvento() {
                 <div className={style.CentralizaDados}>
                   <div className={style.DadosPessoais}>
                     <label>Nome do colaborador:</label>
-                    {/* <Input
-                     inputPlaceholderText='Nome'
-                     name='nome'
-                     labelText='Nome:'
-                     typeInput='text'
-                     {...nome}
-                   /> */}
                     <input
                       type="text"
                       value={nome.value}
@@ -264,169 +257,13 @@ export default function CadastrarEvento() {
                         {telefone.error}
                       </p>
                     )}
-                  </div>
-                </div>
-              </form>
-            </div>
-            <div className={style.FormEndereco}>
-              <form onSubmit={handleSubmit}>
-                <div className={style.Teste}>
-                  <label className={style.Titulos}>Endereço</label>
-                </div>
-                <div className={style.CentralizaEndereco}>
-                  <div className={style.DadosEndereco}>
-                    <label>CEP:</label>
-                    <InputMask
-                      mask="99999-999"
-                      value={CEP.value}
-                      onChange={CEP.onChange}
-                      onBlur={async () => {
-                        CEP.onBlur();
-                        if (CEP.isValid()) {
-                          await getEndereco();
-                        }
-                      }}
-                      placeholder="Digite o CEP"
-                    />
-                    {CEP.error && (
-                      <p
-                        style={{
-                          color: "red",
-                          marginBottom: "1rem",
-                          fontStyle: "italic",
-                          fontSize: "1rem",
-                        }}
-                      >
-                        {CEP.error}
-                      </p>
-                    )}{" "}
-                    {/* Exibe a mensagem de erro */}
-                    <label>Rua:</label>
-                    <input
-                      type="text"
-                      value={rua.value}
-                      onChange={rua.onChange}
-                      onBlur={rua.onBlur}
-                      placeholder="Digite o nome da Rua"
-                    />
-                    {rua.error && (
-                      <p
-                        style={{
-                          color: "red",
-                          marginBottom: "1rem",
-                          fontStyle: "italic",
-                          fontSize: "1rem",
-                        }}
-                      >
-                        {rua.error}
-                      </p>
-                    )}{" "}
-                    {/* Exibe a mensagem de erro */}
-                    <label>Estado:</label>
-                    <input
-                      type="text"
-                      value={estado.value}
-                      onChange={estado.onChange}
-                      onBlur={estado.onBlur}
-                      placeholder="Nome do Estado"
-                    />
-                    {estado.error && (
-                      <p
-                        style={{
-                          color: "red",
-                          marginBottom: "1rem",
-                          fontStyle: "italic",
-                          fontSize: "1rem",
-                        }}
-                      >
-                        {estado.error}
-                      </p>
-                    )}{" "}
-                    {/* Exibe a mensagem de erro */}
-                    <label>Bairro:</label>
-                    <input
-                      type="text"
-                      value={bairro.value}
-                      onChange={bairro.onChange}
-                      onBlur={bairro.onBlur}
-                      placeholder="Digite o nome do Bairro"
-                    />
-                    {bairro.error && (
-                      <p
-                        style={{
-                          color: "red",
-                          marginBottom: "1rem",
-                          fontStyle: "italic",
-                          fontSize: "1rem",
-                        }}
-                      >
-                        {bairro.error}
-                      </p>
-                    )}{" "}
-                    {/* Exibe a mensagem de erro */}
-                  </div>
-                  <div className={style.DadosEndereco}>
-                    <label>Cidade:</label>
-                    <input
-                      type="text"
-                      value={cidade.value}
-                      onChange={cidade.onChange}
-                      onBlur={cidade.onBlur}
-                      placeholder="Nome da Cidade"
-                    />
-                    {cidade.error && (
-                      <p
-                        style={{
-                          color: "red",
-                          marginBottom: "1rem",
-                          fontStyle: "italic",
-                          fontSize: "1rem",
-                        }}
-                      >
-                        {cidade.error}
-                      </p>
-                    )}{" "}
-                    {/* Exibe a mensagem de erro */}
-                    <label>Número:</label>
-                    <input
-                      type="text"
-                      value={numero}
-                      onChange={({ target }) => setNumero(target.value)}
-                      onBlur={validaNumero}
-                      placeholder="Ex: 01"
-                    />
-                    {erroNumero && (
-                      <p
-                        style={{
-                          color: "red",
-                          marginBottom: "1rem",
-                          fontStyle: "italic",
-                          fontSize: "1rem",
-                        }}
-                      >
-                        {erroNumero}
-                      </p>
-                    )}
-                    <label>Complemento:</label>
-                    <input
-                      type="text"
-                      value={complemento}
-                      onChange={({ target }) => setComplemento(target.value)}
-                      // onBlur={validaComplemento}
-                      placeholder="Ex: Casa, Apto"
-                    />
-                    {erroComplemento && (
-                      <p
-                        style={{
-                          color: "red",
-                          marginBottom: "1rem",
-                          fontStyle: "italic",
-                          fontSize: "1rem",
-                        }}
-                      >
-                        {erroComplemento}
-                      </p>
-                    )}
+                    {/* <label>Empresa:</label>
+                    <select name="" id="">
+                      <option>Selecione a Empresa</option>
+                      <option>Usa</option>
+                      <option>Canada</option>
+                      <option>Mexico</option>
+                    </select> */}
                   </div>
                 </div>
               </form>
