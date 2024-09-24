@@ -41,7 +41,7 @@ export default function CadastrarEvento() {
     try {
       const response = await axios.post(`http://localhost:3333/colaboradores`, colaboradorData);
       console.log(colaboradorData)
-      // console.log(response)
+  
       CPF.setValue('')
       email.setValue('')
       nome.setValue('')
@@ -63,13 +63,13 @@ export default function CadastrarEvento() {
   return (
     <>
       <CabecalhoLogado />
+      <div className={style.CorCinza}>
       <div className={style.ContainerGeral}>
         <div className={style.Container}>
-          <h1>Cadastro de Colaboradores</h1>
+          {/* <h1>Cadastro de Colaboradores</h1> */}
           <div className={style.ContainerTudo}>
             <div className={style.FormDados}>
               <form onSubmit={handleSubmit}>
-                <label className={style.Titulos}>Dados pessoais</label>
                 <div className={style.CentralizaDados}>
                   <div className={style.DadosPessoais}>
                     <label>Nome do colaborador:</label>
@@ -180,13 +180,6 @@ export default function CadastrarEvento() {
                         {telefone.error}
                       </p>
                     )}
-                    {/* <label>Empresa:</label>
-                    <select name="" id="">
-                      <option>Selecione a Empresa</option>
-                      <option>Usa</option>
-                      <option>Canada</option>
-                      <option>Mexico</option>
-                    </select> */}
                   </div>
                 </div>
               </form>
@@ -194,13 +187,25 @@ export default function CadastrarEvento() {
             <div className={style.ContainerButton}>
               <button
                 type="submit"
-                className={style.Button}
+                className={style.ButtonCadastrar}
                 onClick={handleSubmit}
               >
                 Cadastrar
               </button>
+              <button
+                type="submit"
+                className={style.ButtonCancelar}
+                onClick={handleSubmit}
+              >
+                Cancelar
+              </button>
+            </div>
+            <div className={style.Novo}> 
+              <label htmlFor="">Pesquisar Colaboradores:</label>
+              <input type="text" name="" id="" placeholder="Digite o nome do Colaborador"/>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </>

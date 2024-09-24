@@ -8,17 +8,18 @@
 .ContainerGeral {
   display: flex;
   justify-content: center;
-  margin-top: 3rem;
+  margin-top: 1rem;
 }
 .Container {
   display: flex;
   flex-direction: column;
-  background-color: #d5bfff;
+  background-color: white;
   justify-content: center;
   min-width: 60%;
   align-items: center;
   border-radius: 1rem;
   gap: 1rem;
+  margin-top: 2rem;
 }
 .Container h1 {
   color: white;
@@ -80,6 +81,7 @@
   flex-direction: column;
 }
 .Container input {
+  background-color: rgb(236, 231, 231);
   border-radius: 0.5rem;
   border: none;
   height: 2rem;
@@ -90,24 +92,55 @@
 .Container input:focus {
   outline: none;
 }
-.Button {
+.ButtonCadastrar {
   border: none;
-  background-color: var(--purpleButton);
+  background-color: green;
   color: white;
-  font-weight: bold;
+  font-weight: 400;
   font-size: 1.5rem;
   border-radius: 0.325rem;
-  padding: 0.5rem 2rem;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  margin-bottom: 2rem;
+}
+.ButtonCancelar {
+  border: none;
+  background-color: red;
+  color: white;
+  font-weight: 400;
+  font-size: 1.5rem;
+  border-radius: 0.325rem;
+  padding: 1rem 2rem;
   cursor: pointer;
   margin-bottom: 2rem;
 }
 
 .ContainerButton {
   display: flex;
-  justify-content: center;
+  justify-content: right;
+  gap: 1rem;
   padding: 3rem 0rem 0rem;
+  border-top: solid 1px rgb(218, 215, 215);  
 }
 .Teste {
   display: flex;
   padding: 2rem 0rem;
+}
+.CorCinza{
+  min-width: 100rem;
+  min-height: 50rem;
+  background-color:gray;
+}
+.Novo{
+  padding-top: 2rem;
+  border-top: solid 1px rgb(218, 215, 215);  
+}
+.Novo input{
+  background-color: rgb(236, 231, 231);
+  border-radius: 0.5rem;
+  border: none;
+  height: 2rem;
+  margin: 1rem 0rem;
+  padding: 1.5rem;
+  min-width: 100%;
 }
