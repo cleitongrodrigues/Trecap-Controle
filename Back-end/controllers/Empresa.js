@@ -3,9 +3,8 @@ const db = require('../database/connection');
 module.exports = {
     async ListarEmpresa(request, response) {
         try {
-            const sql = `SELECT empresa_id, empresa_nome, empresa_CNPJ, empresa_endereco, 
-            empresa_telefone, empresa_email, empresa_ativo = 1 AS empresa_ativo, usu_id FROM Empresa
-            WHERE empresa_ativo = 1`;
+            const sql = `SELECT empresa_id, empresa_nome, empresa_CNPJ, empresa_telefone, 
+            empresa_email, empresa_ativo = 1 AS empresa_ativo = 1, usu_id FROM Empresa WHERE empresa_ativo = 1`;
 
             const Empresa = await db.query(sql)
 
@@ -28,16 +27,16 @@ module.exports = {
 
     async CadastrarEmpresa(request, response) {
         try {
-            const { empresa_nome, empresa_CNPJ, empresa_endereco, 
-                empresa_telefone, empresa_email, empresa_ativo, usu_id } = request.body;
+            const { empresa_nome, empresa_CNPJ, empresa_telefone,
+                empresa_email, empresa_ativo, usu_id } = request.body;
 
             const sql = `INSERT INTO Empresa
-                (empresa_nome, empresa_CNPJ, empresa_endereco, 
-            empresa_telefone, empresa_email, empresa_ativo, usu_id) 
-                VALUES (?, ?, ?, ?, ?, ?, ?);`;
+                (empresa_nome, empresa_CNPJ, empresa_telefone, 
+            empresa_email, empresa_ativo, usu_id) 
+                VALUES (?, ?, ?, ?, ?, ?);`;
 
-            const values = [empresa_nome, empresa_CNPJ, empresa_endereco, 
-                empresa_telefone, empresa_email, empresa_ativo, usu_id];
+            const values = [empresa_nome, empresa_CNPJ, empresa_telefone,
+                empresa_email, empresa_ativo, usu_id];
 
             const execSql = await db.query(sql, values);
 
@@ -58,17 +57,17 @@ module.exports = {
 
     async EditarEmpresa(request, response) {
         try {
-            const { empresa_nome, empresa_CNPJ, empresa_endereco, 
-                empresa_telefone, empresa_email, empresa_ativo, usu_id } = request.body;
+            const { empresa_nome, empresa_CNPJ, empresa_telefone,
+                empresa_email, empresa_ativo, usu_id } = request.body;
 
             const { empresa_id } = request.params;
 
-            const sql = `UPDATE Empresa SET empresa_nome = ?, empresa_CNPJ = ?, empresa_endereco = ?, 
-            empresa_telefone = ?, empresa_email = ?, empresa_ativo = ?, usu_id = ?
+            const sql = `UPDATE Empresa SET empresa_nome = ?, empresa_CNPJ = ?, empresa_telefone = ?, 
+                empresa_email = ?, empresa_ativo = ?, usu_id = ?
                 WHERE empresa_id = ?;`;
 
-            const values = [empresa_nome, empresa_CNPJ, empresa_endereco, 
-                empresa_telefone, empresa_email, empresa_ativo, usu_id, empresa_id];
+            const values = [empresa_nome, empresa_CNPJ, empresa_telefone,
+                empresa_email, empresa_ativo, usu_id, empresa_id];
 
             const atualizaDados = await db.query(sql, values);
             return response.status(200).json({
