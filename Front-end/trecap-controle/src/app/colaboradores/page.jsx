@@ -1,15 +1,15 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import styles from "./page.module.css"; // Importa a estilização
+import styles from "./page.module.css";
 import CabecalhoLogado from "@/CabecalhoLogado/page";
 
 export default function Colaboradores() {
     const [colaboradores, setColaboradores] = useState([]);
     const [colaboradoresFiltrados, setColaboradoresFiltrados] = useState([]);
     const [filtro, setFiltro] = useState(""); // Valor da pesquisa
-    const [setorSelecionado, setSetorSelecionado] = useState(""); // Valor do setor selecionado
-    const [setores, setSetores] = useState([]); // Lista de setores
+    const [setorSelecionado, setSetorSelecionado] = useState(""); 
+    const [setores, setSetores] = useState([]); 
 
     // Simulando a busca dos participantes cadastrados
     useEffect(() => {
