@@ -1,4 +1,4 @@
-// components/MenuLateral.js
+
 import Link from "next/link";
 import { IconContext } from "react-icons";
 import { MdCalendarMonth, MdHourglassBottom, MdEventNote, MdPeople, MdSettings, MdAccountCircle } from "react-icons/md";
