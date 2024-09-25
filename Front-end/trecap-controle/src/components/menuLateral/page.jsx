@@ -47,7 +47,7 @@ const MenuLateral = () => {
             </div>
             <div className={styles.Perfil}>
               <Link href="/perfil">
-                <MdAccountCircle /> {nomeColaborador || "Nome"} {/* Aqui vai o nome */}
+                <MdAccountCircle /> {nomeColaborador && "Nome"} {/* Aqui vai o nome */}
               </Link>
             </div>
             <Link href="/eventos">
