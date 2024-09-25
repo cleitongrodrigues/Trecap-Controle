@@ -34,7 +34,19 @@ export const UsuarioController = {
 
     async CadastrarUsuario(request, response) {
         try {
-            const newUser = await UserService.createUser(request.body)
+            const{ usu_nome, usu_cpf, tipo_usuario_id, usu_email, usu_senha, usu_telefone, empresa_id }  = request.body
+
+            
+            const inputCreateUser = {
+                name: usu_nome,
+                email: usu_email,
+                cpf: usu_cpf,
+                userTpe: tipo_usuario_id,
+                password: usu_senha,
+                telefone: usu_telefone,
+                companyId: empresa_id
+            }
+            const newUser = await UserService.createUser(inputCreateUser)
 
             return response.status(201).json({
                 mensagem: `Usuário ${newUser.userID} cadastrado com sucesso!`,

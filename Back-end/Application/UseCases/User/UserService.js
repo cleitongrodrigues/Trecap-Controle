@@ -16,7 +16,7 @@ class UserService {
 
         const userID = await this.repository.count() + 1
 
-        const user = new User(userID, input.name, input.cpf, input.userType, input.status, input.email, input.password, input.telefone, input.registerDate, adress)
+        const user = new User(userID, input.name, input.cpf, 1, 1, input.email, input.password, input.telefone, new Date(input.registerDate), input.companyId)
         await this.repository.save(user)
         
         return user
