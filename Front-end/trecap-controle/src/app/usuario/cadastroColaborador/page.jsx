@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import useForm from "@/hooks/useForm";
 import { MdSearch, MdEdit, MdDelete } from "react-icons/md";
 import { IconContext } from "react-icons";
+import MenuLateral from "@/components/menuLateral/page";
 
 export default function CadastrarEvento() {
   const router = useRouter();
@@ -117,7 +118,8 @@ export default function CadastrarEvento() {
 
   return (
     <>
-      <CabecalhoLogado />
+      {/* <CabecalhoLogado /> */}
+      <MenuLateral/>
       <div className={style.CorCinza}>
         <div className={style.ContainerGeral}>
           <div className={style.Container}>

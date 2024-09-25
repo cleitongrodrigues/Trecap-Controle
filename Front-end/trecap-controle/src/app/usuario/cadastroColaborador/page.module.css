@@ -8,8 +8,8 @@
 .ContainerGeral {
   display: flex;
   justify-content: center;
-  margin-top: 1rem;
   min-height: 100vh;
+  margin-left: 5rem;
 }
 .Container {
   display: flex;
@@ -20,7 +20,7 @@
   align-items: center;
   border-radius: 1rem;
   gap: 1rem;
-  margin-top: 2rem;
+  margin: 2rem;
 }
 .Container h1 {
   color: white;

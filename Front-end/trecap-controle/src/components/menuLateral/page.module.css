@@ -1,13 +1,14 @@
 /* CSS para o menu lateral */
 .menuLateral {
-    width: 250px;
-    background-color: var(--purple-300);
+    min-width: 270px;
+    background-color: rgb(7, 7, 59);
     padding: 2rem;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 80px); /* Ajuste da altura para não cobrir o cabeçalho */
-    position: relative;
+    min-height: 100vh; 
+    position: fixed;
+    left: 0;
 }
 
 .menuItems {
@@ -54,4 +55,33 @@
 
 .menuFooter a svg {
     font-size: 2rem;
+}
+
+/* Teste */
+.logo{
+    display: flex;
+    align-items: center;
+    margin-bottom: 5rem;
+}
+.logo svg{
+    color: white;
+}
+.logo a{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    text-decoration: none;
+}
+.logoTexto{
+    color: white;
+    font-weight: 700;
+    font-size: 2rem;
+}
+.logoImage{
+    max-width: 100%;
+    height: auto;
+    width: 2.5rem;
+}
+.Perfil{
+    margin-bottom: 5rem;
 }
