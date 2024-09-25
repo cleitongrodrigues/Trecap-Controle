@@ -4,25 +4,25 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import ptLocale from '@fullcalendar/core/locales/pt-br'; // Importa o locale em português
-import { format } from "date-fns"; // para formatar datas
+import ptLocale from '@fullcalendar/core/locales/pt-br'; 
+import { format } from "date-fns"; 
 import CabecalhoLogado from '@/cabecalhoLogado/page';
-import CustomModal from "../components/ModalCalendar/customModal"; // Importar o componente do modal corretamente
+import CustomModal from "../components/ModalCalendar/customModal";
 
-import './calendar.css'; // Importar o css personalizado
+import './calendar.css'; 
 
 export default function HomePage() {
-  // Estado para gerenciar os eventos
+  
   const [events, setEvents] = useState([
     { id: 1, title: "Evento 1", start: "2024-09-17", end: "2024-09-19" },
     { id: 2, title: "Evento 2", start: "2024-09-20", allDay: true },
   ]);
 
-  // Estado para gerenciar a abertura e fechamento do modal
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
 
-  // Função para lidar com a criação de eventos ao selecionar datas
+  
   const handleDateSelect = (selectInfo) => {
     setSelectedDate(selectInfo); // Armazena a data selecionada
     setIsModalOpen(true); // Abre o modal
