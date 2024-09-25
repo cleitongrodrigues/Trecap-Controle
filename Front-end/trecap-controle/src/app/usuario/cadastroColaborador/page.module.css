@@ -9,6 +9,7 @@
   display: flex;
   justify-content: center;
   margin-top: 1rem;
+  min-height: 100vh;
 }
 .Container {
   display: flex;
@@ -132,10 +133,22 @@
   background-color:gray;
 }
 .Novo{
+  position: relative;
   padding-top: 2rem;
   border-top: solid 1px rgb(218, 215, 215);  
 }
-.Novo input{
+
+
+.ContainerDivs, 
+.ContainerCabecalho{
+  display: grid;
+  grid-template-columns: 2rem repeat(3, 1fr);
+}
+.InputIcon{
+  position: relative;
+}
+
+.InputIcon input{
   background-color: rgb(236, 231, 231);
   border-radius: 0.5rem;
   border: none;
@@ -143,4 +156,14 @@
   margin: 1rem 0rem;
   padding: 1.5rem;
   min-width: 100%;
+  box-sizing: border-box;
+  font-size: 1.6rem;
+}
+
+.InputIcon svg{
+  position: absolute;
+  top: 2.8rem;
+  right: 5px; 
+  font-size: 20px; 
+  pointer-events: none;
 }
