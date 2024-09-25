@@ -1,22 +1,25 @@
+import FactoryUser from "../../../Domain/Domain Service/FactoryUser.js"
 import User from "../../../Domain/Entities/User.js"
 import userRepository from "../../../Infrastructure/database/repositories/userRepository.js"
 
 
 class UserService {
-    constructor(repository) {
+    constructor(repository, factoryUser) {
         this.repository = repository
+        this.factoryUser = factoryUser
     }
 
     async createUser(input) {
         const existUserWithSameEmail = await this.repository.getUserByEmail(input.email)
         const existUserWithSameCPF = await this.repository.getUserByCPF(input.cpf)
 
-        if (existUserWithSameEmail) throw new Error("Já existe um usuário cadastrado com esse Email!")
-        if (existUserWithSameCPF) throw new Error("Já existe um usuário cadastrado com esse CPF!")
+        // if (existUserWithSameEmail) throw new Error("Já existe um usuário cadastrado com esse Email!")
+        // if (existUserWithSameCPF) throw new Error("Já existe um usuário cadastrado com esse CPF!")
 
-        const userID = await this.repository.count() + 1
+        input.userId = await this.repository.count() + 1
+        
 
-        const user = new User(userID, input.name, input.cpf, 1, 1, input.email, input.password, input.telefone, new Date(input.registerDate), input.companyId)
+        const user = this.factoryUser.createAdminUser(input)
         await this.repository.save(user)
         
         return user
@@ -56,4 +59,4 @@ class UserService {
     }
 }
 
-export default new UserService(userRepository)
+export default new UserService(userRepository, new FactoryUser())

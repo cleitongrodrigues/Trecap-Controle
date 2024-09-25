@@ -1,49 +1,123 @@
+import FactoryUser from "../../Domain/Domain Service/FactoryUser"
 import User from "../../Domain/Entities/User"
 
+describe("Teste de criação do usuario", () => {
+    test("Cria um usuario", async () => {
+        const userInfo = {
+            userId: 1,
+            name: "João Pedro",
+            cpf: "98765432189",
+            email: "joao@pedro.com",
+            password: 'JP123',
+            telefone: "11987654341",
+            registerDate: "2024-11-12",
+            companyId: 1
+        }
+        const factoryUser = new FactoryUser()
 
-test("Cria um usuario", async ()=>{
-    const userInfo = {
-        name: "João Pedro",
-        cpf: "98765432189",
-        userType: 1,
-        status: 1,
-        email: "joao@pedro.com",
-        password: 'JP123',
-        telefone: "11987654341",
-        registerDate: "2024-11-12",
-        companyId : 1
-    }
+        const newUser = factoryUser.createAdminUser(userInfo)
 
-    const newUser = new User(1, userInfo.name, userInfo.cpf, userInfo.userType, userInfo.status, userInfo.email, userInfo.password, userInfo.telefone, new Date(userInfo.registerDate), userInfo.companyId)
-
-    expect(newUser).toMatchObject({userId: 1, companyId : 1})
+        expect(newUser).toMatchObject({
+            userId: 1,
+            name: "João Pedro",
+            cpf: "98765432189",
+            userType: 1,
+            status: 1,
+            email: "joao@pedro.com",
+            password: 'JP123',
+            telefone: "11987654341",
+            registerDate: new Date("2024-11-12"),
+            companyId: 1,
+            companyId: 1
+        })
+    })
 })
 
-test("Cria um colaborador", async () => {
-    const userInfo = {
-        name: "João Pedro",
-        cpf: "98765432189",
-        userType: 1,
-        status: 1,
-        email: "joao@pedro.com",
-        password: 'JP123',
-        telefone: "11987654341",
-        registerDate: "2024-11-12",
-        companyId : 1
-    }
 
-    const newUser = new User(1, userInfo.name, userInfo.cpf, userInfo.userType, userInfo.status, userInfo.email, userInfo.password, userInfo.telefone, new Date(userInfo.registerDate), userInfo.companyId)
+describe("Teste das ações do usuário", () => {
+    test("Cria um colaborador a partir de um usuário", async () => {
+        const userInfo = {
+            userId: 1,
+            name: "João Pedro",
+            cpf: "98765432189",
+            email: "joao@pedro.com",
+            password: 'JP123',
+            telefone: "11987654341",
+            registerDate: "2024-11-12",
+            companyId: 1
+        }
 
-    const employeeInfo ={
-        employeeId :1,
-        name : "Carlos Albuquerque",
-        cpf : "212334234",
-        biometria : "biometriateste",
-        telefone :"149923094329",
-        email : "carlos@email.com",
-    }
+        const factoryUser = new FactoryUser()
 
-    const newEmployee = newUser.registerEmployee(employeeInfo)
+        const newUser = factoryUser.createAdminUser(userInfo)
+        const employeeInfo = {
+            employeeId: 1,
+            name: "Carlos Albuquerque",
+            cpf: "212334234",
+            biometria: "biometriateste",
+            telefone: "149923094329",
+            email: "carlos@email.com",
+        }
 
-    expect(newEmployee).toMatchObject({companyId: newUser.companyId, active: 1})
+        const newEmployee = newUser.registerEmployee(employeeInfo)
+
+        expect(newEmployee).toMatchObject({ companyId: 1, active: 1 })
+    })
+
+    test("Cria um evento a partir de um usuário", () => {
+        const userInfo = {
+            userId: 1,
+            name: "João Pedro",
+            cpf: "98765432189",
+            email: "joao@pedro.com",
+            password: 'JP123',
+            telefone: "11987654341",
+            registerDate: "2024-11-12",
+            companyId: 1
+        }
+
+        const factoryUser = new FactoryUser()
+
+        const user = factoryUser.createAdminUser(userInfo)
+
+        const eventoInfo = {
+            eventoId : 1,
+            name : "Treinamento de utilização de EPI's",
+            dateStartTime : "2024-04-01",
+            dateEndTime : "2024-04-02",
+            local : "Amenco",
+        }
+
+        const newEvento = user.registerEvento(eventoInfo)
+
+        expect(newEvento).toMatchObject({userId: 1, eventoId: 1, local: "Amenco", name:"Treinamento de utilização de EPI's"})
+
+    })
+
+    test("Cria um evento inválido a partir de um usuário", () => {
+        const userInfo = {
+            userId: 1,
+            name: "João Pedro",
+            cpf: "98765432189",
+            email: "joao@pedro.com",
+            password: 'JP123',
+            telefone: "11987654341",
+            registerDate: "2024-11-12",
+            companyId: 1
+        }
+
+        const factoryUser = new FactoryUser()
+
+        const user = factoryUser.createAdminUser(userInfo)
+
+        const eventoInfo = {
+            eventoId : 1,
+            name : "Treinamento de utilização de EPI's",
+            dateStartTime : "2024-04-12",
+            dateEndTime : "2024-04-02",
+            local : "Amenco",
+        }
+
+        expect(()=>user.registerEvento(eventoInfo)).toThrow()
+    })
 })

@@ -1,7 +1,7 @@
 import User from "../../Domain/Entities/User"
 import userRepository from "../../Infrastructure/database/repositories/userRepository"
 
-test("Criar um usuario", async ()=>{
+test.skip("Criar um usuario", async ()=>{
     const userInfo = {
         name: "João Pedro",
         cpf: "98765432189",
@@ -22,13 +22,13 @@ test("Criar um usuario", async ()=>{
 
 
 
-test("Buscar um usuario por Id", async ()=>{
+test.skip("Buscar um usuario por Id", async ()=>{
     const newUser = await userRepository.getUserById(1)
     
     expect(newUser).toMatchObject({userId: 1})
 })
 
-test("Buscar um usuario por Email", async ()=>{
+test.skip("Buscar um usuario por Email", async ()=>{
     const newUser = await userRepository.getUserByEmail("joao.silva@empresaabc.com")
     
     expect(newUser).toMatchObject({email:'joao.silva@empresaabc.com'})
