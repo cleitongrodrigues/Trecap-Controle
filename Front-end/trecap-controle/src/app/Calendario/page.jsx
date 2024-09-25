@@ -14,40 +14,44 @@ import './calendar.css';
 export default function HomePage() {
   
   const [events, setEvents] = useState([
-    { id: 1, title: "Evento 1", start: "2024-09-17", end: "2024-09-19" },
-    { id: 2, title: "Evento 2", start: "2024-09-20", allDay: true },
+    { id: 1, title: "Evento 1", start: "2024-09-17", end: "2024-09-19", professor: "Prof. A", description: "Descrição do Evento 1" },
+    { id: 2, title: "Evento 2", start: "2024-09-20", allDay: true, professor: "Prof. B", description: "Descrição do Evento 2" },
   ]);
-
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
 
-  
   const handleDateSelect = (selectInfo) => {
     setSelectedDate(selectInfo); // Armazena a data selecionada
     setIsModalOpen(true); // Abre o modal
   };
 
   // Função para adicionar o evento
-  const handleAddEvent = (title) => {
+  const handleAddEvent = (eventData) => {
     let calendarApi = selectedDate.view.calendar;
-
+  
     calendarApi.unselect(); // limpar seleção
-
-    if (title) {
-      // Adicionar novo evento
+  
+    if (eventData.title) {
       const newEvent = {
         id: Date.now(),
-        title,
+        title: eventData.title,
         start: selectedDate.startStr,
         end: selectedDate.endStr,
         allDay: selectedDate.allDay,
+        professor: eventData.professor, // Armazena o professor
+        description: eventData.description // Armazena a descrição
       };
       setEvents([...events, newEvent]);
     }
-    setIsModalOpen(false); // Fecha o modal após adicionar o evento
+    setIsModalOpen(false);
   };
 
+  // Função para excluir eventos
+  const handleDeleteEvent = (id) => {
+    setEvents(events.filter(event => event.id !== id));
+  };
+  
   // Função para lidar com drag and drop dos eventos
   const handleEventDrop = (dropInfo) => {
     const { id, startStr, endStr } = dropInfo.event;
@@ -62,8 +66,13 @@ export default function HomePage() {
   const renderEventList = () => {
     return events.map((event) => (
       <li key={event.id}>
-        {event.title} - {format(new Date(event.start), "dd/MM/yyyy")}{" "}
-        {event.end ? `até ${format(new Date(event.end), "dd/MM/yyyy")}` : ""}
+        <strong>{event.title}</strong> - {format(new Date(event.start), "dd/MM/yyyy")}{" "}
+        {event.end ? `até ${format(new Date(event.end), "dd/MM/yyyy")}` : ""}<br />
+        <em>Professor: {event.professor}</em><br />
+        <p>{event.description}</p>
+        <button onClick={() => handleDeleteEvent(event.id)} className="delete-btn">
+          Excluir
+        </button>
       </li>
     ));
   };
@@ -77,19 +86,19 @@ export default function HomePage() {
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
             initialView="dayGridMonth"
             events={events}
-            editable={true} // habilitar arrastar e soltar
-            selectable={true} // habilitar seleção de datas
+            editable={true}
+            selectable={true}
             selectMirror={true}
             droppable={true}
-            select={handleDateSelect} // ao selecionar datas
-            eventDrop={handleEventDrop} // ao arrastar e soltar eventos
-            eventClick={(info) => alert(info.event.title)} // interação ao clicar em eventos
+            select={handleDateSelect}
+            eventDrop={handleEventDrop}
+            eventClick={(info) => alert(info.event.title)}
             headerToolbar={{
               left: 'prev,next today',
               center: 'title',
               right: 'dayGridMonth,timeGridWeek,timeGridDay'
             }}
-            locale={ptLocale} // Define o idioma para português
+            locale={ptLocale}
             themeSystem="bootstrap"
             contentHeight="auto"
             buttonText={{
@@ -100,17 +109,18 @@ export default function HomePage() {
             }}
             eventContent={(eventInfo) => (
               <div className="event-content">
-                {eventInfo.event.title}
+                <strong>{eventInfo.event.title}</strong><br />
+                <em>{eventInfo.event.extendedProps.professor}</em><br />
+                <p>{eventInfo.event.extendedProps.description}</p>
               </div>
             )}
-            eventStyle={(event) => ({
+            eventStyle={() => ({
               backgroundColor: '#7f00ff',
               borderColor: '#7f00ff'
             })}
           />
         </div>
 
-        {/* Lista de eventos na lateral direita */}
         <div className="event-list">
           <h2>Lista de Eventos</h2>
           <ul>
@@ -123,7 +133,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Modal Customizado */}
       <CustomModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

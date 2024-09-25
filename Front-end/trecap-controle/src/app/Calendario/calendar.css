@@ -159,3 +159,28 @@
   background-color: #999;
 }
 
+
+.delete-btn {
+  background-color: #ff4d4d; 
+  color: white; 
+  border: none; 
+  padding: 8px 12px; 
+  border-radius: 4px; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease; 
+  font-size: 14px; 
+  font-weight: bold; 
+}
+
+.delete-btn:hover {
+  background-color: #ff1a1a; 
+}
+
+.delete-btn:active {
+  background-color: #cc0000; 
+}
+
+.delete-btn:focus {
+  outline: none; 
+  box-shadow: 0 0 0 3px rgba(255, 77, 77, 0.5); 
+}

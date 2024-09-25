@@ -7,8 +7,9 @@ export default function CustomModal({ isOpen, onClose, onConfirm }) {
     event.preventDefault();
     const title = event.target.elements.title.value;
     const professor = event.target.elements.professor.value;
+    const description = event.target.elements.description.value;
 
-    onConfirm({ title, professor }); // Passe o título e o nome do professor
+    onConfirm({ title, professor, description }); // Passa o título, professor e descrição
   };
 
   return (
@@ -26,6 +27,11 @@ export default function CustomModal({ isOpen, onClose, onConfirm }) {
             type="text"
             name="professor"
             placeholder="Nome do professor"
+            className="modal-input"
+          />
+          <textarea
+            name="description"
+            placeholder="Descrição do evento"
             className="modal-input"
           />
           <div className="modal-actions">
