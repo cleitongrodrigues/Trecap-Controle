@@ -7,38 +7,46 @@ import axios from "axios";
 import InputMask from "react-input-mask";
 import { useRouter } from "next/navigation";
 import useForm from "@/hooks/useForm";
-import Input from "@/components/Input";
-import { MdSearch } from "react-icons/md";
+import { MdSearch, MdEdit, MdDelete } from "react-icons/md";
 import { IconContext } from "react-icons";
 
 export default function CadastrarEvento() {
   const router = useRouter();
 
-  const [lista, setlista] = useState([]);
+  const [lista, setLista] = useState([]);
+  const [showModal, setShowModal] = useState(false); // Estado para controlar o modal de edição
+  const [showDeleteModal, setShowDeleteModal] = useState(false); // Estado para o modal de exclusão
+  const [selectedColaborador, setSelectedColaborador] = useState(null); // Colaborador a ser editado
+  const [colaboradorToDelete, setColaboradorToDelete] = useState(null); // Colaborador a ser excluído
 
   const nome = useForm("nome");
-
   const email = useForm("email");
-
   const CPF = useForm("CPF");
-
   const biometria = useForm("biometria");
-
   const telefone = useForm("telefone");
-  const getColaboradores = async () =>{
-    const response = await axios.get(`http://localhost:3333/colaboradores`) 
 
+  const getColaboradores = async () => {
+    const response = await axios.get(`http://localhost:3333/colaboradores`);
     const dadosColaboradores = response.data.dados;
-
-    setlista(dadosColaboradores);
-  }
+    setLista(dadosColaboradores);
+  };
 
   useEffect(() => {
-    getColaboradores()
-  }, [])
+    getColaboradores();
+  }, []);
+
+  const handleCancelar = () => {
+    CPF.setValue("");
+    email.setValue("");
+    nome.setValue("");
+    biometria.setValue("");
+    telefone.setValue("");
+    setShowModal(false);
+    setSelectedColaborador(null);
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Evita o reload da página
+    e.preventDefault();
     validaTudo();
 
     const colaboradorData = {
@@ -52,20 +60,21 @@ export default function CadastrarEvento() {
       setor_id: 1,
     };
 
-    console.log(colaboradorData);
     try {
-      const response = await axios.post(
-        `http://localhost:3333/colaboradores`,
-        colaboradorData
-      );
-      console.log(colaboradorData);
+      if (selectedColaborador) {
+        // Editar colaborador existente
+        await axios.put(
+          `http://localhost:3333/colaboradores/${selectedColaborador.colaborador_id}`,
+          colaboradorData
+        );
+        setShowModal(false);
+      } else {
+        // Cadastrar novo colaborador
+        await axios.post(`http://localhost:3333/colaboradores`, colaboradorData);
+      }
 
-      CPF.setValue("");
-      email.setValue("");
-      nome.setValue("");
-      biometria.setValue("");
-      telefone.setValue("");
-      getColaboradores()
+      handleCancelar();
+      getColaboradores();
     } catch (error) {
       console.log("Erro ao cadastrar colaborador", error);
     }
@@ -79,13 +88,39 @@ export default function CadastrarEvento() {
     CPF.isValid();
   };
 
+  const handleEdit = (colaborador) => {
+    setSelectedColaborador(colaborador);
+    nome.setValue(colaborador.colaborador_nome);
+    email.setValue(colaborador.colaborador_email);
+    CPF.setValue(colaborador.colaborador_CPF);
+    biometria.setValue(colaborador.colaborador_biometria);
+    telefone.setValue(colaborador.colaborador_telefone);
+    setShowModal(true);
+  };
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(
+        `http://localhost:3333/colaboradores/${colaboradorToDelete.colaborador_id}`
+      );
+      setShowDeleteModal(false);
+      getColaboradores(); // Atualiza a lista após a exclusão
+    } catch (error) {
+      console.log("Erro ao excluir colaborador", error);
+    }
+  };
+
+  const confirmDelete = (colaborador) => {
+    setColaboradorToDelete(colaborador);
+    setShowDeleteModal(true); // Abre o modal de confirmação de exclusão
+  };
+
   return (
     <>
       <CabecalhoLogado />
       <div className={style.CorCinza}>
         <div className={style.ContainerGeral}>
           <div className={style.Container}>
-            {/* <h1>Cadastro de Colaboradores</h1> */}
             <div className={style.ContainerTudo}>
               <div className={style.FormDados}>
                 <form onSubmit={handleSubmit}>
@@ -99,19 +134,6 @@ export default function CadastrarEvento() {
                         onBlur={nome.onBlur}
                         placeholder="Digite o nome completo do colaborador"
                       />
-                      {nome.error && (
-                        <p
-                          style={{
-                            color: "red",
-                            marginBottom: "1rem",
-                            fontStyle: "italic",
-                            fontSize: "1rem",
-                          }}
-                        >
-                          {nome.error}
-                        </p>
-                      )}{" "}
-                      {/* Exibe a mensagem de erro */}
                       <label>Email:</label>
                       <input
                         type="text"
@@ -120,19 +142,6 @@ export default function CadastrarEvento() {
                         onBlur={email.onBlur}
                         placeholder="Digite o email do colaborador"
                       />
-                      {email.error && (
-                        <p
-                          style={{
-                            color: "red",
-                            marginBottom: "1rem",
-                            fontStyle: "italic",
-                            fontSize: "1rem",
-                          }}
-                        >
-                          {email.error}
-                        </p>
-                      )}{" "}
-                      {/* Exibe a mensagem de erro */}
                       <label>CPF:</label>
                       <InputMask
                         mask="999.999.999-99"
@@ -142,19 +151,6 @@ export default function CadastrarEvento() {
                         onBlur={CPF.onBlur}
                         placeholder="Digite o CPF do colaborador"
                       />
-                      {CPF.error && (
-                        <p
-                          style={{
-                            color: "red",
-                            marginBottom: "1rem",
-                            fontStyle: "italic",
-                            fontSize: "1rem",
-                          }}
-                        >
-                          {CPF.error}
-                        </p>
-                      )}{" "}
-                      {/* Exibe a mensagem de erro */}
                     </div>
                     <div className={style.DadosPessoais}>
                       <label>Biometria:</label>
@@ -163,21 +159,8 @@ export default function CadastrarEvento() {
                         value={biometria.value}
                         onChange={biometria.onChange}
                         onBlur={biometria.onBlur}
-                        placeholder="Digite o nome da Rua"
+                        placeholder="Digite a biometria"
                       />
-                      {biometria.error && (
-                        <p
-                          style={{
-                            color: "red",
-                            marginBottom: "1rem",
-                            fontStyle: "italic",
-                            fontSize: "1rem",
-                          }}
-                        >
-                          {biometria.error}
-                        </p>
-                      )}{" "}
-                      {/* Exibe a mensagem de erro */}
                       <label>Telefone:</label>
                       <InputMask
                         mask="(99) 99999-9999"
@@ -187,45 +170,89 @@ export default function CadastrarEvento() {
                         onBlur={telefone.onBlur}
                         placeholder="Digite o telefone do colaborador"
                       />
-                      {telefone.error && (
-                        <p
-                          style={{
-                            color: "red",
-                            marginBottom: "1rem",
-                            fontStyle: "italic",
-                            fontSize: "1rem",
-                          }}
-                        >
-                          {telefone.error}
-                        </p>
-                      )}
                     </div>
                   </div>
                 </form>
               </div>
               <div className={style.ContainerButton}>
-                <button
-                  type="submit"
-                  className={style.ButtonCadastrar}
-                  onClick={handleSubmit}
-                >
-                  Cadastrar
+                <button type="submit" className={style.ButtonCadastrar} onClick={handleSubmit}>
+                  {selectedColaborador ? "Salvar" : "Cadastrar"}
                 </button>
-                <button
-                  type="submit"
-                  className={style.ButtonCancelar}
-                  onClick={handleSubmit}
-                >
+                <button type="button" className={style.ButtonCancelar} onClick={handleCancelar}>
                   Cancelar
                 </button>
               </div>
+
+              {/* Modal de Edição */}
+              {showModal && (
+                <div className={style.modal}>
+                  <div className={style.modalContent}>
+                    <h2>Editar Colaborador</h2>
+                    <form onSubmit={handleSubmit}>
+                      <label>Nome:</label>
+                      <input
+                        type="text"
+                        value={nome.value}
+                        onChange={nome.onChange}
+                        placeholder="Digite o nome completo do colaborador"
+                      />
+                      <label>Email:</label>
+                      <input
+                        type="text"
+                        value={email.value}
+                        onChange={email.onChange}
+                        placeholder="Digite o email do colaborador"
+                      />
+                      <label>CPF:</label>
+                      <InputMask
+                        mask="999.999.999-99"
+                        type="text"
+                        value={CPF.value}
+                        onChange={CPF.onChange}
+                        placeholder="Digite o CPF do colaborador"
+                      />
+                      <label>Biometria:</label>
+                      <input
+                        type="text"
+                        value={biometria.value}
+                        onChange={biometria.onChange}
+                        placeholder="Digite a biometria"
+                      />
+                      <label>Telefone:</label>
+                      <InputMask
+                        mask="(99) 99999-9999"
+                        type="text"
+                        value={telefone.value}
+                        onChange={telefone.onChange}
+                        placeholder="Digite o telefone do colaborador"
+                      />
+                      <button type="submit" onClick={handleSubmit}>
+                        Salvar
+                      </button>
+                      <button type="button" onClick={() => setShowModal(false)}>
+                        Cancelar
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              )}
+
+              {/* Modal de Confirmação de Exclusão */}
+              {showDeleteModal && (
+                <div className={style.modal}>
+                  <div className={style.modalContent}>
+                    <h2>Confirmar Exclusão</h2>
+                    <p>Tem certeza de que deseja excluir o(a) colaborador(a) {colaboradorToDelete?.colaborador_nome}?</p>
+                    <button onClick={handleDelete}>Excluir</button>
+                    <button onClick={() => setShowDeleteModal(false)}>Cancelar</button>
+                  </div>
+                </div>
+              )}
+
               <div className={style.Novo}>
                 <div className={style.InputIcon}>
                   <label htmlFor="">Pesquisar Colaboradores:</label>
-                  <input
-                    type="text"
-                    placeholder="Digite o nome do Colaborador"
-                  />
+                  <input type="text" placeholder="Digite o nome do Colaborador" />
                   <IconContext.Provider value={{ size: 25 }}>
                     <MdSearch />
                   </IconContext.Provider>
@@ -234,43 +261,38 @@ export default function CadastrarEvento() {
                 <div className={style.containerColaborador}>
                   <div className={style.ContainerCabecalho}>
                     <div className={style.ContainerId}>#</div>
-                    <div className={style.ContainerNome}>
-                      Nome
-                    </div>
-                    <div className={style.ContainerEmail}>
-                      Email
-                    </div>
+                    <div className={style.ContainerNome}>Nome</div>
+                    <div className={style.ContainerEmail}>Email</div>
                     <div className={style.ContainerBotaoTeste}>Ações</div>
                   </div>
-                  {lista && lista.map((colaborador, index) => (
-                    <div key={index} className={style.ContainerDivs}>
-                      <div className={style.ContainerId}>{colaborador.colaborador_id}</div>
-                      <div className={style.ContainerNome}>
-                        {colaborador.colaborador_nome}
-                      </div>
-                      <div className={style.ContainerEmail}>
-                        {colaborador.colaborador_email}
-                      </div>
-                      <div className={style.ContainerBotaoTeste}>
-                      <div className={style.ContainerButton}>
-                <button
-                  type="submit"
-                  className={style.ButtonCadastrar}
-                  onClick={handleSubmit}
-                >
-                  Cadastrar
-                </button>
-                <button
-                  type="submit"
-                  className={style.ButtonCancelar}
-                  onClick={handleSubmit}
-                >
-                  Cancelar
-                </button>
-              </div>
+                  {lista &&
+                    lista.map((colaborador, index) => (
+                      <div key={index} className={style.ContainerDivs}>
+                        <div className={style.ContainerId}>{colaborador.colaborador_id}</div>
+                        <div className={style.ContainerNome}>{colaborador.colaborador_nome}</div>
+                        <div className={style.ContainerEmail}>{colaborador.colaborador_email}</div>
+                        <div className={style.ContainerBotaoEditar}>
+                          <button
+                            type="button"
+                            className={style.ButtonEditar}
+                            onClick={() => handleEdit(colaborador)}
+                          >
+                            <IconContext.Provider value={{ size: 25 }}>
+                              <MdEdit />
+                            </IconContext.Provider>
+                          </button>
+                          <button
+                            type="button"
+                            className={style.ButtonExcluir}
+                            onClick={() => confirmDelete(colaborador)}
+                          >
+                            <IconContext.Provider value={{ size: 25 }}>
+                              <MdDelete />
+                            </IconContext.Provider>
+                          </button>
                         </div>
-                    </div>
-                  ))}
+                      </div>
+                    ))}
                 </div>
               </div>
             </div>
@@ -280,5 +302,3 @@ export default function CadastrarEvento() {
     </>
   );
 }
-
-// https://github.com/analistaatila/Cadastro-Cliente-ReactJs-Crud
