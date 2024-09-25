@@ -63,7 +63,7 @@ export default function CadastrarEvento() {
     try {
       if (selectedColaborador) {
         // Editar colaborador existente
-        await axios.put(
+        await axios.patch(
           `http://localhost:3333/colaboradores/${selectedColaborador.colaborador_id}`,
           colaboradorData
         );
@@ -277,7 +277,7 @@ export default function CadastrarEvento() {
                             className={style.ButtonEditar}
                             onClick={() => handleEdit(colaborador)}
                           >
-                            <IconContext.Provider value={{ size: 25 }}>
+                            <IconContext.Provider value={{ size: 20 }}>
                               <MdEdit />
                             </IconContext.Provider>
                           </button>
@@ -286,7 +286,7 @@ export default function CadastrarEvento() {
                             className={style.ButtonExcluir}
                             onClick={() => confirmDelete(colaborador)}
                           >
-                            <IconContext.Provider value={{ size: 25 }}>
+                            <IconContext.Provider value={{ size: 20 }}>
                               <MdDelete />
                             </IconContext.Provider>
                           </button>

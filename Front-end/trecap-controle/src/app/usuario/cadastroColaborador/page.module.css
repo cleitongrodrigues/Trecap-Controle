@@ -106,14 +106,13 @@
 }
 .ButtonEditar{
   border: none;
-  background-color: rgb(243, 243, 73);
+  background-color: orange;
   color: white;
   font-weight: 400;
   font-size: 1.5rem;
   border-radius: 0.325rem;
-  padding: 1rem 1rem;
+  /* padding: 1rem 1rem; */
   cursor: pointer;
-  margin-bottom: 2rem;
 }
 .ButtonExcluir{
   border: none;
@@ -122,9 +121,8 @@
   font-weight: 400;
   font-size: 1.5rem;
   border-radius: 0.325rem;
-  padding: 1rem 1rem;
+  /* padding: 1rem 1rem; */
   cursor: pointer;
-  margin-bottom: 2rem;
 }
 .ButtonCancelar {
   border: none;
@@ -159,13 +157,16 @@
   border-top: solid 1px rgb(218, 215, 215);  
 }
 
-
 .ContainerDivs, 
 .ContainerCabecalho{
   display: grid;
-  grid-template-columns: 4rem repeat(3, 1fr);
+  align-items: center;
+  grid-template-columns: 4rem repeat(2, 1fr) 6rem;
   border-bottom: solid 1px rgb(218, 215, 215);
-  padding-top: 5rem;
+  padding: 1rem;
+}
+.containerColaborador{
+  padding: 0 1rem;
 }
 .InputIcon{
   position: relative;
@@ -194,6 +195,7 @@
   display: flex;
   justify-content: start;
   gap: 1rem;
+  align-items: center;
 }
 
 /* Estilo geral do modal */
