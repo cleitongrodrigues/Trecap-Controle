@@ -11,6 +11,8 @@
     left: 0;
 }
 
+
+
 .menuItems {
     flex: 1;
 }
@@ -84,4 +86,8 @@
 }
 .Perfil{
     margin-bottom: 5rem;
+}
+
+.active{
+    background-color:var(--purpleMain);
 }

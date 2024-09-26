@@ -14,17 +14,21 @@ import axios from "axios"; // Certifique-se de importar axios
 import styles from "./page.module.css"; // CSS para o menu lateral
 import Image from "next/image";
 import logo from "../../assets/logoBranca.svg";
+import { usePathname } from 'next/navigation'
+
 
 const MenuLateral = () => {
   const [nomeColaborador, setNomeColaborador] = useState("");
+  const pathName = usePathname()
 
   const getColaboradores = async () => {
     try {
       const response = await axios.get(`http://localhost:3333/usuario`);
       const dadosColaboradores = response.data.dados;
+      console.log(dadosColaboradores[0].usu_nome)
       
       // Supondo que o colaborador atual seja o primeiro da lista (ajuste conforme necessário)
-      setNomeColaborador(dadosColaboradores[0].nome);
+      setNomeColaborador(dadosColaboradores[0].usu_nome);
     } catch (error) {
       console.error("Erro ao buscar colaboradores", error);
     }
@@ -33,6 +37,7 @@ const MenuLateral = () => {
   useEffect(() => {
     getColaboradores();
   }, []);
+  console.log(pathName)
 
   return (
     <>
@@ -47,10 +52,10 @@ const MenuLateral = () => {
             </div>
             <div className={styles.Perfil}>
               <Link href="/perfil">
-                <MdAccountCircle /> {nomeColaborador && "Nome"} {/* Aqui vai o nome */}
+                <MdAccountCircle /> {nomeColaborador || "Nome"} {/* Aqui vai o nome */}
               </Link>
             </div>
-            <Link href="/eventos">
+            <Link className={pathName === "/eventos" ? styles.active : ''}href="/eventos">
               <MdEventNote /> Eventos
             </Link>
             <Link href="/historico">
@@ -59,7 +64,7 @@ const MenuLateral = () => {
             <Link href="/calendario">
               <MdCalendarMonth /> Calendário
             </Link>
-            <Link href="/colaboradores">
+            <Link className={pathName === "/usuario/cadastroColaborador" ? styles.active : ''} href="/usuario/cadastroColaborador">
               <MdPeople /> Colaboradores
             </Link>
           </div>
@@ -68,7 +73,7 @@ const MenuLateral = () => {
             <Link href="/configuracoes">
               <MdSettings /> Configurações
             </Link>
-            <Link href="/logn">
+            <Link href="/usuario/login">
               <MdLogout /> Sair
             </Link>
           </div>
