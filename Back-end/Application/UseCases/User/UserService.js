@@ -17,7 +17,7 @@ class UserService {
         // if (existUserWithSameCPF) throw new Error("Já existe um usuário cadastrado com esse CPF!")
 
         input.userId = await this.repository.count() + 1
-        
+
 
         const user = this.factoryUser.createAdminUser(input)
         await this.repository.save(user)
@@ -32,7 +32,7 @@ class UserService {
 
     async getUserById(id) {
         const user = await this.repository.getUserById(id)
-        return {...user,adress: {...user.adress}}
+        return user
     }
 
     async deleteUser(id) {

@@ -1,4 +1,5 @@
 import UserService from "../../Application/UseCases/User/UserService.js";
+import Auth from "../../Infrastructure/Auth/Auth.js";
 
 export const UsuarioController = {
     async ListarUsuarios(request, response) {
@@ -46,6 +47,7 @@ export const UsuarioController = {
                 telefone: usu_telefone,
                 companyId: empresa_id
             }
+
             const newUser = await UserService.createUser(inputCreateUser)
 
             return response.status(201).json({
@@ -98,6 +100,25 @@ export const UsuarioController = {
         } catch (error) {
             return response.status(500).send(error.mensagem);
         }
+    },
+
+    async Login(request, response){
+        try {
+            const userInfo = {
+                email: request.email,
+                password: request.password
+            }
+    
+            const token = await Auth.Login(userInfo)
+
+            return response.status(200).json({
+                token: token
+            })
+
+        } catch (error) {
+            return response.status(500).send(error.mensagem);
+        }
+        
     }
 }
 
