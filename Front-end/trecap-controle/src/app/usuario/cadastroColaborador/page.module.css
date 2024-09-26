@@ -8,17 +8,19 @@
 .ContainerGeral {
   display: flex;
   justify-content: center;
-  margin-top: 3rem;
+  min-height: 100vh;
+  margin-left: 5rem;
 }
 .Container {
   display: flex;
   flex-direction: column;
-  background-color: #d5bfff;
+  background-color: white;
   justify-content: center;
   min-width: 60%;
   align-items: center;
   border-radius: 1rem;
   gap: 1rem;
+  margin: 2rem;
 }
 .Container h1 {
   color: white;
@@ -80,6 +82,7 @@
   flex-direction: column;
 }
 .Container input {
+  background-color: rgb(236, 231, 231);
   border-radius: 0.5rem;
   border: none;
   height: 2rem;
@@ -90,24 +93,196 @@
 .Container input:focus {
   outline: none;
 }
-.Button {
+.ButtonCadastrar {
   border: none;
-  background-color: var(--purpleButton);
+  background-color: green;
   color: white;
-  font-weight: bold;
+  font-weight: 400;
   font-size: 1.5rem;
   border-radius: 0.325rem;
-  padding: 0.5rem 2rem;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  margin-bottom: 2rem;
+}
+.ButtonEditar{
+  border: none;
+  background-color: orange;
+  color: white;
+  font-weight: 400;
+  font-size: 1.5rem;
+  border-radius: 0.325rem;
+  /* padding: 1rem 1rem; */
+  cursor: pointer;
+}
+.ButtonExcluir{
+  border: none;
+  background-color: blue;
+  color: white;
+  font-weight: 400;
+  font-size: 1.5rem;
+  border-radius: 0.325rem;
+  /* padding: 1rem 1rem; */
+  cursor: pointer;
+}
+.ButtonCancelar {
+  border: none;
+  background-color: red;
+  color: white;
+  font-weight: 400;
+  font-size: 1.5rem;
+  border-radius: 0.325rem;
+  padding: 1rem 2rem;
   cursor: pointer;
   margin-bottom: 2rem;
 }
 
 .ContainerButton {
   display: flex;
-  justify-content: center;
+  justify-content: right;
+  gap: 1rem;
   padding: 3rem 0rem 0rem;
 }
 .Teste {
   display: flex;
   padding: 2rem 0rem;
+}
+.CorCinza{
+  min-width: 100rem;
+  min-height: 50rem;
+  background-color:gray;
+}
+.Novo{
+  position: relative;
+  padding-top: 2rem;
+  border-top: solid 1px rgb(218, 215, 215);  
+}
+
+.ContainerDivs, 
+.ContainerCabecalho{
+  display: grid;
+  align-items: center;
+  grid-template-columns: 4rem repeat(2, 1fr) 6rem;
+  border-bottom: solid 1px rgb(218, 215, 215);
+  padding: 1rem;
+}
+.containerColaborador{
+  padding: 0 1rem;
+}
+.InputIcon{
+  position: relative;
+}
+
+.InputIcon input{
+  background-color: rgb(236, 231, 231);
+  border-radius: 0.5rem;
+  border: none;
+  height: 2rem;
+  margin: 1rem 0rem;
+  padding: 1.5rem;
+  min-width: 100%;
+  box-sizing: border-box;
+  font-size: 1.6rem;
+}
+
+.InputIcon svg{
+  position: absolute;
+  top: 2.8rem;
+  right: 5px; 
+  font-size: 20px; 
+  pointer-events: none;
+}
+.ContainerBotaoEditar {
+  display: flex;
+  justify-content: start;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* Estilo geral do modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro */
+  z-index: 1000;
+}
+
+/* Conteúdo do modal */
+.modalContent {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+/* Título do modal */
+.modalContent h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+/* Estilos para os campos de entrada no modal */
+.modalContent input {
+  width: 100%;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1.6rem;
+}
+
+/* Estilos dos botões dentro do modal */
+.modalContent button {
+  display: inline-block;
+  width: 48%;
+  padding: 1rem;
+  margin: 0.5rem 1%;
+  font-size: 1.6rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Botão "Salvar" ou "Excluir" */
+.modalContent button:first-of-type {
+  background-color: #4CAF50; /* Verde */
+  color: white;
+}
+
+/* Botão "Cancelar" */
+.modalContent button:last-of-type {
+  background-color: #f44336; /* Vermelho */
+  color: white;
+}
+
+/* Estilo específico para o texto de confirmação no modal de exclusão */
+.modalContent p {
+  text-align: center;
+  font-size: 1.6rem;
+  margin-bottom: 2rem;
+}
+
+/* Adicionando transições suaves para o modal */
+.modalContent {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
