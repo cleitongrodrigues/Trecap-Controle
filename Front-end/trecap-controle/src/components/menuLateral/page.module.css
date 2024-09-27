@@ -91,6 +91,7 @@
 
 .Perfil {
   margin-bottom: 5rem;
+  z-index: 9999;
 }
 
 .active {
@@ -98,7 +99,7 @@
 }
 
 /* Estilo geral do modal */
-.modal {
+.modalTeste {
   position: fixed;
   top: 0;
   left: 0;
@@ -109,7 +110,7 @@
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.5);
   /* Fundo escuro */
-  z-index: 9999;
+
 }
 
 /* Conteúdo do modal */

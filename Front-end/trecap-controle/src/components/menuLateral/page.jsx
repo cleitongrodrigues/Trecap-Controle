@@ -65,7 +65,7 @@ const MenuLateral = () => {
               </Link>
               {/* Modal */}
               {modalOpen && (
-                <div className={styles.modal}>
+                <div className={styles.modalTeste}>
                   <div className={styles.modalContent}>
                     <h2>Perfil do Colaborador</h2>
                     <form>
