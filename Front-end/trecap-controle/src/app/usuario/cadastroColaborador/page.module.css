@@ -47,7 +47,7 @@
   text-decoration: underline;
   font-size: 2rem;
 }
-.FormEndereco {
+/* .FormEndereco {
   display: flex;
   flex-direction: row;
   justify-content: start;
@@ -55,7 +55,7 @@
 }
 .FormEndereco input {
   min-width: 40rem;
-}
+} */
 .FormDados input {
   min-width: 40rem;
 }

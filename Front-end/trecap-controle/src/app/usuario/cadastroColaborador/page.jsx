@@ -250,7 +250,6 @@ export default function CadastrarEvento() {
                   </div>
                 </div>
               )}
-
               <div className={style.Novo}>
                 <div className={style.InputIcon}>
                   <label htmlFor="">Pesquisar Colaboradores:</label>
