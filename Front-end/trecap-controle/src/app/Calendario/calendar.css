@@ -4,14 +4,14 @@
 .calendar-container {
   display: flex;
   justify-content: space-between;
-  padding: 20px;
+  padding: 10px;
   background-color: #f9f9f9;
   padding-top: 10rem;
 }
 
 /* Estilo para o próprio calendário */
 .calendar {
-  width: 75%;
+  width: 80%;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
