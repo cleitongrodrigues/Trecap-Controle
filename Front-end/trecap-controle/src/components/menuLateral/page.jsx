@@ -15,6 +15,7 @@ import styles from "./page.module.css"; // CSS para o menu lateral
 import Image from "next/image";
 import logo from "../../assets/logoBranca.svg";
 import { usePathname } from 'next/navigation';
+import Modal from "./ReactDom";
 
 const MenuLateral = () => {
   const [lista, setLista] = useState([]);
@@ -63,8 +64,9 @@ const MenuLateral = () => {
               <Link href="#" onClick={openModal}> {/* Mudar o href para evitar navegação */}
                 <MdAccountCircle /> {nomeColaborador || "Nome"} {/* Aqui vai o nome */}
               </Link>
+              </div>
               {/* Modal */}
-              {modalOpen && (
+              <Modal isOpen={modalOpen} closeModal={closeModal}>
                 <div className={styles.modalTeste}>
                   <div className={styles.modalContent}>
                     <h2>Perfil do Colaborador</h2>
@@ -81,8 +83,9 @@ const MenuLateral = () => {
                     <button onClick={closeModal}>Fechar</button>
                   </div>
                 </div>
-              )}
-            </div>
+              </Modal>
+              
+            
             <Link className={pathName === "/eventos" ? styles.active : ''} href="/eventos">
               <MdEventNote /> Eventos
             </Link>

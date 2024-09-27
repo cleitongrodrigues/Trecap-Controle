@@ -110,14 +110,17 @@
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.5);
   /* Fundo escuro */
+  z-index: 2000;
 
 }
 
 /* Conteúdo do modal */
 .modalContent {
+  position: fixed;
   display: flex;
   flex-direction: column;
   align-items: center;
+  z-index: 2001;
   background-color: white;
   padding: 2rem;
   border-radius: 8px;
