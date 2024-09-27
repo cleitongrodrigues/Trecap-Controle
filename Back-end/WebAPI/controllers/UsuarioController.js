@@ -105,8 +105,8 @@ export const UsuarioController = {
     async Login(request, response){
         try {
             const userInfo = {
-                email: request.email,
-                password: request.password
+                email: request.body.email,
+                password: request.body.password
             }
     
             const token = await Auth.Login(userInfo)

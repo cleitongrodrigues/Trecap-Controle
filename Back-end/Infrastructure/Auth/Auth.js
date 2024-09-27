@@ -1,4 +1,4 @@
-import userRepository from "../database/repositories/userRepository";
+import userRepository from '../database/repositories/userRepository.js'
 import jwt from 'jsonwebtoken'
 
 class Auth{

@@ -1,5 +1,5 @@
-import User from "../../../Domain/Entities/User";
-import connection from "../connection";
+import User from "../../../Domain/Entities/User.js";
+import connection from "../connection.js";
 
 
 class UserRepository {

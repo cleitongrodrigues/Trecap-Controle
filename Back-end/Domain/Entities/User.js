@@ -1,5 +1,5 @@
-import Employee from "./Employee"
-import Evento from "./Evento"
+import Employee from "./Employee.js"
+import Evento from "./Evento.js"
 
 export default class User{
     constructor(userId, name, cpf, userType, status, email, password, telefone, registerDate, companyId)

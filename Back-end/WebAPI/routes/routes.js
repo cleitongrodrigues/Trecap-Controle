@@ -22,6 +22,8 @@ router.post('/usuarios', UsuarioController.CadastrarUsuario);
 // router.patch('/Usuarios/:usu_id', UsuarioController.EditarUsuario);
 router.delete('/usuarios/:id', UsuarioController.ApagarUsuario);
 
+router.post('/login', UsuarioController.Login)
+
 // router.get('/Colaboradores', ColaboradorController.ListarColaboradores);
 // router.post('/Colaboradores', ColaboradorController.CadastrarColaboradores);
 // router.patch('/Colaboradores/:colaborador_id', ColaboradorController.EditarColaboradores);

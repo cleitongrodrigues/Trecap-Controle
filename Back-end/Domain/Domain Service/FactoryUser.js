@@ -1,4 +1,4 @@
-import User from "../Entities/User";
+import User from "../Entities/User.js"
 
 export default class FactoryUser{
     constructor(){

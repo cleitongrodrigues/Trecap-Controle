@@ -42,3 +42,13 @@ test("Verifica o token", ()=>{
     
     expect(decodeToken).toMatchObject({userId:1, name: 'João Pedro'})
 })
+
+test("Fazer login", async ()=>{
+    const userInfo = {
+        email: "joao.silva@empresaabc.com",
+        password: "senha123"
+    }
+
+    const token = await Auth.Login(userInfo)
+    expect(token).toEqual(expect.stringContaining('.'))
+})
