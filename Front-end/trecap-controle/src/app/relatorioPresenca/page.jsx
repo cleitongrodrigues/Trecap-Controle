@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { jsPDF } from "jspdf"; // Importa jsPDF
 import "jspdf-autotable"; // Importa autoTable
 import styles from "./page.module.css";
-import CabecalhoLogado from "@/CabecalhoLogado/page";
+import MenuLateral from "@/components/menuLateral/page";
 
 export default function RelatorioPresenca() {
   const [participantesPresentes, setParticipantesPresentes] = useState([]);
@@ -84,7 +84,7 @@ export default function RelatorioPresenca() {
 
   return (
     <>
-      <CabecalhoLogado />
+      <MenuLateral />
 
       <div className={styles.Header}>
         <div className={styles.relatorio}>

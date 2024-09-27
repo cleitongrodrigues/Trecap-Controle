@@ -28,11 +28,10 @@ export default function ParticipantesSelecionados() {
 
   return (
     <>
-      <CabecalhoLogado />
+      <MenuLateral />
 
       <div className={styles.layout}>
-        {/* Incluindo o MenuLateral */}
-        <MenuLateral />
+        
 
         <div className={styles.Header}>
           <div className={styles.checkin}>

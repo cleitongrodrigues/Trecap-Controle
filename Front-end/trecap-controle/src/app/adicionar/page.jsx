@@ -79,11 +79,12 @@ export default function CheckinEvento() {
   };
 
   return (
+    <>
+    <MenuLateral />
     <div className={styles.body}>
-      <CabecalhoLogado />
       <div className={styles.layout}>
         {/* Usa o componente MenuLateral */}
-        <MenuLateral />
+        
 
         <div className={styles.mainContent}>
           <div className={styles.Header}>
@@ -130,10 +131,7 @@ export default function CheckinEvento() {
           </div>
         </div>
       </div>
-
-      <footer className={styles.footer}>
-        <p>&copy; 2024 TRECAP. Todos os direitos reservados.</p>
-      </footer>
     </div>
+    </>
   );
 }

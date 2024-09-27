@@ -1,7 +1,7 @@
 /* Estilo geral da página */
 .layout {
   display: flex;
-  margin-top: 1rem;
+  /* margin-top: 1rem; */
 }
 
 /* Estilo do cabeçalho */

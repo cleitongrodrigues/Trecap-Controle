@@ -1,3 +1,11 @@
+.layout {
+  /* margin-top: 1rem; */
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  gap: 1rem; /* Espaçamento entre o menu lateral e o conteúdo principal */
+}
+
 /* Estilo geral do container */
 .body {
   display: flex;
@@ -7,7 +15,6 @@
 
 /* Estilo do Header */
 .Header {
-  margin-top: -2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -115,11 +122,5 @@
   font-size: 14px;
 }
 
-/* Layout principal */
-.layout {
-  margin-top: 1rem;
-  display: flex;
-  justify-content: center;
-  flex: 1;
-  gap: 1rem; /* Espaçamento entre o menu lateral e o conteúdo principal */
-}
+
+

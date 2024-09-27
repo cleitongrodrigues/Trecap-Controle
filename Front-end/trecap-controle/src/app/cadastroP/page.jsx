@@ -22,7 +22,7 @@ export default function CadastroP() {
       [name]: checked,
     }));
   };
-  
+
   const handleClick = () => {
     const setoresSelecionados = Object.keys(selectedSetores).filter(
       (setor) => selectedSetores[setor]
@@ -39,12 +39,8 @@ export default function CadastroP() {
 
   return (
     <>
-      <CabecalhoLogado />
-
+      <MenuLateral />
       <div className={styles.layout}>
-        {/* Usa o componente MenuLateral */}
-        <MenuLateral />
-
         <div className={styles.container}>
           <div className={styles.header}>
             <h1>Treinamento sobre Higiene no Trabalho</h1>

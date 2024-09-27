@@ -3,7 +3,7 @@
     padding-inline: 0; /* Remover padding lateral */
     display: flex;
     height: calc(100vh - 80px); /* Altura do conteúdo principal */
-    margin-top: 1rem;
+    /* margin-top: 1rem; */
 }
 
 .Container{

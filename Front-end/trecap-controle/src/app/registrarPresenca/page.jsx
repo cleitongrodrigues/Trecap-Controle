@@ -45,9 +45,10 @@ export default function RegistrarPresenca() {
 
   return (
     <>
-      <CabecalhoLogado />
-    <div className={styles.layout}>
+    
       <MenuLateral />
+    <div className={styles.layout}>
+      
 
       <div className={styles.Header}>
         <div className={styles.checkin}>

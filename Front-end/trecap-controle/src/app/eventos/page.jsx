@@ -54,9 +54,9 @@ export default function Evento() {
 
     return (
         <>
-            <CabecalhoLogado />
+             <MenuLateral />
             <div className={style.Geral}>
-                <MenuLateral />
+               
                 <div className={style.Container}>
                     <h1 className={style.Titulo}>Eventos</h1>
                     <div className={style.containerContent}>
