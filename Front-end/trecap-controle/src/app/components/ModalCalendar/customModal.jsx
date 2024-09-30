@@ -31,7 +31,7 @@ export default function CustomModal({ isOpen, onClose, onConfirm }) {
           />
           <textarea
             type="text"
-            name="Descrição"
+            name="description"
             placeholder="Descrição do evento"
             className="modal-input"
           />

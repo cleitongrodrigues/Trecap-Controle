@@ -10,6 +10,8 @@ import CabecalhoLogado from '@/cabecalhoLogado/page';
 import CustomModal from "../components/ModalCalendar/customModal";
 
 import './calendar.css'; 
+import axios from "axios";
+import MenuLateral from "@/components/menuLateral/page";
 
 export default function HomePage() {
   
@@ -27,7 +29,7 @@ export default function HomePage() {
   };
 
   // Função para adicionar o evento
-  const handleAddEvent = (eventData) => {
+  const handleAddEvent = async (eventData) => {
     let calendarApi = selectedDate.view.calendar;
   
     calendarApi.unselect(); // limpar seleção
@@ -40,8 +42,23 @@ export default function HomePage() {
         end: selectedDate.endStr,
         allDay: selectedDate.allDay,
         professor: eventData.professor, // Armazena o professor
-        description: eventData.description // Armazena a descrição
+        description: eventData.description, // Armazena a descrição
+        usu_id: 1
       };
+      const response = await axios.post(
+        "http://localhost:3333/evento",
+        {
+          usu_id: newEvent.usu_id,
+          evento_nome: newEvent.title,
+          evento_data_inicio: newEvent.start,
+          evento_data_termino: newEvent.end,
+          evento_local:"treino",
+          evento_status: 1,
+          evento_professor: newEvent.professor
+        }
+      
+      )
+      console.log(response)
       setEvents([...events, newEvent]);
     }
     setIsModalOpen(false);
@@ -79,7 +96,7 @@ export default function HomePage() {
 
   return (
     <>
-      <CabecalhoLogado />
+      <MenuLateral/>
       <div className="calendar-container">
         <div className="calendar">
           <FullCalendar
@@ -116,7 +133,8 @@ export default function HomePage() {
             )}
             eventStyle={() => ({
               backgroundColor: '#7f00ff',
-              borderColor: '#7f00ff'
+              borderColor: '#7f00ff',
+              width: '500px'
             })}
           />
         </div>
