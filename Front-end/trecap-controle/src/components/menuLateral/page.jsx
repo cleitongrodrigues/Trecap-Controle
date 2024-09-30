@@ -10,23 +10,27 @@ import {
   MdAccountCircle,
   MdLogout
 } from "react-icons/md";
-import axios from "axios"; // Certifique-se de importar axios
-import styles from "./page.module.css"; // CSS para o menu lateral
+import axios from "axios";
+import styles from "./page.module.css";
 import Image from "next/image";
 import logo from "../../assets/logoBranca.svg";
-import { usePathname } from 'next/navigation'
-
+import { usePathname } from 'next/navigation';
+import Modal from "./ReactDom";
 
 const MenuLateral = () => {
+  const [lista, setLista] = useState([]);
   const [nomeColaborador, setNomeColaborador] = useState("");
-  const pathName = usePathname()
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selecionaImagem, setSelecionaImagem] = useState(null);
+  const [visuImagem, setVisuImagem] = useState(null);
+  const pathName = usePathname();
 
   const getColaboradores = async () => {
     try {
       const response = await axios.get(`http://localhost:3333/usuario`);
       const dadosColaboradores = response.data.dados;
-      console.log(dadosColaboradores[0].usu_nome)
-      
+      setLista(dadosColaboradores);
+
       // Supondo que o colaborador atual seja o primeiro da lista (ajuste conforme necessário)
       setNomeColaborador(dadosColaboradores[0].usu_nome);
     } catch (error) {
@@ -37,7 +41,19 @@ const MenuLateral = () => {
   useEffect(() => {
     getColaboradores();
   }, []);
-  console.log(pathName)
+
+  // Funções para abrir e fechar o modal
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
+
+  // Função para lidar com a troca de imagem
+  const handleImagemChange = (e) => {
+    const file = e.target.files[0]; // Corrigido para 'files'
+    if (file) {
+      setSelecionaImagem(file);
+      setVisuImagem(URL.createObjectURL(file)); // Prévia da imagem
+    }
+  }
 
   return (
     <>
@@ -50,12 +66,57 @@ const MenuLateral = () => {
                 <Image src={logo} className={styles.logoImage} />
               </Link>
             </div>
+
             <div className={styles.Perfil}>
-              <Link href="/perfil">
-                <MdAccountCircle /> {nomeColaborador || "Nome"} {/* Aqui vai o nome */}
+              <Link href="#" onClick={openModal}>
+                {visuImagem ? (
+                  <img src={visuImagem} alt="Foto do usuário" className={styles.ImagemPerfil} />
+                ) : (
+                  <MdAccountCircle />
+                )}
+                {nomeColaborador || "Nome"} {/* Aqui vai o nome */}
               </Link>
             </div>
-            <Link className={pathName === "/eventos" ? styles.active : ''}href="/eventos">
+
+            {/* Modal */}
+            <Modal isOpen={modalOpen} closeModal={closeModal}>
+              <div className={styles.modalTeste}>
+                <div className={styles.modalContent}>
+                  <h2>Perfil do Colaborador</h2>
+                  <form>
+                    <label>Foto de Perfil</label>
+                    <div className={styles.imagePreviewContainer}>
+                      {visuImagem ? ( /* Corrigido para 'visuImagem' */
+                        <img src={visuImagem} alt="Foto de perfil" />
+                      ) : (
+                        <img src="url_da_imagem_atual_aqui" alt="Foto de perfil atual" />
+                      )}
+                    </div>
+                    <label htmlFor="imageUpload" className={styles.EscollherArquivo}>Escolher Arquivo</label>
+                    <div className={styles.file}>
+                      <input
+                        className={styles.file}
+                        type="file"
+                        id="imageUpload"
+                        accept="image/*"
+                        onChange={handleImagemChange}
+                      />
+                    </div>
+                    <label htmlFor="">Nome</label>
+                    <input type="text" placeholder="Nome" />
+                    <label htmlFor="">CPF</label>
+                    <input type="text" placeholder="CPF" />
+                    <label htmlFor="">Email</label>
+                    <input type="text" placeholder="Email" />
+                    <label htmlFor="">Telefone</label>
+                    <input type="text" placeholder="Telefone" />
+                  </form>
+                  <button onClick={closeModal}>Fechar</button>
+                </div>
+              </div>
+            </Modal>
+
+            <Link className={pathName === "/eventos" ? styles.active : ''} href="/eventos">
               <MdEventNote /> Eventos
             </Link>
             <Link href="/historico">

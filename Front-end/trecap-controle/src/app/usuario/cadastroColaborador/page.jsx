@@ -48,6 +48,10 @@ export default function CadastrarEvento() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!nome.value || !email.value || !CPF.value || !biometria.value || !telefone.value) {
+      alert("Por favor, preencha todos os campos.");
+      return;
+  }
     validaTudo();
 
     const colaboradorData = {
@@ -250,7 +254,6 @@ export default function CadastrarEvento() {
                   </div>
                 </div>
               )}
-
               <div className={style.Novo}>
                 <div className={style.InputIcon}>
                   <label htmlFor="">Pesquisar Colaboradores:</label>
