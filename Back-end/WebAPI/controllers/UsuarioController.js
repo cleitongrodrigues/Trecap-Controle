@@ -119,6 +119,14 @@ export const UsuarioController = {
             return response.status(500).send(error.mensagem);
         }
         
+    },
+    async private(request, response) {
+        try{
+            return response.status(200).send({username: request.user.name})
+        }catch(error){
+            return response.status(500).send(error.mensagem);
+        }
+        
     }
 }
 

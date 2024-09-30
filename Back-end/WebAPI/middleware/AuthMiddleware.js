@@ -19,8 +19,8 @@ export function isProtected(usersAllowed) {
 
         const userInfo = request.user
 
-        if (!userInfo || !usersAllowed.includes(userTypes[userInfo.userTypes])) return response.status(403).send("Você não tem permissão para acessar essa rota")
-
+        if (!userInfo || !usersAllowed.includes(userTypes[userInfo.userType])) return response.status(403).send("Você não tem permissão para acessar essa rota")
+        
         next()
 }
 }

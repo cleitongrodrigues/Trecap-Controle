@@ -3,6 +3,7 @@ import express from 'express';
 const router = express.Router();
 
 import { UsuarioController } from '../controllers/UsuarioController.js';
+import { isProtected } from '../middleware/AuthMiddleware.js';
 
 // const UsuarioController = require('../controllers/UsuarioController');
 // const ColaboradorController = require('../controllers/Colaboradores');
@@ -23,6 +24,7 @@ router.post('/usuarios', UsuarioController.CadastrarUsuario);
 router.delete('/usuarios/:id', UsuarioController.ApagarUsuario);
 
 router.post('/login', UsuarioController.Login)
+router.get('/protected', isProtected(['admin']), UsuarioController.private)
 
 // router.get('/Colaboradores', ColaboradorController.ListarColaboradores);
 // router.post('/Colaboradores', ColaboradorController.CadastrarColaboradores);
