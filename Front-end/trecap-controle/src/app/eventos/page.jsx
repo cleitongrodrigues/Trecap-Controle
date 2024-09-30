@@ -5,6 +5,7 @@ import { MdWash, MdPsychology, MdEdit, MdSearch, MdCheck, MdTimer } from "react-
 import { IconContext } from 'react-icons';
 import CabecalhoLogado from '@/cabecalhoLogado/page';
 import { useRouter } from 'next/navigation';
+import MenuLateral from '@/components/menuLateral/page';
 
 const eventos = [
     {
@@ -53,7 +54,7 @@ export default function Evento() {
 
     return (
         <>
-        <CabecalhoLogado/>
+        <MenuLateral/>
         <div className={style.Geral}>
             <div className={style.Container}>
                 <h1 className={style.Titulo}>Eventos</h1>
