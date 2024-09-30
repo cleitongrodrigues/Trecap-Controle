@@ -93,6 +93,23 @@
   margin-bottom: 5rem;
   z-index: 9999;
 }
+.ImagemPerfil{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+  margin-right: 0.5rem; 
+  
+}
+
+@media (max-width: 600px) {
+  .imagePerfil {
+    width: 30px; /* Tamanho menor para telas pequenas */
+    height: 30px; /* Deve ser igual à largura */
+  }
+}
 
 .active {
   border-bottom: 3px solid white;
@@ -133,8 +150,13 @@
 /* Título do modal */
 .modalContent h2 {
   margin-bottom: 1rem;
-  color: #333;
+  color: grey;
   font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.modalContent label{
+  font-weight: bold;
 }
 
 /* Estilos para os campos de entrada no modal */
@@ -222,6 +244,7 @@
   object-fit: cover;
   border: 2px solid #ddd;
 }
+
 
 @keyframes fadeIn {
   from {

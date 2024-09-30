@@ -69,7 +69,12 @@ const MenuLateral = () => {
 
             <div className={styles.Perfil}>
               <Link href="#" onClick={openModal}>
-                <MdAccountCircle /> {nomeColaborador || "Nome"} {/* Aqui vai o nome */}
+                {visuImagem ? (
+                  <img src={visuImagem} alt="Foto do usuário" className={styles.ImagemPerfil} />
+                ) : (
+                  <MdAccountCircle />
+                )}
+                {nomeColaborador || "Nome"} {/* Aqui vai o nome */}
               </Link>
             </div>
 
@@ -82,7 +87,7 @@ const MenuLateral = () => {
                     <label>Foto de Perfil</label>
                     <div className={styles.imagePreviewContainer}>
                       {visuImagem ? ( /* Corrigido para 'visuImagem' */
-                        <img src={visuImagem} alt="Foto de perfil"/>
+                        <img src={visuImagem} alt="Foto de perfil" />
                       ) : (
                         <img src="url_da_imagem_atual_aqui" alt="Foto de perfil atual" />
                       )}
@@ -97,14 +102,14 @@ const MenuLateral = () => {
                         onChange={handleImagemChange}
                       />
                     </div>
-                      <label htmlFor="">Nome</label>
-                      <input type="text" placeholder="Nome" />
-                      <label htmlFor="">CPF</label>
-                      <input type="text" placeholder="CPF" />
-                      <label htmlFor="">Email</label>
-                      <input type="text" placeholder="Email" />
-                      <label htmlFor="">Telefone</label>
-                      <input type="text" placeholder="Telefone" />
+                    <label htmlFor="">Nome</label>
+                    <input type="text" placeholder="Nome" />
+                    <label htmlFor="">CPF</label>
+                    <input type="text" placeholder="CPF" />
+                    <label htmlFor="">Email</label>
+                    <input type="text" placeholder="Email" />
+                    <label htmlFor="">Telefone</label>
+                    <input type="text" placeholder="Telefone" />
                   </form>
                   <button onClick={closeModal}>Fechar</button>
                 </div>
