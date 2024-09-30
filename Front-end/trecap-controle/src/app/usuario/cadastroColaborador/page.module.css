@@ -47,15 +47,11 @@
   text-decoration: underline;
   font-size: 2rem;
 }
-/* .FormEndereco {
-  display: flex;
-  flex-direction: row;
-  justify-content: start;
-  align-items: center;
+.error {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
 }
-.FormEndereco input {
-  min-width: 40rem;
-} */
 .FormDados input {
   min-width: 40rem;
 }
