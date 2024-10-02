@@ -3,14 +3,9 @@ const db = require('../database/connection');
 module.exports = {
     async ListarColaboradores(request, response) {
         try {
-            const sql = `SELECT c.colaborador_id, c.colaborador_nome, c.colaborador_CPF, 
-                c.colaborador_endereco, c.colaborador_biometria, c.colaborador_ativo, 
-                c.colaborador_telefone, c.colaborador_email, c.colaborador_historico_treinamento,
-                car.cargo_nome, s.setor_nome
-                FROM Colaboradores c
-                JOIN Cargos car ON c.cargo_id = car.cargo_id
-                JOIN Setores s ON car.setor_id = s.setor_id
-                WHERE c.colaborador_ativo = 1`;
+            const sql = `SELECT colaborador_id, colaborador_nome, colaborador_CPF, colaborador_biometria, 
+            colaborador_ativo = 1 AS colaborador_ativo , colaborador_telefone, colaborador_email, empresa_id, setor_id 
+            FROM Colaboradores WHERE colaborador_ativo = 1`;
 
             const colaboradores = await db.query(sql);
 
@@ -25,7 +20,7 @@ module.exports = {
         } catch (error) {
             return response.status(500).json({
                 sucesso: false,
-                mensagem: 'Erro ao listar colaboradores',
+                mensagem: 'Erro ao listar colaborador',
                 dados: error.message
             });
         }
@@ -34,13 +29,16 @@ module.exports = {
 
     async CadastrarColaboradores(request, response) {
         try {
-            const { colaborador_nome, colaborador_CPF, colaborador_endereco, colaborador_biometria, colaborador_ativo, colaborador_telefone, colaborador_email, colaborador_historico_treinamento, cargo_id } = request.body;
+            const { colaborador_nome, colaborador_CPF, colaborador_biometria, colaborador_ativo, 
+                colaborador_telefone, colaborador_email, empresa_id, setor_id } = request.body;
 
             const sql = `INSERT INTO Colaboradores
-                (colaborador_nome, colaborador_CPF, colaborador_endereco, colaborador_biometria, colaborador_ativo, colaborador_telefone, colaborador_email, colaborador_historico_treinamento, cargo_id) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+                (colaborador_nome, colaborador_CPF, colaborador_biometria, colaborador_ativo, 
+                colaborador_telefone, colaborador_email, empresa_id, setor_id) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
 
-            const values = [colaborador_nome, colaborador_CPF, colaborador_endereco, colaborador_biometria, colaborador_ativo, colaborador_telefone, colaborador_email, colaborador_historico_treinamento, cargo_id];
+            const values = [colaborador_nome, colaborador_CPF, colaborador_biometria, colaborador_ativo,
+                 colaborador_telefone, colaborador_email, empresa_id, setor_id];
 
             const execSql = await db.query(sql, values);
 
@@ -51,6 +49,7 @@ module.exports = {
                 dados: colaborador_id
             });
         } catch (error) {
+            console.log(error.message)
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao cadastrar colaborador',
@@ -61,13 +60,17 @@ module.exports = {
 
     async EditarColaboradores(request, response) {
         try {
-            const { colaborador_nome, colaborador_CPF, colaborador_endereco, colaborador_biometria, colaborador_ativo, colaborador_telefone, colaborador_email, colaborador_historico_treinamento, cargo_id } = request.body;
+            const { colaborador_nome, colaborador_CPF, colaborador_biometria, colaborador_ativo,
+                 colaborador_telefone, colaborador_email, empresa_id, setor_id } = request.body;
+
             const { colaborador_id } = request.params;
 
-            const sql = `UPDATE Colaboradores SET colaborador_nome = ?, colaborador_CPF = ?, colaborador_endereco = ?, colaborador_biometria = ?, colaborador_ativo = ?, colaborador_telefone = ?, colaborador_email = ?, colaborador_historico_treinamento = ?, cargo_id = ?
+            const sql = `UPDATE Colaboradores SET colaborador_nome = ?, colaborador_CPF = ?, colaborador_biometria = ?, 
+                colaborador_ativo = ?, colaborador_telefone = ?, colaborador_email = ?, empresa_id = ?, setor_id = ?
                 WHERE colaborador_id = ?;`;
 
-            const values = [colaborador_nome, colaborador_CPF, colaborador_endereco, colaborador_biometria, colaborador_ativo, colaborador_telefone, colaborador_email, colaborador_historico_treinamento, cargo_id, colaborador_id];
+            const values = [colaborador_nome, colaborador_CPF, colaborador_biometria, colaborador_ativo, 
+                colaborador_telefone, colaborador_email, empresa_id, setor_id, colaborador_id];
 
             const atualizaDados = await db.query(sql, values);
             return response.status(200).json({
@@ -104,7 +107,7 @@ module.exports = {
         } catch (error) {
             return response.status(500).json({
                 sucesso: false,
-                mensagem: 'Erro ao desativar colaborador',
+                mensagem: 'Erro ao apagar colaborador',
                 dados: error.message
             });
         }

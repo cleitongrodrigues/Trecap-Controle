@@ -1,64 +1,79 @@
-CREATE TABLE IF NOT EXISTS TipoUsuario (
-	tipo_usuario_id int AUTO_INCREMENT NOT NULL,
-	tipo_usuario_descricao varchar(250) NOT NULL,
-	tipo_usuario_ativo bit(1) NOT NULL,
-	PRIMARY KEY (tipo_usuario_id)
+-- Tabela Empresa
+CREATE TABLE IF NOT EXISTS Empresa (
+    empresa_id int AUTO_INCREMENT NOT NULL,
+    empresa_nome varchar(100) NOT NULL,
+    empresa_CNPJ varchar(14) NOT NULL,
+    empresa_telefone varchar(15),
+    empresa_email varchar(100),
+    empresa_ativo bit(1) NOT NULL,
+    usu_id int NOT NULL,
+    PRIMARY KEY (empresa_id)
+);
+
+-- Setores
+CREATE TABLE IF NOT EXISTS Setores(
+    setor_id INT AUTO_INCREMENT NOT NULL,
+    setor_nome varchar(100) NOT NULL,
+    empresa_id INT NOT NULL,
+    FOREIGN KEY (empresa_id) REFERENCES Empresa(empresa_id),
+    PRIMARY KEY (setor_id)
 );
 
 CREATE TABLE IF NOT EXISTS Usuario (
-	usu_id int AUTO_INCREMENT NOT NULL,
-	usu_nome varchar(100) NOT NULL,
-	usu_CPF varchar(11) NOT NULL,
-	tipo_usuario_id int NOT NULL,
-	usu_ativo bit(1) NOT NULL,
-	PRIMARY KEY (usu_id),
-    FOREIGN KEY (tipo_usuario_id) REFERENCES TipoUsuario(tipo_usuario_id)
+    usu_id int AUTO_INCREMENT NOT NULL,
+    usu_nome varchar(100) NOT NULL,
+    usu_CPF varchar(11) NOT NULL,
+    tipo_usuario_id int NOT NULL,
+    usu_ativo bit(1) NOT NULL,
+    usu_email varchar(100),
+    usu_senha varchar(100),
+    usu_telefone varchar(15),
+    usu_data_cadastro datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    empresa_id int not null,
+    FOREIGN KEY (empresa_id) REFERENCES Empresa(empresa_id),
+    PRIMARY KEY (usu_id)
 );
 
-CREATE TABLE IF NOT EXISTS Eventos (
-	evento_id int AUTO_INCREMENT NOT NULL,
-    evento_nome varchar(50) NOT NULL,
-	evento_data date NOT NULL,
-	evento_local varchar(100) NOT NULL,
-	evento_hora_inicio datetime NOT NULL,
-	evento_hora_termino datetime NOT NULL,
-	PRIMARY KEY (evento_id)
-);
-
-CREATE TABLE IF NOT EXISTS Turma (
-	turma_id int AUTO_INCREMENT NOT NULL,
-	turma_descricao varchar(250) NOT NULL,
-	PRIMARY KEY (turma_id)
-);
-
+-- Tabela Colaboradores
 CREATE TABLE IF NOT EXISTS Colaboradores (
-	colaborador_id int AUTO_INCREMENT NOT NULL,
-	colaborador_nome varchar(100) NOT NULL,
-	colaborador_CPF varchar(11) NOT NULL,
-	colaborador_endereco varchar(100) NOT NULL,
-	colaborador_biometria varchar(1024) NOT NULL,
-	colaborador_ativo bit(1) NOT NULL,
-	PRIMARY KEY (colaborador_id)
+    colaborador_id int AUTO_INCREMENT NOT NULL,
+    colaborador_nome varchar(100) NOT NULL,
+    colaborador_CPF varchar(11) NOT NULL,
+    colaborador_biometria varchar(1024) NOT NULL,
+    colaborador_ativo bit(1) NOT NULL,
+    colaborador_telefone varchar(15) NOT NULL,
+    colaborador_email varchar(100),
+    empresa_id INT NOT NULL,
+    setor_id INT NOT NULL,
+    FOREIGN KEY (empresa_id) REFERENCES Empresa(empresa_id),
+    FOREIGN KEY (setor_id) REFERENCES Setores(setor_id),
+    PRIMARY KEY (colaborador_id)
 );
 
-CREATE TABLE IF NOT EXISTS EventoTurma (
-	evento_turma_id int AUTO_INCREMENT NOT NULL,
-	evento_id int NOT NULL,
-	turma_id int NOT NULL,
-	PRIMARY KEY (evento_turma_id),
+-- Tabela Eventos
+CREATE TABLE IF NOT EXISTS Eventos (
+    evento_id int AUTO_INCREMENT NOT NULL,
+    evento_nome varchar(100) NOT NULL,
+    evento_data_inicio date NOT NULL,
+    evento_data_termino date NOT NULL,
+    evento_local varchar(100) NOT NULL,
+    evento_status bit(1) not null,
+    usu_id int NOT NULL,
+    evento_professor varchar(100) NOT NULL,
+    PRIMARY KEY (evento_id),
+    FOREIGN KEY (usu_id) REFERENCES Usuario(usu_id)
+);
+
+-- Tabela Registros
+CREATE TABLE IF NOT EXISTS Registros (
+    registros_id int AUTO_INCREMENT NOT NULL,
+    registros_presenca bit(1) NOT NULL,
+    registros_hora_entrada datetime,
+    registros_hora_saida datetime,
+    evento_id INT NOT NULL,
+    colaborador_id int NOT NULL,
     FOREIGN KEY (evento_id) REFERENCES Eventos(evento_id),
-    FOREIGN KEY (turma_id) REFERENCES Turma(turma_id)
+    FOREIGN KEY (colaborador_id) REFERENCES Colaboradores(colaborador_id),
+    PRIMARY  key (registros_id)
 );
 
-CREATE TABLE IF NOT EXISTS TurmaColaboradores (
-	turma_colaboradores_id int AUTO_INCREMENT NOT NULL,
-	turma_id int NOT NULL,
-	colaborador_id int NOT NULL,
-	turma_colaboradores_comparecimento bit(1) NOT NULL,
-	usu_id int NOT NULL,
-	turma_colaboradores_assinatura varchar(255) NOT NULL,
-	PRIMARY KEY (turma_colaboradores_id),
-    FOREIGN KEY (turma_id) REFERENCES Turma(turma_id),
-    FOREIGN KEY (colaborador_id) REFERENCES Colaboradores(colaborador_id),
-    FOREIGN KEY (usu_id) REFERENCES Usuário(usu_id)
-);

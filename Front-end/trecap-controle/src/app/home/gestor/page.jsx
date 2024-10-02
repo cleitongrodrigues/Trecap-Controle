@@ -10,21 +10,44 @@ import {
 } from "react-icons/md";
 import CabecalhoLogado from "@/cabecalhoLogado/page";
 
-export default function Gestor() {
-  return (
-    <>
-      <CabecalhoLogado />
-      <div className={style.Container}>
-        <div>
-          <h1 className={style.Titulo}>Bem Vindo Gestor!</h1>
-          <div className={style.Teste}>
-            <div className={style.Centralizar}>
-              <Link href="/eventos">
-                <IconContext.Provider value={{ size: 100 }}>
-                  <MdEventNote />
-                </IconContext.Provider>
-                Eventos
-              </Link>
+
+export default function Gestor(){
+    return(
+        <>
+        <CabecalhoLogado/>
+        <div className={style.Container}>
+            <div>
+                <h1 className={style.Titulo}>Bem Vindo Gestor!</h1>
+                <div className={style.Teste}>
+                    <div className={style.Centralizar}>
+                        <Link href="/eventos">
+                            <IconContext.Provider value={{size:100}}>
+                                <MdEventNote />
+                        </IconContext.Provider>
+                        Eventos</Link>
+                    </div>
+                    <div className={style.Centralizar}>
+                        <Link href="">
+                            <IconContext.Provider value={{size:100}}>
+                                <MdHourglassBottom />
+                        </IconContext.Provider>
+                        Histórico</Link>
+                        </div>
+                    <div className={style.Centralizar}>
+                        <Link href="">
+                            <IconContext.Provider value={{size:100}}>
+                                    <MdCalendarMonth />
+                            </IconContext.Provider>
+                       Calendário</Link>
+                    </div>
+                    <div className={style.Centralizar}>
+                        <Link href="/usuario/cadastroColaborador">
+                        <IconContext.Provider value={{size:100}}>
+                            <MdPeople />
+                       </IconContext.Provider>
+                        Colaboradores</Link>
+                    </div>
+                </div>
             </div>
             <div className={style.Centralizar}>
               <Link href="">
@@ -51,8 +74,6 @@ export default function Gestor() {
               </Link>
             </div>
           </div>
-        </div>
-      </div>
-    </>
+        </>
   );
 }

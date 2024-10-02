@@ -1,11 +1,6 @@
-
-.Geral {
-    padding-inline: 0; /* Remover padding lateral */
-    display: flex;
-    height: calc(100vh - 80px); /* Altura do conteúdo principal */
-    /* margin-top: 1rem; */
+.Geral{
+    padding-top: 5rem;
 }
-
 .Container{
     display: flex;
     flex-direction: column;
@@ -14,9 +9,9 @@
     max-width: 100rem;
     align-items: center;
     border-radius: 1rem;
-    margin: 6rem auto 0;
     padding: 2rem;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin: auto;
 }
 
 .Titulo{
@@ -67,10 +62,12 @@
 .labelTitle{
     font-size: 1.8rem;
     margin-block-end: .5rem;
+    cursor: pointer;
 }
 
 .labelData{
     font-size: 1.2rem;
+    cursor: pointer;
 }
 
 .Icones{

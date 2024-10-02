@@ -3,12 +3,13 @@ const db = require('../database/connection');
 module.exports = {
     async ListarUSuario(request, response){
         try {
-            const sql = `SELECT usu_id, usu_nome, usu_CPF, tipo_usuario_id, 
-            usu_ativo = 1 AS usu_ativo, usu_email, usu_telefone, usu_data_cadastro, usu_ultimo_login
-            FROM Usuario WHERE usu_ativo = 1;`;
+            console.log("teste");
+            const sql = `SELECT usu_id, usu_nome, usu_CPF, tipo_usuario_id, usu_ativo = 1 AS usu_ativo,
+            usu_email, usu_telefone, usu_data_cadastro, empresa_id FROM Usuario
+            WHERE usu_ativo = 1;`;
 
             const usuarios = await db.query(sql)
-
+            console.log(usuarios);
             const nItens = usuarios[0].length;
             return response.status(200).json({
                 sucesso: true,
@@ -21,23 +22,23 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao listar usuário :(',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     },
 
     async CadastrarUsuario(request, response){
         try {
-            const {usu_nome, usu_CPF, tipo_usuario_id, 
-                usu_ativo, usu_email, usu_telefone, usu_data_cadastro, usu_ultimo_login} = request.body;
+            const {usu_nome, usu_CPF, tipo_usuario_id, usu_ativo,
+                usu_email, usu_telefone, usu_data_cadastro, empresa_id } = request.body;
 
             const sql = `INSERT INTO Usuario
-                (usu_nome, usu_CPF, tipo_usuario_id, 
-                usu_ativo, usu_email, usu_telefone, usu_data_cadastro, usu_ultimo_login) 
+                (usu_nome, usu_CPF, tipo_usuario_id, usu_ativo,
+                usu_email, usu_telefone, usu_data_cadastro, empresa_id) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
 
-            const values = [usu_nome, usu_CPF, tipo_usuario_id, 
-                usu_ativo, usu_email, usu_telefone, usu_data_cadastro, usu_ultimo_login];
+            const values = [usu_nome, usu_CPF, tipo_usuario_id, usu_ativo,
+                usu_email, usu_telefone, usu_data_cadastro, empresa_id];
 
             const execSql = await db.query(sql, values);
 
@@ -51,7 +52,7 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao cadastrar usuário :(',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     },
@@ -59,17 +60,17 @@ module.exports = {
     async EditarUsuario(request, response){
         try {
 
-            const {usu_nome, usu_CPF, tipo_usuario_id, 
-                usu_ativo, usu_email, usu_telefone, usu_data_cadastro, usu_ultimo_login} = request.body;
+            const {usu_nome, usu_CPF, tipo_usuario_id, usu_ativo,
+                usu_email, usu_telefone, usu_data_cadastro, empresa_id} = request.body;
 
             const {usu_id} = request.params;
 
-            const sql = `UPDATE Usuario SET usu_nome = ?, usu_CPF = ?, tipo_usuario_id = ?, 
-                usu_ativo = ?, usu_email = ?, usu_telefone = ?, usu_data_cadastro = ?, usu_ultimo_login = ?
+            const sql = `UPDATE Usuario SET usu_nome = ?, usu_CPF = ?, tipo_usuario_id = ?, usu_ativo = ?,
+                usu_email = ?, usu_telefone = ?, usu_data_cadastro = ?, empresa_id = ?
                 WHERE usu_id = ?;`;
 
-            const values = [usu_nome, usu_CPF, tipo_usuario_id, 
-                usu_ativo, usu_email, usu_telefone, usu_data_cadastro, usu_ultimo_login, usu_id];
+            const values = [usu_nome, usu_CPF, tipo_usuario_id, usu_ativo,
+                usu_email, usu_telefone, usu_data_cadastro, empresa_id, usu_id];
 
             const atualizaDados = await db.query(sql, values);
             return response.status(200).json({
@@ -81,7 +82,7 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao editar usuário :(',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     },
@@ -107,7 +108,7 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao apagar usuário',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     }

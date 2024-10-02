@@ -1,264 +1,305 @@
-'use client';
+"use client";
 
 import CabecalhoLogado from "@/cabecalhoLogado/page";
 import style from "./page.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import InputMask from 'react-input-mask';
+import InputMask from "react-input-mask";
 import { useRouter } from "next/navigation";
+import useForm from "@/hooks/useForm";
+import { MdSearch, MdEdit, MdDelete } from "react-icons/md";
+import { IconContext } from "react-icons";
+import MenuLateral from "@/components/menuLateral/page";
 
 export default function CadastrarEvento() {
+  const router = useRouter();
 
-  const router = useRouter()
+  const [lista, setLista] = useState([]);
+  const [showModal, setShowModal] = useState(false); // Estado para controlar o modal de edição
+  const [showDeleteModal, setShowDeleteModal] = useState(false); // Estado para o modal de exclusão
+  const [selectedColaborador, setSelectedColaborador] = useState(null); // Colaborador a ser editado
+  const [colaboradorToDelete, setColaboradorToDelete] = useState(null); // Colaborador a ser excluído
 
-  const [cep, setCep] = useState('');
-  const [erroCep, setErroCep] = useState('');
+  const nome = useForm("nome");
+  const email = useForm("email");
+  const CPF = useForm("CPF");
+  const biometria = useForm("biometria");
+  const telefone = useForm("telefone");
 
-  const [cidade, setCidade] = useState('');
-  const [erroCidade, setErroCidade] = useState('');
+  const getColaboradores = async () => {
+    const response = await axios.get(`http://localhost:3333/colaboradores`);
+    const dadosColaboradores = response.data.dados;
+    setLista(dadosColaboradores);
+  };
 
-  const [bairro, setBairro] = useState('');
-  const [erroBairro, setErroBairro] = useState('');
+  useEffect(() => {
+    getColaboradores();
+  }, []);
 
-  const [estado, setEstado] = useState('');
-  const [erroEstado, setErroEstado] = useState('');
+  const handleCancelar = () => {
+    CPF.setValue("");
+    email.setValue("");
+    nome.setValue("");
+    biometria.setValue("");
+    telefone.setValue("");
+    setShowModal(false);
+    setSelectedColaborador(null);
+  };
 
-  const [rua, setRua] = useState('');
-  const [erroRua, setErroRua] = useState("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!nome.value || !email.value || !CPF.value || !biometria.value || !telefone.value) {
+      alert("Por favor, preencha todos os campos.");
+      return;
+  }
+    validaTudo();
 
-  const [numero, setNumero] = useState('');
-  const [erroNumero, setErroNumero] = useState('');
+    const colaboradorData = {
+      colaborador_nome: nome.value,
+      colaborador_email: email.value,
+      colaborador_CPF: CPF.value.replace(/[.-]/g, ""),
+      colaborador_biometria: biometria.value,
+      colaborador_telefone: telefone.value,
+      colaborador_ativo: 1,
+      empresa_id: 1,
+      setor_id: 1,
+    };
 
-  const campo = 'Este campo é obrigatório!';
-
-  async function getEndereco() {
     try {
-      const response = await axios.get(`https://viacep.com.br/ws/${cep}/json`);
-      if (response.data.erro) {
-        setErroCep('CEP não encontrado.');
-        setRua('');
-        setEstado('');
-        setBairro('');
-        setCidade('');
+      if (selectedColaborador) {
+        // Editar colaborador existente
+        await axios.patch(
+          `http://localhost:3333/colaboradores/${selectedColaborador.colaborador_id}`,
+          colaboradorData
+        );
+        setShowModal(false);
       } else {
-        setRua(response.data.logradouro);
-        setEstado(response.data.uf);
-        setBairro(response.data.bairro);
-        setCidade(response.data.localidade);
-        setErroCep(''); // Limpa o erro se encontrar o endereço
+        // Cadastrar novo colaborador
+        await axios.post(`http://localhost:3333/colaboradores`, colaboradorData);
       }
-      // setRua(response.data.logradouro);
-      // setEstado(response.data.uf); // Corrigido o campo de estado (deveria ser "uf" na resposta da API)
-      // setBairro(response.data.bairro);
-      // setCidade(response.data.localidade);
+
+      handleCancelar();
+      getColaboradores();
     } catch (error) {
-      console.log(error);
+      console.log("Erro ao cadastrar colaborador", error);
     }
-  }
-
-  // Validação do campo de rua
-  const validaCep = () => {
-
-    const cepSemMascara = cep.replace(/\D/g, '');
-
-    console.log(cepSemMascara.length);
-
-    if (cepSemMascara.length === 0) {
-      setErroCep(campo);
-      return false;
-    }
-
-    // Se o CEP estiver correto
-    setErroCep('');
-    return true;
-  }
-  const handleBlurCep = async () => {
-    if (validaCep()) {// Função de validação
-      await getEndereco(); // Função para buscar o endereço
-    }
-    validaRua()
-    
-    validaEstado()
-    
-    validaBairro()
-    
-    validaCidade()
-    
-    validaNumero();
-    
-
   };
 
-  const validaRua = () => {
-    console.log(rua.length)
-    if (rua.length === 0) {
-      setErroRua(campo);
-      return false;
-    }
-    setErroRua(''); // Limpa o erro se a validação for bem-sucedida
-    return true;
+  const validaTudo = () => {
+    nome.isValid();
+    biometria.isValid();
+    telefone.isValid();
+    email.isValid();
+    CPF.isValid();
   };
 
-  const validaEstado = () => {
-    if (estado.length === 0) {
-      setErroEstado(campo);
-      return false;
-    }
-    setErroEstado('');
-    return true;
-  }
+  const handleEdit = (colaborador) => {
+    setSelectedColaborador(colaborador);
+    nome.setValue(colaborador.colaborador_nome);
+    email.setValue(colaborador.colaborador_email);
+    CPF.setValue(colaborador.colaborador_CPF);
+    biometria.setValue(colaborador.colaborador_biometria);
+    telefone.setValue(colaborador.colaborador_telefone);
+    setShowModal(true);
+  };
 
-  const validaBairro = () => {
-    if (bairro.length === 0) {
-      setErroBairro(campo);
-      return false;
+  const handleDelete = async () => {
+    try {
+      await axios.delete(
+        `http://localhost:3333/colaboradores/${colaboradorToDelete.colaborador_id}`
+      );
+      setShowDeleteModal(false);
+      getColaboradores(); // Atualiza a lista após a exclusão
+    } catch (error) {
+      console.log("Erro ao excluir colaborador", error);
     }
-    setErroBairro('');
-    return true;
-  }
+  };
 
-  const validaCidade = () => {
-    if (cidade.length === 0) {
-      setErroCidade(campo);
-      return false;
-    }
-    setErroCidade('');
-    return true;
-  }
-
-  const validaNumero = () => {
-    if (numero.length === 0) {
-      setErroNumero(campo);
-      return false;
-    }
-    setErroNumero('');
-    return true;
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Evita o reload da página
-    router.push('/usuario/login')
-    if (validaCep()) {
-      validaRua();
-    validaEstado();
-    validaBairro();
-    validaCidade();
-    validaNumero();
-    }
-    
+  const confirmDelete = (colaborador) => {
+    setColaboradorToDelete(colaborador);
+    setShowDeleteModal(true); // Abre o modal de confirmação de exclusão
   };
 
   return (
     <>
-      <CabecalhoLogado />
-      <div className={style.ContainerGeral}>
-        <div className={style.Container}>
-          <h1>Cadastro de Colaboradores</h1>
-          <div className={style.ContainerTudo}>
-            <div className={style.FormDados}>
-              <form onSubmit={handleSubmit}>
-                <label className={style.Titulos}>Dados pessoais</label>
-                <div className={style.CentralizaDados}>
-                  <div className={style.DadosPessoais}>
-                    <label>Nome do colaborador:</label>
-                    <input type="text" placeholder="Digite o nome do colaborador" />
-                    <label>Email:</label>
-                    <InputMask id="email">
-                      {(inputProps) => <input {...inputProps} type="email" placeholder="Digite o email do colaborador" />}
-                    </InputMask>
-                    <label>CPF:</label>
-                    <InputMask mask="999.999.999-99" id="cpf">
-                      {(inputProps) => <input {...inputProps} type="text" placeholder="Digite o CPF do colaborador" />}
-                    </InputMask>
+      {/* <CabecalhoLogado /> */}
+      <MenuLateral/>
+      <div className={style.CorCinza}>
+        <div className={style.ContainerGeral}>
+          <div className={style.Container}>
+            <div className={style.ContainerTudo}>
+              <div className={style.FormDados}>
+                <form onSubmit={handleSubmit}>
+                  <div className={style.CentralizaDados}>
+                    <div className={style.DadosPessoais}>
+                      <label>Nome do colaborador:</label>
+                      <input
+                        type="text"
+                        value={nome.value}
+                        onChange={nome.onChange}
+                        onBlur={nome.onBlur}
+                        placeholder="Digite o nome completo do colaborador"
+                      />
+                      <label>Email:</label>
+                      <input
+                        type="text"
+                        value={email.value}
+                        onChange={email.onChange}
+                        onBlur={email.onBlur}
+                        placeholder="Digite o email do colaborador"
+                      />
+                      <label>CPF:</label>
+                      <InputMask
+                        mask="999.999.999-99"
+                        type="text"
+                        value={CPF.value}
+                        onChange={CPF.onChange}
+                        onBlur={CPF.onBlur}
+                        placeholder="Digite o CPF do colaborador"
+                      />
+                    </div>
+                    <div className={style.DadosPessoais}>
+                      <label>Biometria:</label>
+                      <input
+                        type="text"
+                        value={biometria.value}
+                        onChange={biometria.onChange}
+                        onBlur={biometria.onBlur}
+                        placeholder="Digite a biometria"
+                      />
+                      <label>Telefone:</label>
+                      <InputMask
+                        mask="(99) 99999-9999"
+                        type="text"
+                        value={telefone.value}
+                        onChange={telefone.onChange}
+                        onBlur={telefone.onBlur}
+                        placeholder="Digite o telefone do colaborador"
+                      />
+                    </div>
                   </div>
-                  <div className={style.DadosPessoais}>
-                    <label>Setor:</label>
-                    <input type="text" placeholder="Digite o setor do colaborador" />
-                    <label>Biometria:</label>
-                    <input type="text" placeholder="Biometria do colaborador" />
-                    <label htmlFor="phone">Telefone:</label>
-                    <InputMask
-                      mask="(99) 99999-9999"
-                      id="phone">
-                      {(inputProps) => <input {...inputProps} type="tel" placeholder="Digite o telefone do colaborador" />}
-                    </InputMask>
+                </form>
+              </div>
+              <div className={style.ContainerButton}>
+                <button type="submit" className={style.ButtonCadastrar} onClick={handleSubmit}>
+                  {selectedColaborador ? "Salvar" : "Cadastrar"}
+                </button>
+                <button type="button" className={style.ButtonCancelar} onClick={handleCancelar}>
+                  Cancelar
+                </button>
+              </div>
+
+              {/* Modal de Edição */}
+              {showModal && (
+                <div className={style.modal}>
+                  <div className={style.modalContent}>
+                    <h2>Editar Colaborador</h2>
+                    <form onSubmit={handleSubmit}>
+                      <label>Nome:</label>
+                      <input
+                        type="text"
+                        value={nome.value}
+                        onChange={nome.onChange}
+                        placeholder="Digite o nome completo do colaborador"
+                      />
+                      <label>Email:</label>
+                      <input
+                        type="text"
+                        value={email.value}
+                        onChange={email.onChange}
+                        placeholder="Digite o email do colaborador"
+                      />
+                      <label>CPF:</label>
+                      <InputMask
+                        mask="999.999.999-99"
+                        type="text"
+                        value={CPF.value}
+                        onChange={CPF.onChange}
+                        placeholder="Digite o CPF do colaborador"
+                      />
+                      <label>Biometria:</label>
+                      <input
+                        type="text"
+                        value={biometria.value}
+                        onChange={biometria.onChange}
+                        placeholder="Digite a biometria"
+                      />
+                      <label>Telefone:</label>
+                      <InputMask
+                        mask="(99) 99999-9999"
+                        type="text"
+                        value={telefone.value}
+                        onChange={telefone.onChange}
+                        placeholder="Digite o telefone do colaborador"
+                      />
+                      <button type="submit" onClick={handleSubmit}>
+                        Salvar
+                      </button>
+                      <button type="button" onClick={() => setShowModal(false)}>
+                        Cancelar
+                      </button>
+                    </form>
                   </div>
                 </div>
-              </form>
-            </div>
-            <div className={style.FormEndereco}>
-              <form onSubmit={handleSubmit}>
-                <div className={style.Teste}>
-                  <label className={style.Titulos}>Endereço</label>
-                </div>
-                <div className={style.CentralizaEndereco}>
-                  <div className={style.DadosEndereco}>
-                    <label>CEP:</label>
-                    <InputMask
-                      mask="99999-999"
-                      value={cep}
-                      onChange={({ target }) => setCep(target.value)}
-                      onBlur={handleBlurCep}
-                      placeholder="Digite o CEP"
-                    />
-                    {erroCep && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroCep}</p>} {/* Exibe a mensagem de erro */}
+              )}
 
-                    <label>Rua:</label>
-                    <input
-                      type="text"
-                      value={rua}
-                      onChange={({ target }) => setRua(target.value)}
-                      onBlur={validaRua} // Chama validação ao sair do campo
-                      placeholder="Digite o nome da Rua"
-                    />
-                    {erroRua && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroRua}</p>} {/* Exibe a mensagem de erro */}
-
-                    <label>Estado:</label>
-                    <input
-                      type="text"
-                      value={estado}
-                      onChange={({ target }) => setEstado(target.value)}
-                      onBlur={validaEstado}
-                      placeholder="Nome do Estado"
-                    />
-                    {erroEstado && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroEstado}</p>} {/* Exibe a mensagem de erro */}
-                    <label>Bairro:</label>
-                    <input
-                      type="text"
-                      value={bairro}
-                      onChange={({ target }) => setBairro(target.value)}
-                      onBlur={validaBairro}
-                      placeholder="Digite o nome do Bairro"
-                    />
-                    {erroBairro && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroBairro}</p>} {/* Exibe a mensagem de erro */}
-                  </div>
-                  <div className={style.DadosEndereco}>
-                    <label>Cidade:</label>
-                    <input
-                      type="text"
-                      value={cidade}
-                      onChange={({ target }) => setBairro(target.value)}
-                      onBlur={validaCidade}
-                      placeholder="Nome da Cidade"
-                    />
-                    {erroCidade && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroCidade}</p>} {/* Exibe a mensagem de erro */}
-
-                    <label>Número:</label>
-                    <input type="text"
-                      onChange={({ target }) => setNumero(target.value)}
-                      onBlur={validaNumero}
-                      placeholder="Ex: 01"
-                    />
-                    {erroNumero && <p style={{ color: "red", marginBottom: '1rem', fontStyle: 'italic', fontSize: '1rem' }}>{erroNumero}</p>} {/* Exibe a mensagem de erro */}
-
-                    <label>Complemento:</label>
-                    <input type="text" placeholder="Ex: Casa, Apto" />
+              {/* Modal de Confirmação de Exclusão */}
+              {showDeleteModal && (
+                <div className={style.modal}>
+                  <div className={style.modalContent}>
+                    <h2>Confirmar Exclusão</h2>
+                    <p>Tem certeza de que deseja excluir o(a) colaborador(a) {colaboradorToDelete?.colaborador_nome}?</p>
+                    <button onClick={handleDelete}>Excluir</button>
+                    <button onClick={() => setShowDeleteModal(false)}>Cancelar</button>
                   </div>
                 </div>
-              </form>
-            </div>
-            <div className={style.ContainerButton}>
-              <button type="submit" className={style.Button} onClick={handleSubmit}>Concluir</button>
+              )}
+              <div className={style.Novo}>
+                <div className={style.InputIcon}>
+                  <label htmlFor="">Pesquisar Colaboradores:</label>
+                  <input type="text" placeholder="Digite o nome do Colaborador" />
+                  <IconContext.Provider value={{ size: 25 }}>
+                    <MdSearch />
+                  </IconContext.Provider>
+                </div>
+
+                <div className={style.containerColaborador}>
+                  <div className={style.ContainerCabecalho}>
+                    <div className={style.ContainerId}>#</div>
+                    <div className={style.ContainerNome}>Nome</div>
+                    <div className={style.ContainerEmail}>Email</div>
+                    <div className={style.ContainerBotaoTeste}>Ações</div>
+                  </div>
+                  {lista &&
+                    lista.map((colaborador, index) => (
+                      <div key={index} className={style.ContainerDivs}>
+                        <div className={style.ContainerId}>{colaborador.colaborador_id}</div>
+                        <div className={style.ContainerNome}>{colaborador.colaborador_nome}</div>
+                        <div className={style.ContainerEmail}>{colaborador.colaborador_email}</div>
+                        <div className={style.ContainerBotaoEditar}>
+                          <button
+                            type="button"
+                            className={style.ButtonEditar}
+                            onClick={() => handleEdit(colaborador)}
+                          >
+                            <IconContext.Provider value={{ size: 20 }}>
+                              <MdEdit />
+                            </IconContext.Provider>
+                          </button>
+                          <button
+                            type="button"
+                            className={style.ButtonExcluir}
+                            onClick={() => confirmDelete(colaborador)}
+                          >
+                            <IconContext.Provider value={{ size: 20 }}>
+                              <MdDelete />
+                            </IconContext.Provider>
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>

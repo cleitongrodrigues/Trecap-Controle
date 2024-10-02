@@ -1,93 +1,259 @@
 /* CSS para o menu lateral */
 .menuLateral {
-    min-width: 270px;
-    background-color: rgb(7, 7, 59);
-    padding: 2rem;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; 
-    position: fixed;
-    left: 0;
+  min-width: 270px;
+  background-color: rgb(7, 7, 59);
+  padding: 2rem;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: fixed;
+  left: 0;
 }
 
-
-
 .menuItems {
-    flex: 1;
+  flex: 1;
 }
 
 .menuItems a {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
-    text-decoration: none;
-    color: white;
-    font-size: 1.5rem;
-    transition: color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  text-decoration: none;
+  color: white;
+  font-size: 1.5rem;
+  transition: color 0.3;
+  border-bottom: 0.3s;
+  padding-bottom: 0.5rem;
 }
 
 .menuItems a:hover {
-    color: var(--purpleMain);
+  color: var(--purpleMain);
 }
 
 .menuItems a svg {
-    font-size: 2rem;
+  font-size: 2rem;
 }
 
 .menuFooter {
-    margin-top: auto;
+  margin-top: auto;
 }
 
 .menuFooter a {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 2rem;
-    text-decoration: none;
-    color: white;
-    font-size: 1.5rem;
-    transition: color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  text-decoration: none;
+  color: white;
+  font-size: 1.5rem;
+  transition: color 0.3s;
 }
 
 .menuFooter a:hover {
-    color: var(--purpleMain);
+  color: var(--purpleMain);
 }
 
 .menuFooter a svg {
-    font-size: 2rem;
+  font-size: 2rem;
 }
 
 /* Teste */
-.logo{
-    display: flex;
-    align-items: center;
-    margin-bottom: 5rem;
-}
-.logo svg{
-    color: white;
-}
-.logo a{
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    text-decoration: none;
-}
-.logoTexto{
-    color: white;
-    font-weight: 700;
-    font-size: 2rem;
-}
-.logoImage{
-    max-width: 100%;
-    height: auto;
-    width: 2.5rem;
-}
-.Perfil{
-    margin-bottom: 5rem;
+.logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5rem;
 }
 
-.active{
-    background-color:var(--purpleMain);
+.logo svg {
+  color: white;
+}
+
+.logo a {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  text-decoration: none;
+}
+
+.logoTexto {
+  color: white;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.logoImage {
+  max-width: 100%;
+  height: auto;
+  width: 2.5rem;
+}
+
+.Perfil {
+  margin-bottom: 5rem;
+  z-index: 9999;
+}
+.ImagemPerfil{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+  margin-right: 0.5rem; 
+  
+}
+
+@media (max-width: 600px) {
+  .imagePerfil {
+    width: 30px; /* Tamanho menor para telas pequenas */
+    height: 30px; /* Deve ser igual à largura */
+  }
+}
+
+.active {
+  border-bottom: 3px solid white;
+}
+
+/* Estilo geral do modal */
+.modalTeste {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 2000;
+}
+
+/* Conteúdo do modal */
+.modalContent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2001;
+  background-color: white;
+  padding: 2rem 3rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+  font-family: 'Roboto', sans-serif;
+  animation: fadein 0.4s ease-in-out;
+  font-size: 1.5rem;
+}
+
+/* Título do modal */
+.modalContent h2 {
+  margin-bottom: 1rem;
+  color: grey;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.modalContent label{
+  font-weight: bold;
+}
+
+/* Estilos para os campos de entrada no modal */
+.modalContent input {
+  width: 100%;
+  padding: 1rem;
+  margin: 0.5rem 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1.6rem;
+  background-color: #f9f9f9;
+  transition: all 0.3s ease;
+}
+
+.modalContent input:focus {
+  border-color: #7d4cdb; /* Cor de foco */
+  background-color: #fff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(125, 76, 219, 0.3);
+}
+
+/* Estilos dos botões dentro do modal */
+.modalContent button {
+  background-color: #7d4cdb; /* Cor do botão */
+  color: white;
+  display: inline-block;
+  width: 48%;
+  padding: 1rem;
+  margin: 0.5rem 1%;
+  font-size: 1.6rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modalContent button:hover {
+  background-color: #6a3bbf; /* Cor do botão ao passar o mouse */
+}
+
+/* Adicionando transições suaves para o modal */
+.modalContent {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.file {
+  display: flex;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.file input {
+  cursor: pointer;
+  min-height: 5rem;
+  background-color: transparent;
+  display: none;
+}
+
+.EscollherArquivo {
+  display: inline-block;
+  padding: 0.8rem 1.5rem;
+  background-color: rgb(7, 7, 59);
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 1rem;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.EscollherArquivo:hover {
+  background-color: #6a3bbf; /* Cor ao passar o mouse */
+}
+
+.imagePreviewContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.imagePreviewContainer img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+}
+
+
+@keyframes fadeIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
