@@ -10,6 +10,7 @@ import useForm from "@/hooks/useForm";
 import { MdSearch, MdEdit, MdDelete } from "react-icons/md";
 import { IconContext } from "react-icons";
 import MenuLateral from "@/components/menuLateral/page";
+import Swal from "sweetalert2";
 
 export default function CadastrarEvento() {
   const router = useRouter();
@@ -45,13 +46,24 @@ export default function CadastrarEvento() {
     setShowModal(false);
     setSelectedColaborador(null);
   };
-
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!nome.value || !email.value || !CPF.value || !biometria.value || !telefone.value) {
-      alert("Por favor, preencha todos os campos.");
+    if (
+      !nome.value ||
+      !email.value ||
+      !CPF.value ||
+      !biometria.value ||
+      !telefone.value
+    ) {
+      Swal.fire({
+        icon: "error",
+        title: "Campos não preenchidos",
+        text: "Por favor, preencha todos os campos!",
+      });
+      // alert("Por favor, preencha todos os campos.");
       return;
-  }
+    }
     validaTudo();
 
     const colaboradorData = {
@@ -75,11 +87,18 @@ export default function CadastrarEvento() {
         setShowModal(false);
       } else {
         // Cadastrar novo colaborador
-        await axios.post(`http://localhost:3333/colaboradores`, colaboradorData);
+        await axios.post(
+          `http://localhost:3333/colaboradores`,
+          colaboradorData
+        );
       }
 
       handleCancelar();
       getColaboradores();
+      Swal.fire({
+        title: "Atualizado com sucesso!",
+        icon: "success",
+      });
     } catch (error) {
       console.log("Erro ao cadastrar colaborador", error);
     }
@@ -123,7 +142,7 @@ export default function CadastrarEvento() {
   return (
     <>
       {/* <CabecalhoLogado /> */}
-      <MenuLateral/>
+      <MenuLateral />
       <div className={style.CorCinza}>
         <div className={style.ContainerGeral}>
           <div className={style.Container}>
@@ -181,10 +200,18 @@ export default function CadastrarEvento() {
                 </form>
               </div>
               <div className={style.ContainerButton}>
-                <button type="submit" className={style.ButtonCadastrar} onClick={handleSubmit}>
+                <button
+                  type="submit"
+                  className={style.ButtonCadastrar}
+                  onClick={handleSubmit}
+                >
                   {selectedColaborador ? "Salvar" : "Cadastrar"}
                 </button>
-                <button type="button" className={style.ButtonCancelar} onClick={handleCancelar}>
+                <button
+                  type="button"
+                  className={style.ButtonCancelar}
+                  onClick={handleCancelar}
+                >
                   Cancelar
                 </button>
               </div>
@@ -235,7 +262,10 @@ export default function CadastrarEvento() {
                       <button type="submit" onClick={handleSubmit}>
                         Salvar
                       </button>
-                      <button type="button" onClick={() => setShowModal(false)}>
+                      <button
+                        type="button"
+                        onClick={handleCancelar}
+                      >
                         Cancelar
                       </button>
                     </form>
@@ -248,16 +278,24 @@ export default function CadastrarEvento() {
                 <div className={style.modal}>
                   <div className={style.modalContent}>
                     <h2>Confirmar Exclusão</h2>
-                    <p>Tem certeza de que deseja excluir o(a) colaborador(a) {colaboradorToDelete?.colaborador_nome}?</p>
+                    <p>
+                      Tem certeza de que deseja excluir o(a) colaborador(a){" "}
+                      {colaboradorToDelete?.colaborador_nome}?
+                    </p>
                     <button onClick={handleDelete}>Excluir</button>
-                    <button onClick={() => setShowDeleteModal(false)}>Cancelar</button>
+                    <button onClick={() => setShowDeleteModal(false)}>
+                      Cancelar
+                    </button>
                   </div>
                 </div>
               )}
               <div className={style.Novo}>
                 <div className={style.InputIcon}>
                   <label htmlFor="">Pesquisar Colaboradores:</label>
-                  <input type="text" placeholder="Digite o nome do Colaborador" />
+                  <input
+                    type="text"
+                    placeholder="Digite o nome do Colaborador"
+                  />
                   <IconContext.Provider value={{ size: 25 }}>
                     <MdSearch />
                   </IconContext.Provider>
@@ -273,9 +311,15 @@ export default function CadastrarEvento() {
                   {lista &&
                     lista.map((colaborador, index) => (
                       <div key={index} className={style.ContainerDivs}>
-                        <div className={style.ContainerId}>{colaborador.colaborador_id}</div>
-                        <div className={style.ContainerNome}>{colaborador.colaborador_nome}</div>
-                        <div className={style.ContainerEmail}>{colaborador.colaborador_email}</div>
+                        <div className={style.ContainerId}>
+                          {colaborador.colaborador_id}
+                        </div>
+                        <div className={style.ContainerNome}>
+                          {colaborador.colaborador_nome}
+                        </div>
+                        <div className={style.ContainerEmail}>
+                          {colaborador.colaborador_email}
+                        </div>
                         <div className={style.ContainerBotaoEditar}>
                           <button
                             type="button"

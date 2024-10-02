@@ -245,7 +245,6 @@
   border: 2px solid #ddd;
 }
 
-
 @keyframes fadeIn {
   from {
     transform: scale(0.9);
