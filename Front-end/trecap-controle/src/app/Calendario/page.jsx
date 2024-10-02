@@ -134,7 +134,6 @@ export default function HomePage() {
             eventStyle={() => ({
               backgroundColor: '#7f00ff',
               borderColor: '#7f00ff',
-              width: '500px'
             })}
           />
         </div>
