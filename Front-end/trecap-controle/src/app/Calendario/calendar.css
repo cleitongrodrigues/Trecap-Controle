@@ -51,7 +51,7 @@
 
 /* Estilo dos eventos */
 .fc-event {
-  background-color: #6a0dad;
+  background-color: #0b0b45;
   color: white;
   border: none;
   border-radius: 4px;
@@ -77,7 +77,7 @@
 }
 
 .event-list h2 {
-  color: #6a0dad;
+  color: #0b0b45;
   margin-bottom: 10px;
 }
 
@@ -88,7 +88,7 @@
 
 .event-list li {
   margin-bottom: 8px;
-  background-color: #7f00ff;
+  background-color: #0b0b45;
   color: white;
   padding: 8px;
   border-radius: 4px;
@@ -165,7 +165,7 @@
 
 
 .delete-btn {
-  background-color: #ff4d4d; 
+  background-color: #6a6ac1; 
   color: white; 
   border: none; 
   padding: 8px 12px; 
@@ -177,11 +177,11 @@
 }
 
 .delete-btn:hover {
-  background-color: #ff1a1a; 
+  background-color: #0b0b45; 
 }
 
 .delete-btn:active {
-  background-color: #cc0000; 
+  background-color: #0b0b45; 
 }
 
 .delete-btn:focus {
