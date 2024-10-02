@@ -1,9 +1,13 @@
+import ValidationException from "../Exception/ValidationException.js"
 import Employee from "./Employee.js"
 import Evento from "./Evento.js"
 
-export default class User{
-    constructor(userId, name, cpf, userType, status, email, password, telefone, registerDate, companyId)
-    {
+export default class User {
+    constructor(userId, name, cpf, userType, status, email, password, telefone, registerDate, companyId) {
+
+        if(!email) throw new ValidationException("O email não pode ser nulo")
+        if(!cpf) throw new ValidationException("O CPF não pode ser vazio")
+
         this.userId = userId
         this.name = name
         this.cpf = cpf
@@ -16,23 +20,23 @@ export default class User{
         this.companyId = companyId
     }
 
-    cancel(){
-        if(this.status == 0) throw new Error('Usuário inexistente!')
+    cancel() {
+        if (this.status == 0) throw new Error('Usuário inexistente!')
         this.status = 0
     }
 
-    registerEmployee(employeeInfo){
+    registerEmployee(employeeInfo) {
         const isAdmin = this.userType === 1
-        if(!isAdmin) throw new Error("Você não tem permissão para regisrtar um funcionário!")
+        if (!isAdmin) throw new Error("Você não tem permissão para regisrtar um funcionário!")
 
         const newEmployee = new Employee(employeeInfo.employeeId, employeeInfo.name, employeeInfo.cpf, employeeInfo.biometria, 1, employeeInfo.telefone, employeeInfo.email, this.companyId)
 
         return newEmployee
     }
 
-    registerEvento(eventoInfo){
+    registerEvento(eventoInfo) {
         const isAdmin = this.userType === 1
-        if(!isAdmin) throw new Error("Você não tem permissão para registrar um evento!")
+        if (!isAdmin) throw new Error("Você não tem permissão para registrar um evento!")
 
         const newEvento = new Evento(eventoInfo.eventoId, eventoInfo.name, new Date(eventoInfo.dateStartTime), new Date(eventoInfo.dateEndTime), eventoInfo.local, 1, this.userId)
 

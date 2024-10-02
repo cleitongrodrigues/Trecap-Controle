@@ -68,8 +68,18 @@ class UserRepository {
     }
 
     async save(user) {
-        const values = [user.name, user.cpf, user.userType, user.status, user.email, user.password, user.telefone, user.registerDate, user.companyId]
-
+        const values = [
+            user.name,
+            user.cpf,
+            user.userType,
+            user.status,
+            user.email,
+            user.password,
+            user.telefone,
+            user.registerDate,
+            user.companyId
+        ]
+        
         const sql = `
                 INSERT INTO Usuario 
                     (usu_nome, usu_CPF, tipo_usuario_id, usu_ativo, 

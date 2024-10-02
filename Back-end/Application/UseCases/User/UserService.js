@@ -1,5 +1,7 @@
 import FactoryUser from "../../../Domain/Domain Service/FactoryUser.js"
 import User from "../../../Domain/Entities/User.js"
+import NotFoundException from "../../../Domain/Exception/NotFoundException.js"
+import ValidationException from "../../../Domain/Exception/ValidationException.js"
 import userRepository from "../../../Infrastructure/database/repositories/userRepository.js"
 
 
@@ -10,16 +12,16 @@ class UserService {
     }
 
     async createUser(input) {
-        const existUserWithSameEmail = await this.repository.getUserByEmail(input.email)
-        const existUserWithSameCPF = await this.repository.getUserByCPF(input.cpf)
-
-        // if (existUserWithSameEmail) throw new Error("Já existe um usuário cadastrado com esse Email!")
-        // if (existUserWithSameCPF) throw new Error("Já existe um usuário cadastrado com esse CPF!")
-
         input.userId = await this.repository.count() + 1
 
-
         const user = this.factoryUser.createAdminUser(input)
+
+        const existUserWithSameEmail = await this.repository.getUserByEmail(user.email)
+        const existUserWithSameCPF = await this.repository.getUserByCPF(user.cpf)
+
+        if (existUserWithSameEmail) throw new ValidationException("Já existe um usuário cadastrado com esse Email!")
+        if (existUserWithSameCPF) throw new ValidationException("Já existe um usuário cadastrado com esse CPF!")
+
         await this.repository.save(user)
         
         return user
@@ -32,6 +34,7 @@ class UserService {
 
     async getUserById(id) {
         const user = await this.repository.getUserById(id)
+        if(!user) throw new NotFoundException("Usuário Não Encontrado!")
         return user
     }
 

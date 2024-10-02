@@ -2,63 +2,47 @@ import UserService from "../../Application/UseCases/User/UserService.js";
 import Auth from "../../Infrastructure/Auth/Auth.js";
 
 export const UsuarioController = {
-    async ListarUsuarios(request, response) {
+    async ListarUsuarios(request, response, next) {
         try {
             const users = await UserService.getUsers()
 
             return response.status(200).json({
-                sucesso: true,
                 mensagem: 'Lista de Usuários',
                 dados: users,
             });
 
         } catch (error) {
-            return response.status(500).send(error.message);
+            next(error)
         }
     },
 
-    async ListarUsuario(request, response) {
+    async ListarUsuario(request, response, next) {
         try {
             const { id } = request.params
             const user = await UserService.getUserById(id)
-
-            if (!user) return response.status(404).send('Usuário não encontrado!')
 
             return response.status(200).json({
                 dados: user
             });
 
         } catch (error) {
-            return response.status(500).send(error.message);
+            next(error)
         }
     },
 
-    async CadastrarUsuario(request, response) {
+    async CadastrarUsuario(request, response, next) {
         try {
-            const{ usu_nome, usu_cpf, tipo_usuario_id, usu_email, usu_senha, usu_telefone, empresa_id }  = request.body
-
-            
-            const inputCreateUser = {
-                name: usu_nome,
-                email: usu_email,
-                cpf: usu_cpf,
-                userTpe: tipo_usuario_id,
-                password: usu_senha,
-                telefone: usu_telefone,
-                companyId: empresa_id
-            }
-
-            const newUser = await UserService.createUser(inputCreateUser)
+            const newUser = await UserService.createUser(request.body)
 
             return response.status(201).json({
-                mensagem: `Usuário ${newUser.userID} cadastrado com sucesso!`,
+                mensagem: `Usuário ${newUser.userId} cadastrado com sucesso!`,
             });
         } catch (error) {
-            return response.status(500).send(error.message)
+            next(error)
         }
     },
 
-    // async EditarUsuario(request, response){
+    // async EditarUsuario(request, response, next){
     //     try {
 
     //         const {usu_nome, usu_CPF, tipo_usuario_id, 
@@ -88,45 +72,46 @@ export const UsuarioController = {
     //     }
     // },
 
-    async ApagarUsuario(request, response) {
+    async ApagarUsuario(request, response, next) {
         try {
             const { id } = request.params
 
             await UserService.deleteUser(id)
+
             return response.status(200).json({
-                sucesso: true,
                 mensagem: `Usuário ${id} deletado com sucesso!`,
             });
         } catch (error) {
-            return response.status(500).send(error.mensagem);
+            next(error)
         }
     },
 
-    async Login(request, response){
+    async Login(request, response, next) {
         try {
             const userInfo = {
                 email: request.body.email,
                 password: request.body.password
             }
-    
+
             const token = await Auth.Login(userInfo)
 
             return response.status(200).json({
                 token: token
             })
-
         } catch (error) {
-            return response.status(500).send(error.mensagem);
+            next(error)
         }
-        
+
     },
-    async private(request, response) {
-        try{
-            return response.status(200).send({username: request.user.name})
-        }catch(error){
-            return response.status(500).send(error.mensagem);
+    async private(request, response, next) {
+        try {
+            return response.status(200).send({
+                username: request.user.name
+            })
+        } catch (error) {
+            next(error)
         }
-        
+
     }
 }
 
