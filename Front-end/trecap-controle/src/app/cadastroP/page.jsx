@@ -18,15 +18,17 @@ export default function CadastroP() {
   const getSetores = async ()=>{
     const response = await axios.get('http://localhost:3333/Setores/1')
     const setores = response.data.dados
-      setores.map((setor)=>{
+    const newSetores = setores.map((setor)=>{
         return {
-          setor_nome: setor,
-          checked: false
+          ...setor,
+          checked:false
         }
       })
 
+      console.log(newSetores)
 
-    setSelectedSetores(setores)
+
+    setSelectedSetores(newSetores)
   }
 
   const handleCheckboxChange = (index) => {
@@ -44,9 +46,8 @@ export default function CadastroP() {
 
   const handleClick = ({target}) => {
     const newSelectedSetores = [...selectedSetores]
-    const hasSelectedSetor = newSelectedSetores.filter(setor => setor.checked === true)
-    console.log(hasSelectedSetor)
-    console.log(newSelectedSetores)
+    const hasSelectedSetor = newSelectedSetores.filter(setor => setor.checked === true).length !== 0
+
     if(!hasSelectedSetor){
       alert("Nenhum setor selecionado.");
       return;
