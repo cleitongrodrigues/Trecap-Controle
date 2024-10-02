@@ -11,7 +11,7 @@
     flex-direction: column;
     background-color: var(--purple-300);
     justify-content: center;   
-    max-width: 70rem;
+    max-width: 100rem;
     align-items: center;
     border-radius: 1rem;
     margin: 6rem auto 0;
