@@ -1,39 +1,58 @@
 "use client";
 import styles from './page.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CabecalhoLogado from '@/cabecalhoLogado/page';
 import { useRouter } from 'next/navigation';
 import MenuLateral from '@/components/menuLateral/page';  // Importa o componente de menu lateral
+import axios from 'axios';
 
 export default function CadastroP() {
   const router = useRouter();
 
-  const [selectedSetores, setSelectedSetores] = useState({
-    "Produção": false,
-    "Carga e Descarga": false,
-    "Encarregados": false,
-    "Almoxarifado": false,
-  });
+  const [selectedSetores, setSelectedSetores] = useState([]);
 
-  const handleCheckboxChange = (e) => {
-    const { name, checked } = e.target;
-    setSelectedSetores((prev) => ({
-      ...prev,
-      [name]: checked,
-    }));
+  useEffect(()=>{
+    getSetores()
+  },[])
+
+  const getSetores = async ()=>{
+    const response = await axios.get('http://localhost:3333/Setores/1')
+    const setores = response.data.dados
+      setores.map((setor)=>{
+        return {
+          setor_nome: setor,
+          checked: false
+        }
+      })
+
+
+    setSelectedSetores(setores)
+  }
+
+  const handleCheckboxChange = (index) => {
+
+    const newSelectedSetores = [...selectedSetores]
+    if(newSelectedSetores[index].checked){
+      newSelectedSetores[index].checked = false
+    } else {
+      newSelectedSetores[index].checked = true
+    }
+
+    
+    setSelectedSetores(newSelectedSetores);
   };
 
-  const handleClick = () => {
-    const setoresSelecionados = Object.keys(selectedSetores).filter(
-      (setor) => selectedSetores[setor]
-    );
-
-    if (setoresSelecionados.length === 0) {
+  const handleClick = ({target}) => {
+    const newSelectedSetores = [...selectedSetores]
+    const hasSelectedSetor = newSelectedSetores.filter(setor => setor.checked === true)
+    console.log(hasSelectedSetor)
+    console.log(newSelectedSetores)
+    if(!hasSelectedSetor){
       alert("Nenhum setor selecionado.");
       return;
     }
 
-    localStorage.setItem('setorSelecionado', setoresSelecionados.join(', '));
+
     router.push('/adicionar');
   };
 
@@ -53,17 +72,17 @@ export default function CadastroP() {
                   <h3>Selecione setores participantes</h3>
                 </div>
                 <div className={styles.checkbox}>
-                  {Object.keys(selectedSetores).map((setor) => (
+                  {selectedSetores.map((setor, index) => (
                     <div key={setor} className={styles.containerInput}>
                       <label className={styles.label} htmlFor={setor}>
-                        {setor}
+                        {setor.setor_nome}
                       </label>
                       <input
                         type="checkbox"
-                        name={setor}
+                        name={setor.setor_nome}
                         id={setor}
-                        checked={selectedSetores[setor]}
-                        onChange={handleCheckboxChange}
+                        checked={setor.checked}
+                        onChange={()=>handleCheckboxChange(index)}
                       />
                     </div>
                   ))}
