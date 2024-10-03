@@ -3,11 +3,87 @@ const db = require('../database/connection');
 module.exports = {
     async ListarColaboradores(request, response) {
         try {
-            const sql = `SELECT colaborador_id, colaborador_nome, colaborador_CPF, colaborador_biometria, 
-            colaborador_ativo = 1 AS colaborador_ativo , colaborador_telefone, colaborador_email, empresa_id, setor_id 
-            FROM Colaboradores WHERE colaborador_ativo = 1`;
+            const { setor } = request.query
+            console.log(setor)
+            let sql
 
-            const colaboradores = await db.query(sql);
+            // const sql = `SELECT colaborador_id, colaborador_nome, colaborador_CPF, colaborador_biometria, 
+            // colaborador_ativo = 1 AS colaborador_ativo , colaborador_telefone, colaborador_email, Colaboradores.empresa_id, Colaboradores.setor_id, setor_nome
+            // FROM Colaboradores
+            // INNER JOIN Setores ON Setores.setor_id = Colaboradores.setor_id 
+            //  WHERE colaborador_ativo = 1 ${ setor ? 'and setor_nome = ?' :''}`;
+            const placeholders = setor?.map(() => '?').join(', ');
+            if (!setor) {
+                sql = `
+                    SELECT 
+                        colaborador_id, 
+                        colaborador_nome, 
+                        colaborador_CPF, 
+                        colaborador_biometria, 
+                        colaborador_ativo = 1 AS colaborador_ativo, 
+                        colaborador_telefone, 
+                        colaborador_email, 
+                        Colaboradores.empresa_id, 
+                        Colaboradores.setor_id, 
+                        setor_nome
+                    FROM 
+                        Colaboradores
+                    WHERE 
+                        colaborador_ativo = 1
+                `;
+            }else{
+                sql = `
+                SELECT 
+                    colaborador_id, 
+                    colaborador_nome, 
+                    colaborador_CPF, 
+                    colaborador_biometria, 
+                    colaborador_ativo = 1 AS colaborador_ativo, 
+                    colaborador_telefone, 
+                    colaborador_email, 
+                    Colaboradores.empresa_id, 
+                    Colaboradores.setor_id, 
+                    setor_nome
+                FROM 
+                    Colaboradores
+                INNER JOIN 
+                    Setores ON Setores.setor_id = Colaboradores.setor_id 
+                WHERE 
+                    colaborador_ativo = 1 
+                    ${setor.length > 0 ? `AND setor_nome IN (${placeholders})` : ''}
+            `;
+            }
+
+    const params = setor?.length > 0 ? setor : [];
+            const colaboradores = await db.query(sql, params);
+
+            const nItens = colaboradores[0].length;
+            return response.status(200).json({
+                sucesso: true,
+                mensagem: 'Lista de colaboradores',
+                dados: colaboradores[0],
+                nItens
+            });
+
+        } catch (error) {
+            return response.status(500).json({
+                sucesso: false,
+                mensagem: 'Erro ao listar colaborador',
+                dados: error.message
+            });
+        }
+    },
+    async ListarColaboradoresPorSetor(request, response) {
+        try {
+            const { setor } = request.params
+
+            const sql = `SELECT colaborador_id, colaborador_nome, colaborador_CPF, colaborador_biometria, 
+            colaborador_ativo = 1 AS colaborador_ativo , colaborador_telefone, colaborador_email, empresa_id, setor_id, setor_nome
+            FROM Colaboradores
+            INNER JOIN Setores ON Setores.setor_id = Colaboradores.setor_id 
+             WHERE colaborador_ativo = 1 and setor_nome = ?`;
+
+            const colaboradores = await db.query(sql, setor);
 
             const nItens = colaboradores[0].length;
             return response.status(200).json({
@@ -29,7 +105,7 @@ module.exports = {
 
     async CadastrarColaboradores(request, response) {
         try {
-            const { colaborador_nome, colaborador_CPF, colaborador_biometria, colaborador_ativo, 
+            const { colaborador_nome, colaborador_CPF, colaborador_biometria, colaborador_ativo,
                 colaborador_telefone, colaborador_email, empresa_id, setor_id } = request.body;
 
             const sql = `INSERT INTO Colaboradores
@@ -38,7 +114,7 @@ module.exports = {
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
 
             const values = [colaborador_nome, colaborador_CPF, colaborador_biometria, colaborador_ativo,
-                 colaborador_telefone, colaborador_email, empresa_id, setor_id];
+                colaborador_telefone, colaborador_email, empresa_id, setor_id];
 
             const execSql = await db.query(sql, values);
 
@@ -61,7 +137,7 @@ module.exports = {
     async EditarColaboradores(request, response) {
         try {
             const { colaborador_nome, colaborador_CPF, colaborador_biometria, colaborador_ativo,
-                 colaborador_telefone, colaborador_email, empresa_id, setor_id } = request.body;
+                colaborador_telefone, colaborador_email, empresa_id, setor_id } = request.body;
 
             const { colaborador_id } = request.params;
 
@@ -69,7 +145,7 @@ module.exports = {
                 colaborador_ativo = ?, colaborador_telefone = ?, colaborador_email = ?, empresa_id = ?, setor_id = ?
                 WHERE colaborador_id = ?;`;
 
-            const values = [colaborador_nome, colaborador_CPF, colaborador_biometria, colaborador_ativo, 
+            const values = [colaborador_nome, colaborador_CPF, colaborador_biometria, colaborador_ativo,
                 colaborador_telefone, colaborador_email, empresa_id, setor_id, colaborador_id];
 
             const atualizaDados = await db.query(sql, values);

@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
-import CabecalhoLogado from "@/CabecalhoLogado/page";
 import MenuLateral from '@/components/menuLateral/page';
 
 export default function CheckinEvento() {
@@ -16,29 +15,28 @@ export default function CheckinEvento() {
 
   useEffect(() => {
     // Recupera o setor selecionado do localStorage
-    const setorSelecionado = localStorage.getItem('setorSelecionado');
+    const setorSelecionado = JSON.parse(localStorage.getItem('setorSelecionado'))[0];
     if (setorSelecionado) {
       setSetor(setorSelecionado);
+
+      // Faz a requisição para a API de colaboradores filtrada pelo setor
+      const fetchParticipantes = async () => {
+        try {
+          const response = await fetch(`http://localhost:3333/colaboradores?setor=${setorSelecionado}`);
+          const data = await response.json();
+          console.log(data)
+
+          setParticipantes(data.dados);
+
+          // Inicia o array de participantesSelecionados com valores 'false' (nenhum selecionado inicialmente)
+          setParticipantesSelecionados(new Array(data.length).fill(false));
+        } catch (error) {
+          console.error("Erro ao buscar colaboradores:", error);
+        }
+      };
+
+      fetchParticipantes();
     }
-
-    // Dados mockados
-    const participantesMock = [
-      { nome: "Sebastião Maradona" },
-      { nome: "Artur Fernandes Silva" },
-      { nome: "Bruno Alves Souza" },
-      { nome: "Carlos Emanuel Santos" },
-      { nome: "Douglas Bispo" },
-      { nome: "Onofre Cleiton Mariano" },
-      { nome: "Bezerra Cabral Secundo" },
-    ];
-
-    // Ordenar os participantes por nome
-    const participantesOrdenados = participantesMock.sort((a, b) => 
-      a.nome.localeCompare(b.nome)
-    );
-
-    setParticipantes(participantesOrdenados);
-    setParticipantesSelecionados(new Array(participantesMock.length).fill(false));
   }, []);
 
   const fecharAlerta = () => {
@@ -83,9 +81,6 @@ export default function CheckinEvento() {
     <MenuLateral />
     <div className={styles.body}>
       <div className={styles.layout}>
-        {/* Usa o componente MenuLateral */}
-        
-
         <div className={styles.mainContent}>
           <div className={styles.Header}>
             <div className={styles.checkin}>
@@ -93,7 +88,7 @@ export default function CheckinEvento() {
 
               <div className={styles.cadastro}>
                 <h2>Adicionar Participantes</h2>
-                <h3>Setor Selecionado: {setor || "Nenhum setor selecionado"}</h3>
+                <h3>Setor Selecionado: {setor || "Nenhum setor selecionado"}</h3> {/* Correção aqui */}
                 <div className={styles.containerContent}>
                   {mostrarAlerta && (
                     <div className={styles.alerta}>
@@ -115,7 +110,7 @@ export default function CheckinEvento() {
                               checked={participantesSelecionados[index]}
                               onChange={() => handleCheckboxChange(index)}
                             />
-                            {participante.nome}
+                            {participante.colaborador_nome}
                           </label>
                         </li>
                       ))}
