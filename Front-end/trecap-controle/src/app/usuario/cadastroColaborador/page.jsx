@@ -46,8 +46,56 @@ export default function CadastrarEvento() {
     setShowModal(false);
     setSelectedColaborador(null);
   };
- 
+
   const handleSubmit = async (e) => {
+    e.preventDefault();
+  if (
+    !nome.value ||
+    !email.value ||
+    !CPF.value ||
+    !biometria.value ||
+    !telefone.value
+  ) {
+    Swal.fire({
+      icon: "error",
+      title: "Campos não preenchidos",
+      text: "Por favor, preencha todos os campos!",
+    });
+    return;
+  }
+
+  validaTudo();
+
+  const colaboradorData = {
+    colaborador_nome: nome.value,
+    colaborador_email: email.value,
+    colaborador_CPF: CPF.value.replace(/[.-]/g, ""),
+    colaborador_biometria: biometria.value,
+    colaborador_telefone: telefone.value,
+    colaborador_ativo: 1,
+    empresa_id: 1,
+    setor_id: 1,
+  };
+
+  try {
+    // Cadastrar novo colaborador
+    await axios.post(`http://localhost:3333/colaboradores`, colaboradorData);
+    
+    handleCancelar();
+    getColaboradores();
+    Swal.fire({
+      title: "Cadastrado com sucesso!",
+      icon: "success",
+    });
+  } catch (error) {
+    console.log("Erro ao cadastrar colaborador", error);
+  }
+  };
+
+
+ // -----------------------------------------------------
+ 
+  const handleSalvar = async (e) => {
     e.preventDefault();
     if (
       !nome.value ||
@@ -61,9 +109,9 @@ export default function CadastrarEvento() {
         title: "Campos não preenchidos",
         text: "Por favor, preencha todos os campos!",
       });
-      // alert("Por favor, preencha todos os campos.");
       return;
     }
+
     validaTudo();
 
     const colaboradorData = {
@@ -78,20 +126,12 @@ export default function CadastrarEvento() {
     };
 
     try {
-      if (selectedColaborador) {
-        // Editar colaborador existente
-        await axios.patch(
-          `http://localhost:3333/colaboradores/${selectedColaborador.colaborador_id}`,
-          colaboradorData
-        );
-        setShowModal(false);
-      } else {
-        // Cadastrar novo colaborador
-        await axios.post(
-          `http://localhost:3333/colaboradores`,
-          colaboradorData
-        );
-      }
+      // Editar colaborador existente
+      await axios.patch(
+        `http://localhost:3333/colaboradores/${selectedColaborador.colaborador_id}`,
+        colaboradorData
+      );
+      setShowModal(false);
 
       handleCancelar();
       getColaboradores();
@@ -100,10 +140,9 @@ export default function CadastrarEvento() {
         icon: "success",
       });
     } catch (error) {
-      console.log("Erro ao cadastrar colaborador", error);
+      console.log("Erro ao atualizar colaborador", error);
     }
   };
-
   const validaTudo = () => {
     nome.isValid();
     biometria.isValid();
@@ -111,6 +150,8 @@ export default function CadastrarEvento() {
     email.isValid();
     CPF.isValid();
   };
+
+  // -----------------------------------------------------
 
   const handleEdit = (colaborador) => {
     setSelectedColaborador(colaborador);
@@ -129,6 +170,10 @@ export default function CadastrarEvento() {
       );
       setShowDeleteModal(false);
       getColaboradores(); // Atualiza a lista após a exclusão
+      Swal.fire({
+        title: "Deletado com sucesso!",
+        icon: "success",
+      });
     } catch (error) {
       console.log("Erro ao excluir colaborador", error);
     }
@@ -259,7 +304,7 @@ export default function CadastrarEvento() {
                         onChange={telefone.onChange}
                         placeholder="Digite o telefone do colaborador"
                       />
-                      <button type="submit" onClick={handleSubmit}>
+                      <button type="submit" onClick={handleSalvar}>
                         Salvar
                       </button>
                       <button
