@@ -1,0 +1,176 @@
+/* Estilo geral do container */
+.Header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ffffff; /* Cor de fundo roxa clara */
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.checkin {
+  width: 100%;
+  max-width: 600px;
+  color: var(--purpleMain);
+  background-color:#e0c6f8;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo do cabeçalho */
+.checkin h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+/* Estilo da seção de cadastro */
+.cadastro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+  color: white;
+  background-color: var(--purpleMain);
+  border-radius: 20px;
+  padding: 2rem;
+}
+
+.cadastro h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: white;
+  margin-top: 10px;
+}
+
+.cadastro h3 {
+  display: flex;
+  justify-content: left;
+  align-items: left;
+  font-size: 15px;
+  margin-bottom: 10px;
+  color: white;
+  margin-top: 5px;
+}
+
+/* Estilo do alerta */
+.alerta {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  padding: 16px;
+  margin: auto;
+  border: 0.1rem solid var(--purpleMain);
+  background-color: #8E7AB5;
+  color: white;
+  border-radius: 20px;
+  flex-direction: column;
+  max-width: 20rem;
+}
+
+.alerta p{
+  font-size: 1.2rem;
+  margin-block-end: .5rem;
+}
+
+.botaoFechar {
+  background-color: #721c24;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.containerContent{
+  width: 100%;
+}
+
+.listaParticipantes{
+  width: 100%;
+}
+
+/* Estilo da lista de participantes */
+.participantes {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza a lista de participantes */
+  list-style-type: none;
+  padding: 0;
+  margin: 20px 0 0;
+  gap: .5rem;
+  width: 100%;
+}
+
+.participanteItem {
+  display: flex;
+  align-items: center; /* Centraliza o checkbox e o texto verticalmente */
+  width: 100%; /* Garante que cada item ocupe toda a largura disponível */
+  padding: 0.5rem;
+  border-radius: 5px;
+  font-size: 2rem;
+  background-color: white;
+  color: black;
+}
+
+.participanteItem input[type="checkbox"] {
+  margin-right: 10px; /* Espaçamento entre o checkbox e o texto */
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.participanteItem p {
+  margin: 0;
+  text-align: left;
+  flex: 1; /* Faz com que o texto ocupe o espaço restante */
+}
+
+/* Estilo do botão de salvar */
+.botaoCadastro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--purpleMain);
+  color: #fff;  
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer; 
+  width: auto;
+  font-size: 16px;
+  text-align: center;
+  margin: auto;
+  margin-top: 10px;
+}
+
+.botaoCadastro:hover {
+  background-color: #6a1b9a;
+}
+
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #6c49b8; /* Escolha a cor que desejar */
+  color: white;
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.mainContent {
+  flex: 1; /* Isso vai garantir que o conteúdo principal ocupe o espaço correto */
+}
+
+.mensagemErro{
+  margin-block-start: .5rem;
+  font-size: 1.5rem;
+}

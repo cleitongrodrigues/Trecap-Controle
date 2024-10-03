@@ -3,17 +3,16 @@ const db = require('../database/connection');
 module.exports = {
     async ListarEmpresa(request, response) {
         try {
-            const sql = `SELECT empresa_id, empresa_nome, empresa_CNPJ, empresa_endereco, 
-            empresa_telefone, empresa_email, empresa_ativo = 1 AS empresa_ativo, usu_id FROM Empresa
-            WHERE empresa_ativo = 1`;
+            const sql = `SELECT empresa_id, empresa_nome, empresa_CNPJ, empresa_telefone, 
+            empresa_email, empresa_ativo = 1 AS empresa_ativo, usu_id FROM Empresa WHERE empresa_ativo = 1`;
 
-            const Empresa = await db.query(sql)
+            const empresa = await db.query(sql)
 
-            const nItens = Empresa[0].length;
+            const nItens = empresa[0].length;
             return response.status(200).json({
                 sucesso: true,
                 mensagem: `Lista de Empresas!`,
-                dados: Empresa[0],
+                dados: empresa[0],
                 nItens
             });
 
@@ -21,23 +20,23 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao listar empresas :(',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     },
 
     async CadastrarEmpresa(request, response) {
         try {
-            const { empresa_nome, empresa_CNPJ, empresa_endereco, 
-                empresa_telefone, empresa_email, empresa_ativo, usu_id } = request.body;
+            const { empresa_nome, empresa_CNPJ, empresa_telefone,
+                empresa_email, empresa_ativo, usu_id } = request.body;
 
             const sql = `INSERT INTO Empresa
-                (empresa_nome, empresa_CNPJ, empresa_endereco, 
-            empresa_telefone, empresa_email, empresa_ativo, usu_id) 
-                VALUES (?, ?, ?, ?, ?, ?, ?);`;
+                (empresa_nome, empresa_CNPJ, empresa_telefone, 
+            empresa_email, empresa_ativo, usu_id) 
+                VALUES (?, ?, ?, ?, ?, ?);`;
 
-            const values = [empresa_nome, empresa_CNPJ, empresa_endereco, 
-                empresa_telefone, empresa_email, empresa_ativo, usu_id];
+            const values = [empresa_nome, empresa_CNPJ, empresa_telefone,
+                empresa_email, empresa_ativo, usu_id];
 
             const execSql = await db.query(sql, values);
 
@@ -51,24 +50,24 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao cadastrar empresa :(',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     },
 
     async EditarEmpresa(request, response) {
         try {
-            const { empresa_nome, empresa_CNPJ, empresa_endereco, 
-                empresa_telefone, empresa_email, empresa_ativo, usu_id } = request.body;
+            const { empresa_nome, empresa_CNPJ, empresa_telefone,
+                empresa_email, empresa_ativo, usu_id } = request.body;
 
             const { empresa_id } = request.params;
 
-            const sql = `UPDATE Empresa SET empresa_nome = ?, empresa_CNPJ = ?, empresa_endereco = ?, 
-            empresa_telefone = ?, empresa_email = ?, empresa_ativo = ?, usu_id = ?
+            const sql = `UPDATE Empresa SET empresa_nome = ?, empresa_CNPJ = ?, empresa_telefone = ?, 
+                empresa_email = ?, empresa_ativo = ?, usu_id = ?
                 WHERE empresa_id = ?;`;
 
-            const values = [empresa_nome, empresa_CNPJ, empresa_endereco, 
-                empresa_telefone, empresa_email, empresa_ativo, usu_id, empresa_id];
+            const values = [empresa_nome, empresa_CNPJ, empresa_telefone,
+                empresa_email, empresa_ativo, usu_id, empresa_id];
 
             const atualizaDados = await db.query(sql, values);
             return response.status(200).json({
@@ -80,7 +79,7 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao editar empresa :(',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     },
@@ -106,7 +105,7 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao apagar empresa :(',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     }

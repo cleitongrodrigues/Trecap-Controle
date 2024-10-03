@@ -1,0 +1,161 @@
+/* calendar.css */
+
+/* Estilizando o contêiner principal do calendário */
+.calendar-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #f9f9f9;
+  padding-top: 10rem;
+}
+
+/* Estilo para o próprio calendário */
+.calendar {
+  width: 75%;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Barra de navegação do calendário */
+.fc-toolbar {
+  background-color: #6a0dad;
+  color: white;
+  padding: 10px;
+  border-radius: 8px 8px 0 0;
+}
+
+.fc-button {
+  background-color: #7f00ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 14px;
+  margin-right: 5px;
+}
+
+.fc-button:hover {
+  background-color: #9b30ff;
+}
+
+.fc-toolbar-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Estilo dos eventos */
+.fc-event {
+  background-color: #6a0dad;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+
+/* Estilo para o dia atual */
+.fc-day-today {
+  background-color: #f3e8ff !important;
+}
+
+/* Estilo para os números do dia */
+.fc-daygrid-day-number {
+  color: #6a0dad;
+}
+
+/* Estilo da lista de eventos lateral */
+.event-list {
+  width: 20%;
+  background-color: #f7f5f8;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.event-list h2 {
+  color: #6a0dad;
+  margin-bottom: 10px;
+}
+
+.event-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.event-list li {
+  margin-bottom: 8px;
+  background-color: #7f00ff;
+  color: white;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+/* Botão 'Today' customizado */
+.fc-button.fc-today-button {
+  background-color: #6a0dad;
+  color: white;
+  border-radius: 4px;
+}
+
+
+/* Estilização para o modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 100%;
+}
+
+.modal-input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-confirm {
+  background-color: #7f00ff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-cancel {
+  background-color: #ccc;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-confirm:hover {
+  background-color: #5900b3;
+}
+
+.btn-cancel:hover {
+  background-color: #999;
+}
+

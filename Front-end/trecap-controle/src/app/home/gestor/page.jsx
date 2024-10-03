@@ -36,11 +36,11 @@ export default function Gestor(){
                        Calendário</Link>
                     </div>
                     <div className={style.Centralizar}>
-                        <Link href="">
+                        <Link href="/usuario/cadastroColaborador">
                         <IconContext.Provider value={{size:100}}>
                             <MdPeople />
                        </IconContext.Provider>
-                        Setor</Link>
+                        Colaboradores</Link>
                     </div>
                 </div>
             </div>

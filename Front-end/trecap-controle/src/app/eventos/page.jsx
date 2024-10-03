@@ -4,6 +4,8 @@ import style from './page.module.css';
 import { MdWash, MdPsychology, MdEdit, MdSearch, MdCheck, MdTimer } from "react-icons/md";
 import { IconContext } from 'react-icons';
 import CabecalhoLogado from '@/cabecalhoLogado/page';
+import { useRouter } from 'next/navigation';
+import MenuLateral from '@/components/menuLateral/page';
 
 const eventos = [
     {
@@ -44,15 +46,21 @@ const Icones = {
 }
 
 export default function Evento() {
+    const router = useRouter()
+
+    const handleClick = () =>{
+        router.push('./cadastroP')
+    }
+
     return (
         <>
-        <CabecalhoLogado/>
+        <MenuLateral/>
         <div className={style.Geral}>
             <div className={style.Container}>
                 <h1 className={style.Titulo}>Eventos</h1>
                 <div className={style.containerContent}>
                     {eventos.map((evento, index) => (
-                        <div key={index} className={style.ContainerDivs}>
+                        <div key={index}  onClick={handleClick} className={style.ContainerDivs}>
                             <IconContext.Provider value={{ size: 100 }}>
                                 {Icones[evento.IconeTipo]()}
                             </IconContext.Provider>

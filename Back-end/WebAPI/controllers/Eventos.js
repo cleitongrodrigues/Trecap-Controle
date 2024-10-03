@@ -3,9 +3,9 @@ const db = require('../database/connection');
 module.exports = {
     async ListarEvento(request, response){
         try {
-            const sql = `SELECT evento_id, evento_nome, evento_data, evento_local, 
-            evento_hora_inicio, evento_hora_termino, evento_capacidade, usu_id
-            FROM Eventos;`;
+            const sql = ` SELECT evento_id, evento_nome, evento_data_inicio, 
+            evento_data_termino, evento_local, evento_status = 1 AS evento_status, usu_id, evento_professor FROM Eventos
+            WHERE evento_status = 1`;
 
             const evento = await db.query(sql)
 
@@ -21,23 +21,21 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao listar evento :(',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     },
 
     async CadastrarEvento(request, response){
         try {
-            const {evento_nome, evento_data, evento_local, 
-                evento_hora_inicio, evento_hora_termino, evento_capacidade, usu_id} = request.body;
+            const {evento_nome, evento_data_inicio, evento_data_termino, evento_local, evento_status, usu_id, evento_professor} = request.body;
 
             const sql = `INSERT INTO Eventos
-                (evento_nome, evento_data, evento_local, 
-            evento_hora_inicio, evento_hora_termino, evento_capacidade, usu_id) 
+                (evento_nome, evento_data_inicio, evento_data_termino, 
+                evento_local, evento_status, usu_id, evento_professor) 
                 VALUES (?, ?, ?, ?, ?, ?, ?);`;
 
-            const values = [evento_nome, evento_data, evento_local, 
-                evento_hora_inicio, evento_hora_termino, evento_capacidade, usu_id];
+            const values = [evento_nome, evento_data_inicio, evento_data_termino, evento_local, evento_status, usu_id, evento_professor];
 
             const execSql = await db.query(sql, values);
 
@@ -51,24 +49,24 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao cadastrar evento :(',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     },
 
     async EditarEvento(request, response){
         try {
-            const {evento_nome, evento_data, evento_local, 
-                evento_hora_inicio, evento_hora_termino, evento_capacidade, usu_id} = request.body;
+            const {evento_nome, evento_data_inicio, evento_data_termino, evento_local,
+                 evento_status, usu_id, evento_professor} = request.body;
 
             const {evento_id} = request.params;
 
-            const sql = `UPDATE Eventos SET evento_nome = ?, evento_data = ?, evento_local = ?, 
-            evento_hora_inicio = ?, evento_hora_termino = ?, evento_capacidade = ?, usu_id = ?
+            const sql = `UPDATE Eventos SET evento_nome = ?, evento_data_inicio = ?, evento_data_termino = ?,
+                evento_local = ?, evento_status = ?, usu_id = ?, evento_professor = ?
                 WHERE evento_id = ?;`;
 
-            const values = [evento_nome, evento_data, evento_local, 
-                evento_hora_inicio, evento_hora_termino, evento_capacidade, usu_id, evento_id];
+            const values = [evento_nome, evento_data_inicio, evento_data_termino, evento_local,
+                 evento_status, usu_id, evento_professor, evento_id];
 
             const atualizaDados = await db.query(sql, values);
             return response.status(200).json({
@@ -80,7 +78,7 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao editar evento',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     },
@@ -103,7 +101,7 @@ module.exports = {
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao apagar evento :(',
-                dados: error.mensagem
+                dados: error.message
             });
         }
     }
