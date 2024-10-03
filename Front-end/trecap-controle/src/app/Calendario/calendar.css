@@ -65,7 +65,7 @@
 
 /* Estilo para os números do dia */
 .fc-daygrid-day-number {
-  color: #6a0dad;
+  color: #0b0b45;
 }
 
 /* Estilo da lista de eventos lateral */
@@ -139,7 +139,7 @@
 }
 
 .btn-confirm {
-  background-color: #7f00ff;
+  background-color: #0b0b45;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -156,7 +156,7 @@
 }
 
 .btn-confirm:hover {
-  background-color: #5900b3;
+  background-color: #0b0b45;
 }
 
 .btn-cancel:hover {
@@ -186,5 +186,5 @@
 
 .delete-btn:focus {
   outline: none; 
-  box-shadow: 0 0 0 3px rgba(255, 77, 77, 0.5); 
+  box-shadow: 0 0 0 3px rgba(26, 28, 197, 0.5); 
 }
