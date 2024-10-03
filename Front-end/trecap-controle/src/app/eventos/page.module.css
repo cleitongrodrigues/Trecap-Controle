@@ -1,7 +1,6 @@
 .Geral{
-    padding-inline: 2rem;
+    padding-top: 5rem;
 }
-
 .Container{
     display: flex;
     flex-direction: column;
@@ -10,9 +9,9 @@
     max-width: 70rem;
     align-items: center;
     border-radius: 1rem;
-    margin: 6rem auto 0;
     padding: 2rem;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin: auto;
 }
 
 .Titulo{

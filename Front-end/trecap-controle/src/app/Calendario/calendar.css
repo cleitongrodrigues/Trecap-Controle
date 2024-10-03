@@ -7,7 +7,8 @@
   padding: 10px;
   background-color: #f9f9f9;
   padding-top: 10rem;
-
+ 
+  
 }
 
 /* Estilo para o próprio calendário */
@@ -16,18 +17,21 @@
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-left: 300px;
+  
 }
+
 
 /* Barra de navegação do calendário */
 .fc-toolbar {
-  background-color: #6a0dad;
+  background-color: #0b0b45;
   color: white;
   padding: 10px;
   border-radius: 8px 8px 0 0;
 }
 
 .fc-button {
-  background-color: #7f00ff;
+  background-color: #6a6ac1;
   color: white;
   border: none;
   border-radius: 4px;
@@ -37,7 +41,7 @@
 }
 
 .fc-button:hover {
-  background-color: #9b30ff;
+  background-color: #6a6ac1;
 }
 
 .fc-toolbar-title {
@@ -47,7 +51,7 @@
 
 /* Estilo dos eventos */
 .fc-event {
-  background-color: #6a0dad;
+  background-color: #0b0b45;
   color: white;
   border: none;
   border-radius: 4px;
@@ -66,15 +70,14 @@
 
 /* Estilo da lista de eventos lateral */
 .event-list {
-  width: 20%;
-  background-color: #f7f5f8;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 25%; /* Defina o tamanho da lista de eventos */
+  padding: 20px;
+  background-color: #f5f5f5;
+  overflow-y: auto;
 }
 
 .event-list h2 {
-  color: #6a0dad;
+  color: #0b0b45;
   margin-bottom: 10px;
 }
 
@@ -85,7 +88,7 @@
 
 .event-list li {
   margin-bottom: 8px;
-  background-color: #7f00ff;
+  background-color: #0b0b45;
   color: white;
   padding: 8px;
   border-radius: 4px;
@@ -162,7 +165,7 @@
 
 
 .delete-btn {
-  background-color: #5900b3;; 
+  background-color: #6a6ac1; 
   color: white; 
   border: none; 
   padding: 8px 12px; 
@@ -174,11 +177,11 @@
 }
 
 .delete-btn:hover {
-  background-color: #ff1a1a; 
+  background-color: #0b0b45; 
 }
 
 .delete-btn:active {
-  background-color: #cc0000; 
+  background-color: #0b0b45; 
 }
 
 .delete-btn:focus {

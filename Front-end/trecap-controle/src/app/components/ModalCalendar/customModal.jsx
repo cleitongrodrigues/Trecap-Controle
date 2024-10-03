@@ -29,7 +29,8 @@ export default function CustomModal({ isOpen, onClose, onConfirm }) {
             placeholder="Nome do professor"
             className="modal-input"
           />
-          <input
+          <textarea
+            type="text"
             name="description"
             placeholder="Descrição do evento"
             className="modal-input"
