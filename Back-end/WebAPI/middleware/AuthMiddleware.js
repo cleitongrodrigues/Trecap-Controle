@@ -1,3 +1,4 @@
+import UnauthorizedException from "../../Domain/Exception/UnauthorizedException.js"
 import Auth from "../../Infrastructure/Auth/Auth.js"
 
 const userTypes = {
@@ -7,11 +8,11 @@ const userTypes = {
 export function isProtected(usersAllowed) {
     return (request, response, next) => {
         const authHeader = request.headers['authorization']
-        if (!authHeader && !authHeader.startsWith('Bearer ')) return response.status(403).send("Você não tem permissão para acessar essa rota")
+        if (!authHeader && !authHeader?.startsWith('Bearer ')) throw new UnauthorizedException()
 
         let token = authHeader.split(' ')[1]
         const userInfo = Auth.getTokenInfo(token)
-        if (!userInfo || !usersAllowed.includes(userTypes[userInfo.userType])) return response.status(403).send("Você não tem permissão para acessar essa rota")
+        if (!userInfo || !usersAllowed.includes(userTypes[userInfo.userType])) throw new UnauthorizedException()
 
         request.user = userInfo
 

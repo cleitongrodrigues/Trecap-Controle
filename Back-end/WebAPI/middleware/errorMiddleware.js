@@ -7,6 +7,10 @@ const errorTypes = {
         statusCode: 400,
         message: (error) => error.message || "Dados de entrada inválidos!"
     },
+    UnauthorizedError:{
+        statusCode: 403,
+        message: (error) => error.message || "Você não possui autorização para acessar essa rota!"
+    },
     ServerError: {
         statusCode: 500,
         message: (error) => error.message || "Internal Server error"

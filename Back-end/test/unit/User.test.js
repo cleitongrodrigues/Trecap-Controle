@@ -1,5 +1,6 @@
 import FactoryUser from "../../Domain/Domain Service/FactoryUser"
 import User from "../../Domain/Entities/User"
+import ValidationException from "../../Domain/Exception/ValidationException"
 
 describe("Teste de criação do usuario", () => {
     test("Cria um usuario", async () => {
@@ -30,6 +31,68 @@ describe("Teste de criação do usuario", () => {
             companyId: 1,
             companyId: 1
         })
+    })
+
+    test("Cria um usuario sem email", async () => {
+        const userInfo = {
+            userId: 1,
+            name: "João Pedro",
+            cpf: "98765432189",
+            password: 'JP123',
+            telefone: "11987654341",
+            registerDate: "2024-11-12",
+            companyId: 1
+        }
+        const factoryUser = new FactoryUser()
+
+        expect(()=> factoryUser.createAdminUser(userInfo)).toThrow(ValidationException)
+    })
+
+    test("Cria um usuario com email em branco", async () => {
+        const userInfo = {
+            userId: 1,
+            name: "João Pedro",
+            cpf: "98765432189",
+            email:"",
+            password: 'JP123',
+            telefone: "11987654341",
+            registerDate: "2024-11-12",
+            companyId: 1
+        }
+        const factoryUser = new FactoryUser()
+
+        expect(()=> factoryUser.createAdminUser(userInfo)).toThrow(ValidationException)
+    })
+
+    test("Cria um usuario sem cpf", async () => {
+        const userInfo = {
+            userId: 1,
+            name: "João Pedro",
+            email: "joao@pedro.com",
+            password: 'JP123',
+            telefone: "11987654341",
+            registerDate: "2024-11-12",
+            companyId: 1
+        }
+        const factoryUser = new FactoryUser()
+
+        expect(()=> factoryUser.createAdminUser(userInfo)).toThrow(ValidationException)
+    })
+
+    test("Cria um usuario com cpf em branco", async () => {
+        const userInfo = {
+            userId: 1,
+            name: "João Pedro",
+            email: "joao@pedro.com",
+            cpf:"",
+            password: 'JP123',
+            telefone: "11987654341",
+            registerDate: "2024-11-12",
+            companyId: 1
+        }
+        const factoryUser = new FactoryUser()
+
+        expect(()=> factoryUser.createAdminUser(userInfo)).toThrow(ValidationException)
     })
 })
 

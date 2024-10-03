@@ -1,5 +1,4 @@
 import FactoryUser from "../../../Domain/Domain Service/FactoryUser.js"
-import User from "../../../Domain/Entities/User.js"
 import NotFoundException from "../../../Domain/Exception/NotFoundException.js"
 import ValidationException from "../../../Domain/Exception/ValidationException.js"
 import userRepository from "../../../Infrastructure/database/repositories/userRepository.js"

@@ -1,4 +1,5 @@
-import UserService from "../../Application/UseCases/User/UserService"
+import UserService from "../../Application/UseCases/User/UserService.js"
+import ValidationException from "../../Domain/Exception/ValidationException.js"
 
 describe('Criar um usuário a partir de UserService', () => {
     it.skip("Criar um usuário válido", async ()=>{
