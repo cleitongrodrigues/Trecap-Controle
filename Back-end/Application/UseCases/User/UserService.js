@@ -26,8 +26,8 @@ class UserService {
         return user
     }
 
-    async getUsers() {
-        const users = await this.repository.getUsers()
+    async getUsers(input) {
+        const users = await this.repository.getUsers(input)
         return users
     }
 
@@ -36,6 +36,13 @@ class UserService {
         if(!user) throw new NotFoundException("Usuário Não Encontrado!")
         return user
     }
+    
+    async getUserByName(name) {
+        const user = await this.repository.getUserByName(name)
+        if(!user) throw new NotFoundException("Usuário Não Encontrado!")
+        return user
+    }
+
 
     async deleteUser(id) {
         const user = await this.repository.getUserById(id)

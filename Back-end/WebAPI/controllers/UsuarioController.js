@@ -4,7 +4,15 @@ import Auth from "../../Infrastructure/Auth/Auth.js";
 export const UsuarioController = {
     async ListarUsuarios(request, response, next) {
         try {
-            const users = await UserService.getUsers()
+            const { page, pageSize, filter } = request.query
+
+            const params = {
+                page: Number(page),
+                pageSize: Number(pageSize),
+                filter: filter,
+            }
+
+            const users = await UserService.getUsers(params)
 
             return response.status(200).json({
                 mensagem: 'Lista de Usuários',
