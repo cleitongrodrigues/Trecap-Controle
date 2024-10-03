@@ -29,7 +29,7 @@ export default function CustomModal({ isOpen, onClose, onConfirm }) {
             placeholder="Nome do professor"
             className="modal-input"
           />
-          <textarea
+          <input
             name="description"
             placeholder="Descrição do evento"
             className="modal-input"

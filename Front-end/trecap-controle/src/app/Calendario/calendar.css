@@ -7,11 +7,12 @@
   padding: 10px;
   background-color: #f9f9f9;
   padding-top: 10rem;
+
 }
 
 /* Estilo para o próprio calendário */
 .calendar {
-  width: 80%;
+  width: 100%;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -161,7 +162,7 @@
 
 
 .delete-btn {
-  background-color: #ff4d4d; 
+  background-color: #5900b3;; 
   color: white; 
   border: none; 
   padding: 8px 12px; 
