@@ -7,7 +7,7 @@ import MenuLateral from '@/components/menuLateral/page';
 
 export default function CheckinEvento() {
   const [mostrarAlerta, setMostrarAlerta] = useState(true);
-  const [participantes, setParticipantes] = useState([]);
+  const [participantes, setParticipantes] = useState([]); // Inicializado como array vazio
   const [participantesSelecionados, setParticipantesSelecionados] = useState([]);
   const [mensagemErro, setMensagemErro] = useState("");
   const [setor, setSetor] = useState(""); // Armazenar o setor selecionado
@@ -24,14 +24,18 @@ export default function CheckinEvento() {
         try {
           const response = await fetch(`http://localhost:3333/colaboradores?setor=${setorSelecionado}`);
           const data = await response.json();
-          console.log(data)
 
-          setParticipantes(data.dados);
-
-          // Inicia o array de participantesSelecionados com valores 'false' (nenhum selecionado inicialmente)
-          setParticipantesSelecionados(new Array(data.length).fill(false));
+          // Verifica se data.dados é um array antes de fazer o setParticipantes
+          if (Array.isArray(data.dados)) {
+            setParticipantes(data.dados);
+            // Inicia o array de participantesSelecionados com valores 'false' (nenhum selecionado inicialmente)
+            setParticipantesSelecionados(new Array(data.dados.length).fill(false));
+          } else {
+            setParticipantes([]); // Se não for um array, define como vazio
+          }
         } catch (error) {
           console.error("Erro ao buscar colaboradores:", error);
+          setMensagemErro("Erro ao carregar participantes. Tente novamente.");
         }
       };
 
@@ -44,6 +48,7 @@ export default function CheckinEvento() {
   };
 
   const handleCheckboxChange = (index) => {
+    setMensagemErro("");  // Limpa a mensagem de erro ao alterar checkbox
     setParticipantesSelecionados((prevSelecionados) => {
       const novosSelecionados = [...prevSelecionados];
       novosSelecionados[index] = !novosSelecionados[index];
@@ -101,19 +106,23 @@ export default function CheckinEvento() {
 
                   <div className={styles.listaParticipantes}>
                     <ul className={styles.participantes}>
-                      {participantes.map((participante, index) => (
-                        <li key={index} className={styles.participanteItem}>
-                          <label>
-                            <input
-                              type="checkbox"
-                              className={styles.checkbox}
-                              checked={participantesSelecionados[index]}
-                              onChange={() => handleCheckboxChange(index)}
-                            />
-                            {participante.colaborador_nome}
-                          </label>
-                        </li>
-                      ))}
+                      {participantes.length > 0 ? (
+                        participantes.map((participante, index) => (
+                          <li key={index} className={styles.participanteItem}>
+                            <label>
+                              <input
+                                type="checkbox"
+                                className={styles.checkbox}
+                                checked={participantesSelecionados[index]}
+                                onChange={() => handleCheckboxChange(index)}
+                              />
+                              {participante.colaborador_nome}
+                            </label>
+                          </li>
+                        ))
+                      ) : (
+                        <p>Nenhum participante encontrado</p>
+                      )}
                     </ul>
                   </div>
 

@@ -7,7 +7,6 @@ import axios from 'axios';
 
 export default function CadastroP() {
   const router = useRouter();
-
   const [selectedSetores, setSelectedSetores] = useState([]);
 
   useEffect(() => {
@@ -19,6 +18,7 @@ export default function CadastroP() {
       const response = await axios.get('http://localhost:3333/Setores/1');
       const setores = response.data.dados;
 
+      // Adiciona uma propriedade 'checked' para cada setor
       const newSetores = setores.map((setor) => ({
         ...setor,
         checked: false,
@@ -38,6 +38,7 @@ export default function CadastroP() {
   };
 
   const handleClick = () => {
+    // Filtra os setores selecionados
     const setoresSelecionados = selectedSetores.filter((setor) => setor.checked);
     
     if (setoresSelecionados.length === 0) {
@@ -45,11 +46,11 @@ export default function CadastroP() {
       return;
     }
 
-    // Armazenar o setor selecionado no localStorage
-    const setoresSelecionadosNome = selectedSetores.filter(setor => setor.checked).map(setor => setor.setor_nome)
+    // Armazena os setores selecionados no localStorage
+    const setoresSelecionadosNome = setoresSelecionados.map(setor => setor.setor_nome);
     localStorage.setItem('setorSelecionado', JSON.stringify(setoresSelecionadosNome));
 
-    // Redirecionar para a página de adicionar participantes
+    // Redireciona para a página de adicionar participantes
     router.push('/adicionar');
   };
 
@@ -70,7 +71,7 @@ export default function CadastroP() {
                 </div>
                 <div className={styles.checkbox}>
                   {selectedSetores.map((setor, index) => (
-                    <div key={setor.id} className={styles.containerInput}>
+                    <div key={setor.setor_id} className={styles.containerInput}>
                       <label className={styles.label} htmlFor={setor.setor_nome}>
                         {setor.setor_nome}
                       </label>
