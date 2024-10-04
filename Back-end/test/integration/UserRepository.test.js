@@ -9,9 +9,7 @@ describe("Get User com parametros", ()=>{
         }
 
         const users = await userRepository.getUsers(params)
-        console.log(params.pageSize)
-
-        expect(users.legth).toBe(params.pageSize)
+        expect(users.length).toBe(params.pageSize)
     })
 })
 
