@@ -15,11 +15,7 @@ import MenuLateral from "@/components/menuLateral/page";
 
 export default function HomePage() {
   
-  const [events, setEvents] = useState([
-    { id: 1, title: "Evento 1", start: "2024-09-17", end: "2024-09-19", professor: "Prof. A", description: "Descrição do Evento 1" },
-    { id: 2, title: "Evento 2", start: "2024-09-20", allDay: true, professor: "Prof. B", description: "Descrição do Evento 2" },
-  ]);
-
+  const [events, setEvents] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedEvent, setSelectedEvent] = useState(null); // Armazena o evento a ser editado
@@ -46,16 +42,20 @@ export default function HomePage() {
         );
         setEvents(updatedEvents);
         
-        // Atualiza o evento no backend (opcional)
-        await axios.put(`http://localhost:3333/evento/${selectedEvent.id}`, {
-          evento_nome: eventData.title,
-          evento_professor: eventData.professor,
-          evento_data_inicio: selectedEvent.start,
-          evento_data_termino: selectedEvent.end,
-          evento_local: "treino",
-          evento_status: 1,
-          usu_id: 1,
-        });
+        // Atualiza o evento no backend via API (requisição PUT)
+        try {
+          await axios.put(`http://localhost:3333/evento/${selectedEvent.id}`, {
+            evento_nome: eventData.title,
+            evento_professor: eventData.professor,
+            evento_data_inicio: selectedEvent.start,
+            evento_data_termino: selectedEvent.end,
+            evento_local: "treino",
+            evento_status: 1,
+            usu_id: 1,
+          });
+        } catch (error) {
+          console.error("Erro ao editar o evento:", error);
+        }
 
       } else {
         // Criação de novo evento
@@ -70,18 +70,22 @@ export default function HomePage() {
           usu_id: 1
         };
 
-        const response = await axios.post("http://localhost:3333/evento", {
-          usu_id: newEvent.usu_id,
-          evento_nome: newEvent.title,
-          evento_data_inicio: newEvent.start,
-          evento_data_termino: newEvent.end,
-          evento_local: "treino",
-          evento_status: 1,
-          evento_professor: newEvent.professor
-        });
-        
-        console.log(response);
-        setEvents([...events, newEvent]);
+        try {
+          const response = await axios.post("http://localhost:3333/evento", {
+            usu_id: newEvent.usu_id,
+            evento_nome: newEvent.title,
+            evento_data_inicio: newEvent.start,
+            evento_data_termino: newEvent.end,
+            evento_local: "treino",
+            evento_status: 1,
+            evento_professor: newEvent.professor
+          });
+          
+          console.log(response);
+          setEvents([...events, newEvent]);
+        } catch (error) {
+          console.error("Erro ao criar o evento:", error);
+        }
       }
     }
 
@@ -96,18 +100,32 @@ export default function HomePage() {
 
   // Função para excluir eventos
   const handleDeleteEvent = async (id) => {
-    await axios.delete(`http://localhost:3333/evento/${id}`); // Deleta no backend
-    setEvents(events.filter(event => event.id !== id));
+    try {
+      await axios.delete(`http://localhost:3333/evento/${id}`); // Deleta no backend
+      setEvents(events.filter(event => event.id !== id));
+    } catch (error) {
+      console.error("Erro ao excluir o evento:", error);
+    }
   };
   
   // Função para lidar com drag and drop dos eventos
-  const handleEventDrop = (dropInfo) => {
+  const handleEventDrop = async (dropInfo) => {
     const { id, startStr, endStr } = dropInfo.event;
-    setEvents((prevEvents) =>
-      prevEvents.map((event) =>
-        event.id === parseInt(id) ? { ...event, start: startStr, end: endStr } : event
-      )
+
+    const updatedEvents = events.map((event) =>
+      event.id === parseInt(id) ? { ...event, start: startStr, end: endStr } : event
     );
+    setEvents(updatedEvents);
+
+    // Atualiza o evento no backend após o drag and drop
+    try {
+      await axios.put(`http://localhost:3333/evento/${id}`, {
+        evento_data_inicio: startStr,
+        evento_data_termino: endStr
+      });
+    } catch (error) {
+      console.error("Erro ao mover o evento:", error);
+    }
   };
 
   // Função para exibir os eventos na lateral direita
