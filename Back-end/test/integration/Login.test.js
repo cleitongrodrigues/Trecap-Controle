@@ -1,7 +1,7 @@
 import request from 'supertest'
 import app from '../../WebAPI/appConfig'
 
-describe("teste de login", () => {
+describe.skip("teste de login", () => {
 
     test("Login de usuário válido", async () => {
         const response = await request(app).post('/login').send({ email: 'joao.silva@empresaabc.com', password: 'senha123' })

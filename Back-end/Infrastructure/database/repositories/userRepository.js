@@ -3,7 +3,30 @@ import connection from "../connection.js";
 
 
 class UserRepository {
-    constructor() { }
+    constructor() {
+        this.columnNames = {
+            name: 'usu_nome',
+            userType: 'tipo_usuario_id'
+        }
+    }
+
+    async getUsers({ page = 1, pageSize = 10, filter = {} } = {}) {
+        const offset = (page - 1) * pageSize
+
+        //Constroi a consulta de Where de acordo com o que queremos filtrar
+        const where = this.builStringWhereClauseForUser(filter)
+
+        //Organiza a ordem que os parametros devem ficar
+        const paramsQuery = this.getParamsQuery({ pageSize: pageSize, offset: offset, filter: filter })
+
+        const sql = `SELECT usu_id, usu_nome, usu_CPF, tipo_usuario_id, usu_ativo = 1 AS usu_ativo,
+            usu_email, usu_senha, usu_telefone, usu_data_cadastro, empresa_id FROM Usuario
+            ${where} LIMIT ? OFFSET ? ;`;
+
+        const [users] = await connection.query(sql, paramsQuery)
+
+        return users
+    }
 
     async getUserById(Id) {
         const sql = `SELECT usu_id, usu_nome, usu_CPF, tipo_usuario_id, usu_ativo = 1 AS usu_ativo,
@@ -109,37 +132,6 @@ class UserRepository {
         return result.insertId
     }
 
-    async getUsers({ page = 1, pageSize = 10, filter = {} } ={}) {
-        let paramsQuery = []
-        const offset = (page - 1) * pageSize
-
-        const whereClauses = [];
-
-        if (filter.name) {
-            whereClauses.push('usu_nome LIKE ?');
-            paramsQuery.push(`%${filter.name}%`);
-        }
-    
-        if (filter.cpf) {
-            whereClauses.push('usu_CPF LIKE ?');
-            paramsQuery.push(`%${filter.cpf}%`);
-        }
-    
-
-        paramsQuery.push(pageSize, offset)
-
-        const where = `WHERE usu_ativo = 1 ${whereClauses.length !== 0 && "AND " + whereClauses.join(' OR ')}`
-
-        const sql = `SELECT usu_id, usu_nome, usu_CPF, tipo_usuario_id, usu_ativo = 1 AS usu_ativo,
-            usu_email, usu_senha, usu_telefone, usu_data_cadastro, empresa_id FROM Usuario
-            ${where} LIMIT ? OFFSET ? ;`;
-
-            
-
-        const [users] = await connection.query(sql, paramsQuery)
-        return users
-    }
-
     async count() {
         const sql = `SELECT MAX(usu_id) AS last_id FROM Usuario`;
 
@@ -147,7 +139,37 @@ class UserRepository {
 
         return count[0].last_id
     }
+
+    builStringWhereClauseForUser(filter) {
+        const whereClauses = []
+
+        for (const [key, value] of Object.entries(filter)) {
+            const columnName = this.columnNames[key]
+            if (!columnName) return
+            whereClauses.push(`${columnName} LIKE ?`)
+        }
+
+        const whereClausesIsEmpty = whereClauses.length === 0
+
+        const where = `${!whereClausesIsEmpty ? "WHERE " + whereClauses.join(' AND ') + " AND usu_ativo = 1" : ''}`
+        return where
+    }
+
+    getParamsQuery({ pageSize, offset, filter }) {
+        const paramsQuery = []
+
+        for (const [key, value] of Object.entries(filter)) {
+            const columnTableName = this.columnNames[key]
+            if (!columnTableName) return
+            paramsQuery.push(`%${value || ''}%`)
+        }
+
+        paramsQuery.push(pageSize, offset)
+        return paramsQuery
+    }
 }
+
+
 
 
 export default new UserRepository()

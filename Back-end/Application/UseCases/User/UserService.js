@@ -27,6 +27,10 @@ class UserService {
     }
 
     async getUsers(input) {
+        if(input.pageSize) input.pageSize = Number(input.pageSize)
+        if(input.page) input.page = Number(input.page)
+        if(typeof input.filter !== 'object') input.filter = {}
+
         const users = await this.repository.getUsers(input)
         return users
     }

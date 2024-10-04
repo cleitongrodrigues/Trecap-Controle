@@ -7,8 +7,8 @@ export const UsuarioController = {
             const { page, pageSize, filter } = request.query
 
             const params = {
-                page: Number(page),
-                pageSize: Number(pageSize),
+                page: page,
+                pageSize: pageSize,
                 filter: filter,
             }
 
