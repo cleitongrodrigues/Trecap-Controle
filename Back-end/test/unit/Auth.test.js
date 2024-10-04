@@ -1,7 +1,7 @@
 import FactoryUser from "../../Domain/Domain Service/FactoryUser"
 import Auth from "../../Infrastructure/Auth/Auth"
 
-test("Gerar um JWT", ()=>{
+test("Auth Service Gerar um JWT", ()=>{
     const userInfo = {
         userId: 1,
         name: "João Pedro",
@@ -21,7 +21,7 @@ test("Gerar um JWT", ()=>{
     expect(token).toEqual(expect.stringContaining('.'))
 })
 
-test("Verifica o token", ()=>{
+test("Auth Service Verifica o token", ()=>{
     const userInfo = {
         userId: 1,
         name: "João Pedro",
@@ -43,7 +43,7 @@ test("Verifica o token", ()=>{
     expect(decodeToken).toMatchObject({userId:1, name: 'João Pedro'})
 })
 
-test("Fazer login", async ()=>{
+test("Auth Service Fazer login", async ()=>{
     const userInfo = {
         email: "joao.silva@empresaabc.com",
         password: "senha123"

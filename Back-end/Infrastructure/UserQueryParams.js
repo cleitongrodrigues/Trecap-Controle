@@ -1,6 +1,6 @@
 export default  class UserQueryParamys{
     constructor(){
-        this.baseSelect = "SELECT  usu_id, usu_nome, usu_CPF, tipo_usuario_id, usu_ativo = 1 AS usu_ativo, usu_email, usu_senha, usu_telefone, usu_data_cadastro, empresa_id FROM usuario"
+        this.baseSelect = "SELECT usu_id, usu_nome, usu_CPF, tipo_usuario_id, usu_ativo = 1 AS usu_ativo, usu_email, usu_senha, usu_telefone, usu_data_cadastro, empresa_id FROM usuario"
         this.whereClauses = []
         this.params = []
         this.pageSize = null;

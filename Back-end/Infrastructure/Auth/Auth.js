@@ -21,12 +21,13 @@ class Auth{
     }
 
     async Login(loginInfo){
-        if(!loginInfo.email) throw new ValidationException("O email é obrigátorio!") 
-        if(!loginInfo.password) throw new ValidationException("A senha é obrigátorio!") 
+        if(!loginInfo.email) throw new ValidationException("Você não pode fazer login sem email!") 
+        if(!loginInfo.password) throw new ValidationException("Você não pode fazer login sem senha!") 
 
         const user = await userRepository.getUserByEmail(loginInfo.email)
+        console.log(user)
     
-        if(user.password !== loginInfo.password) throw new Error("Email e/ou senha errada!")
+        if(!user || user.password !== loginInfo.password) throw new Error("Email e/ou senha errada!")
         
         return this.generateToken(user)
     }

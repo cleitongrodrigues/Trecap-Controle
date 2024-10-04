@@ -7,8 +7,8 @@ describe("Construção de Selects", ()=>{
         queryBuilder.setFilterName('João')
 
         const result = queryBuilder.build()
-
-        expect(result.query).toBe("SELECT * FROM usuario WHERE usu_nome LIKE ? AND usu_ativo = 1")
+        
+        expect(result.query).toBe("SELECT usu_id, usu_nome, usu_CPF, tipo_usuario_id, usu_ativo = 1 AS usu_ativo, usu_email, usu_senha, usu_telefone, usu_data_cadastro, empresa_id FROM usuario WHERE usu_nome LIKE ? AND usu_ativo = 1")
         expect(result.params).toEqual(['%João%'])
     })
 
@@ -21,7 +21,7 @@ describe("Construção de Selects", ()=>{
 
         const result = queryBuilder.build()
 
-        expect(result.query).toBe("SELECT * FROM usuario WHERE usu_nome LIKE ? AND tipo_usuario_id LIKE ? AND usu_ativo = 1")
+        expect(result.query).toBe("SELECT usu_id, usu_nome, usu_CPF, tipo_usuario_id, usu_ativo = 1 AS usu_ativo, usu_email, usu_senha, usu_telefone, usu_data_cadastro, empresa_id FROM usuario WHERE usu_nome LIKE ? AND tipo_usuario_id LIKE ? AND usu_ativo = 1")
         expect(result.params).toEqual(['%João%', '%1%'])
     })
 
@@ -32,9 +32,10 @@ describe("Construção de Selects", ()=>{
 
         const result = queryBuilder.build()
 
-        expect(result.query).toBe("SELECT * FROM usuario WHERE usu_ativo = 1")
+        expect(result.query).toBe("SELECT usu_id, usu_nome, usu_CPF, tipo_usuario_id, usu_ativo = 1 AS usu_ativo, usu_email, usu_senha, usu_telefone, usu_data_cadastro, empresa_id FROM usuario WHERE usu_ativo = 1")
         expect(result.params).toEqual([])
     })
+    
     it("Cria um select filtrando por nome e com paginação", ()=>{
         const queryBuilder = new UserQueryParamys()
 
@@ -44,7 +45,7 @@ describe("Construção de Selects", ()=>{
 
         const result = queryBuilder.build()
 
-        expect(result.query).toBe("SELECT * FROM usuario WHERE usu_nome LIKE ? AND usu_ativo = 1 LIMIT ? OFFSET ?")
+        expect(result.query).toBe("SELECT usu_id, usu_nome, usu_CPF, tipo_usuario_id, usu_ativo = 1 AS usu_ativo, usu_email, usu_senha, usu_telefone, usu_data_cadastro, empresa_id FROM usuario WHERE usu_nome LIKE ? AND usu_ativo = 1 LIMIT ? OFFSET ?")
         expect(result.params).toEqual(['%João%', 10, 0])
     })
 })
