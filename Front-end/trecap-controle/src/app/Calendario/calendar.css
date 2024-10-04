@@ -188,3 +188,25 @@
   outline: none; 
   box-shadow: 0 0 0 3px rgba(26, 28, 197, 0.5); 
 }
+
+.edit-btn {
+  background-color: #6a6ac1; 
+  color: white; 
+  border: none; 
+  padding: 8px 12px; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  font-size: 14px; 
+  transition: background-color 0.3s ease; 
+  margin-right: 10px; 
+  font-weight: bold;
+  
+}
+
+.edit-btn:hover {
+  background-color: #0b0b45; /* Cor mais escura ao passar o mouse */
+}
+
+.edit-btn:active {
+  background-color: #0b0b45; /* Cor mais escura quando clicado */
+}

@@ -22,50 +22,81 @@ export default function HomePage() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null); // Armazena o evento a ser editado
 
   const handleDateSelect = (selectInfo) => {
     setSelectedDate(selectInfo); // Armazena a data selecionada
+    setSelectedEvent(null); // Reseta o evento selecionado para adicionar novo
     setIsModalOpen(true); // Abre o modal
   };
 
-  // Função para adicionar o evento
+  // Função para adicionar ou editar o evento
   const handleAddEvent = async (eventData) => {
-    let calendarApi = selectedDate.view.calendar;
+    let calendarApi = selectedDate?.view.calendar;
   
-    calendarApi.unselect(); // limpar seleção
-  
+    calendarApi?.unselect(); // Limpar seleção
+
     if (eventData.title) {
-      const newEvent = {
-        id: Date.now(),
-        title: eventData.title,
-        start: selectedDate.startStr,
-        end: selectedDate.endStr,
-        allDay: selectedDate.allDay,
-        professor: eventData.professor, // Armazena o professor
-        description: eventData.description, // Armazena a descrição
-        usu_id: 1
-      };
-      const response = await axios.post(
-        "http://localhost:3333/evento",
-        {
+      if (selectedEvent) {
+        // Edição do evento existente
+        const updatedEvents = events.map(event =>
+          event.id === selectedEvent.id
+            ? { ...event, title: eventData.title, professor: eventData.professor, description: eventData.description }
+            : event
+        );
+        setEvents(updatedEvents);
+        
+        // Atualiza o evento no backend (opcional)
+        await axios.put(`http://localhost:3333/evento/${selectedEvent.id}`, {
+          evento_nome: eventData.title,
+          evento_professor: eventData.professor,
+          evento_data_inicio: selectedEvent.start,
+          evento_data_termino: selectedEvent.end,
+          evento_local: "treino",
+          evento_status: 1,
+          usu_id: 1,
+        });
+
+      } else {
+        // Criação de novo evento
+        const newEvent = {
+          id: Date.now(),
+          title: eventData.title,
+          start: selectedDate.startStr,
+          end: selectedDate.endStr,
+          allDay: selectedDate.allDay,
+          professor: eventData.professor,
+          description: eventData.description,
+          usu_id: 1
+        };
+
+        const response = await axios.post("http://localhost:3333/evento", {
           usu_id: newEvent.usu_id,
           evento_nome: newEvent.title,
           evento_data_inicio: newEvent.start,
           evento_data_termino: newEvent.end,
-          evento_local:"treino",
+          evento_local: "treino",
           evento_status: 1,
           evento_professor: newEvent.professor
-        }
-      
-      )
-      console.log(response)
-      setEvents([...events, newEvent]);
+        });
+        
+        console.log(response);
+        setEvents([...events, newEvent]);
+      }
     }
+
     setIsModalOpen(false);
   };
 
+  // Função para abrir o modal para editar evento
+  const handleEditEvent = (event) => {
+    setSelectedEvent(event); // Armazena o evento a ser editado
+    setIsModalOpen(true); // Abre o modal para edição
+  };
+
   // Função para excluir eventos
-  const handleDeleteEvent = (id) => {
+  const handleDeleteEvent = async (id) => {
+    await axios.delete(`http://localhost:3333/evento/${id}`); // Deleta no backend
     setEvents(events.filter(event => event.id !== id));
   };
   
@@ -87,6 +118,9 @@ export default function HomePage() {
         {event.end ? `até ${format(new Date(event.end), "dd/MM/yyyy")}` : ""}<br />
         <em>Professor: {event.professor}</em><br />
         <p>{event.description}</p>
+        <button onClick={() => handleEditEvent(event)} className="edit-btn">
+          Editar
+        </button>
         <button onClick={() => handleDeleteEvent(event.id)} className="delete-btn">
           Excluir
         </button>
@@ -154,6 +188,7 @@ export default function HomePage() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleAddEvent}
+        selectedEvent={selectedEvent} // Passa o evento selecionado para o modal
       />
     </>
   );
