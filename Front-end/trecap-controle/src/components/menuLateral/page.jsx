@@ -17,6 +17,38 @@ import logo from "../../assets/logoBranca.svg";
 import { usePathname } from "next/navigation";
 import Modal from "./ReactDom";
 import Swal from 'sweetalert2'
+import InputMask from "react-input-mask";
+
+const validacoes = {
+  email: {
+    validate(value) {
+      const regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
+      return regex.test(value);
+    },
+    messageError: "Email inválido"
+  },
+  cpf: {
+    validate(value) {
+      const regex = /^([0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}|[0-9]{2}\.?[0-9]{3}\.?[0-9]{3}\/?[0-9]{4}\-?[0-9]{2})$/
+      return regex.test(value)
+    },
+    messageError: 'CPF inválido!'
+  },
+  nome: {
+    validate(value) {
+      const regex = /^[a-zA-ZÀ-ÿ\s]+$/;
+      return value.length >= 3 && regex.test(value);
+    },
+    messageError: 'Nome inválido!'
+  },
+  telefone: {
+    validate(value) {
+      const regex =  /^\(?\d{2}\)?[\s-]?9?\d{4}[-]?\d{4}$/;
+      return regex.test(value)
+    },
+    messageError: 'Digite um número válido!'
+  }
+};
 
 const MenuLateral = () => {
   const [lista, setLista] = useState([]);
@@ -31,6 +63,15 @@ const MenuLateral = () => {
     telefone: "",
   });
   const [editando, setEditando] = useState(false);
+
+  const [emailErro, setEmailErro] = useState("");
+
+  const [cpfErro, setCpfErro] = useState("");
+
+  const [nomeErro, setNomeErro] = useState("");
+
+  const [telefoneErro, setTelefoneErro] = useState("");
+
   const pathName = usePathname();
 
   const getUsuario = async () => {
@@ -85,38 +126,80 @@ const MenuLateral = () => {
   };
 
   const salvarAlteracoes = async () => {
+
+    const emailValido = validacoes.email.validate(usuarioInfo.email);
+
+    const cpfValido = validacoes.cpf.validate(usuarioInfo.cpf);
+
+    const nomeValido = validacoes.nome.validate(usuarioInfo.nome);
+
+    const telefoneValido = validacoes.telefone.validate(usuarioInfo.telefone);
+
+    setEmailErro("");
+    setCpfErro("");
+    setNomeErro("");
+    setTelefoneErro("");
+
+    if (!emailValido) {
+      setEmailErro(validacoes.email.messageError);
+      return;
+    }
+
+    if (!cpfValido) {
+      setCpfErro(validacoes.cpf.messageError);
+      return;
+    }
+
+    if (!nomeValido){
+      setNomeErro(validacoes.nome.messageError);
+      return;
+    }
+
+    if (!telefoneValido){
+      setTelefoneErro(validacoes.telefone.messageError);
+      return;
+    }
+
     try {
       const usuarioId = lista[0].usu_id;
 
+      const cpfSemFormatacao = usuarioInfo.cpf.replace(/[.-]/g, "");
+
+      const dadosAtualizados = {
+        usu_nome: usuarioInfo.nome,
+        usu_CPF: cpfSemFormatacao,
+        usu_email: usuarioInfo.email,
+        usu_telefone: usuarioInfo.telefone,
+        tipo_usuario_id: 1,
+        usu_ativo: 1,
+        usu_data_cadastro: '2024-09-23',
+        empresa_id: 1,
+      }
+
       console.log(usuarioInfo)
+
       const response = await axios.patch(
         `http://localhost:3333/usuario/${usuarioId}`,
-        // usuarioInfo
-        {
-          usu_nome: usuarioInfo.nome,
-          usu_CPF: usuarioInfo.cpf,
-          usu_email: usuarioInfo.email,
-          usu_telefone: usuarioInfo.telefone,
-          tipo_usuario_id : 1,
-          usu_ativo : 1,
-          usu_data_cadastro: '2024-09-23',
-          empresa_id : 1,
-        }
+
+        dadosAtualizados
+
       );
 
       console.log(response);
 
-      if (response.status === 200){
+      if (response.status === 200) {
         Swal.fire({
           title: "Enviado!",
           text: "Dados alterados com sucesso!",
           icon: "success",
           backdrop: false,
         });
-        // alert("Dados atualizados com sucesso!");
         setEditando(false);
+        setEmailErro("");
+        setNomeErro("");
+        setTelefoneErro("");
       }
-      
+
     } catch (error) {
       console.error("Erro ao salvar alterações", error);
       alert("Erro ao salvar aterações");
@@ -189,15 +272,20 @@ const MenuLateral = () => {
                       placeholder="Nome"
                       readOnly={!editando}
                     />
+                    {nomeErro && <p style={{ color: "red" }}>{nomeErro}</p>}
+
                     <label htmlFor="">CPF</label>
-                    <input
+                    <InputMask
+                      mask="999.999.999-99"
                       id="cpf"
                       type="text"
                       value={usuarioInfo.cpf}
                       onChange={handleChange}
-                      placeholder="Nome"
+                      placeholder="CPF"
                       readOnly={!editando}
                     />
+                    {cpfErro && <p style={{ color: "red" }}>{cpfErro}</p>}
+
                     <label htmlFor="">Email</label>
                     <input
                       id="email"
@@ -207,15 +295,20 @@ const MenuLateral = () => {
                       placeholder="Nome"
                       readOnly={!editando}
                     />
+                    {emailErro && <p style={{ color: "red" }}>{emailErro}</p>}
+
                     <label htmlFor="">Telefone</label>
-                    <input
+                    <InputMask
                       id="telefone"
+                      mask="(99) 99999-9999"
                       type="text"
                       value={usuarioInfo.telefone}
                       onChange={handleChange}
-                      placeholder="Nome"
+                      placeholder="Telefone do usuário"
                       readOnly={!editando}
                     />
+                    {telefoneErro && <p style={{ color: "red" }}>{telefoneErro}</p>}
+
                   </form>
                   <button onClick={editando ? salvarAlteracoes : toggleEdit}>
                     {editando ? "Salvar" : "Editar"}
