@@ -25,10 +25,8 @@ export default function CheckinEvento() {
           const response = await fetch(`http://localhost:3333/colaboradores?setor=${setorSelecionado}`);
           const data = await response.json();
 
-          // Verifica se data.dados é um array antes de fazer o setParticipantes
           if (Array.isArray(data.dados)) {
             setParticipantes(data.dados);
-            // Inicia o array de participantesSelecionados com valores 'false' (nenhum selecionado inicialmente)
             setParticipantesSelecionados(new Array(data.dados.length).fill(false));
           } else {
             setParticipantes([]); // Se não for um array, define como vazio
@@ -48,7 +46,7 @@ export default function CheckinEvento() {
   };
 
   const handleCheckboxChange = (index) => {
-    setMensagemErro("");  // Limpa a mensagem de erro ao alterar checkbox
+    setMensagemErro("");
     setParticipantesSelecionados((prevSelecionados) => {
       const novosSelecionados = [...prevSelecionados];
       novosSelecionados[index] = !novosSelecionados[index];
@@ -59,7 +57,7 @@ export default function CheckinEvento() {
   const salvarParticipantes = async () => {
     const selecionados = participantes
       .filter((_, index) => participantesSelecionados[index])
-      .map((participante) => participante.nome);
+      .map((participante) => participante.colaborador_nome);
 
     if (selecionados.length === 0) {
       setMensagemErro("Nenhum participante está selecionado.");
@@ -70,10 +68,9 @@ export default function CheckinEvento() {
       // Salvar os participantes selecionados no localStorage
       localStorage.setItem('participantesSelecionados', JSON.stringify(selecionados));
 
-      // Verifique se os participantes estão sendo salvos corretamente
-      console.log('Participantes selecionados salvos:', selecionados);
+      console.log('Participantes selecionados salvos no localStorage:', selecionados);
 
-      // Redirecionar para a página de confirmação com os participantes selecionados
+      // Redirecionar para a página de confirmação
       router.push('/participantes-selecionados');
     } catch (error) {
       console.error('Erro ao salvar participantes:', error);
@@ -83,59 +80,55 @@ export default function CheckinEvento() {
 
   return (
     <>
-    <MenuLateral />
-    <div className={styles.body}>
-      <div className={styles.layout}>
-        <div className={styles.mainContent}>
-          <div className={styles.Header}>
-            <div className={styles.checkin}>
-              <h1>TREINAMENTO SOBRE HIGIENE NO TRABALHO</h1>
+      <MenuLateral />
+      <div className={styles.body}>
+        <div className={styles.layout}>
+          <div className={styles.mainContent}>
+            <div className={styles.Header}>
+              <div className={styles.checkin}>
+                <h1>TREINAMENTO SOBRE HIGIENE NO TRABALHO</h1>
+                <div className={styles.cadastro}>
+                  <h2>Adicionar Participantes</h2>
+                  <h3>Setor Selecionado: {setor || "Nenhum setor selecionado"}</h3>
+                  <div className={styles.containerContent}>
+                    {mostrarAlerta && (
+                      <div className={styles.alerta}>
+                        <p>Selecione os participantes.</p>
+                        <button onClick={fecharAlerta} className={styles.botaoFechar}>Ok</button>
+                      </div>
+                    )}
 
-              <div className={styles.cadastro}>
-                <h2>Adicionar Participantes</h2>
-                <h3>Setor Selecionado: {setor || "Nenhum setor selecionado"}</h3> {/* Correção aqui */}
-                <div className={styles.containerContent}>
-                  {mostrarAlerta && (
-                    <div className={styles.alerta}>
-                      <p>Selecione os participantes.</p>
-                      <button onClick={fecharAlerta} className={styles.botaoFechar}>
-                        Ok
-                      </button>
+                    <div className={styles.listaParticipantes}>
+                      <ul className={styles.participantes}>
+                        {participantes.length > 0 ? (
+                          participantes.map((participante, index) => (
+                            <li key={index} className={styles.participanteItem}>
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  className={styles.checkbox}
+                                  checked={participantesSelecionados[index]}
+                                  onChange={() => handleCheckboxChange(index)}
+                                />
+                                {participante.colaborador_nome}
+                              </label>
+                            </li>
+                          ))
+                        ) : (
+                          <p>Nenhum participante encontrado</p>
+                        )}
+                      </ul>
                     </div>
-                  )}
 
-                  <div className={styles.listaParticipantes}>
-                    <ul className={styles.participantes}>
-                      {participantes.length > 0 ? (
-                        participantes.map((participante, index) => (
-                          <li key={index} className={styles.participanteItem}>
-                            <label>
-                              <input
-                                type="checkbox"
-                                className={styles.checkbox}
-                                checked={participantesSelecionados[index]}
-                                onChange={() => handleCheckboxChange(index)}
-                              />
-                              {participante.colaborador_nome}
-                            </label>
-                          </li>
-                        ))
-                      ) : (
-                        <p>Nenhum participante encontrado</p>
-                      )}
-                    </ul>
+                    {mensagemErro && <div className={styles.mensagemErro}>{mensagemErro}</div>}
                   </div>
-
-                  {mensagemErro && <div className={styles.mensagemErro}>{mensagemErro}</div>}
                 </div>
+                <button className={styles.botaoCadastro} onClick={salvarParticipantes}>Salvar</button>
               </div>
-
-              <button className={styles.botaoCadastro} onClick={salvarParticipantes}>Salvar</button>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </>
   );
 }
