@@ -1,4 +1,5 @@
 import User from "../../../Domain/Entities/User.js";
+import UserQueryParamys from "../../UserQueryParams.js";
 import connection from "../connection.js";
 
 
@@ -11,19 +12,27 @@ class UserRepository {
     }
 
     async getUsers({ page = 1, pageSize = 10, filter = {} } = {}) {
-        const offset = (page - 1) * pageSize
 
-        //Constroi a consulta de Where de acordo com o que queremos filtrar
-        const where = this.builStringWhereClauseForUser(filter)
+        // // Constroi a consulta de Where de acordo com o que queremos filtrar
+        // const where = this.builStringWhereClauseForUser(filter)
 
-        //Organiza a ordem que os parametros devem ficar
-        const paramsQuery = this.getParamsQuery({ pageSize: pageSize, offset: offset, filter: filter })
+        // //Organiza a ordem que os parametros devem ficar
+        // const paramsQuery = this.getParamsQuery({ pageSize: pageSize, offset: offset, filter: filter })
 
-        const sql = `SELECT usu_id, usu_nome, usu_CPF, tipo_usuario_id, usu_ativo = 1 AS usu_ativo,
-            usu_email, usu_senha, usu_telefone, usu_data_cadastro, empresa_id FROM Usuario
-            ${where} LIMIT ? OFFSET ? ;`;
+        // const sql = `SELECT usu_id, usu_nome, usu_CPF, tipo_usuario_id, usu_ativo = 1 AS usu_ativo,
+        //     usu_email, usu_senha, usu_telefone, usu_data_cadastro, empresa_id FROM Usuario
+        //     ${where} LIMIT ? OFFSET ? ;`;
 
-        const [users] = await connection.query(sql, paramsQuery)
+        const queryBuilder = new UserQueryParamys()
+
+        queryBuilder
+            .setFilterName(filter.name)
+            .setFilterUserType(filter.userType)
+            .withPagnation(pageSize, page)
+
+        const {query, params} = queryBuilder.build()
+
+        const [users] = await connection.query(query, params)
 
         return users
     }
