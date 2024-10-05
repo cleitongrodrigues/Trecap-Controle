@@ -4,11 +4,12 @@ const router = express.Router();
 
 import { UsuarioController } from '../controllers/UsuarioController.js';
 import { isProtected } from '../middleware/AuthMiddleware.js';
+import userValidation from '../middleware/validations/UserValidationMiddleware.js';
 
 
 router.get('/usuarios', UsuarioController.ListarUsuarios);
 router.get('/usuarios/:id', UsuarioController.ListarUsuario)
-router.post('/usuarios', UsuarioController.CadastrarUsuario);
+router.post('/usuarios',userValidation, UsuarioController.CadastrarUsuario);
 // router.patch('/Usuarios/:usu_id', UsuarioController.EditarUsuario);
 router.delete('/usuarios/:id', UsuarioController.ApagarUsuario);
 
