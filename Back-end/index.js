@@ -17,7 +17,7 @@ const porta = 3333;
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "upload/");
+    cb(null, "uploads/");
   },
   filename: (req, file, cb) => {
     const userCode = req.body.userCode;
@@ -27,16 +27,16 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-app.post("upload/", upload.single("image"), (req, file) => {
+app.post("/upload/", upload.single("image"), (req, res) => {
   if (!req.file) {
     return res.status(400).send({ message: "Nenhum arquivo foi enviado!" });
   }
 
-  const imagePath = "/uploads/${req.file.filename}";
+  const imagePath = `/uploads/${req.file.filename}`;
   res.send({ imagePath });
 });
 
-app.use("uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.listen(porta, () => {
   console.log(`Servidor iniciado na porta ${porta}`);
