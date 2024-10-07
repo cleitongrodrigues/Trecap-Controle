@@ -7,7 +7,7 @@ import useForm from '@/hooks/useForm'
 import ButtonForm from '@/components/ButtonForm'
 import { useState } from 'react'
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
-import strengthPasswordVerify from '../../../../utils/strengthPassword'
+import strengthPasswordVerify from '../../../utils/strengthPassword'
 import { useRouter } from 'next/navigation'
 
 
