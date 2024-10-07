@@ -5,7 +5,7 @@ module.exports = {
         try {
             console.log("teste");
             const sql = `SELECT usu_id, usu_nome, usu_CPF, tipo_usuario_id, usu_ativo = 1 AS usu_ativo,
-            usu_email, usu_telefone, usu_data_cadastro, empresa_id FROM Usuario
+            usu_email, usu_telefone, usu_data_cadastro, usu_img, empresa_id FROM Usuario
             WHERE usu_ativo = 1;`;
 
             const usuarios = await db.query(sql)
@@ -30,15 +30,15 @@ module.exports = {
     async CadastrarUsuario(request, response){
         try {
             const {usu_nome, usu_CPF, tipo_usuario_id, usu_ativo,
-                usu_email, usu_telefone, usu_data_cadastro, empresa_id } = request.body;
+                usu_email, usu_telefone, usu_data_cadastro, usu_img,  empresa_id } = request.body;
 
             const sql = `INSERT INTO Usuario
                 (usu_nome, usu_CPF, tipo_usuario_id, usu_ativo,
-                usu_email, usu_telefone, usu_data_cadastro, empresa_id) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
+                usu_email, usu_telefone, usu_data_cadastro, usu_img, empresa_id) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
 
             const values = [usu_nome, usu_CPF, tipo_usuario_id, usu_ativo,
-                usu_email, usu_telefone, usu_data_cadastro, empresa_id];
+                usu_email, usu_telefone, usu_data_cadastro, usu_img,  empresa_id];
 
             const execSql = await db.query(sql, values);
 
@@ -61,16 +61,16 @@ module.exports = {
         try {
 
             const {usu_nome, usu_CPF, tipo_usuario_id, usu_ativo,
-                usu_email, usu_telefone, usu_data_cadastro, empresa_id} = request.body;
+                usu_email, usu_telefone, usu_data_cadastro,  usu_img, empresa_id} = request.body;
 
             const {usu_id} = request.params;
 
             const sql = `UPDATE Usuario SET usu_nome = ?, usu_CPF = ?, tipo_usuario_id = ?, usu_ativo = ?,
-                usu_email = ?, usu_telefone = ?, usu_data_cadastro = ?, empresa_id = ?
+                usu_email = ?, usu_telefone = ?, usu_data_cadastro = ?,  usu_img = ?, empresa_id = ?
                 WHERE usu_id = ?;`;
 
             const values = [usu_nome, usu_CPF, tipo_usuario_id, usu_ativo,
-                usu_email, usu_telefone, usu_data_cadastro, empresa_id, usu_id];
+                usu_email, usu_telefone, usu_data_cadastro, usu_img,  empresa_id, usu_id];
 
             const atualizaDados = await db.query(sql, values);
             return response.status(200).json({
@@ -110,6 +110,17 @@ module.exports = {
                 mensagem: 'Erro ao apagar usuário',
                 dados: error.message
             });
+        }
+    },
+
+    async CadastrarImagem(request, response) {
+        try {
+            console.log(request.file)
+            const img = request.file.filename;
+            
+            return response.status(200).json({ confirm: "Upload realizado com sucesso", message: img}) ;
+        } catch (error) {
+            return response.status(400).json({ confirm: "Erro", message: error.message});
         }
     }
 }

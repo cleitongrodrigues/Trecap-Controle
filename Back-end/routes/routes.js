@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const upload = require('../midleware/uploadimage');
 
 const UsuarioController = require('../controllers/Usuario');
 const ColaboradorController = require('../controllers/Colaboradores');
@@ -9,6 +10,7 @@ const RegistroController = require('../controllers/Registros');
 
 router.get('/Usuario', UsuarioController.ListarUSuario);
 router.post('/Usuario', UsuarioController.CadastrarUsuario);
+router.post('/enviar-imagem', upload.single('image'), UsuarioController.CadastrarImagem); // Cadastro da imagem
 router.patch('/Usuario/:usu_id', UsuarioController.EditarUsuario);
 router.delete('/Usuario/:usu_id', UsuarioController.ApagarUsuario);
 
