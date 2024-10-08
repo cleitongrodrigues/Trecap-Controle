@@ -10,7 +10,7 @@ const RegistroController = require('../controllers/Registros');
 
 router.get('/Usuario', UsuarioController.ListarUSuario);
 router.post('/Usuario', UsuarioController.CadastrarUsuario);
-router.post('/enviar-imagem', upload.single('image'), UsuarioController.CadastrarImagem); // Cadastro da imagem
+router.patch('/Usuario/:usu_id', upload.single('img'), UsuarioController.CadastrarImagem); // Cadastro da imagem
 router.patch('/Usuario/:usu_id', UsuarioController.EditarUsuario);
 router.delete('/Usuario/:usu_id', UsuarioController.ApagarUsuario);
 

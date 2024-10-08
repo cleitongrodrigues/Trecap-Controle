@@ -115,12 +115,35 @@ module.exports = {
 
     async CadastrarImagem(request, response) {
         try {
+            const {usu_id} = request.params;
             console.log(request.file)
             const img = request.file.filename;
-            
-            return response.status(200).json({ confirm: "Upload realizado com sucesso", message: img}) ;
+            const imgUrl = `img`;
+
+            const sql = `UPDATE Usuario SET usu_img = ? WHERE usu_id = ?;`;
+            const values = [img, usu_id];
+
+            const resultado = await db.query(sql, values);
+
+            if (resultado[0].affectedRows > 0){
+                return response.status(200).json({
+                    sucesso: true,
+                    mensagem: 'Imagem cadastrada com sucesso!',
+                    dados: {usu_id, imgUrl}
+                });
+            } else {
+                return response.status(404).json({
+                    sucesso: false,
+                    mensagem: 'Usuario não encontrado',
+                });
+            }
         } catch (error) {
-            return response.status(400).json({ confirm: "Erro", message: error.message});
+            return response.status(500).json({
+                sucesso: false,
+                mensagem: 'Erro ao cadastrar imagem',
+                dados: error.message
+            });
         }
+
     }
 }

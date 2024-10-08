@@ -15,13 +15,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const porta = 3333;
 
-app.use('/uploads', express.static('uploads'));
-
-
-
+console.log(path.join(__dirname, 'public/images'))
+app.use('public', express.static(path.join(__dirname, 'public/images')));
 
 app.listen(porta, () => {
   console.log(`Servidor iniciado na porta ${porta}`);
+});
+
+app.get('/public/images/:fileName', (req, res) => {
+  const { fileName } = req.params
+  res.sendFile(path.join(__dirname, 'public/images', fileName));
 });
 
 app.get("/", (request, response) => {

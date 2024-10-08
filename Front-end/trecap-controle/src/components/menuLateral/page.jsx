@@ -76,30 +76,12 @@ const MenuLateral = () => {
 
   const pathName = usePathname();
 
-  const getUsuario = async () => {
-    try {
-      const response = await axios.get(`http://localhost:3333/usuario`);
-      const dadosUsuario = response.data.dados;
-      setLista(dadosUsuario);
-
-      const usuarioAtual = dadosUsuario[0];
-      setNomeUsuario(usuarioAtual.usu_nome);
-      setUsuarioInfo({
-        nome: usuarioAtual.usu_nome,
-        cpf: usuarioAtual.usu_CPF,
-        email: usuarioAtual.usu_email,
-        telefone: usuarioAtual.usu_telefone,
-      });
-    } catch (error) {
-      console.error("Erro ao buscar usuarios", error);
-    }
-  };
-
   useEffect(() => {
     const getUsuario = async () => {
       try {
         const response = await axios.get(`http://localhost:3333/usuario`);
         const dadosUsuario = response.data.dados;
+        console.log(dadosUsuario)
         setLista(dadosUsuario);
         const usuarioAtual = dadosUsuario[0];
         setNomeUsuario(usuarioAtual.usu_nome);
@@ -108,7 +90,10 @@ const MenuLateral = () => {
           cpf: usuarioAtual.usu_CPF,
           email: usuarioAtual.usu_email,
           telefone: usuarioAtual.usu_telefone,
+          visuImagem: "http://localhost:3333/public/images/" + usuarioAtual.usu_img
         });
+
+        console.log(usuarioAtual)
       } catch (error) {
         console.error("Erro ao buscar usuários", error);
       }
@@ -223,20 +208,30 @@ const MenuLateral = () => {
   };
 
   const handleSubmit = async () => {
+    if (!selecionaImagem) {
+      Swal.fire({
+        title: 'Erro!',
+        text: 'Selecione uma imagem antes de salvar.',
+        icon: 'error',
+        backdrop: false,
+      });
+      return; // Impede o envio se nenhuma imagem for selecionada
+    }
     const usuarioId = lista[0].usu_id;
 
     const formData = new FormData();
-    formData.append('image', selecionaImagem);
+    formData.append('img', selecionaImagem);
     formData.append('userCode', usuarioId);
 
     try {
-      const response = await axios.post(`http://localhost:3333/upload`, formData,{
+      const response = await axios.patch(`http://localhost:3333/Usuario/${usuarioId}`, formData,{
         headers: {
           'content-type' : 'multipart/form-data',
         },
       });
 
       if (response.status === 200){
+        setVisuImagem(response.data.dados.imgUrl);
         Swal.fire({
           title: 'Enviado',
           text: 'Imagem enviada com sucesso',
@@ -247,8 +242,14 @@ const MenuLateral = () => {
       }
     } catch (error) {
       console.error("Erro ao fazer upload", error);
-    }
+    Swal.fire({
+      title: 'Erro!',
+      text: 'Houve um problema ao enviar a imagem.',
+      icon: 'error',
+      backdrop: false,
+    });
   }
+};
 
   return (
     <>
@@ -264,9 +265,9 @@ const MenuLateral = () => {
 
             <div className={styles.Perfil}>
               <Link href="#" onClick={openModal}>
-                {visuImagem ? (
+                {usuarioInfo.visuImagem ? (
                   <img
-                    src={visuImagem}
+                    src={usuarioInfo.visuImagem}
                     alt="Foto do usuário"
                     className={styles.ImagemPerfil}
                   />
@@ -285,14 +286,15 @@ const MenuLateral = () => {
                   <form onSubmit={handleSubmit}>
                     <label>Foto de Perfil</label>
                     <div className={styles.imagePreviewContainer}>
-                      {visuImagem ? (
-                        <img src={visuImagem} alt="Foto de perfil" />
+                      {usuarioInfo.visuImagem ? (
+                        <img src={usuarioInfo.visuImagem} alt="Foto de perfil" />
                       ) : (
                         <MdAccountCircle size={64} />
                       )}
                     </div>
-                    {/* <input type="file" accept="image/*" onChange={handleImagemChange}/>
-                    <button type="submit">Salvar imagem</button> */}
+                    <button type="submit">Salvar imagem</button> 
+                    {/* teste */}
+
                     <label
                       htmlFor="imageUpload"
                       className={styles.EscollherArquivo}
