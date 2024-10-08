@@ -10,27 +10,31 @@ export default function CheckinEvento() {
   const [participantes, setParticipantes] = useState([]); // Inicializado como array vazio
   const [participantesSelecionados, setParticipantesSelecionados] = useState([]);
   const [mensagemErro, setMensagemErro] = useState("");
-  const [setor, setSetor] = useState(""); // Armazenar o setor selecionado
+  const [setores, setSetores] = useState([]); // Armazenar os setores selecionados
   const router = useRouter();
 
   useEffect(() => {
-    // Recupera o setor selecionado do localStorage
-    const setorSelecionado = JSON.parse(localStorage.getItem('setorSelecionado'))[0];
-    if (setorSelecionado) {
-      setSetor(setorSelecionado);
+    // Recupera os setores selecionados do localStorage
+    const setoresSelecionados = JSON.parse(localStorage.getItem('setorSelecionado'));
+    if (setoresSelecionados && setoresSelecionados.length > 0) {
+      setSetores(setoresSelecionados);
 
-      // Faz a requisição para a API de colaboradores filtrada pelo setor
+      // Faz a requisição para a API de colaboradores filtrada pelos setores
       const fetchParticipantes = async () => {
         try {
-          const response = await fetch(`http://localhost:3333/colaboradores?setor=${setorSelecionado}`);
-          const data = await response.json();
+          const promises = setoresSelecionados.map((setor) =>
+            fetch(`http://localhost:3333/colaboradores?setor=${setor}`).then((res) => res.json())
+          );
+          
+          // Resolve todas as promessas
+          const resultados = await Promise.all(promises);
 
-          if (Array.isArray(data.dados)) {
-            setParticipantes(data.dados);
-            setParticipantesSelecionados(new Array(data.dados.length).fill(false));
-          } else {
-            setParticipantes([]); // Se não for um array, define como vazio
-          }
+          // Combina os dados de todos os setores
+          const todosParticipantes = resultados.flatMap((res) => res.dados || []);
+          
+          setParticipantes(todosParticipantes);
+          setParticipantesSelecionados(new Array(todosParticipantes.length).fill(false));
+
         } catch (error) {
           console.error("Erro ao buscar colaboradores:", error);
           setMensagemErro("Erro ao carregar participantes. Tente novamente.");
@@ -89,7 +93,7 @@ export default function CheckinEvento() {
                 <h1>TREINAMENTO SOBRE HIGIENE NO TRABALHO</h1>
                 <div className={styles.cadastro}>
                   <h2>Adicionar Participantes</h2>
-                  <h3>Setor Selecionado: {setor || "Nenhum setor selecionado"}</h3>
+                  <h3>Setores Selecionados: {setores.length > 0 ? setores.join(", ") : "Nenhum setor selecionado"}</h3>
                   <div className={styles.containerContent}>
                     {mostrarAlerta && (
                       <div className={styles.alerta}>
