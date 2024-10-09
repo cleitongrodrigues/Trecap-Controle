@@ -18,6 +18,7 @@ import { usePathname } from "next/navigation";
 import Modal from "./ReactDom";
 import Swal from "sweetalert2";
 import InputMask from "react-input-mask";
+import Calendario from "@/app/Calendario/page";
 
 const validacoes = {
   email: {
@@ -377,7 +378,7 @@ const MenuLateral = () => {
             <Link href="/historico">
               <MdHourglassBottom /> Histórico
             </Link>
-            <Link href="/calendario">
+            <Link href="/Calendario">
               <MdCalendarMonth /> Calendário
             </Link>
             <Link

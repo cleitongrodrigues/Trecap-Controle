@@ -4,17 +4,15 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import ptLocale from '@fullcalendar/core/locales/pt-br'; 
-import { format } from "date-fns"; 
-import CabecalhoLogado from '@/cabecalhoLogado/page';
+import ptLocale from "@fullcalendar/core/locales/pt-br";
+import { format } from "date-fns";
+import CabecalhoLogado from "@/cabecalhoLogado/page";
 import CustomModal from "../components/ModalCalendar/customModal";
-
-import './calendar.css'; 
+import "./calendar.css";
 import axios from "axios";
 import MenuLateral from "@/components/menuLateral/page";
 
-export default function HomePage() {
-  
+export default function Calendario() {
   const [events, setEvents] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -29,19 +27,24 @@ export default function HomePage() {
   // Função para adicionar ou editar o evento
   const handleAddEvent = async (eventData) => {
     let calendarApi = selectedDate?.view.calendar;
-  
+
     calendarApi?.unselect(); // Limpar seleção
 
     if (eventData.title) {
       if (selectedEvent) {
         // Edição do evento existente
-        const updatedEvents = events.map(event =>
+        const updatedEvents = events.map((event) =>
           event.id === selectedEvent.id
-            ? { ...event, title: eventData.title, professor: eventData.professor, description: eventData.description }
+            ? {
+                ...event,
+                title: eventData.title,
+                professor: eventData.professor,
+                description: eventData.description,
+              }
             : event
         );
         setEvents(updatedEvents);
-        
+
         // Atualiza o evento no backend via API (requisição PUT)
         try {
           await axios.put(`http://localhost:3333/evento/${selectedEvent.id}`, {
@@ -56,7 +59,6 @@ export default function HomePage() {
         } catch (error) {
           console.error("Erro ao editar o evento:", error);
         }
-
       } else {
         // Criação de novo evento
         const newEvent = {
@@ -67,21 +69,26 @@ export default function HomePage() {
           allDay: selectedDate.allDay,
           professor: eventData.professor,
           description: eventData.description,
-          usu_id: 1
+          usu_id: 1,
         };
+
+        const formattedStartDate = format(
+          new Date(newEvent.start),
+          "yyyy-MM-dd"
+        );
+        const formattedEndDate = format(new Date(newEvent.end), "yyyy-MM-dd");
 
         try {
           const response = await axios.post("http://localhost:3333/evento", {
             usu_id: newEvent.usu_id,
             evento_nome: newEvent.title,
-            evento_data_inicio: newEvent.start,
-            evento_data_termino: newEvent.end,
+            evento_data_inicio: formattedStartDate,
+            evento_data_termino: formattedEndDate,
             evento_local: "treino",
             evento_status: 1,
-            evento_professor: newEvent.professor
+            evento_professor: newEvent.professor,
           });
-          
-          console.log(response);
+
           setEvents([...events, newEvent]);
         } catch (error) {
           console.error("Erro ao criar o evento:", error);
@@ -102,18 +109,20 @@ export default function HomePage() {
   const handleDeleteEvent = async (id) => {
     try {
       await axios.delete(`http://localhost:3333/evento/${id}`); // Deleta no backend
-      setEvents(events.filter(event => event.id !== id));
+      setEvents(events.filter((event) => event.id !== id));
     } catch (error) {
       console.error("Erro ao excluir o evento:", error);
     }
   };
-  
+
   // Função para lidar com drag and drop dos eventos
   const handleEventDrop = async (dropInfo) => {
     const { id, startStr, endStr } = dropInfo.event;
 
     const updatedEvents = events.map((event) =>
-      event.id === parseInt(id) ? { ...event, start: startStr, end: endStr } : event
+      event.id === parseInt(id)
+        ? { ...event, start: startStr, end: endStr }
+        : event
     );
     setEvents(updatedEvents);
 
@@ -121,7 +130,7 @@ export default function HomePage() {
     try {
       await axios.put(`http://localhost:3333/evento/${id}`, {
         evento_data_inicio: startStr,
-        evento_data_termino: endStr
+        evento_data_termino: endStr,
       });
     } catch (error) {
       console.error("Erro ao mover o evento:", error);
@@ -132,14 +141,20 @@ export default function HomePage() {
   const renderEventList = () => {
     return events.map((event) => (
       <li key={event.id}>
-        <strong>{event.title}</strong> - {format(new Date(event.start), "dd/MM/yyyy")}{" "}
-        {event.end ? `até ${format(new Date(event.end), "dd/MM/yyyy")}` : ""}<br />
-        <em>Professor: {event.professor}</em><br />
+        <strong>{event.title}</strong> -{" "}
+        {format(new Date(event.start), "dd/MM/yyyy")}{" "}
+        {event.end ? `até ${format(new Date(event.end), "dd/MM/yyyy")}` : ""}
+        <br />
+        <em>Professor: {event.professor}</em>
+        <br />
         <p>{event.description}</p>
         <button onClick={() => handleEditEvent(event)} className="edit-btn">
           Editar
         </button>
-        <button onClick={() => handleDeleteEvent(event.id)} className="delete-btn">
+        <button
+          onClick={() => handleDeleteEvent(event.id)}
+          className="delete-btn"
+        >
           Excluir
         </button>
       </li>
@@ -148,7 +163,7 @@ export default function HomePage() {
 
   return (
     <>
-      <MenuLateral/>
+      <MenuLateral />
       <div className="calendar-container">
         <div className="calendar">
           <FullCalendar
@@ -163,29 +178,31 @@ export default function HomePage() {
             eventDrop={handleEventDrop}
             eventClick={(info) => alert(info.event.title)}
             headerToolbar={{
-              left: 'prev,next today',
-              center: 'title',
-              right: 'dayGridMonth,timeGridWeek,timeGridDay'
+              left: "prev,next today",
+              center: "title",
+              right: "dayGridMonth,timeGridWeek,timeGridDay",
             }}
             locale={ptLocale}
             themeSystem="bootstrap"
             contentHeight="auto"
             buttonText={{
-              today: 'Hoje',
-              month: 'Mês',
-              week: 'Semana',
-              day: 'Dia'
+              today: "Hoje",
+              month: "Mês",
+              week: "Semana",
+              day: "Dia",
             }}
             eventContent={(eventInfo) => (
               <div className="event-content">
-                <strong>{eventInfo.event.title}</strong><br />
-                <em>{eventInfo.event.extendedProps.professor}</em><br />
+                <strong>{eventInfo.event.title}</strong>
+                <br />
+                <em>{eventInfo.event.extendedProps.professor}</em>
+                <br />
                 <p>{eventInfo.event.extendedProps.description}</p>
               </div>
             )}
             eventStyle={() => ({
-              backgroundColor: '#7f00ff',
-              borderColor: '#7f00ff',
+              backgroundColor: "#7f00ff",
+              borderColor: "#7f00ff",
             })}
           />
         </div>
