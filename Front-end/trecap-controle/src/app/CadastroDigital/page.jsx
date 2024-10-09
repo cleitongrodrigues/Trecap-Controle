@@ -5,28 +5,20 @@ import styles from './page.module.css';
 import MenuLateral from "@/components/menuLateral/page";
 import Head from 'next/head'; // Importando Head para adicionar a fonte
 
-export default function Register() {
+export default function CadastroDigital() {
   const [formData, setFormData] = useState({
-    colaborador_nome: '',
-    colaborador_CPF: '',
-    colaborador_biometria: '',
-    colaborador_ativo: '',
-    colaborador_telefone: '',
-    colaborador_email: '',
-    empresa_id: '',
-    setor_id: '',
-    password: ''
+    usu_nome: '',
+    usu_CPF: '',
+    usu_ativo: '',
+    usu_telefone: '',
+    usu_email: '',
+    usu_id: '',
+    usu_senha: '',
+    usu_data_cadastro:'',
+    empresa_id:'',
+    usu_img:'',
 
-  //   { 
-  //     "colaborador_nome": "gabriel", 
-  //     "colaborador_CPF": "55499433879", 
-  //     "colaborador_biometria": "", 
-  //     "colaborador_ativo": 1, 
-  //     "colaborador_telefone": "14998339682", 
-  //     "colaborador_email": "gabriel.sousa234@etec.sp.gov.br", 
-  //     "empresa_id": "1", 
-  //     "setor_id": "4"
-  // }
+
   });
 
   const [error, setError] = useState('');
@@ -93,27 +85,34 @@ export default function Register() {
 
     // Criar um objeto com os dados do formulário
     const userData = {
-      colaborador_nome: formData.name,
-      colaborador_CPF: formData.cpf.replace(/\D/g, ''), // Enviando apenas números
-      colaborador_biometria: "",
-      colaborador_ativo: 1,
-      colaborador_telefone: formData.phone.replace(/\D/g, ''), // Enviando apenas números
-      colaborador_email: formData.email,
-      empresa_id: "1",
-      setor_id: "4"
+      usu_nome: formData.name,
+      usu_CPF: formData.cpf.replace(/\D/g, ''), // Enviando apenas números
+      tipo_usuario_id:1,
+      usu_ativo: 1,
+      usu_email: formData.email,
+      usu_telefone: formData.phone.replace(/\D/g, ''), // Enviando apenas números
+      usu_data_cadastro: "",
+      usu_img:"",
+      empresa_id: ""      
+      
+    
       // password: formData.password,
+
+    //   {
+    //     "usu_nome": "gabriel3", 
+    //     "usu_CPF": "55499433879", 
+    //     "tipo_usuario_id": 1, 
+    //     "usu_ativo": 1,
+    //     "usu_email": "gabriel.sousa234@etec.sp.gov.br", 
+    //     "usu_telefone": "(14) 99833-9682", 
+    //     "usu_data_cadastro": "2024-10-09", 
+    //     "usu_img": "img-1728430551689-518759944.png",
+    //     "empresa_id": 1
+    // }
+
     };
 
-  //   { 
-  //     "colaborador_nome": "gabriel", 
-  //     "colaborador_CPF": "55499433879", 
-  //     "colaborador_biometria": "", 
-  //     "colaborador_ativo": 1, 
-  //     "colaborador_telefone": "14998339682", 
-  //     "colaborador_email": "gabriel.sousa234@etec.sp.gov.br", 
-  //     "empresa_id": "1", 
-  //     "setor_id": "4"
-  // }
+  
 
     try {
       // Enviar dados para a API

@@ -13,7 +13,7 @@ import './calendar.css';
 import axios from "axios";
 import MenuLateral from "@/components/menuLateral/page";
 
-export default function HomePage() {
+export default function Calendario() {
   
   const [events, setEvents] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
