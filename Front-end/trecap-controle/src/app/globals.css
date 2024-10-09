@@ -61,3 +61,6 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+.swal2-container {
+	z-index: 9999 !important; 
+  }
