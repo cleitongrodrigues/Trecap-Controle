@@ -60,10 +60,10 @@ export default function CadastroP() {
       <div className={styles.layout}>
         <div className={styles.container}>
           <div className={styles.header}>
-            <h1>Treinamento sobre Higiene no Trabalho</h1>
+            <h1>TREINAMENTO SOBRE HIGIENE NO TRABALHO</h1>
           </div>
           <div className={styles.content}>
-            <h2>Cadastro de Participantes</h2>
+            <h2>Antes de iniciar o Evento, selecione os setores que irão participar do treinamento.</h2>
             <div className={styles.content2}>
               <div className={styles.setores}>
                 <div className={styles.set}>
