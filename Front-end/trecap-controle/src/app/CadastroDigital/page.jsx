@@ -7,11 +7,26 @@ import Head from 'next/head'; // Importando Head para adicionar a fonte
 
 export default function Register() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    cpf: '',
-    phone: ''
+    colaborador_nome: '',
+    colaborador_CPF: '',
+    colaborador_biometria: '',
+    colaborador_ativo: '',
+    colaborador_telefone: '',
+    colaborador_email: '',
+    empresa_id: '',
+    setor_id: '',
+    password: ''
+
+  //   { 
+  //     "colaborador_nome": "gabriel", 
+  //     "colaborador_CPF": "55499433879", 
+  //     "colaborador_biometria": "", 
+  //     "colaborador_ativo": 1, 
+  //     "colaborador_telefone": "14998339682", 
+  //     "colaborador_email": "gabriel.sousa234@etec.sp.gov.br", 
+  //     "empresa_id": "1", 
+  //     "setor_id": "4"
+  // }
   });
 
   const [error, setError] = useState('');
@@ -78,12 +93,27 @@ export default function Register() {
 
     // Criar um objeto com os dados do formulário
     const userData = {
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-      cpf: formData.cpf.replace(/\D/g, ''), // Enviando apenas números
-      phone: formData.phone.replace(/\D/g, '') // Enviando apenas números
+      colaborador_nome: formData.name,
+      colaborador_CPF: formData.cpf.replace(/\D/g, ''), // Enviando apenas números
+      colaborador_biometria: "",
+      colaborador_ativo: 1,
+      colaborador_telefone: formData.phone.replace(/\D/g, ''), // Enviando apenas números
+      colaborador_email: formData.email,
+      empresa_id: "1",
+      setor_id: "4"
+      // password: formData.password,
     };
+
+  //   { 
+  //     "colaborador_nome": "gabriel", 
+  //     "colaborador_CPF": "55499433879", 
+  //     "colaborador_biometria": "", 
+  //     "colaborador_ativo": 1, 
+  //     "colaborador_telefone": "14998339682", 
+  //     "colaborador_email": "gabriel.sousa234@etec.sp.gov.br", 
+  //     "empresa_id": "1", 
+  //     "setor_id": "4"
+  // }
 
     try {
       // Enviar dados para a API
