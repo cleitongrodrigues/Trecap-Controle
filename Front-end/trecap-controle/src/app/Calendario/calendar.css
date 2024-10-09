@@ -7,8 +7,6 @@
   padding: 10px;
   background-color: #f9f9f9;
   padding-top: 10rem;
- 
-  
 }
 
 /* Estilo para o próprio calendário */
@@ -18,9 +16,7 @@
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-left: 300px;
-  
 }
-
 
 /* Barra de navegação do calendário */
 .fc-toolbar {
@@ -101,7 +97,6 @@
   border-radius: 4px;
 }
 
-
 /* Estilização para o modal */
 .modal-overlay {
   position: fixed;
@@ -163,44 +158,66 @@
   background-color: #999;
 }
 
-
 .delete-btn {
-  background-color: #6a6ac1; 
-  color: white; 
-  border: none; 
-  padding: 8px 12px; 
-  border-radius: 4px; 
-  cursor: pointer; 
-  transition: background-color 0.3s ease; 
-  font-size: 14px; 
-  font-weight: bold; 
+  background-color: #6a6ac1;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.iniciar-teste {
+  background-color: #6a6ac1;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 4px;
+}
+
+.iniciar-teste:hover {
+  background-color: #0b0b45;
+}
+
+.iniciar-teste:active {
+  background-color: #0b0b45;
 }
 
 .delete-btn:hover {
-  background-color: #0b0b45; 
+  background-color: #0b0b45;
 }
 
 .delete-btn:active {
-  background-color: #0b0b45; 
+  background-color: #0b0b45;
 }
-
+.iniciar-teste:focus{
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(26, 28, 197, 0.5);
+}
 .delete-btn:focus {
-  outline: none; 
-  box-shadow: 0 0 0 3px rgba(26, 28, 197, 0.5); 
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(26, 28, 197, 0.5);
 }
 
 .edit-btn {
-  background-color: #6a6ac1; 
-  color: white; 
-  border: none; 
-  padding: 8px 12px; 
-  border-radius: 5px; 
-  cursor: pointer; 
-  font-size: 14px; 
-  transition: background-color 0.3s ease; 
-  margin-right: 10px; 
+  background-color: #6a6ac1;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  margin-right: 10px;
   font-weight: bold;
-  
 }
 
 .edit-btn:hover {

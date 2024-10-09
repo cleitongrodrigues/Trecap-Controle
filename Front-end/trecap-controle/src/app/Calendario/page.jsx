@@ -11,6 +11,7 @@ import CustomModal from "../components/ModalCalendar/customModal";
 import "./calendar.css";
 import axios from "axios";
 import MenuLateral from "@/components/menuLateral/page";
+import Link from "next/link";
 
 export default function Calendario() {
   const [events, setEvents] = useState([]);
@@ -19,6 +20,7 @@ export default function Calendario() {
   const [selectedEvent, setSelectedEvent] = useState(null); // Armazena o evento a ser editado
 
   const handleDateSelect = (selectInfo) => {
+    console.log(selectInfo)
     setSelectedDate(selectInfo); // Armazena a data selecionada
     setSelectedEvent(null); // Reseta o evento selecionado para adicionar novo
     setIsModalOpen(true); // Abre o modal
@@ -157,6 +159,11 @@ export default function Calendario() {
         >
           Excluir
         </button>
+        <Link href='/CadastroP'>
+          <button className="iniciar-teste">
+            Iniciar Evento
+          </button>
+        </Link>
       </li>
     ));
   };
