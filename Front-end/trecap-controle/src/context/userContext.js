@@ -2,41 +2,64 @@
 
 import { USER_GET_INFO, USER_GET_TOKEN } from "@/utils/endpointsAPI";
 import axios from "axios";
-import { useContext, createContext, useState } from "react";
+import { useContext, createContext, useState, useLayoutEffect } from "react";
 
 export const UserContext = createContext()
 
-export const UserProvider = ({ children}) => {
+export const UserProvider = ({ children }) => {
     const [isLogged, setIsLogged] = useState(null)
     const [user, setUser] = useState(null)
     const [error, setError] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
 
-    const getUserInfo = async token => {
-        const userInfo = axios.post(USER_GET_INFO, token)
+    const handleGetUserInfo = async token => {
+        const userInfo = await axios.post(USER_GET_INFO, token)
         setUser(userInfo)
         setIsLogged(true)
     }
 
-    const userLogin = async userInfo => {
+    const handleLogin = async userInfo => {
         try {
             setIsLoading(true)
             setError(false)
-            const token = axios.post(USER_GET_TOKEN, userInfo)
+            const responseToken = await axios.post(USER_GET_TOKEN, userInfo)
+            const { token } = responseToken.data
             window.localStorage.setItem('token', token)
-            getUserInfo(token)
+            // handleGetUserInfo(token)
         } catch (e) {
-            console.log(e)
+            setError('Ocooreu um erro!')
         }
         finally {
-            isLoading(false)
+            setIsLoading(false)
         }
 
     }
 
+    const handleLogout = () => {
+        window.localStorage.removeItem('token')
+        setIsLogged(false)
+    }
+
+
     return (
-        <UserContext.Provider>
+        <UserContext.Provider value={
+            {
+                user,
+                isLoading,
+                error,
+                handleLogin,
+                handleLogout
+            }
+        }>
             {children}
         </UserContext.Provider>
     )
+}
+
+export const useAuth = () => {
+    const context = useContext(UserContext)
+
+    if (context === undefined) throw new Error("useAuth está sendo usanda fora do contexto do usuário!")
+
+    return context
 }

@@ -1,24 +1,23 @@
 'use client'
 
 import style from "../login/page.module.css";
-import Image from "next/image";
-import logoBranca from "../../../assets/logoBranca.svg";
 import Input from "@/components/Input";
 import ButtonForm from "@/components/ButtonForm";
-import { useRouter } from "next/navigation";
 import Form from "@/components/Form";
 import Link from "next/link";
 import useForm from "@/hooks/useForm";
+import { useAuth } from "@/context/userContext";
 
 export default function Login() {
+  const { handleLogin, isLoading } = useAuth()
   const email = useForm();
   const password = useForm();
 
-  const router = useRouter()
-
-  const handleClick = (e) => {
-    e.preventDefault()
-    router.push('/home/gestor')
+  const handleClick = event => {
+    event.preventDefault()
+    if(email.isValid() && password.isValid()){
+      handleLogin({email: email.value, password: password.value})
+    }
   }
 
   return (
@@ -49,7 +48,12 @@ export default function Login() {
           </div>
           <Link href="/esqueceusenha">Esqueceu a senha</Link>
         </div>
-        <ButtonForm onClick={handleClick}>Cadastrar</ButtonForm>
+        {
+          !isLoading ?
+          <ButtonForm onClick={handleClick}>Cadastrar</ButtonForm>
+          : <ButtonForm disabled>Carrengado...</ButtonForm>
+        }
+        
       </form>
     </Form>
   );

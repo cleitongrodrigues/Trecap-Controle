@@ -96,6 +96,8 @@ export const UsuarioController = {
 
     async Login(request, response, next) {
         try {
+
+            console.log(response)
             const userInfo = {
                 email: request.body.email,
                 password: request.body.password
