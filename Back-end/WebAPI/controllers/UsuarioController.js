@@ -113,6 +113,20 @@ export const UsuarioController = {
         }
 
     },
+
+    async getUserInfo(request, response){
+        try {
+            const { token } = request.body
+            const tokenDecode = Auth.getTokenInfo(token)
+            
+            return response.status(200).json({
+                user: {...tokenDecode}
+            })
+        } catch(error){
+            next(error)
+        }
+        
+    },
     async private(request, response, next) {
         try {
             return response.status(200).send({

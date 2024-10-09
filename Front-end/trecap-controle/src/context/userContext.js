@@ -13,8 +13,9 @@ export const UserProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false)
 
     const handleGetUserInfo = async token => {
-        const userInfo = await axios.post(USER_GET_INFO, token)
-        setUser(userInfo)
+        const userInfo = await axios.post(USER_GET_INFO, {token: token})
+        setUser(userInfo.data.user)
+        console.log(userInfo.data.user)
         setIsLogged(true)
     }
 
@@ -25,7 +26,7 @@ export const UserProvider = ({ children }) => {
             const responseToken = await axios.post(USER_GET_TOKEN, userInfo)
             const { token } = responseToken.data
             window.localStorage.setItem('token', token)
-            // handleGetUserInfo(token)
+            await handleGetUserInfo(token)
         } catch (e) {
             setError('Ocooreu um erro!')
         }
@@ -47,6 +48,7 @@ export const UserProvider = ({ children }) => {
                 user,
                 isLoading,
                 error,
+                isLogged,
                 handleLogin,
                 handleLogout
             }

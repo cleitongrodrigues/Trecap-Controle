@@ -7,16 +7,19 @@ import Form from "@/components/Form";
 import Link from "next/link";
 import useForm from "@/hooks/useForm";
 import { useAuth } from "@/context/userContext";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
-  const { handleLogin, isLoading } = useAuth()
+  const { handleLogin, isLoading, error } = useAuth()
   const email = useForm();
   const password = useForm();
+  const router = useRouter()
 
-  const handleClick = event => {
+  const handleClick = async event => {
     event.preventDefault()
     if(email.isValid() && password.isValid()){
-      handleLogin({email: email.value, password: password.value})
+      await handleLogin({email: email.value, password: password.value})  
+      if(!error) router.push('/usuario/cadastroColaborador')   
     }
   }
 

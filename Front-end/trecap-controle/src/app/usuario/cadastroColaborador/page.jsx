@@ -10,6 +10,7 @@ import useForm from "@/hooks/useForm";
 import { MdSearch, MdEdit, MdDelete } from "react-icons/md";
 import { IconContext } from "react-icons";
 import MenuLateral from "@/components/menuLateral/page";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default function CadastrarEvento() {
   const router = useRouter();
@@ -51,7 +52,7 @@ export default function CadastrarEvento() {
     if (!nome.value || !email.value || !CPF.value || !biometria.value || !telefone.value) {
       alert("Por favor, preencha todos os campos.");
       return;
-  }
+    }
     validaTudo();
 
     const colaboradorData = {
@@ -122,188 +123,190 @@ export default function CadastrarEvento() {
 
   return (
     <>
-      {/* <CabecalhoLogado /> */}
-      <MenuLateral/>
-      <div className={style.CorCinza}>
-        <div className={style.ContainerGeral}>
-          <div className={style.Container}>
-            <div className={style.ContainerTudo}>
-              <div className={style.FormDados}>
-                <form onSubmit={handleSubmit}>
-                  <div className={style.CentralizaDados}>
-                    <div className={style.DadosPessoais}>
-                      <label>Nome do colaborador:</label>
-                      <input
-                        type="text"
-                        value={nome.value}
-                        onChange={nome.onChange}
-                        onBlur={nome.onBlur}
-                        placeholder="Digite o nome completo do colaborador"
-                      />
-                      <label>Email:</label>
-                      <input
-                        type="text"
-                        value={email.value}
-                        onChange={email.onChange}
-                        onBlur={email.onBlur}
-                        placeholder="Digite o email do colaborador"
-                      />
-                      <label>CPF:</label>
-                      <InputMask
-                        mask="999.999.999-99"
-                        type="text"
-                        value={CPF.value}
-                        onChange={CPF.onChange}
-                        onBlur={CPF.onBlur}
-                        placeholder="Digite o CPF do colaborador"
-                      />
-                    </div>
-                    <div className={style.DadosPessoais}>
-                      <label>Biometria:</label>
-                      <input
-                        type="text"
-                        value={biometria.value}
-                        onChange={biometria.onChange}
-                        onBlur={biometria.onBlur}
-                        placeholder="Digite a biometria"
-                      />
-                      <label>Telefone:</label>
-                      <InputMask
-                        mask="(99) 99999-9999"
-                        type="text"
-                        value={telefone.value}
-                        onChange={telefone.onChange}
-                        onBlur={telefone.onBlur}
-                        placeholder="Digite o telefone do colaborador"
-                      />
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div className={style.ContainerButton}>
-                <button type="submit" className={style.ButtonCadastrar} onClick={handleSubmit}>
-                  {selectedColaborador ? "Salvar" : "Cadastrar"}
-                </button>
-                <button type="button" className={style.ButtonCancelar} onClick={handleCancelar}>
-                  Cancelar
-                </button>
-              </div>
-
-              {/* Modal de Edição */}
-              {showModal && (
-                <div className={style.modal}>
-                  <div className={style.modalContent}>
-                    <h2>Editar Colaborador</h2>
-                    <form onSubmit={handleSubmit}>
-                      <label>Nome:</label>
-                      <input
-                        type="text"
-                        value={nome.value}
-                        onChange={nome.onChange}
-                        placeholder="Digite o nome completo do colaborador"
-                      />
-                      <label>Email:</label>
-                      <input
-                        type="text"
-                        value={email.value}
-                        onChange={email.onChange}
-                        placeholder="Digite o email do colaborador"
-                      />
-                      <label>CPF:</label>
-                      <InputMask
-                        mask="999.999.999-99"
-                        type="text"
-                        value={CPF.value}
-                        onChange={CPF.onChange}
-                        placeholder="Digite o CPF do colaborador"
-                      />
-                      <label>Biometria:</label>
-                      <input
-                        type="text"
-                        value={biometria.value}
-                        onChange={biometria.onChange}
-                        placeholder="Digite a biometria"
-                      />
-                      <label>Telefone:</label>
-                      <InputMask
-                        mask="(99) 99999-9999"
-                        type="text"
-                        value={telefone.value}
-                        onChange={telefone.onChange}
-                        placeholder="Digite o telefone do colaborador"
-                      />
-                      <button type="submit" onClick={handleSubmit}>
-                        Salvar
-                      </button>
-                      <button type="button" onClick={() => setShowModal(false)}>
-                        Cancelar
-                      </button>
-                    </form>
-                  </div>
-                </div>
-              )}
-
-              {/* Modal de Confirmação de Exclusão */}
-              {showDeleteModal && (
-                <div className={style.modal}>
-                  <div className={style.modalContent}>
-                    <h2>Confirmar Exclusão</h2>
-                    <p>Tem certeza de que deseja excluir o(a) colaborador(a) {colaboradorToDelete?.colaborador_nome}?</p>
-                    <button onClick={handleDelete}>Excluir</button>
-                    <button onClick={() => setShowDeleteModal(false)}>Cancelar</button>
-                  </div>
-                </div>
-              )}
-              <div className={style.Novo}>
-                <div className={style.InputIcon}>
-                  <label htmlFor="">Pesquisar Colaboradores:</label>
-                  <input type="text" placeholder="Digite o nome do Colaborador" />
-                  <IconContext.Provider value={{ size: 25 }}>
-                    <MdSearch />
-                  </IconContext.Provider>
-                </div>
-
-                <div className={style.containerColaborador}>
-                  <div className={style.ContainerCabecalho}>
-                    <div className={style.ContainerId}>#</div>
-                    <div className={style.ContainerNome}>Nome</div>
-                    <div className={style.ContainerEmail}>Email</div>
-                    <div className={style.ContainerBotaoTeste}>Ações</div>
-                  </div>
-                  {lista &&
-                    lista.map((colaborador, index) => (
-                      <div key={index} className={style.ContainerDivs}>
-                        <div className={style.ContainerId}>{colaborador.colaborador_id}</div>
-                        <div className={style.ContainerNome}>{colaborador.colaborador_nome}</div>
-                        <div className={style.ContainerEmail}>{colaborador.colaborador_email}</div>
-                        <div className={style.ContainerBotaoEditar}>
-                          <button
-                            type="button"
-                            className={style.ButtonEditar}
-                            onClick={() => handleEdit(colaborador)}
-                          >
-                            <IconContext.Provider value={{ size: 20 }}>
-                              <MdEdit />
-                            </IconContext.Provider>
-                          </button>
-                          <button
-                            type="button"
-                            className={style.ButtonExcluir}
-                            onClick={() => confirmDelete(colaborador)}
-                          >
-                            <IconContext.Provider value={{ size: 20 }}>
-                              <MdDelete />
-                            </IconContext.Provider>
-                          </button>
-                        </div>
+      <ProtectedRoute>
+        {/* <CabecalhoLogado /> */}
+        <MenuLateral />
+        <div className={style.CorCinza}>
+          <div className={style.ContainerGeral}>
+            <div className={style.Container}>
+              <div className={style.ContainerTudo}>
+                <div className={style.FormDados}>
+                  <form onSubmit={handleSubmit}>
+                    <div className={style.CentralizaDados}>
+                      <div className={style.DadosPessoais}>
+                        <label>Nome do colaborador:</label>
+                        <input
+                          type="text"
+                          value={nome.value}
+                          onChange={nome.onChange}
+                          onBlur={nome.onBlur}
+                          placeholder="Digite o nome completo do colaborador"
+                        />
+                        <label>Email:</label>
+                        <input
+                          type="text"
+                          value={email.value}
+                          onChange={email.onChange}
+                          onBlur={email.onBlur}
+                          placeholder="Digite o email do colaborador"
+                        />
+                        <label>CPF:</label>
+                        <InputMask
+                          mask="999.999.999-99"
+                          type="text"
+                          value={CPF.value}
+                          onChange={CPF.onChange}
+                          onBlur={CPF.onBlur}
+                          placeholder="Digite o CPF do colaborador"
+                        />
                       </div>
-                    ))}
+                      <div className={style.DadosPessoais}>
+                        <label>Biometria:</label>
+                        <input
+                          type="text"
+                          value={biometria.value}
+                          onChange={biometria.onChange}
+                          onBlur={biometria.onBlur}
+                          placeholder="Digite a biometria"
+                        />
+                        <label>Telefone:</label>
+                        <InputMask
+                          mask="(99) 99999-9999"
+                          type="text"
+                          value={telefone.value}
+                          onChange={telefone.onChange}
+                          onBlur={telefone.onBlur}
+                          placeholder="Digite o telefone do colaborador"
+                        />
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div className={style.ContainerButton}>
+                  <button type="submit" className={style.ButtonCadastrar} onClick={handleSubmit}>
+                    {selectedColaborador ? "Salvar" : "Cadastrar"}
+                  </button>
+                  <button type="button" className={style.ButtonCancelar} onClick={handleCancelar}>
+                    Cancelar
+                  </button>
+                </div>
+
+                {/* Modal de Edição */}
+                {showModal && (
+                  <div className={style.modal}>
+                    <div className={style.modalContent}>
+                      <h2>Editar Colaborador</h2>
+                      <form onSubmit={handleSubmit}>
+                        <label>Nome:</label>
+                        <input
+                          type="text"
+                          value={nome.value}
+                          onChange={nome.onChange}
+                          placeholder="Digite o nome completo do colaborador"
+                        />
+                        <label>Email:</label>
+                        <input
+                          type="text"
+                          value={email.value}
+                          onChange={email.onChange}
+                          placeholder="Digite o email do colaborador"
+                        />
+                        <label>CPF:</label>
+                        <InputMask
+                          mask="999.999.999-99"
+                          type="text"
+                          value={CPF.value}
+                          onChange={CPF.onChange}
+                          placeholder="Digite o CPF do colaborador"
+                        />
+                        <label>Biometria:</label>
+                        <input
+                          type="text"
+                          value={biometria.value}
+                          onChange={biometria.onChange}
+                          placeholder="Digite a biometria"
+                        />
+                        <label>Telefone:</label>
+                        <InputMask
+                          mask="(99) 99999-9999"
+                          type="text"
+                          value={telefone.value}
+                          onChange={telefone.onChange}
+                          placeholder="Digite o telefone do colaborador"
+                        />
+                        <button type="submit" onClick={handleSubmit}>
+                          Salvar
+                        </button>
+                        <button type="button" onClick={() => setShowModal(false)}>
+                          Cancelar
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                )}
+
+                {/* Modal de Confirmação de Exclusão */}
+                {showDeleteModal && (
+                  <div className={style.modal}>
+                    <div className={style.modalContent}>
+                      <h2>Confirmar Exclusão</h2>
+                      <p>Tem certeza de que deseja excluir o(a) colaborador(a) {colaboradorToDelete?.colaborador_nome}?</p>
+                      <button onClick={handleDelete}>Excluir</button>
+                      <button onClick={() => setShowDeleteModal(false)}>Cancelar</button>
+                    </div>
+                  </div>
+                )}
+                <div className={style.Novo}>
+                  <div className={style.InputIcon}>
+                    <label htmlFor="">Pesquisar Colaboradores:</label>
+                    <input type="text" placeholder="Digite o nome do Colaborador" />
+                    <IconContext.Provider value={{ size: 25 }}>
+                      <MdSearch />
+                    </IconContext.Provider>
+                  </div>
+
+                  <div className={style.containerColaborador}>
+                    <div className={style.ContainerCabecalho}>
+                      <div className={style.ContainerId}>#</div>
+                      <div className={style.ContainerNome}>Nome</div>
+                      <div className={style.ContainerEmail}>Email</div>
+                      <div className={style.ContainerBotaoTeste}>Ações</div>
+                    </div>
+                    {lista &&
+                      lista.map((colaborador, index) => (
+                        <div key={index} className={style.ContainerDivs}>
+                          <div className={style.ContainerId}>{colaborador.colaborador_id}</div>
+                          <div className={style.ContainerNome}>{colaborador.colaborador_nome}</div>
+                          <div className={style.ContainerEmail}>{colaborador.colaborador_email}</div>
+                          <div className={style.ContainerBotaoEditar}>
+                            <button
+                              type="button"
+                              className={style.ButtonEditar}
+                              onClick={() => handleEdit(colaborador)}
+                            >
+                              <IconContext.Provider value={{ size: 20 }}>
+                                <MdEdit />
+                              </IconContext.Provider>
+                            </button>
+                            <button
+                              type="button"
+                              className={style.ButtonExcluir}
+                              onClick={() => confirmDelete(colaborador)}
+                            >
+                              <IconContext.Provider value={{ size: 20 }}>
+                                <MdDelete />
+                              </IconContext.Provider>
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </ProtectedRoute>
     </>
   );
 }

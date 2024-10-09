@@ -16,6 +16,7 @@ import Image from "next/image";
 import logo from "../../assets/logoBranca.svg";
 import { usePathname } from 'next/navigation';
 import Modal from "./ReactDom";
+import { useAuth } from "@/context/userContext";
 
 const MenuLateral = () => {
   const [lista, setLista] = useState([]);
@@ -24,6 +25,8 @@ const MenuLateral = () => {
   const [selecionaImagem, setSelecionaImagem] = useState(null);
   const [visuImagem, setVisuImagem] = useState(null);
   const pathName = usePathname();
+
+  const { user } = useAuth()
 
   const getColaboradores = async () => {
     try {
@@ -74,7 +77,7 @@ const MenuLateral = () => {
                 ) : (
                   <MdAccountCircle />
                 )}
-                {nomeColaborador || "Nome"} {/* Aqui vai o nome */}
+                {user && user.name} {/* Aqui vai o nome */}
               </Link>
             </div>
 
