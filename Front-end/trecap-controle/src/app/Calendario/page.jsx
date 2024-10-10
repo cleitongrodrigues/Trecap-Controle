@@ -12,6 +12,7 @@ import "./calendar.css";
 import axios from "axios";
 import MenuLateral from "@/components/menuLateral/page";
 import Link from "next/link";
+import CadastroP from "../cadastroP/page";
 
 export default function Calendario() {
   const [events, setEvents] = useState([]);
@@ -38,11 +39,11 @@ export default function Calendario() {
         const updatedEvents = events.map((event) =>
           event.id === selectedEvent.id
             ? {
-                ...event,
-                title: eventData.title,
-                professor: eventData.professor,
-                description: eventData.description,
-              }
+              ...event,
+              title: eventData.title,
+              professor: eventData.professor,
+              description: eventData.description,
+            }
             : event
         );
         setEvents(updatedEvents);
@@ -150,20 +151,21 @@ export default function Calendario() {
         <em>Professor: {event.professor}</em>
         <br />
         <p>{event.description}</p>
-        <button onClick={() => handleEditEvent(event)} className="edit-btn">
-          Editar
-        </button>
-        <button
-          onClick={() => handleDeleteEvent(event.id)}
-          className="delete-btn"
-        >
-          Excluir
-        </button>
-        <Link href='/CadastroP'>
-          <button className="iniciar-teste">
-            Iniciar Evento
+        <div className="Botoes">
+          <button onClick={() => handleEditEvent(event)}>
+            Editar
           </button>
-        </Link>
+          <button
+            onClick={() => handleDeleteEvent(event.id)}
+          >
+            Excluir
+          </button>
+          <Link href='/cadastrop'>
+            <button>
+              Iniciar Evento
+            </button>
+          </Link>
+        </div>
       </li>
     ));
   };
