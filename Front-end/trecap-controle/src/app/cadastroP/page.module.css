@@ -110,14 +110,15 @@
     background-color: var(--purple-300);
   }
 
-  .containerInput{
-    background-color: #FFFF;
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    margin-block-end: .8rem;
-    padding: .5rem;
-  }
+.form {
+  background-color: #fff;
+  padding: 40px;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
 
   .containerInput input{
     transform: scale(1.2);
