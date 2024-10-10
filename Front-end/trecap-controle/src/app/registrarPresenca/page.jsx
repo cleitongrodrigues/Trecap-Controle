@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import CabecalhoLogado from "@/CabecalhoLogado/page";
+import MenuLateral from '@/components/menuLateral/page';
 
 export default function RegistrarPresenca() {
   const [participantesSelecionados, setParticipantesSelecionados] = useState([]);
@@ -18,75 +19,117 @@ export default function RegistrarPresenca() {
   }, []);
 
   const registrarPresenca = (nome, isChecked) => {
-    const agora = new Date().toLocaleString(); // Obtém a data e hora atual
+    const agora = new Date().toLocaleString();
 
     setParticipantesPresentes((prev) => {
       const novosPresentes = { ...prev };
 
       if (isChecked) {
-        // Adicionar o participante à lista com a hora atual
         novosPresentes[nome] = agora;
       } else {
-        // Remover o participante da lista
         delete novosPresentes[nome];
       }
 
-      // Atualizar o localStorage com os participantes presentes
       localStorage.setItem('participantesPresentes', JSON.stringify(novosPresentes));
 
       return novosPresentes;
     });
   };
 
-  const salvarPresenca = () => {
-    router.push('/relatorioPresenca');
+  const salvarPresenca = async () => {
+    console.log("Tentando salvar presença...");
+
+    const dadosPresenca = Object.entries(participantesPresentes).map(([nome, hora]) => ({
+      registros_presenca: 1,
+      registros_hora_entrada: hora,
+      registros_hora_saida: null, // Lógica para hora de saída pode ser adicionada
+      evento_id: 123, // Substitua pelo evento real
+      colaborador_id: nome // Supondo que o nome é o ID do colaborador
+    }));
+
+    console.log("Dados a serem enviados:", dadosPresenca);
+
+    dadosPresenca.forEach(async dado =>{
+      dado = {
+        ...dado,
+        evento_id: 1,
+        registro_presenca: 1,
+        registros_hora_entrada: "2024-09-01 17:00:00",
+        registros_hora_saida: "2024-09-01 17:00:00",
+        colaborador_id: 10
+      }
+      console.log(dado)
+      try {
+        const response = await fetch('http://localhost:3333/registro', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(dado),
+        });
+  
+        if (!response.ok) {
+          throw new Error('Erro ao registrar presença');
+        }
+  
+        const data = await response.json();
+        console.log('Registros de presença salvos com sucesso:', data);
+        router.push('/relatorioPresenca'); // Redirecionar após salvar
+      } catch (error) {
+        console.error('Erro ao salvar a presença:', error);
+        alert("Ocorreu um erro ao salvar a presença: " + error.message);
+      }
+    })
+
+    
   };
 
   return (
     <>
-      <CabecalhoLogado />
+      <MenuLateral />
+      <div className={styles.layout}>
+        <div className={styles.Header}>
+          <div className={styles.checkin}>
+            <h1>TREINAMENTO SOBRE HIGIENE NO TRABALHO</h1>
 
-      <div className={styles.Header}>
-        <div className={styles.checkin}>
-          <h1>TREINAMENTO SOBRE HIGIENE NO TRABALHO</h1>
+            <div className={styles.cadastro}>
+              <h2>REGISTRO DE PRESENÇA</h2>
 
-          <div className={styles.cadastro}>
-            <h2>REGISTRO DE PRESENÇA</h2>
-
-            <div className={styles.listaParticipantes}>
-              <h3>Selecione os participantes presentes:</h3>
-              <ul className={styles.lista}>
-                {participantesSelecionados.length > 0 ? (
-                  participantesSelecionados.map((participante, index) => (
-                    <li key={index} className={styles.participanteItem}>
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={participantesPresentes[participante] !== undefined}
-                          onChange={(e) => registrarPresenca(participante, e.target.checked)}
-                        />
-                        {participante}
-                        {participantesPresentes[participante] && (
-                          <span className={styles.horario}>
-                            (Chegada: {participantesPresentes[participante]})
-                          </span>
-                        )}
-                      </label>
-                    </li>
-                  ))
-                ) : (
-                  <p>Nenhum participante selecionado.</p>
-                )}
-              </ul>
+              <div className={styles.listaParticipantes}>
+                <h3>Selecione os participantes presentes:</h3>
+                <ul className={styles.lista}>
+                  {participantesSelecionados.length > 0 ? (
+                    participantesSelecionados.map((participante, index) => (
+                      <li key={index} className={styles.participanteItem}>
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={participantesPresentes[participante] !== undefined}
+                            onChange={(e) => registrarPresenca(participante, e.target.checked)}
+                          />
+                          {participante}
+                          {participantesPresentes[participante] && (
+                            <span className={styles.horario}>
+                              (Chegada: {participantesPresentes[participante]})
+                            </span>
+                          )}
+                        </label>
+                      </li>
+                    ))
+                  ) : (
+                    <p>Nenhum participante selecionado.</p>
+                  )}
+                </ul>
+              </div>
             </div>
-          </div>
 
-          <button className={styles.botaoCadastro} onClick={salvarPresenca}>
-            Salvar
-          </button>
-          <button className={styles.botaoCadastro} onClick={router.back}>
-            Voltar
-          </button>
+            <button className={styles.botaoCadastro} onClick={salvarPresenca}>
+              Salvar
+            </button>
+            <button className={styles.botaoCadastro} onClick={router.back}>
+              Voltar
+            </button>
+          </div>
         </div>
       </div>
     </>

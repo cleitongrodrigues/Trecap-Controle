@@ -2,14 +2,15 @@
    v2.0 | 20110126
    License: none (public domain)
 */
-:root {
-  /* --purpleMain: #6750A4; */
-  --purpleMain: #7c00fe;
-  --purple-200: #8576ff;
-  --purple-700: #17153b;
-  --purple-500: #4541fe;
-  --purple-300: #ab9ff2;
-  --purpleButton: #8e74b5;
+:root{
+	/* --purpleMain: #6750A4; */
+	--purpleMain: #7C00FE;
+	/* --purpleMain: #07073B; */
+	--purple-200: #8576FF;
+	--purple-700: #17153B;
+	--purple-500: #4541fe;
+	--purple-300: #ab9ff2;
+	--purpleButton: #8E74B5;
 }
 * {
   box-sizing: border-box;

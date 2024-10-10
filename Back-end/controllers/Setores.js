@@ -3,9 +3,12 @@ const db = require('../database/connection');
 module.exports = {
     async ListarSetores(request, response){
         try {
-            const sql = `SELECT setor_id, setor_nome, empresa_id FROM Setores;`;
 
-            const Setoress = await db.query(sql)
+            const {empresa_id} = request.params
+
+            const sql = `SELECT setor_nome FROM Setores where empresa_id = ?;`;
+
+            const Setoress = await db.query(sql, empresa_id)
 
             const nItens = Setoress[0].length;
             return response.status(200).json({

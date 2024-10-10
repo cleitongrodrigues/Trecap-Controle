@@ -378,13 +378,7 @@ const MenuLateral = () => {
             <Link href="/historico">
               <MdHourglassBottom /> Histórico
             </Link>
-
-            <Link 
-            className={
-                pathName === "/Calendario" ? styles.active : ""
-              }
-              href="/Calendario"
-            >
+            <Link href="/Calendario">
               <MdCalendarMonth /> Calendário
             </Link>
             
