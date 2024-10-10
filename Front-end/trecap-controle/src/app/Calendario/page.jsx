@@ -151,7 +151,7 @@ export default function Calendario() {
         <em>Professor: {event.professor}</em>
         <br />
         <p>{event.description}</p>
-        <div className="Botoes">
+        <div className="btn-comum">
           <button onClick={() => handleEditEvent(event)}>
             Editar
           </button>
@@ -160,7 +160,7 @@ export default function Calendario() {
           >
             Excluir
           </button>
-          <Link href='/cadastrop'>
+          <Link href='/cadastroP'>
             <button>
               Iniciar Evento
             </button>
