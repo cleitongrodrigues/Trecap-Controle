@@ -33,6 +33,7 @@ export default function CadastroDigital() {
   };
 
   const validateCPF = (cpf) => {
+    console.log(cpf)
     if (cpf.length !== 11 || !/^\d+$/.test(cpf)) return false; // Deve ter 11 dígitos e ser numérico
 
     // Cálculo dos dígitos verificadores
@@ -91,9 +92,9 @@ export default function CadastroDigital() {
       usu_ativo: 1,
       usu_email: formData.email,
       usu_telefone: formData.phone.replace(/\D/g, ''), // Enviando apenas números
-      usu_data_cadastro: "",
+      usu_data_cadastro: "2024-10-09",
       usu_img:"",
-      empresa_id: ""      
+      empresa_id: 1     
       
     
       // password: formData.password,
@@ -112,11 +113,13 @@ export default function CadastroDigital() {
 
     };
 
+    console.log(userData)
+
   
 
     try {
       // Enviar dados para a API
-      const response = await fetch('http://localhost:3333/colaboradores', { // Substitua pela URL da sua API
+      const response = await fetch('http://localhost:3333/usuario', { // Substitua pela URL da sua API
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -149,7 +152,7 @@ export default function CadastroDigital() {
    
       <div className={styles.container}>
         <form onSubmit={handleSubmit} className={styles.form}>
-          <h2 className={styles.title}>Cadastro para digital</h2>
+          <h2 className={styles.title}>Cadastro para Mentor</h2>
         
           {error && <p className={styles.error}>{error}</p>}
 
