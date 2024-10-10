@@ -49,26 +49,39 @@ export default function RegistrarPresenca() {
 
     console.log("Dados a serem enviados:", dadosPresenca);
 
-    try {
-      const response = await fetch('http://localhost:3000/api/registros', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dadosPresenca),
-      });
-
-      if (!response.ok) {
-        throw new Error('Erro ao registrar presença');
+    dadosPresenca.forEach(async dado =>{
+      dado = {
+        ...dado,
+        evento_id: 1,
+        registro_presenca: 1,
+        registros_hora_entrada: "2024-09-01 17:00:00",
+        registros_hora_saida: "2024-09-01 17:00:00",
+        colaborador_id: 10
       }
+      console.log(dado)
+      try {
+        const response = await fetch('http://localhost:3333/registro', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(dado),
+        });
+  
+        if (!response.ok) {
+          throw new Error('Erro ao registrar presença');
+        }
+  
+        const data = await response.json();
+        console.log('Registros de presença salvos com sucesso:', data);
+        router.push('/relatorioPresenca'); // Redirecionar após salvar
+      } catch (error) {
+        console.error('Erro ao salvar a presença:', error);
+        alert("Ocorreu um erro ao salvar a presença: " + error.message);
+      }
+    })
 
-      const data = await response.json();
-      console.log('Registros de presença salvos com sucesso:', data);
-      router.push('/relatorioPresenca'); // Redirecionar após salvar
-    } catch (error) {
-      console.error('Erro ao salvar a presença:', error);
-      alert("Ocorreu um erro ao salvar a presença: " + error.message);
-    }
+    
   };
 
   return (
