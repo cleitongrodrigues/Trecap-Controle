@@ -225,13 +225,13 @@ const MenuLateral = () => {
     formData.append('userCode', usuarioId);
 
     try {
-      const response = await axios.patch(`http://localhost:3333/Usuario/${usuarioId}`, formData,{
+      const response = await axios.patch(`http://localhost:3333/Usuario/${usuarioId}`, formData, {
         headers: {
-          'content-type' : 'multipart/form-data',
+          'content-type': 'multipart/form-data',
         },
       });
 
-      if (response.status === 200){
+      if (response.status === 200) {
         setVisuImagem(response.data.dados.imgUrl);
         Swal.fire({
           title: 'Enviado',
@@ -243,14 +243,14 @@ const MenuLateral = () => {
       }
     } catch (error) {
       console.error("Erro ao fazer upload", error);
-    Swal.fire({
-      title: 'Erro!',
-      text: 'Houve um problema ao enviar a imagem.',
-      icon: 'error',
-      backdrop: false,
-    });
-  }
-};
+      Swal.fire({
+        title: 'Erro!',
+        text: 'Houve um problema ao enviar a imagem.',
+        icon: 'error',
+        backdrop: false,
+      });
+    }
+  };
 
   return (
     <>
@@ -293,7 +293,7 @@ const MenuLateral = () => {
                         <MdAccountCircle size={64} />
                       )}
                     </div>
-                    <button type="submit">Salvar imagem</button> 
+                    <button type="submit">Salvar imagem</button>
                     {/* teste */}
 
                     <label
@@ -378,10 +378,15 @@ const MenuLateral = () => {
             <Link href="/historico">
               <MdHourglassBottom /> Histórico
             </Link>
-            <Link href="/Calendario">
+            <Link
+              className={
+                pathName === "/Calendario" ? styles.active : ""
+              }
+              href="/Calendario"
+            >
               <MdCalendarMonth /> Calendário
             </Link>
-            
+
             <Link
               className={
                 pathName === "/usuario/cadastroColaborador" ? styles.active : ""
