@@ -1,9 +1,14 @@
-'use client'
-import { IconContext } from 'react-icons';
-import style from './page.module.css'
-import Link from 'next/link'
-import { MdCalendarMonth, MdHourglassBottom, MdEventNote, MdPeople } from "react-icons/md";
-import CabecalhoLogado from '@/cabecalhoLogado/page';
+"use client";
+import { IconContext } from "react-icons";
+import style from "./page.module.css";
+import Link from "next/link";
+import {
+  MdCalendarMonth,
+  MdHourglassBottom,
+  MdEventNote,
+  MdPeople,
+} from "react-icons/md";
+import CabecalhoLogado from "@/cabecalhoLogado/page";
 
 
 export default function Gestor(){
@@ -44,7 +49,31 @@ export default function Gestor(){
                     </div>
                 </div>
             </div>
-        </div>
+            <div className={style.Centralizar}>
+              <Link href="">
+                <IconContext.Provider value={{ size: 100 }}>
+                  <MdHourglassBottom />
+                </IconContext.Provider>
+                Histórico
+              </Link>
+            </div>
+            <div className={style.Centralizar}>
+              <Link href="">
+                <IconContext.Provider value={{ size: 100 }}>
+                  <MdCalendarMonth />
+                </IconContext.Provider>
+                Calendário
+              </Link>
+            </div>
+            <div className={style.Centralizar}>
+              <Link href="/colaboradores">
+                <IconContext.Provider value={{ size: 100 }}>
+                  <MdPeople />
+                </IconContext.Provider>
+                Colaboradores
+              </Link>
+            </div>
+          </div>
         </>
-    )
+  );
 }

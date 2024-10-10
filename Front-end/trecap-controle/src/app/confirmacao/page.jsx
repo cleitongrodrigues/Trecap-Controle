@@ -8,6 +8,7 @@ import CabecalhoLogado from "@/CabecalhoLogado/page";
 export default function CheckinEvento() {
   const router = useRouter();
   const [participantesSelecionados, setParticipantesSelecionados] = useState([]);
+  const [curso, setCurso] = useState("TREINAMENTO SOBRE HIGIENE NO TRABALHO"); // Nome do curso
 
   useEffect(() => {
     // Garantir que estamos no cliente antes de acessar o localStorage
@@ -36,7 +37,7 @@ export default function CheckinEvento() {
 
       <div className={styles.Header}>
         <div className={styles.checkin}>
-          <h1>TREINAMENTO SOBRE HIGIENE NO TRABALHO</h1>
+          <h1>{curso}</h1> {/* Nome do curso na página de confirmação */}
 
           <div className={styles.cadastro}>
             <h2>Participantes Selecionados</h2>

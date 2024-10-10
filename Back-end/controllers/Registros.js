@@ -44,6 +44,7 @@ module.exports = {
                 dados: registros_id
             });
         } catch (error) {
+            console.log(error)
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao cadastrar usuário :(',

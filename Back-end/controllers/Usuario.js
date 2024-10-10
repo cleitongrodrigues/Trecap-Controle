@@ -9,7 +9,6 @@ module.exports = {
             WHERE usu_ativo = 1;`;
 
             const usuarios = await db.query(sql)
-            console.log(usuarios);
             const nItens = usuarios[0].length;
             return response.status(200).json({
                 sucesso: true,
