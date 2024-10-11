@@ -25,10 +25,10 @@ router.post('/Empresa', EmpresaController.CadastrarEmpresa);
 router.patch('/Empresa/:empresa_id', EmpresaController.EditarEmpresa);
 router.delete('/Empresa/:empresa_id', EmpresaController.ApagarEmpresa);
 
-router.get('/Evento', EventoController.ListarEvento);
-router.post('/Evento', EventoController.CadastrarEvento);
-router.patch('/Evento/:evento_id', EventoController.EditarEvento);
-router.delete('/Evento/:evento_id', EventoController.ApagarEvento);
+router.get('/Eventos', EventoController.ListarEvento);
+router.post('/Eventos', EventoController.CadastrarEvento);
+router.patch('/Eventos/:evento_id', EventoController.EditarEvento);
+router.delete('/Eventos/:evento_id', EventoController.ApagarEvento);
 
 router.get('/Registro', RegistroController.ListarRegistros);
 router.post('/Registro', RegistroController.CadastrarRegistros);
