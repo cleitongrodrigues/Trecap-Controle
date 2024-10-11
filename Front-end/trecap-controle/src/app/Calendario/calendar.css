@@ -214,3 +214,77 @@
   outline: none; /* Remover contorno padrão */
   box-shadow: 0 0 0 3px rgba(26, 28, 197, 0.5); /* Efeito de foco */
 }
+
+/* Estilos para o modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  font-size: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h3 {
+  margin: 0 0 15px;
+  font-size: 1.5em;
+  color: #333;
+  text-align: center;
+}
+
+.modal-content input,
+.modal-content textarea {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+}
+
+.modal-content input[type="datetime-local"] {
+  padding: 8px;
+}
+
+.modal-content textarea {
+  resize: none;
+  height: 80px;
+}
+
+.modal-content button {
+  width: 48%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1em;
+  cursor: pointer;
+  margin: 5px 1%;
+}
+
+.modal-content button:first-of-type {
+  background-color: #4CAF50; /* Cor para o botão Salvar */
+  color: #fff;
+}
+
+.modal-content button:last-of-type {
+  background-color: #f44336; /* Cor para o botão Cancelar */
+  color: #fff;
+}
+
+.modal-content button:hover {
+  opacity: 0.9;
+}
