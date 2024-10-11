@@ -3,6 +3,7 @@
     display: grid;
     place-items: center;
     padding: 2rem 1rem;
+    font-size: 14px;
 }
 
 .containerLogin{

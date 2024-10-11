@@ -80,3 +80,7 @@
     margin-block: 1rem;
 }
 
+.error{
+    margin-block: .5rem;
+    color: red;
+}

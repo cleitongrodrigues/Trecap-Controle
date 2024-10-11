@@ -11,6 +11,7 @@ import { MdSearch, MdEdit, MdDelete } from "react-icons/md";
 import { IconContext } from "react-icons";
 import MenuLateral from "@/components/menuLateral/page";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { useAuth } from "@/context/userContext";
 
 export default function CadastrarEvento() {
   const router = useRouter();

@@ -1,4 +1,5 @@
 import FactoryUser from "../../Domain/Domain Service/FactoryUser"
+import UnauthorizedException from "../../Domain/Exception/UnauthorizedException"
 import Auth from "../../Infrastructure/Auth/Auth"
 
 test("Auth Service Gerar um JWT", ()=>{
@@ -45,10 +46,35 @@ test("Auth Service Verifica o token", ()=>{
 
 test("Auth Service Fazer login", async ()=>{
     const userInfo = {
-        email: "joao.silva@empresaabc.com",
+        email: "a@teste.com",
         password: "senha123"
     }
 
     const token = await Auth.Login(userInfo)
     expect(token).toEqual(expect.stringContaining('.'))
+})
+
+test("Decodifica as informações do token", async ()=>{
+    const userInfo = {
+        email: "a@teste.com",
+        password: "senha123"
+    }
+
+    let token = await Auth.Login(userInfo)
+
+    const decodeToken = Auth.getTokenInfo(token)
+
+    expect(decodeToken).toBeDefined()
+})
+
+test("Decodifica as informações de um token inválido", async ()=>{
+    const userInfo = {
+        email: "a@teste.com",
+        password: "senha123"
+    }
+
+    let token = await Auth.Login(userInfo)
+    token += 'invalid'
+
+    expect(()=>Auth.getTokenInfo(token)).toThrow(UnauthorizedException)
 })

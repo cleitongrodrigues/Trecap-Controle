@@ -27,8 +27,10 @@ export const UserProvider = ({ children }) => {
             const { token } = responseToken.data
             window.localStorage.setItem('token', token)
             await handleGetUserInfo(token)
+            return true
         } catch (e) {
-            setError('Ocooreu um erro!')
+            setError(e.response.data.message)
+            return false
         }
         finally {
             setIsLoading(false)

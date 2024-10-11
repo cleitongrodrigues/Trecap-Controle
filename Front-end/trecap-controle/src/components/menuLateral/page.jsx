@@ -17,6 +17,7 @@ import logo from "../../assets/logoBranca.svg";
 import { usePathname } from 'next/navigation';
 import Modal from "./ReactDom";
 import { useAuth } from "@/context/userContext";
+import { useRouter } from "next/navigation";
 
 const MenuLateral = () => {
   const [lista, setLista] = useState([]);
@@ -26,7 +27,9 @@ const MenuLateral = () => {
   const [visuImagem, setVisuImagem] = useState(null);
   const pathName = usePathname();
 
-  const { user } = useAuth()
+  const { user, handleLogout } = useAuth()
+
+  const router = useRouter()
 
   const getColaboradores = async () => {
     try {
@@ -115,6 +118,10 @@ const MenuLateral = () => {
                     <input type="text" placeholder="Telefone" />
                   </form>
                   <button onClick={closeModal}>Fechar</button>
+                  <button onClick={() => {
+                    handleLogout()
+                    router.push('/')
+                  }}>Logout</button>
                 </div>
               </div>
             </Modal>

@@ -27,19 +27,6 @@ const userSchema = {
             errorMessage: 'O CPF deve ter 11 dígitos.',
         },
     },
-    userType: {
-        in: ['body'],
-        exists: {
-            errorMessage: 'O tipo de usuário é obrigatório.',
-        },
-        isString: {
-            errorMessage: 'O tipo de usuário deve ser uma string.',
-        },
-        // isIn: {
-        //     options: [['admin', 'user', 'guest']],
-        //     errorMessage: 'O tipo de usuário deve ser admin, user ou guest.',
-        // },
-    },
     email: {
         in: ['body'],
         exists: {

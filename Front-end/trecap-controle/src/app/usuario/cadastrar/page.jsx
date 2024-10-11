@@ -41,7 +41,7 @@ export default function Cadastrar() {
     <Form message="Crie uma conta!">
       <div className={styles.formHeader}>
         <h2>Cadastrar-se</h2>
-        <Link href="/login">Ja possui uma conta?</Link>
+        <Link href="/usuario/login">Ja possui uma conta?</Link>
       </div>
       <form onSubmit={handleSubmit} className={styles.form}>
         <Input

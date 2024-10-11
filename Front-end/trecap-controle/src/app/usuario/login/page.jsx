@@ -8,18 +8,36 @@ import Link from "next/link";
 import useForm from "@/hooks/useForm";
 import { useAuth } from "@/context/userContext";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Login() {
-  const { handleLogin, isLoading, error } = useAuth()
-  const email = useForm();
-  const password = useForm();
+  const { handleLogin, isLoading, error, isLogged } = useAuth()
+
+  const email = useForm()
+  const password = useForm()
+
   const router = useRouter()
+
+  useEffect(() => {
+
+    if(isLogged) {
+      router.push('/usuario/cadastroColaborador') 
+    }
+
+  }, [isLogged, router])
 
   const handleClick = async event => {
     event.preventDefault()
+
     if(email.isValid() && password.isValid()){
-      await handleLogin({email: email.value, password: password.value})  
-      if(!error) router.push('/usuario/cadastroColaborador')   
+      const loginInput = {
+        email: email.value, 
+        password: password.value
+      }
+
+      const isAuthenticated = await handleLogin(loginInput)  
+
+      if(isAuthenticated) router.push('/usuario/cadastroColaborador')   
     }
   }
 
@@ -27,7 +45,7 @@ export default function Login() {
     <Form message={'Por favor, faça login!'}>
       <div className={style.formHeader}>
         <h2>Login</h2>
-        <Link href="/cadastrar">Criar nova conta</Link>
+        <Link href="/usuario/cadastrar">Criar nova conta</Link>
       </div>
       <form className={style.form}>
         <Input
@@ -51,6 +69,7 @@ export default function Login() {
           </div>
           <Link href="/esqueceusenha">Esqueceu a senha</Link>
         </div>
+        {error && <p className={style.error}>{error}</p>}
         {
           !isLoading ?
           <ButtonForm onClick={handleClick}>Cadastrar</ButtonForm>

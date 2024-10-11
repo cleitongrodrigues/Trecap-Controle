@@ -4,7 +4,7 @@ import app from '../../WebAPI/appConfig'
 describe.skip("teste de login", () => {
 
     test("Login de usuário válido", async () => {
-        const response = await request(app).post('/login').send({ email: 'joao.silva@empresaabc.com', password: 'senha123' })
+        const response = await request(app).post('/login').send({ email: 'a@teste.com', password: 'senha123' })
         expect(response.body.token).toEqual(expect.stringContaining('.'))
     })
 
@@ -14,7 +14,7 @@ describe.skip("teste de login", () => {
     })
 
     test("verifica se o usuário está sendo reconhecido pela aplicação", async ()=>{
-        const response = await request(app).post('/login').send({ email: 'joao.silva@empresaabc.com', password: 'senha123' })
+        const response = await request(app).post('/login').send({ email: 'a@teste.com', password: 'senha123' })
         const token = response.body.token
 
 
