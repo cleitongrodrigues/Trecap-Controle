@@ -298,12 +298,11 @@ export default function Calendario() {
         <div className="event-list">
           <h2>Lista de Eventos</h2>
           <ul>
-            {renderEventList()}
-            {/* {events.length > 0 ? (
+            {events.length > 0 ? (
               renderEventList()
             ) : (
               <p>Nenhum evento adicionado</p>
-            )} */}
+            )}
           </ul>
         </div>
       </div>
