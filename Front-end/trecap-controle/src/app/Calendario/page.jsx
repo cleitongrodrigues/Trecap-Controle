@@ -325,24 +325,6 @@ export default function Calendario() {
           setSelectedEvent({ ...selectedEvent, title: e.target.value })
         }
       />
-      <label>Selecione a data do inicio do curso</label>
-      <input
-        type="date"
-        placeholder="Data e Hora de Início"
-        value={selectedEvent?.start || ""}
-        onChange={(e) =>
-          setSelectedEvent({ ...selectedEvent, start: e.target.value })
-        }
-      />
-      <label>Selecione a data do término do curso</label>
-      <input
-        type="date"
-        placeholder="Data e Hora de Término"
-        value={selectedEvent?.end || ""}
-        onChange={(e) =>
-          setSelectedEvent({ ...selectedEvent, end: e.target.value })
-        }
-      />
       <label>Professor</label>
       <input
         type="text"
