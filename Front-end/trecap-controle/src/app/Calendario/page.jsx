@@ -46,140 +46,140 @@ export default function Calendario() {
     setSelectedEvent(null); // Reseta o evento selecionado para adicionar novo
     setIsModalOpen(true); // Abre o modal
   };
-  const handleAddEvent = async (eventData) => {
-    let calendarApi = selectedDate?.view.calendar;
-    calendarApi?.unselect(); // Limpar seleção
-  
-    if (eventData.title && eventData.start && eventData.end) {
-      const newEvent = {
-        title: eventData.title,
-        start: eventData.start,
-        end: eventData.end,
-        professor: eventData.professor,
-        description: eventData.description,
-        usu_id: 1,
-      };
-  
-      if (selectedEvent) {
-        // Edição do evento existente
-        try {
-          await axios.patch(`http://localhost:3333/evento/${selectedEvent.id}`, {
-            evento_nome: newEvent.title,
-            evento_data_inicio: newEvent.start,
-            evento_data_termino: newEvent.end,
-            evento_professor: newEvent.professor,
-            evento_local: "treino",
-            evento_status: 1,
-          });
-          
-          // Atualiza o estado local
-          setEvents((prevEvents) =>
-            prevEvents.map((event) =>
-              event.id === selectedEvent.id ? { ...event, ...newEvent } : event
-            )
-          );
-        } catch (error) {
-          console.error("Erro ao editar o evento:", error);
-        }
-      } else {
-        // Criação de novo evento
-        try {
-          const response = await axios.post("http://localhost:3333/evento", {
-            usu_id: newEvent.usu_id,
-            evento_nome: newEvent.title,
-            evento_data_inicio: newEvent.start,
-            evento_data_termino: newEvent.end,
-            evento_local: "treino",
-            evento_status: 1,
-            evento_professor: newEvent.professor,
-          });
-  
-          // Atualiza o estado local
-          setEvents((prevEvents) => [...prevEvents, response.data]);
-        } catch (error) {
-          console.error("Erro ao criar o evento:", error);
-        }
-      }
-    }
-  
-    setIsModalOpen(false); // Fecha o modal após a ação
-  };
-  
-
-  // Função para adicionar ou editar o evento
   // const handleAddEvent = async (eventData) => {
   //   let calendarApi = selectedDate?.view.calendar;
-
   //   calendarApi?.unselect(); // Limpar seleção
-
-  //   if (eventData.title) {
+  
+  //   if (eventData.title && eventData.start && eventData.end) {
+  //     const newEvent = {
+  //       title: eventData.title,
+  //       start: eventData.start,
+  //       end: eventData.end,
+  //       professor: eventData.professor,
+  //       description: eventData.description,
+  //       usu_id: 1,
+  //     };
+  
   //     if (selectedEvent) {
   //       // Edição do evento existente
-  //       const updatedEvents = events.map((event) =>
-  //         event.id === selectedEvent.id
-  //           ? {
-  //             ...event,
-  //             title: eventData.title,
-  //             professor: eventData.professor,
-  //             description: eventData.description,
-  //           }
-  //           : event
-  //       );
-  //       setEvents(updatedEvents);
-
-  //       // Atualiza o evento no backend via API (requisição PUT)
   //       try {
-  //         await axios.put(`http://localhost:3333/evento/${selectedEvent.id}`, {
-  //           evento_nome: eventData.title,
-  //           evento_professor: eventData.professor,
-  //           evento_data_inicio: selectedEvent.start,
-  //           evento_data_termino: selectedEvent.end,
+  //         await axios.patch(`http://localhost:3333/evento/${selectedEvent.id}`, {
+  //           evento_nome: newEvent.title,
+  //           evento_data_inicio: newEvent.start,
+  //           evento_data_termino: newEvent.end,
+  //           evento_professor: newEvent.professor,
   //           evento_local: "treino",
   //           evento_status: 1,
-  //           usu_id: 1,
   //         });
+          
+  //         // Atualiza o estado local
+  //         setEvents((prevEvents) =>
+  //           prevEvents.map((event) =>
+  //             event.id === selectedEvent.id ? { ...event, ...newEvent } : event
+  //           )
+  //         );
   //       } catch (error) {
   //         console.error("Erro ao editar o evento:", error);
   //       }
   //     } else {
   //       // Criação de novo evento
-  //       const newEvent = {
-  //         id: Date.now(),
-  //         title: eventData.title,
-  //         start: selectedDate.startStr,
-  //         end: selectedDate.endStr,
-  //         allDay: selectedDate.allDay,
-  //         professor: eventData.professor,
-  //         description: eventData.description,
-  //         usu_id: 1,
-  //       };
-
-  //       const formattedStartDate = format(
-  //         new Date(newEvent.start),
-  //         "yyyy-MM-dd"
-  //       );
-  //       const formattedEndDate = format(new Date(newEvent.end), "yyyy-MM-dd");
-
   //       try {
   //         const response = await axios.post("http://localhost:3333/evento", {
   //           usu_id: newEvent.usu_id,
   //           evento_nome: newEvent.title,
-  //           evento_data_inicio: formattedStartDate,
-  //           evento_data_termino: formattedEndDate,
+  //           evento_data_inicio: newEvent.start,
+  //           evento_data_termino: newEvent.end,
   //           evento_local: "treino",
   //           evento_status: 1,
   //           evento_professor: newEvent.professor,
   //         });
-
-  //         setEvents([...events, newEvent]);
+  
+  //         // Atualiza o estado local
+  //         setEvents((prevEvents) => [...prevEvents, response.data]);
   //       } catch (error) {
   //         console.error("Erro ao criar o evento:", error);
   //       }
   //     }
   //   }
-
-  //   setIsModalOpen(false);
+  
+  //   setIsModalOpen(false); // Fecha o modal após a ação
   // };
+  
+
+  // Função para adicionar ou editar o evento
+  const handleAddEvent = async (eventData) => {
+    let calendarApi = selectedDate?.view.calendar;
+
+    calendarApi?.unselect(); // Limpar seleção
+
+    if (eventData.title) {
+      if (selectedEvent) {
+        // Edição do evento existente
+        const updatedEvents = events.map((event) =>
+          event.id === selectedEvent.id
+            ? {
+              ...event,
+              title: eventData.title,
+              professor: eventData.professor,
+              description: eventData.description,
+            }
+            : event
+        );
+        setEvents(updatedEvents);
+
+        // Atualiza o evento no backend via API (requisição PUT)
+        try {
+          await axios.put(`http://localhost:3333/evento/${selectedEvent.id}`, {
+            evento_nome: eventData.title,
+            evento_professor: eventData.professor,
+            evento_data_inicio: selectedEvent.start,
+            evento_data_termino: selectedEvent.end,
+            evento_local: "treino",
+            evento_status: 1,
+            usu_id: 1,
+          });
+        } catch (error) {
+          console.error("Erro ao editar o evento:", error);
+        }
+      } else {
+        // Criação de novo evento
+        const newEvent = {
+          id: Date.now(),
+          title: eventData.title,
+          start: selectedDate.startStr,
+          end: selectedDate.endStr,
+          allDay: selectedDate.allDay,
+          professor: eventData.professor,
+          description: eventData.description,
+          usu_id: 1,
+        };
+
+        const formattedStartDate = format(
+          new Date(newEvent.start),
+          "yyyy-MM-dd"
+        );
+        const formattedEndDate = format(new Date(newEvent.end), "yyyy-MM-dd");
+
+        try {
+          const response = await axios.post("http://localhost:3333/evento", {
+            usu_id: newEvent.usu_id,
+            evento_nome: newEvent.title,
+            evento_data_inicio: formattedStartDate,
+            evento_data_termino: formattedEndDate,
+            evento_local: "treino",
+            evento_status: 1,
+            evento_professor: newEvent.professor,
+          });
+
+          setEvents([...events, newEvent]);
+        } catch (error) {
+          console.error("Erro ao criar o evento:", error);
+        }
+      }
+    }
+
+    setIsModalOpen(false);
+  };
 
   // Função para abrir o modal para editar evento
   const handleEditEvent = (event) => {
