@@ -5,7 +5,7 @@ module.exports = {
         try {
             const sql = ` SELECT evento_id, evento_nome, evento_data_inicio, 
             evento_data_termino, evento_local, evento_status = 1 AS evento_status, usu_id, evento_professor FROM Eventos
-            WHERE evento_status = 1`;
+            WHERE evento_status = 1 and usu_id = 1`;
 
             const evento = await db.query(sql)
 
