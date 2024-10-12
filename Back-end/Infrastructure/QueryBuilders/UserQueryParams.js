@@ -35,7 +35,7 @@ export default  class UserQueryParamys{
     build(){
         let queryResult = this.baseSelect
 
-        const hasWhereClauses = this.whereClauses.length !== 0
+        const hasWhereClauses = this.whereClauses.length > 0
         if(hasWhereClauses) {
             queryResult += " WHERE " + this.whereClauses.join(" AND ") + " AND usu_ativo = 1" 
         } else {

@@ -1,4 +1,4 @@
-import UserQueryParamys from "../../Infrastructure/UserQueryParams"
+import UserQueryParamys from "../../Infrastructure/QueryBuilders/UserQueryParams"
 
 describe("Construção de Selects", ()=>{
     it("Cria um select filtrando por nome", ()=>{

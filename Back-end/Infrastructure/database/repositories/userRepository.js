@@ -1,5 +1,5 @@
 import User from "../../../Domain/Entities/User.js";
-import UserQueryParamys from "../../UserQueryParams.js";
+import UserQueryParamys from "../../QueryBuilders/UserQueryParams.js";
 import connection from "../connection.js";
 
 

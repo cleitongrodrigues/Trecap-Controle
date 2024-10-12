@@ -1,4 +1,4 @@
-import UserService from "../../Application/UseCases/User/UserService.js";
+import UserService from "../../Application/Services/User/UserService.js"
 import Auth from "../../Infrastructure/Auth/Auth.js";
 
 export const UsuarioController = {
