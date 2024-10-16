@@ -1,7 +1,9 @@
 import FactoryUser from "../../../Domain/Domain Service/FactoryUser.js"
 import NotFoundException from "../../../Domain/Exception/NotFoundException.js"
 import ValidationException from "../../../Domain/Exception/ValidationException.js"
+import UnauthorizedException from "../../../Domain/Exception/UnauthorizedException.js"
 import userRepository from "../../../Infrastructure/database/repositories/userRepository.js"
+import Setor from "../../../Domain/Entities/Setor.js"
 
 
 class UserService {
@@ -69,6 +71,16 @@ class UserService {
     async createEvento(userID, eventoData) {
         const newEvento = await this.repositoryEvento.createEvento(userID, eventoData)
         return newEvento
+    }
+
+    async createSetor(userId, setorNome){
+        const user = this.repository.getUserById(userId)
+
+        if(!user.isAdmin()) throw new UnauthorizedException("Você não tem permissão para criar um setor!")
+
+        const newSetor = new Setor(1, setorNome, user.companyId)
+
+        return newSetor
     }
 }
 

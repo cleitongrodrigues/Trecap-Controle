@@ -42,4 +42,8 @@ export default class User {
 
         return newEvento
     }
+
+    isAdmin(){
+        return this.userType === 1
+    }
 }
