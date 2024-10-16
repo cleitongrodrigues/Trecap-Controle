@@ -76,11 +76,7 @@ class UserService {
     async createSetor(userId, setorNome){
         const user = this.repository.getUserById(userId)
 
-        if(!user.isAdmin()) throw new UnauthorizedException("Você não tem permissão para criar um setor!")
-
-        const newSetor = new Setor(1, setorNome, user.companyId)
-
-        return newSetor
+        const newSetor = user.createSetor(setorNome)
     }
 }
 

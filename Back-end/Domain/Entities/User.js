@@ -5,8 +5,8 @@ import Evento from "./Evento.js"
 export default class User {
     constructor(userId, name, cpf, userType, status, email, password, telefone, registerDate, companyId) {
 
-        if(!email) throw new ValidationException("O email não pode ser nulo")
-        if(!cpf) throw new ValidationException("O CPF não pode ser vazio")
+        if (!email) throw new ValidationException("O email não pode ser nulo")
+        if (!cpf) throw new ValidationException("O CPF não pode ser vazio")
 
         this.userId = userId
         this.name = name
@@ -43,7 +43,15 @@ export default class User {
         return newEvento
     }
 
-    isAdmin(){
+    createSetor(setorName) {
+        if (!this.isAdmin()) throw new UnauthorizedException("Você não tem permissão para criar um setor!")
+
+        const newSetor = new Setor(1, setorNome, this.companyId)
+
+        return newSetor
+    }
+
+    isAdmin() {
         return this.userType === 1
     }
 }
