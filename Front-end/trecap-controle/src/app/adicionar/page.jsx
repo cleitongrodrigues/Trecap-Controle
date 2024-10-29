@@ -7,29 +7,30 @@ import MenuLateral from '@/components/menuLateral/page';
 
 export default function CheckinEvento() {
   const [mostrarAlerta, setMostrarAlerta] = useState(true);
-  const [participantes, setParticipantes] = useState([]); // Inicializado como array vazio
+  const [participantes, setParticipantes] = useState([]);
   const [participantesSelecionados, setParticipantesSelecionados] = useState([]);
   const [mensagemErro, setMensagemErro] = useState("");
-  const [setores, setSetores] = useState([]); // Armazenar os setores selecionados
+  const [setores, setSetores] = useState([]);
+  const [nomeEvento, setNomeEvento] = useState(""); // Adicionado para armazenar o nome do evento
   const router = useRouter();
 
   useEffect(() => {
-    // Recupera os setores selecionados do localStorage
+    // Recupera os setores selecionados e o nome do evento do localStorage
     const setoresSelecionados = JSON.parse(localStorage.getItem('setorSelecionado'));
+    const eventoSelecionado = localStorage.getItem('eventoSelecionado'); // Recupera o nome do evento
+
     if (setoresSelecionados && setoresSelecionados.length > 0) {
       setSetores(setoresSelecionados);
-
+      
       // Faz a requisição para a API de colaboradores filtrada pelos setores
       const fetchParticipantes = async () => {
         try {
           const promises = setoresSelecionados.map((setor) =>
             fetch(`http://localhost:3333/colaboradores?setor=${setor}`).then((res) => res.json())
           );
-          
+
           // Resolve todas as promessas
           const resultados = await Promise.all(promises);
-
-          // Combina os dados de todos os setores
           const todosParticipantes = resultados.flatMap((res) => res.dados || []);
           
           setParticipantes(todosParticipantes);
@@ -42,6 +43,11 @@ export default function CheckinEvento() {
       };
 
       fetchParticipantes();
+    }
+
+    // Define o nome do evento
+    if (eventoSelecionado) {
+      setNomeEvento(eventoSelecionado);
     }
   }, []);
 
@@ -71,7 +77,6 @@ export default function CheckinEvento() {
     try {
       // Salvar os participantes selecionados no localStorage
       localStorage.setItem('participantesSelecionados', JSON.stringify(selecionados));
-
       console.log('Participantes selecionados salvos no localStorage:', selecionados);
 
       // Redirecionar para a página de confirmação
@@ -90,7 +95,7 @@ export default function CheckinEvento() {
           <div className={styles.mainContent}>
             <div className={styles.Header}>
               <div className={styles.checkin}>
-                <h1>TREINAMENTO SOBRE HIGIENE NO TRABALHO</h1>
+                <h1>{nomeEvento || 'TREINAMENTO SOBRE HIGIENE NO TRABALHO'}</h1> {/* Exibe o nome do evento */}
                 <div className={styles.cadastro}>
                   <h2>Adicionar Participantes</h2>
                   <h3>Setores Selecionados: {setores.length > 0 ? setores.join(", ") : "Nenhum setor selecionado"}</h3>

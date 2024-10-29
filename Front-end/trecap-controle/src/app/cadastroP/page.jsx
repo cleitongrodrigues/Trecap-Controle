@@ -1,12 +1,14 @@
 "use client";
 import styles from './page.module.css';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import MenuLateral from '@/components/menuLateral/page';  // Importa o componente de menu lateral
+import { useRouter, useSearchParams } from 'next/navigation';
+import MenuLateral from '@/components/menuLateral/page';
 import axios from 'axios';
 
 export default function CadastroP() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const evento = searchParams.get('evento'); // Captura o nome do evento da URL
   const [selectedSetores, setSelectedSetores] = useState([]);
 
   useEffect(() => {
@@ -18,7 +20,6 @@ export default function CadastroP() {
       const response = await axios.get('http://localhost:3333/Setores/1');
       const setores = response.data.dados;
 
-      // Adiciona uma propriedade 'checked' para cada setor
       const newSetores = setores.map((setor) => ({
         ...setor,
         checked: false,
@@ -38,7 +39,6 @@ export default function CadastroP() {
   };
 
   const handleClick = () => {
-    // Filtra os setores selecionados
     const setoresSelecionados = selectedSetores.filter((setor) => setor.checked);
     
     if (setoresSelecionados.length === 0) {
@@ -46,11 +46,14 @@ export default function CadastroP() {
       return;
     }
 
-    // Armazena os setores selecionados no localStorage
     const setoresSelecionadosNome = setoresSelecionados.map(setor => setor.setor_nome);
     localStorage.setItem('setorSelecionado', JSON.stringify(setoresSelecionadosNome));
+    
+    // Salvar o nome do evento no localStorage
+    if (evento) {
+      localStorage.setItem('eventoSelecionado', evento);
+    }
 
-    // Redireciona para a página de adicionar participantes
     router.push('/adicionar');
   };
 
@@ -60,7 +63,7 @@ export default function CadastroP() {
       <div className={styles.layout}>
         <div className={styles.container}>
           <div className={styles.header}>
-            <h1>TREINAMENTO SOBRE HIGIENE NO TRABALHO</h1>
+            <h1>{evento ? evento : 'Nome do Evento Não Encontrado'}</h1>
           </div>
           <div className={styles.content}>
             <h2>Antes de iniciar o Evento, selecione os setores que irão participar do treinamento.</h2>

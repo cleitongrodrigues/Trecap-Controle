@@ -9,6 +9,7 @@ import MenuLateral from "@/components/menuLateral/page";
 export default function RelatorioPresenca() {
   const [participantesPresentes, setParticipantesPresentes] = useState([]);
   const [curso, setCurso] = useState("TREINAMENTO SOBRE HIGIENE NO TRABALHO"); // Nome do curso
+  const [eventoSelecionado, setEventoSelecionado] = useState(""); // Adicionado estado para o evento
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -25,6 +26,10 @@ export default function RelatorioPresenca() {
       const presentesOrdenados = presentesArray.sort((a, b) => new Date(a.horario) - new Date(b.horario));
 
       setParticipantesPresentes(presentesOrdenados);
+
+      // Recuperar o nome do evento do localStorage
+      const evento = localStorage.getItem('eventoSelecionado');
+      setEventoSelecionado(evento || "Nome do Evento Não Encontrado"); // Define um nome padrão caso não encontre
 
       // Verifique se os participantes estão sendo carregados corretamente
       console.log('Participantes presentes carregados e ordenados:', presentesOrdenados);
@@ -54,11 +59,16 @@ export default function RelatorioPresenca() {
     const cursoX = (pageWidth - cursoWidth) / 2; 
     doc.text(curso, cursoX, 20);
 
+    // Adicionar nome do evento abaixo do curso
+    const eventoWidth = doc.getTextWidth(eventoSelecionado);
+    const eventoX = (pageWidth - eventoWidth) / 2; 
+    doc.text(eventoSelecionado, eventoX, 30); // Adiciona o evento abaixo do curso
+
     // Adicionar tabela de participantes presentes no PDF
     doc.autoTable({
       head: [['Nome', 'Horário de Chegada']], // Cabeçalhos da tabela
       body: participantesPresentes.map(participante => [participante.nome, participante.horario]), // Linhas da tabela
-      startY: 30, // Define a posição Y inicial para a tabela
+      startY: 40, // Define a posição Y inicial para a tabela
       theme: 'striped', // Tema da tabela
       headStyles: { fillColor: [74, 20, 140] }, // Cor do cabeçalho em RGB (roxo escuro)
       styles: { halign: 'center' }, // Alinhamento horizontal centralizado
@@ -89,7 +99,8 @@ export default function RelatorioPresenca() {
       <div className={styles.Header}>
         <div className={styles.relatorio}>
           <h1>RELATÓRIO DE PRESENÇA</h1>
-          <h2>{curso}</h2> {/* Nome do curso na página */}
+          {/* <h2>{curso}</h2> Nome do curso na página */}
+          <h3>{eventoSelecionado}</h3> {/* Exibe o nome do evento */}
 
           <div className={styles.cadastro}>
             <h2>Participantes Presentes</h2>

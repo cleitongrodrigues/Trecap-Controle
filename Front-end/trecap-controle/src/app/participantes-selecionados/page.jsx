@@ -7,7 +7,8 @@ import MenuLateral from "@/components/menuLateral/page";
 
 export default function ParticipantesSelecionados() {
   const [participantesSelecionados, setParticipantesSelecionados] = useState([]);
-  const [loading, setLoading] = useState(true); // Estado para indicar o carregamento
+  const [eventoSelecionado, setEventoSelecionado] = useState("");
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -15,11 +16,15 @@ export default function ParticipantesSelecionados() {
       try {
         const selecionados = JSON.parse(localStorage.getItem('participantesSelecionados')) || [];
         setParticipantesSelecionados(selecionados);
+
+        // Recupera o nome do evento do localStorage
+        const evento = localStorage.getItem('eventoSelecionado');
+        setEventoSelecionado(evento || "Nome do Evento Não Encontrado");
       } catch (error) {
         console.error('Erro ao carregar participantes do localStorage:', error);
         setParticipantesSelecionados([]);
       } finally {
-        setLoading(false); // Carregamento completo
+        setLoading(false);
       }
     }
   }, []);
@@ -31,12 +36,10 @@ export default function ParticipantesSelecionados() {
   return (
     <>
       <MenuLateral />
-
       <div className={styles.layout}>
         <div className={styles.Header}>
           <div className={styles.checkin}>
-            <h1>TREINAMENTO SOBRE HIGIENE NO TRABALHO</h1>
-
+            <h1>{eventoSelecionado}</h1>
             <div className={styles.cadastro}>
               <h2>Participantes Selecionados</h2>
 

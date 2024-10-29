@@ -1,4 +1,4 @@
-'use client'; // Indica que este é um componente cliente
+'use client';
 
 import style from './page.module.css';
 import { MdWash, MdPsychology, MdEdit, MdTimer } from "react-icons/md";
@@ -17,7 +17,7 @@ const Icones = {
     Timer() {
         return <MdTimer />;
     }
-}
+};
 
 export default function Evento() {
     const router = useRouter();
@@ -25,25 +25,23 @@ export default function Evento() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Função para buscar eventos do backend
     const fetchEventos = async () => {
         try {
             const response = await fetch('http://localhost:3333/Eventos');
             if (!response.ok) {
-                throw new Error('Erro ao buscar eventos');
+                throw new Error(`Erro ${response.status}: Não foi possível carregar os eventos.`);
             }
             const data = await response.json();
-            console.log("Dados recebidos da API:", data); // Para verificar os dados
-            setEventos(data.dados);
+            console.log("Dados recebidos da API:", data);
+            setEventos(data.dados || []);
         } catch (error) {
             console.error("Erro ao buscar eventos:", error);
-            setError(error.message);
+            setError(error.message || 'Erro ao buscar eventos');
         } finally {
             setLoading(false);
         }
     };
 
-    // Chama a função de busca ao montar o componente
     useEffect(() => {
         fetchEventos();
     }, []);
@@ -54,7 +52,7 @@ export default function Evento() {
 
     const handleStart = (titulo) => {
         alert(`Evento ${titulo} iniciado!`);
-        router.push(`/cadastroP/`);
+        router.push(`/cadastroP?evento=${encodeURIComponent(titulo)}`);
     };
 
     const handleClick = (evento) => {
