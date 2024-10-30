@@ -64,6 +64,7 @@ const MenuLateral = () => {
     cpf: "",
     email: "",
     telefone: "",
+    visuImagem: ""
   });
   const [editando, setEditando] = useState(false);
 
@@ -86,6 +87,7 @@ const MenuLateral = () => {
         setLista(dadosUsuario);
         const usuarioAtual = dadosUsuario[0];
         setNomeUsuario(usuarioAtual.usu_nome);
+
         setUsuarioInfo({
           nome: usuarioAtual.usu_nome,
           cpf: usuarioAtual.usu_CPF,
@@ -94,7 +96,7 @@ const MenuLateral = () => {
           visuImagem: "http://localhost:3333/public/images/" + usuarioAtual.usu_img
         });
 
-        console.log(usuarioAtual)
+        // console.log(usuarioAtual)
       } catch (error) {
         console.error("Erro ao buscar usuários", error);
       }
@@ -174,13 +176,14 @@ const MenuLateral = () => {
         usu_CPF: cpfSemFormatacao,
         usu_email: usuarioInfo.email,
         usu_telefone: usuarioInfo.telefone,
+        usu_img: usuarioInfo.visuImagem,
         tipo_usuario_id: 1,
         usu_ativo: 1,
         usu_data_cadastro: "2024-09-23",
         empresa_id: 1,
       };
 
-      console.log(usuarioInfo);
+      // console.log(usuarioInfo);
 
       const response = await axios.patch(
         `http://localhost:3333/usuario/${usuarioId}`,
@@ -196,6 +199,8 @@ const MenuLateral = () => {
           text: "Dados alterados com sucesso!",
           icon: "success",
           backdrop: false,
+        }).then(() => {
+          window.location.reload();
         });
         setEditando(false);
         setEmailErro("");
@@ -232,7 +237,12 @@ const MenuLateral = () => {
       });
 
       if (response.status === 200) {
-        setVisuImagem(response.data.dados.imgUrl);
+        // setVisuImagem(response.data.dados.imgUrl)
+        const NovaImagem = response.data.imagePath;
+        setUsuarioInfo((prev) => ({
+          ...prev,
+          visuImagem: NovaImagem
+        }))
         Swal.fire({
           title: 'Enviado',
           text: 'Imagem enviada com sucesso',

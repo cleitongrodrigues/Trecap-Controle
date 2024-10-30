@@ -85,7 +85,8 @@
 }
 .ButtonCadastrar {
   border: none;
-  background-color: green;
+  /* background-color: green; */
+  background-color: #4CAF50;
   color: white;
   font-weight: 400;
   font-size: 1.5rem;
@@ -99,7 +100,8 @@
 }
 .ButtonEditar{
   border: none;
-  background-color: orange;
+  /* background-color: orange; */
+  background-color: #FFD54F;
   color: white;
   font-weight: 400;
   font-size: 1.5rem;
@@ -112,7 +114,8 @@
 }
 .ButtonExcluir{
   border: none;
-  background-color: blue;
+  /* background-color: blue; */
+  background-color: #E57373;
   color: white;
   font-weight: 400;
   font-size: 1.5rem;
@@ -125,7 +128,8 @@
 }
 .ButtonCancelar {
   border: none;
-  background-color: red;
+  /* background-color: red; */
+  background-color: #FF6E6E;
   color: white;
   font-weight: 400;
   font-size: 1.5rem;
@@ -199,7 +203,8 @@
   margin: 1rem 0.5rem; 
   height: 3rem; 
   padding: 0 1.5rem; 
-  background-color: #007bff; 
+  /* background-color: #007bff;  */
+  background-color: #BDBDBD;
   color: #fff;
   font-size: 1.6rem;
   cursor: pointer;
