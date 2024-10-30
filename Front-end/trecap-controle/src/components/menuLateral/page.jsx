@@ -215,7 +215,7 @@ const MenuLateral = () => {
 
   const handleSubmit = async () => {
     if (!selecionaImagem) {
-      Swal.fire({
+      Swal.fire({ // Caixa de mensagem com icone
         title: 'Erro!',
         text: 'Selecione uma imagem antes de salvar.',
         icon: 'error',
@@ -223,14 +223,14 @@ const MenuLateral = () => {
       });
       return; // Impede o envio se nenhuma imagem for selecionada
     }
-    const usuarioId = lista[0].usu_id;
+    const usuarioId = lista[0].usu_id; // seleciona o primeiro usuário que vem no array
 
     const formData = new FormData();
     formData.append('img', selecionaImagem);
     formData.append('userCode', usuarioId);
 
     try {
-      const response = await axios.patch(`http://localhost:3333/Usuario/${usuarioId}/imagem`, formData, {
+      const response = await axios.patch(`http://localhost:3333/Usuario/${usuarioId}/imagem`, formData, { // faz a edição no banco via api
         headers: {
           'content-type': 'multipart/form-data',
         },
