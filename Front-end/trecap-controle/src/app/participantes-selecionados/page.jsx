@@ -9,6 +9,7 @@ export default function ParticipantesSelecionados() {
   const [participantesSelecionados, setParticipantesSelecionados] = useState([]);
   const [eventoSelecionado, setEventoSelecionado] = useState("");
   const [loading, setLoading] = useState(true);
+  const [horarioInicioEvento, setHorarioInicioEvento] = useState(null); // Estado para armazenar o horário de início
   const router = useRouter();
 
   useEffect(() => {
@@ -30,6 +31,12 @@ export default function ParticipantesSelecionados() {
   }, []);
 
   const iniciarChamada = () => {
+    const agora = new Date();
+    setHorarioInicioEvento(agora); // Armazena a hora de início do evento
+    localStorage.setItem('horarioInicioEvento', agora.toISOString()); // Armazena como string ISO
+    console.log(`Evento iniciado em: ${agora.toLocaleString('pt-BR')}`); // Exibe no console
+
+    // Redireciona para a página de registrar presença
     router.push('/registrarPresenca');
   };
 

@@ -82,7 +82,7 @@ export default function Evento() {
                                     </IconContext.Provider>
                                     <div className={style.ContainerLabel}>
                                         <label className={style.labelTitle}>{evento.evento_nome}</label>
-                                        <label className={style.labelData}>{evento.evento_data_inicio}</label>
+                                        <label className={style.labelData}>{new Date(evento.evento_data_inicio).toISOString().split("T")[0]}</label>
                                     </div>
                                     <div className={style.Icones}>
                                         <IconContext.Provider value={{ size: 45 }}>

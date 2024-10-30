@@ -374,7 +374,7 @@ const MenuLateral = () => {
             >
               <MdEventNote /> Eventos
             </Link>
-            <Link href="/historico">
+            <Link href="/consultaPresenca">
               <MdHourglassBottom /> Histórico
             </Link>
             <Link href="/Calendario">

@@ -8,29 +8,33 @@ import MenuLateral from '@/components/menuLateral/page';
 export default function RegistrarPresenca() {
   const [participantesSelecionados, setParticipantesSelecionados] = useState([]);
   const [participantesPresentes, setParticipantesPresentes] = useState({});
-  const [eventoSelecionado, setEventoSelecionado] = useState(""); // Adicionado estado para o evento
+  const [eventoSelecionado, setEventoSelecionado] = useState("");
   const router = useRouter();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const selecionados = JSON.parse(localStorage.getItem('participantesSelecionados')) || [];
-      setParticipantesSelecionados(selecionados);
-
-      // Recupera o nome do evento do localStorage
+      const selecionados = localStorage.getItem('participantesSelecionados');
+      setParticipantesSelecionados(selecionados ? JSON.parse(selecionados) : []);
+      
       const evento = localStorage.getItem('eventoSelecionado');
-      setEventoSelecionado(evento || "Nome do Evento Não Encontrado"); // Define um nome padrão caso não encontre
+      setEventoSelecionado(evento || "Nome do Evento Não Encontrado");
     }
   }, []);
 
   const registrarPresenca = (nome, isChecked) => {
-    const agora = new Date(); // Obtém a data atual
-    const formattedDate = agora.toISOString().slice(0, 19).replace('T', ' '); // Formata para 'YYYY-MM-DD HH:MM:SS'
+    console.log(`Participante: ${nome}, Checked: ${isChecked}`); // Debug
+    const agora = new Date();
+    
+    // Formatar a data e hora no seu horário local
+    const formattedDate = agora.toLocaleString('pt-BR', {
+      timeZone: 'America/Sao_Paulo', // Defina o fuso horário correto
+    });
 
     setParticipantesPresentes((prev) => {
       const novosPresentes = { ...prev };
 
       if (isChecked) {
-        novosPresentes[nome] = formattedDate; // Usa a data formatada
+        novosPresentes[nome] = formattedDate;
       } else {
         delete novosPresentes[nome];
       }
@@ -41,17 +45,18 @@ export default function RegistrarPresenca() {
   };
 
   const salvarPresenca = async () => {
-    console.log("Tentando salvar presença...");
-
     const dadosPresenca = Object.entries(participantesPresentes).map(([nome, hora]) => ({
       registros_presenca: 1,
       registros_hora_entrada: hora,
-      registros_hora_saida: null, // Lógica para hora de saída pode ser adicionada
+      registros_hora_saida: null,
       evento_id: 123, // Substitua pelo evento real
       colaborador_id: nome // Supondo que o nome é o ID do colaborador
     }));
 
-    console.log("Dados a serem enviados:", dadosPresenca);
+    if (dadosPresenca.length === 0) {
+      alert("Nenhum participante presente selecionado.");
+      return; // Evita enviar se não houver dados
+    }
 
     for (const dado of dadosPresenca) {
       try {
@@ -64,7 +69,8 @@ export default function RegistrarPresenca() {
         });
 
         if (!response.ok) {
-          throw new Error('Erro ao registrar presença');
+          const errorData = await response.json();
+          throw new Error(`Erro ${response.status}: ${errorData.message || 'Erro ao registrar presença'}`);
         }
 
         const data = await response.json();
@@ -85,7 +91,7 @@ export default function RegistrarPresenca() {
       <div className={styles.layout}>
         <div className={styles.Header}>
           <div className={styles.checkin}>
-            <h1>{eventoSelecionado}</h1> {/* Exibe o nome do evento */}
+            <h1>{eventoSelecionado}</h1>
             <div className={styles.cadastro}>
               <h2>REGISTRO DE PRESENÇA</h2>
 

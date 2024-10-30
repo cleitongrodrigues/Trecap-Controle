@@ -1,0 +1,42 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza horizontalmente */
+    justify-content: center; /* Centraliza verticalmente */
+    padding: 20px; /* Adiciona um espaçamento ao redor do conteúdo */
+    margin-left: 250px; /* Ajuste para a largura do menu lateral */
+    height: 100vh; /* Define a altura da visualização para que ocupe toda a tela */
+    background-color: #f9f9f9; /* Cor de fundo opcional para visualização */
+  }
+  
+  .h1 {
+    margin-bottom: 20px; /* Espaço abaixo do título */
+  }
+  
+  .h2 {
+    margin-top: 30px; /* Espaço acima do subtítulo */
+  }
+  
+  .input {
+    margin-right: 10px; /* Espaço entre o input e o botão */
+    padding: 5px; /* Padding interno do input */
+  }
+  
+  .button {
+    padding: 5px 10px; /* Padding interno do botão */
+    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+  }
+  
+  .ul {
+    list-style: none; /* Remove os marcadores da lista */
+    padding: 0; /* Remove o padding da lista */
+    width: 100%; /* Permite que a lista ocupe toda a largura disponível */
+  }
+  
+  .li {
+    padding: 10px; /* Espaço interno em cada item da lista */
+    background-color: #e0e0e0; /* Cor de fundo opcional para os itens da lista */
+    margin: 5px 0; /* Espaço entre os itens da lista */
+    border-radius: 4px; /* Bordas arredondadas */
+  }
+  
