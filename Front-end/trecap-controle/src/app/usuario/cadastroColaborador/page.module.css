@@ -8,8 +8,8 @@
 .ContainerGeral {
   display: flex;
   justify-content: center;
+  /* align-items: center; */
   min-height: 100vh;
-  margin-left: 5rem;
 }
 .Container {
   display: flex;
@@ -61,6 +61,7 @@
   grid-template-rows: repeat(1, 1fr);
   gap: 5rem;
   margin: 3rem 0rem;
+  justify-items: center;
 }
 .CentralizaEndereco {
   display: grid;
@@ -143,7 +144,7 @@
   padding: 2rem 0rem;
 }
 .CorCinza{
-  min-width: 100rem;
+  min-width: 100%;
   min-height: 50rem;
   background-color:gray;
 }
@@ -166,27 +167,42 @@
 }
 .InputIcon{
   position: relative;
+  display: flex;
 }
 
 .InputIcon input{
+  flex: 1;
   background-color: rgb(236, 231, 231);
   border-radius: 0.5rem;
   border: none;
   height: 2rem;
   margin: 1rem 0rem;
   padding: 1.5rem;
-  min-width: 100%;
-  box-sizing: border-box;
+  min-width: 95rem;
   font-size: 1.6rem;
 }
+.InputIcon button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  margin: 1rem 0.5rem; 
+  height: 3rem; 
+  padding: 0 1.5rem; 
+  background-color: #007bff; 
+  color: #fff;
+  font-size: 1.6rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+}
 
-.InputIcon svg{
+/* .InputIcon svg{
   position: absolute;
   top: 2.8rem;
   right: 5px; 
   font-size: 20px; 
   pointer-events: none;
-}
+} */
 .ContainerBotaoEditar {
   display: flex;
   justify-content: start;

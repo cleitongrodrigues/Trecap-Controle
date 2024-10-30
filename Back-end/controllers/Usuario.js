@@ -3,7 +3,6 @@ const db = require('../database/connection');
 module.exports = {
     async ListarUSuario(request, response){
         try {
-            console.log("teste");
             const sql = `SELECT usu_id, usu_nome, usu_CPF, tipo_usuario_id, usu_ativo = 1 AS usu_ativo,
             usu_email, usu_telefone, usu_data_cadastro, usu_img, empresa_id FROM Usuario
             WHERE usu_ativo = 1;`;
