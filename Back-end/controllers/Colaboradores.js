@@ -34,7 +34,7 @@ module.exports = {
             const sql = `INSERT INTO Colaboradores
                 (colaborador_nome, colaborador_CPF, colaborador_biometria, colaborador_ativo, 
                 colaborador_telefone, colaborador_email, empresa_id, setor_id) 
-                VALUES (, , , , , , , );`;
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
 
             const values = [colaborador_nome, colaborador_CPF, colaborador_biometria, colaborador_ativo,
                  colaborador_telefone, colaborador_email, empresa_id, setor_id];
@@ -64,9 +64,9 @@ module.exports = {
 
             const { colaborador_id } = request.params;
 
-            const sql = `UPDATE Colaboradores SET colaborador_nome = , colaborador_CPF = , colaborador_biometria = , 
-                colaborador_ativo = , colaborador_telefone = , colaborador_email = , empresa_id = , setor_id = 
-                WHERE colaborador_id = ;`;
+            const sql = `UPDATE Colaboradores SET colaborador_nome = ?, colaborador_CPF = ?, colaborador_biometria = ?, 
+                colaborador_ativo = ?, colaborador_telefone = ?, colaborador_email = ?, empresa_id = ?, setor_id = ?
+                WHERE colaborador_id = ?;`;
 
             const values = [colaborador_nome, colaborador_CPF, colaborador_biometria, colaborador_ativo, 
                 colaborador_telefone, colaborador_email, empresa_id, setor_id, colaborador_id];
@@ -92,8 +92,8 @@ module.exports = {
 
             const { colaborador_id } = request.params;
 
-            const sql = `UPDATE Colaboradores SET colaborador_ativo = 
-                WHERE colaborador_id = ;`;
+            const sql = `UPDATE Colaboradores SET colaborador_ativo = ?
+                WHERE colaborador_id = ?;`;
 
             const values = [colaborador_ativo, colaborador_id];
 
