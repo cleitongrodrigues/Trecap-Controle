@@ -225,7 +225,7 @@ const MenuLateral = () => {
     formData.append('userCode', usuarioId);
 
     try {
-      const response = await axios.patch(`http://localhost:3333/Usuario/${usuarioId}`, formData, {
+      const response = await axios.patch(`http://localhost:3333/Usuario/${usuarioId}/imagem`, formData, {
         headers: {
           'content-type': 'multipart/form-data',
         },
@@ -294,7 +294,6 @@ const MenuLateral = () => {
                       )}
                     </div>
                     <button type="submit">Salvar imagem</button>
-                    {/* teste */}
 
                     <label
                       htmlFor="imageUpload"
@@ -412,6 +411,3 @@ const MenuLateral = () => {
 };
 
 export default MenuLateral;
-
-
-// https://www.youtube.com/watch?v=F0MWXH0zBDA
