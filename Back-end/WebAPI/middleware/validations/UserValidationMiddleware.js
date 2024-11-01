@@ -1,7 +1,7 @@
 import { checkSchema, validationResult } from "express-validator";
 
 const userSchema = {
-    name: {
+    usu_nome: {
         in: ['body'],
         exists: {
             errorMessage: 'O nome é obrigatório.',
@@ -14,7 +14,7 @@ const userSchema = {
             errorMessage: 'O nome não pode estar vazio.',
         },
     },
-    cpf: {
+   usu_CPF: {
         in: ['body'],
         exists: {
             errorMessage: 'O CPF é obrigatório.',
@@ -27,7 +27,7 @@ const userSchema = {
             errorMessage: 'O CPF deve ter 11 dígitos.',
         },
     },
-    email: {
+    usu_email: {
         in: ['body'],
         exists: {
             errorMessage: 'O email é obrigatório.',
@@ -36,7 +36,7 @@ const userSchema = {
             errorMessage: 'O email deve ser válido.',
         },
     },
-    password: {
+    usu_senha: {
         in: ['body'],
         exists: {
             errorMessage: 'A senha é obrigatória.',
@@ -49,7 +49,7 @@ const userSchema = {
             errorMessage: 'A senha deve ter pelo menos 6 caracteres.',
         },
     },
-    telefone: {
+    usu_telefone: {
         in: ['body'],
         exists: {
             errorMessage: 'O telefone é obrigatório.',
@@ -62,13 +62,7 @@ const userSchema = {
             errorMessage: 'O telefone deve ter entre 10 e 15 caracteres.',
         },
     },
-    registerDate: {
-        in: ['body'],
-        exists: {
-            errorMessage: 'A data de registro é obrigatória.',
-        },
-    },
-    companyId: {
+    empresa_id: {
         in: ['body'],
         exists: { 
             errorMessage: 'O companyId é obrigatório.',

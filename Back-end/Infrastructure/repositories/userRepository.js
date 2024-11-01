@@ -1,6 +1,8 @@
-import User from "../../../Domain/Entities/User.js";
-import UserQueryParamys from "../../QueryBuilders/UserQueryParams.js";
-import connection from "../connection.js";
+import User from "../../Domain/Entities/User.js";
+import UserQueryParamys from "../QueryBuilders/UserQueryParams.js";
+import connection from '../database/connection.js'
+import NotFoundException from "../../Domain/Exception/NotFoundException.js";
+import ValidationException from "../../Domain/Exception/ValidationException.js";
 
 
 class UserRepository {
@@ -102,7 +104,7 @@ class UserRepository {
         return newUser
     }
 
-    async save(user) {
+    async saveNewUser(user) {
         const values = [
             user.name,
             user.cpf,
@@ -115,13 +117,13 @@ class UserRepository {
             user.companyId
         ]
 
-        const existUserWithSameEmail = await this.repository.getUserByEmail(user.email)
-        const existUserWithSameCPF = await this.repository.getUserByCPF(user.cpf)
+            // const existUserWithSameEmail = await this.getUserByEmail(user.email)
+            // const existUserWithSameCPF = await this.getUserByCPF(user.cpf)
 
-        if (existUserWithSameEmail) throw new ValidationException("Já existe um usuário cadastrado com esse Email!")
-        if (existUserWithSameCPF) throw new ValidationException("Já existe um usuário cadastrado com esse CPF!")
+            // if (existUserWithSameEmail) throw new ValidationException("Já existe um usuário cadastrado com esse Email!")
+            // if (existUserWithSameCPF) throw new ValidationException("Já existe um usuário cadastrado com esse CPF!")
 
-        const sql = `
+            const sql = `
                 INSERT INTO Usuario 
                     (usu_nome, usu_CPF, tipo_usuario_id, usu_ativo, 
                     usu_email, usu_senha, usu_telefone, usu_data_cadastro, empresa_id) 
@@ -129,9 +131,10 @@ class UserRepository {
                     (?, ?, ?, ?, ?, ?, ?, ?, ?);
             `
 
-        const [result] = await connection.query(sql, values);
+            const [result] = await connection.query(sql, values);
 
-        return result.insertId
+            return result.insertId
+     
     }
 
     async count() {

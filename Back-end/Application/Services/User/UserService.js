@@ -2,9 +2,9 @@ import FactoryUser from "../../../Domain/Domain Service/FactoryUser.js"
 import NotFoundException from "../../../Domain/Exception/NotFoundException.js"
 import ValidationException from "../../../Domain/Exception/ValidationException.js"
 import UnauthorizedException from "../../../Domain/Exception/UnauthorizedException.js"
-import userRepository from "../../../Infrastructure/database/repositories/userRepository.js"
 import Setor from "../../../Domain/Entities/Setor.js"
-
+import CreateAdministratorUserOutput from "../../Contracts/User/CreateAdministratorUserOutput.js"
+import userRepository from "../../../Infrastructure/repositories/userRepository.js"
 
 class UserService {
     constructor(repository, factoryUser) {
@@ -14,13 +14,14 @@ class UserService {
 
     async createUser(input) {
         input.userId = await this.repository.count() + 1
-        const userDto = new CreateAdministratorUserInput(input)
 
-        const user = this.factoryUser.createAdminUser(userDto)
+        const user = this.factoryUser.createAdminUser(input)
 
-        await this.repository.save(user)
+        await this.repository.saveNewUser(user)
+
+        const createUserOutput = new CreateAdministratorUserOutput(user)
         
-        return user
+        return createUserOutput
     }
 
     async getUsers(input) {

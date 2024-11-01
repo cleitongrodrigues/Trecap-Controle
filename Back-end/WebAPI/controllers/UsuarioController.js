@@ -1,3 +1,4 @@
+import CreateAdministratorUserInput from "../../Application/Contracts/User/CreateAdministratorUserInput.js";
 import UserService from "../../Application/Services/User/UserService.js"
 import Auth from "../../Infrastructure/Auth/Auth.js";
 
@@ -40,10 +41,13 @@ export const UsuarioController = {
 
     async CadastrarUsuario(request, response, next) {
         try {
-            const newUser = await UserService.createUser(request.body)
+            const createUserInput = new CreateAdministratorUserInput(request.body)
+
+            const newUserDTO = await UserService.createUser(createUserInput)
 
             return response.status(201).json({
-                mensagem: `Usuário ${newUser.userId} cadastrado com sucesso!`,
+                mensagem: `Usuário ${newUserDTO.usu_id} cadastrado com sucesso!`,
+                user: newUserDTO
             });
         } catch (error) {
             next(error)

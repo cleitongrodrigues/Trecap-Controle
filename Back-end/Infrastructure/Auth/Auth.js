@@ -1,6 +1,6 @@
 import UnauthorizedException from '../../Domain/Exception/UnauthorizedException.js'
 import ValidationException from '../../Domain/Exception/ValidationException.js'
-import userRepository from '../database/repositories/userRepository.js'
+import userRepository from '../repositories/userRepository.js'
 import jwt from 'jsonwebtoken'
 
 class Auth {
