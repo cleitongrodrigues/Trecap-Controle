@@ -14,14 +14,9 @@ class UserService {
 
     async createUser(input) {
         input.userId = await this.repository.count() + 1
+        const userDto = new CreateAdministratorUserInput(input)
 
-        const user = this.factoryUser.createAdminUser(input)
-
-        const existUserWithSameEmail = await this.repository.getUserByEmail(user.email)
-        const existUserWithSameCPF = await this.repository.getUserByCPF(user.cpf)
-
-        if (existUserWithSameEmail) throw new ValidationException("Já existe um usuário cadastrado com esse Email!")
-        if (existUserWithSameCPF) throw new ValidationException("Já existe um usuário cadastrado com esse CPF!")
+        const user = this.factoryUser.createAdminUser(userDto)
 
         await this.repository.save(user)
         
@@ -29,17 +24,13 @@ class UserService {
     }
 
     async getUsers(input) {
-        if(input.pageSize) input.pageSize = Number(input.pageSize)
-        if(input.page) input.page = Number(input.page)
-        if(typeof input.filter !== 'object') input.filter = {}
-
         const users = await this.repository.getUsers(input)
         return users
     }
 
     async getUserById(id) {
         const user = await this.repository.getUserById(id)
-        if(!user) throw new NotFoundException("Usuário Não Encontrado!")
+       
         return user
     }
     
@@ -53,8 +44,6 @@ class UserService {
     async deleteUser(id) {
         const user = await this.repository.getUserById(id)
 
-        if (!user) throw new Error('Usuário não existe!')
-
         user.cancel()
 
         await this.repository.updateUser(user)
@@ -63,7 +52,6 @@ class UserService {
     async updateUser(newInfoUser) {
         const existUserWithThisId = this.repository.getUserById(newInfoUser.userID)
 
-        if (!existUserWithThisId) throw new Error('Não existe esse usuário!')
 
         this.repository.updateUser(newInfoUser)
     }

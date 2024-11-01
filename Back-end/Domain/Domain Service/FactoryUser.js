@@ -15,7 +15,7 @@ export default class FactoryUser{
             inputCreateUser.email, 
             inputCreateUser.password, 
             inputCreateUser.telefone, 
-            new Date(inputCreateUser.registerDate), 
+            new Date(), 
             inputCreateUser.companyId
         )
     }
