@@ -204,6 +204,7 @@
     color: var(--purple-300);
     scroll-snap-align: center;
     transition: transform 0.3s ease;
+    cursor: pointer;
 }
 
 .featureItem:hover {

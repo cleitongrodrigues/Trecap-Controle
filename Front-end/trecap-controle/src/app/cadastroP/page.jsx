@@ -89,7 +89,7 @@ export default function CadastroP() {
                   ))}
 
                   <button className={styles.button} onClick={handleClick}>
-                    Listar e Adicionar Participantes
+                    Ir para a seleção de participantes
                   </button>
                 </div>
               </div>
