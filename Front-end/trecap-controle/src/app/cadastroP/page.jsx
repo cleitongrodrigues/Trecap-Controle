@@ -10,6 +10,8 @@ export default function CadastroP() {
   const searchParams = useSearchParams();
   const evento = searchParams.get('evento'); // Captura o nome do evento da URL
   const [selectedSetores, setSelectedSetores] = useState([]);
+  const [loading, setLoading] = useState(true); // Para controlar o estado de carregamento
+  const [error, setError] = useState(null); // Para armazenar erros
 
   useEffect(() => {
     getSetores();
@@ -27,14 +29,16 @@ export default function CadastroP() {
 
       setSelectedSetores(newSetores);
     } catch (error) {
+      setError('Erro ao buscar setores. Por favor, tente novamente.');
       console.error('Erro ao buscar setores:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleCheckboxChange = (index) => {
     const newSelectedSetores = [...selectedSetores];
     newSelectedSetores[index].checked = !newSelectedSetores[index].checked;
-
     setSelectedSetores(newSelectedSetores);
   };
 
@@ -66,30 +70,37 @@ export default function CadastroP() {
             <h1>{evento ? evento : 'Nome do Evento Não Encontrado'}</h1>
           </div>
           <div className={styles.content}>
-            <h2>Antes de iniciar o Evento, selecione os setores que irão participar do treinamento.</h2>
+            <h2>Antes de iniciar, selecione os setores que irão participar do treinamento.</h2>
             <div className={styles.content2}>
               <div className={styles.setores}>
                 <div className={styles.set}>
                   <h3>Selecione setores participantes</h3>
                 </div>
                 <div className={styles.checkbox}>
-                  {selectedSetores.map((setor, index) => (
-                    <div key={setor.setor_id} className={styles.containerInput}>
-                      <label className={styles.label} htmlFor={setor.setor_nome}>
-                        {setor.setor_nome}
-                      </label>
-                      <input
-                        type="checkbox"
-                        name={setor.setor_nome}
-                        id={setor.setor_nome}
-                        checked={setor.checked}
-                        onChange={() => handleCheckboxChange(index)}
-                      />
-                    </div>
-                  ))}
-
+                  {loading ? (
+                    <p>Carregando setores...</p>
+                  ) : error ? (
+                    <p style={{ color: 'red' }}>{error}</p>
+                  ) : (
+                    selectedSetores.map((setor, index) => (
+                      <div key={setor.setor_id} className={styles.containerInput}>
+                        <input
+                          type="checkbox"
+                          id={setor.setor_nome}
+                          checked={setor.checked}
+                          onChange={() => handleCheckboxChange(index)}
+                          className={styles.input}
+                        />
+                        <label className={styles.label} htmlFor={setor.setor_nome}>
+                          {setor.setor_nome}
+                        </label>
+                      </div>
+                    ))
+                  )}
+                </div>
+                <div className={styles.buttonContainer}>
                   <button className={styles.button} onClick={handleClick}>
-                    Ir para a seleção de participantes
+                    Ir para a seleção de participantes.
                   </button>
                 </div>
               </div>

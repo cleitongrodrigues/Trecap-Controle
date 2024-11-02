@@ -58,24 +58,28 @@ export default function Evento() {
         const dataEventoStr = `${evento.evento_data_inicio.split('T')[0]}T${horaFormatada}`;
         const dataEvento = new Date(dataEventoStr);
         const dataAtual = new Date();
-        const tolerancia = 30 * 60 * 1000;
-
+        const tolerancia = 30 * 60 * 1000; // 30 minutos
+    
         const dataEventoComTolerancia = new Date(dataEvento.getTime() - tolerancia);
-        if (dataAtual < dataEventoComTolerancia || dataAtual > dataEvento) {
+        
+        if (dataAtual < dataEventoComTolerancia) {
             alert(`O evento ${evento.evento_nome} ainda não pode ser iniciado!`);
+        } else if (dataAtual > dataEvento) {
+            alert(`O prazo para entrar no Evento ${evento.evento_nome} já ultrapassado!`);
         } else {
             alert(`Evento ${evento.evento_nome} iniciado!`);
             router.push(`/cadastroP?evento=${encodeURIComponent(evento.evento_nome)}`);
         }
     };
-
+    
     if (loading) {
         return <div>Carregando eventos...</div>;
     }
-
+    
     if (error) {
         return <div>Erro: {error}</div>;
     }
+    
 
     return (
         <>

@@ -6,7 +6,6 @@ import styles from "./page.module.css";
 import MenuLateral from '@/components/menuLateral/page';
 
 export default function CheckinEvento() {
-  const [mostrarAlerta, setMostrarAlerta] = useState(true);
   const [participantes, setParticipantes] = useState([]);
   const [participantesSelecionados, setParticipantesSelecionados] = useState([]);
   const [mensagemErro, setMensagemErro] = useState("");
@@ -51,10 +50,6 @@ export default function CheckinEvento() {
     }
   }, []);
 
-  const fecharAlerta = () => {
-    setMostrarAlerta(false);
-  };
-
   const handleCheckboxChange = (index) => {
     setMensagemErro("");
     setParticipantesSelecionados((prevSelecionados) => {
@@ -95,18 +90,11 @@ export default function CheckinEvento() {
           <div className={styles.mainContent}>
             <div className={styles.Header}>
               <div className={styles.checkin}>
-                <h1>{nomeEvento || 'TREINAMENTO SOBRE HIGIENE NO TRABALHO'}</h1> {/* Exibe o nome do evento */}
+                <h1>{nomeEvento}</h1>
                 <div className={styles.cadastro}>
                   <h2>Adicionar Participantes</h2>
                   <h3>Setores Selecionados: {setores.length > 0 ? setores.join(", ") : "Nenhum setor selecionado"}</h3>
                   <div className={styles.containerContent}>
-                    {mostrarAlerta && (
-                      <div className={styles.alerta}>
-                        <p>Selecione os participantes.</p>
-                        <button onClick={fecharAlerta} className={styles.botaoFechar}>Ok</button>
-                      </div>
-                    )}
-
                     <div className={styles.listaParticipantes}>
                       <ul className={styles.participantes}>
                         {participantes.length > 0 ? (

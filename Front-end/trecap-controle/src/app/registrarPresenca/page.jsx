@@ -45,13 +45,18 @@ export default function RegistrarPresenca() {
   };
 
   const salvarPresenca = async () => {
-    const dadosPresenca = Object.entries(participantesPresentes).map(([nome, hora]) => ({
-      registros_presenca: 1,
-      registros_hora_entrada: hora,
-      registros_hora_saida: null,
-      evento_id: 123, // Substitua pelo evento real
-      colaborador_id: nome // Supondo que o nome é o ID do colaborador
-    }));
+    const dadosPresenca = Object.entries(participantesPresentes).map(([nome, hora]) => {
+      // Aqui você deve garantir que o ID do colaborador seja obtido corretamente
+      const colaboradorId = nome; // Ajuste isso para pegar o ID correto
+
+      return {
+        registros_presenca: 1,
+        registros_hora_entrada: hora,
+        registros_hora_saida: null,
+        evento_id: 1, // Substitua pelo evento real
+        colaborador_id: colaboradorId // Aqui você deve garantir que o ID está correto
+      };
+    });
 
     if (dadosPresenca.length === 0) {
       alert("Nenhum participante presente selecionado.");
