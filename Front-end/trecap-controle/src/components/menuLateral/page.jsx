@@ -93,7 +93,7 @@ const MenuLateral = () => {
           cpf: usuarioAtual.usu_CPF,
           email: usuarioAtual.usu_email,
           telefone: usuarioAtual.usu_telefone,
-          visuImagem: "http://localhost:3333/public/images/" + usuarioAtual.usu_img
+          visuImagem: usuarioAtual.usu_img
         });
 
         // console.log(usuarioAtual)
