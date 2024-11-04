@@ -1,5 +1,5 @@
 import ValidationException from "../Exception/ValidationException.js"
-import Employee from "./Employee.js"
+import Employee from "./Colaborador.js"
 import Evento from "./Evento.js"
 
 export default class User {

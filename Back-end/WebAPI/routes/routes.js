@@ -5,6 +5,8 @@ const router = express.Router();
 import { UsuarioController } from '../controllers/UsuarioController.js';
 import { isProtected } from '../middleware/AuthMiddleware.js';
 import userValidation from '../middleware/validations/UserValidationMiddleware.js';
+import { ColaboradorController } from '../controllers/ColaboradoresController.js';
+
 
 
 router.get('/usuarios', UsuarioController.ListarUsuarios);
@@ -17,7 +19,7 @@ router.post('/usuario-info/', UsuarioController.getUserInfo)
 router.post('/login', UsuarioController.Login)
 router.get('/protected', isProtected(['admin']), UsuarioController.private)
 
-// router.get('/Colaboradores', ColaboradorController.ListarColaboradores);
+router.get('/colaboradores', ColaboradorController.ListarColaboradores);
 // router.post('/Colaboradores', ColaboradorController.CadastrarColaboradores);
 // router.patch('/Colaboradores/:colaborador_id', ColaboradorController.EditarColaboradores);
 // router.delete('/Colaboradores/:colaborador_id', ColaboradorController.ApagarColaboradores);
