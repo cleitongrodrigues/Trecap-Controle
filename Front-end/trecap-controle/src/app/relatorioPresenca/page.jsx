@@ -132,7 +132,7 @@ export default function RelatorioPresenca() {
       <div className={styles.Header}>
         <div className={styles.relatorio}>
           <h1>RELATÓRIO DE PRESENÇA</h1>
-          <h3>{eventoSelecionado}</h3>
+          <h1>{eventoSelecionado}</h1>
 
           <div className={styles.cadastro}>
             <h2>Participantes Presentes</h2>

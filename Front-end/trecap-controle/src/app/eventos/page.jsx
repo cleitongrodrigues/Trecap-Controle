@@ -67,7 +67,6 @@ export default function Evento() {
         } else if (dataAtual > dataEvento) {
             alert(`O prazo para entrar no Evento ${evento.evento_nome} já ultrapassado!`);
         } else {
-            alert(`Evento ${evento.evento_nome} iniciado!`);
             router.push(`/cadastroP?evento=${encodeURIComponent(evento.evento_nome)}`);
         }
     };
@@ -99,7 +98,7 @@ export default function Evento() {
                                     <div className={style.ContainerLabel}>
                                         <label className={style.labelTitle}>{evento.evento_nome}</label>
                                         <label className={style.labelData}>Data: {new Date(evento.evento_data_inicio).toLocaleDateString('pt-BR')}</label>
-                                        <label className={style.labelData}>Horário: {evento.evento_hora.slice(0, 5)}</label>
+                                        <label className={style.labelData}>Horário de início: {evento.evento_hora.slice(0, 5)}</label>
                                     </div>
                                     <div className={style.Icones}>
                                         <IconContext.Provider value={{ size: 45 }}>

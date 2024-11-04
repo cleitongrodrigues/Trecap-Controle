@@ -82,7 +82,7 @@ export default function RegistrarPresenca() {
         console.log('Registros de presença salvos com sucesso:', data);
       } catch (error) {
         console.error('Erro ao salvar a presença:', error);
-        alert("Ocorreu um erro ao salvar a presença: " + error.message);
+        // alert("Ocorreu um erro ao salvar a presença: " + error.message);
       }
     }
 
