@@ -1,0 +1,60 @@
+.pesquisaContainer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.inputContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.barraPesquisa {
+    padding: 10px;
+    padding-right: 35px; /* Espaço para a lupa */
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    flex: 1;
+    min-width: 400px;
+}
+
+.lupaIcon {
+    position: absolute;
+    right: 10px;
+    color: #999;
+    cursor: pointer;
+}
+
+.botaoPesquisar {
+    background-color: var(--purpleButton);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.botaoPesquisar:hover {
+    background-color: var(--purpleButton);
+}
+
+@media (max-width: 768px) {
+    .barraPesquisa {
+        min-width: 100%;
+        margin-right: 0;
+    }
+
+    .pesquisaContainer {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .botaoPesquisar {
+        width: 100%;
+        margin-top: 10px;
+    }
+}

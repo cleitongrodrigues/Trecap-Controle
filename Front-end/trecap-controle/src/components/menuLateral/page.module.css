@@ -94,8 +94,8 @@
   z-index: 9999;
 }
 .ImagemPerfil{
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid white; 
@@ -244,7 +244,6 @@
   object-fit: cover;
   border: 2px solid #ddd;
 }
-
 
 @keyframes fadeIn {
   from {

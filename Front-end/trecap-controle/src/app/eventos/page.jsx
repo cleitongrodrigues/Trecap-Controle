@@ -1,85 +1,91 @@
-'use client';  // Certifique-se de que esta linha está no início do arquivo se estiver usando Next.js com o modo "use client"
+'use client'; 
 
 import style from './page.module.css';
 import { MdWash, MdPsychology, MdEdit, MdSearch, MdCheck, MdTimer } from "react-icons/md";
 import { IconContext } from 'react-icons';
-import CabecalhoLogado from '@/cabecalhoLogado/page';
 import { useRouter } from 'next/navigation';
 import MenuLateral from '@/components/menuLateral/page';
 
 const eventos = [
     {
+        id: 1,
         titulo: 'Treinamento sobre higiene no trabalho',
         data: 'Data: 20/08/2024',
         IconeTipo: "Psicologia"
     },
-
     {
-        titulo: 'Treinamento ',
+        id: 2,
+        titulo: 'Treinamento Sobre lavagem de Mãos',
         data: 'Data: 20/08/2024',
         IconeTipo: "Wash"
     },
-
     {
+        id: 3,
         titulo: 'Treinamento teste',
         data: 'Data: 10/08/2025',
-         IconeTipo: "Timer"
+        IconeTipo: "Timer"
     }
 ];
 
 const Icones = {
-    Psicologia(){
-        return(
-            <MdPsychology />
-        )
+    Psicologia() {
+        return <MdPsychology />;
     },
-    Wash(){
-        return(
-            <MdWash />
-        )
+    Wash() {
+        return <MdWash />;
     },
-    Timer(){
-        return(
-            <MdTimer />
-        )
+    Timer() {
+        return <MdTimer />;
     }
 }
 
 export default function Evento() {
-    const router = useRouter()
+    const router = useRouter();
 
-    const handleClick = () =>{
-        router.push('./cadastroP')
-    }
+    const handleEdit = (titulo) => {
+        router.push(`/editarEvento/${titulo}`);
+    };
+
+    const handleStart = (titulo) => {
+        alert(`Evento ${titulo} iniciado!`);
+        router.push(`/cadastroP/`);
+    };
+
+    const handleClick = (evento) => {
+        // Lógica a ser implementada ao clicar no evento, se necessário
+        console.log('Evento clicado:', evento);
+    };
 
     return (
         <>
-        <MenuLateral/>
-        <div className={style.Geral}>
-            <div className={style.Container}>
-                <h1 className={style.Titulo}>Eventos</h1>
-                <div className={style.containerContent}>
-                    {eventos.map((evento, index) => (
-                        <div key={index}  onClick={handleClick} className={style.ContainerDivs}>
-                            <IconContext.Provider value={{ size: 100 }}>
-                                {Icones[evento.IconeTipo]()}
-                            </IconContext.Provider>
-                            <div className={style.ContainerLabel}>
-                                <label className={style.labelTitle}>{evento.titulo}</label>
-                                <label className={style.labelData}>{evento.data}</label>
-                            </div>
-                            <div className={style.Icones}>
-                                <IconContext.Provider value={{ size: 45 }}>
-                                    <MdEdit />
-                                    <MdSearch />
-                                    <MdTimer />
+            <MenuLateral />
+            <div className={style.Geral}>
+                <div className={style.Container}>
+                    <h1 className={style.Titulo}>Eventos</h1>
+                    <div className={style.containerContent}>
+                        {eventos.map((evento, index) => (
+                            <div key={index} onClick={() => handleClick(evento)} className={style.ContainerDivs}>
+                                <IconContext.Provider value={{ size: 100 }}>
+                                    {Icones[evento.IconeTipo]()}
                                 </IconContext.Provider>
+                                <div className={style.ContainerLabel}>
+                                    <label className={style.labelTitle}>{evento.titulo}</label>
+                                    <label className={style.labelData}>{evento.data}</label>
+                                </div>
+                                <div className={style.Icones}>
+                                    <IconContext.Provider value={{ size: 45 }}>
+                                        <MdEdit onClick={() => handleEdit(evento.titulo)} style={{ cursor: 'pointer' }} />
+                                        <MdTimer onClick={() => handleStart(evento.titulo)} style={{ cursor: 'pointer' }} />
+                                    </IconContext.Provider>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
+                <footer className={style.footer}>
+                    <p>&copy; 2024 TRECAP. Todos os direitos reservados.</p>
+                </footer>
             </div>
-        </div>
         </>
     );
 }

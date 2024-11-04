@@ -19,7 +19,6 @@ CREATE TABLE IF NOT EXISTS Setores(
     PRIMARY KEY (setor_id)
 );
 
--- Tabela Usuario
 CREATE TABLE IF NOT EXISTS Usuario (
     usu_id int AUTO_INCREMENT NOT NULL,
     usu_nome varchar(100) NOT NULL,
@@ -31,6 +30,7 @@ CREATE TABLE IF NOT EXISTS Usuario (
     usu_telefone varchar(15),
     usu_data_cadastro datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     empresa_id int not null,
+    usu_img varchar(100),
     FOREIGN KEY (empresa_id) REFERENCES Empresa(empresa_id),
     PRIMARY KEY (usu_id)
 );

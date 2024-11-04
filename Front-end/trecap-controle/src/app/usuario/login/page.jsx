@@ -1,51 +1,31 @@
 'use client'
 
 import style from "../login/page.module.css";
+import Image from "next/image";
+import logoBranca from "../../../assets/logoBranca.svg";
 import Input from "@/components/Input";
 import ButtonForm from "@/components/ButtonForm";
+import { useRouter } from "next/navigation";
 import Form from "@/components/Form";
 import Link from "next/link";
 import useForm from "@/hooks/useForm";
-import { useAuth } from "@/context/userContext";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 export default function Login() {
-  const { handleLogin, isLoading, error, isLogged } = useAuth()
-
-  const email = useForm()
-  const password = useForm()
+  const email = useForm();
+  const password = useForm();
 
   const router = useRouter()
 
-  useEffect(() => {
-
-    if(isLogged) {
-      router.push('/usuario/cadastroColaborador') 
-    }
-
-  }, [isLogged, router])
-
-  const handleClick = async event => {
-    event.preventDefault()
-
-    if(email.isValid() && password.isValid()){
-      const loginInput = {
-        email: email.value, 
-        password: password.value
-      }
-
-      const isAuthenticated = await handleLogin(loginInput)  
-
-      if(isAuthenticated) router.push('/usuario/cadastroColaborador')   
-    }
+  const handleClick = (e) => {
+    e.preventDefault()
+    router.push('/home/gestor')
   }
 
   return (
     <Form message={'Por favor, faça login!'}>
       <div className={style.formHeader}>
         <h2>Login</h2>
-        <Link href="/usuario/cadastrar">Criar nova conta</Link>
+        <Link href="/cadastrar">Criar nova conta</Link>
       </div>
       <form className={style.form}>
         <Input
@@ -69,13 +49,7 @@ export default function Login() {
           </div>
           <Link href="/esqueceusenha">Esqueceu a senha</Link>
         </div>
-        {error && <p className={style.error}>{error}</p>}
-        {
-          !isLoading ?
-          <ButtonForm onClick={handleClick}>Cadastrar</ButtonForm>
-          : <ButtonForm disabled>Carrengado...</ButtonForm>
-        }
-        
+        <ButtonForm onClick={handleClick}>Entrar</ButtonForm>
       </form>
     </Form>
   );
