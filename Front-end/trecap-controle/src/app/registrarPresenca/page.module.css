@@ -36,6 +36,7 @@
   margin-bottom: 20px;
   font-family: "Poppins", sans-serif;
   font-weight: 300;
+  text-transform: uppercase;
 }
 
 /* Estilo da seção de cadastro */
@@ -63,6 +64,7 @@
 /* Estilo da lista de participantes */
 .listaParticipantes {
   width: 100%;
+  text-transform: uppercase;
 }
 
 .listaParticipantes h3 {

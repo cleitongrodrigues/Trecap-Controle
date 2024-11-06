@@ -80,6 +80,7 @@
 
 .ContainerLabel label {
     display: block;
+    text-transform: uppercase;
 }
 
 .labelTitle {

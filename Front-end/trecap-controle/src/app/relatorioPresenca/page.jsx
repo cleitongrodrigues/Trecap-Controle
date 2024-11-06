@@ -87,9 +87,9 @@ export default function RelatorioPresenca() {
     const cursoX = (pageWidth - cursoWidth) / 2; 
     doc.text(curso, cursoX, 20);
 
-    const eventoWidth = doc.getTextWidth(eventoSelecionado);
+    const eventoWidth = doc.getTextWidth(eventoSelecionado.toUpperCase());
     const eventoX = (pageWidth - eventoWidth) / 2; 
-    doc.text(eventoSelecionado, eventoX, 30);
+    doc.text(eventoSelecionado.toUpperCase(), eventoX, 30);
 
     // Adicionar data e horário de início do evento
     const horarioFormatado = formatarDataHora(horarioInicioEvento); // Formatar o horário
@@ -100,7 +100,7 @@ export default function RelatorioPresenca() {
     // Adicionar tabela de participantes
     doc.autoTable({
       head: [['Nome', 'Horário de Chegada']],
-      body: participantesPresentes.map(participante => [participante.nome, participante.horario]),
+      body: participantesPresentes.map(participante => [participante.nome.toUpperCase(), participante.horario, participante.setor_nome]),
       startY: 60,
       theme: 'striped',
       headStyles: { fillColor: [74, 20, 140] },

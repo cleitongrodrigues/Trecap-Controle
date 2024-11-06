@@ -53,6 +53,7 @@
   border-radius: 20px;
   padding: 2rem;
   width: 100%;
+  text-transform: uppercase;
 }
 
 .cadastro h2 {

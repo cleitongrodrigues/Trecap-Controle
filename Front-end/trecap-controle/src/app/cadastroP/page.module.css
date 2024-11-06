@@ -17,9 +17,11 @@
 .header h1 {
   text-align: center;
   color: #694C9F;
-  font-size: 3rem;
+  font-size: 2.25rem;
+  margin-bottom: 2rem;
   font-family: "Poppins", sans-serif;
-  font-weight: 300;
+  font-weight: 200;
+  text-transform: uppercase;
 }
 
 
