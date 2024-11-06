@@ -1,9 +1,7 @@
-// Código completo do componente atualizado
-
 'use client';
 
 import style from './page.module.css';
-import { MdWash, MdPsychology, MdEdit, MdTimer, MdPlayArrow } from "react-icons/md";
+import { MdWash, MdPsychology, MdEdit, MdPlayArrow } from "react-icons/md";
 import { IconContext } from 'react-icons';
 import { useRouter } from 'next/navigation';
 import MenuLateral from '@/components/menuLateral/page';
@@ -26,6 +24,7 @@ export default function Evento() {
     const [eventos, setEventos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [mesAnoFiltro, setMesAnoFiltro] = useState(""); // Estado para o filtro de mês e ano
 
     const fetchEventos = async () => {
         try {
@@ -35,7 +34,22 @@ export default function Evento() {
             }
             const data = await response.json();
             console.log("Dados recebidos da API:", data);
-            setEventos(data.dados || []);
+
+            // Filtrar eventos com base no mês e ano selecionados
+            const eventosFiltrados = data.dados.filter(evento => {
+                if (!evento.evento_data_inicio || !evento.evento_hora) {
+                    console.warn("Evento com data ou hora inválida:", evento);
+                    return false;
+                }
+
+                const dataEvento = new Date(evento.evento_data_inicio);
+                const anoMesEvento = `${dataEvento.getFullYear()}-${String(dataEvento.getMonth() + 1).padStart(2, '0')}`;
+
+                // Retorna todos os eventos se não houver filtro de mês/ano selecionado
+                return !mesAnoFiltro || anoMesEvento === mesAnoFiltro;
+            });
+
+            setEventos(eventosFiltrados || []);
         } catch (error) {
             console.error("Erro ao buscar eventos:", error);
             setError(error.message || 'Erro ao buscar eventos');
@@ -46,7 +60,7 @@ export default function Evento() {
 
     useEffect(() => {
         fetchEventos();
-    }, []);
+    }, [mesAnoFiltro]); // Atualizar os eventos ao mudar o filtro
 
     const handleEdit = (titulo) => {
         router.push(`/editarEvento/${titulo}`);
@@ -78,7 +92,6 @@ export default function Evento() {
     if (error) {
         return <div>Erro: {error}</div>;
     }
-    
 
     return (
         <>
@@ -86,6 +99,19 @@ export default function Evento() {
             <div className={style.Geral}>
                 <div className={style.Container}>
                     <h1 className={style.Titulo}>Eventos</h1>
+
+                    {/* Input de Mês e Ano */}
+                    <div className={style.FiltroDataContainer}>
+                        <label htmlFor="mesAnoFiltro">Filtrar por mês e ano:</label>
+                        <input
+                            type="month"
+                            id="mesAnoFiltro"
+                            value={mesAnoFiltro}
+                            onChange={(e) => setMesAnoFiltro(e.target.value)}
+                        />
+                        <button onClick={() => setMesAnoFiltro("")}>Limpar Filtro</button>
+                    </div>
+
                     <div className={style.containerContent}>
                         {eventos.length > 0 ? (
                             eventos.map((evento, index) => (
