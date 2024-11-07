@@ -9,11 +9,17 @@ class ColaboradorService{
         
     }
 
-    async getColaboradores()
+    async getColaboradores(input)
     {
-        const colaboradores = colaboradorRepository.getUsers()
+        const colaboradores = colaboradorRepository.getColaboradores(input)
 
         return colaboradores
+    }
+
+    async getColaboradorById(input){
+        const colaborador = colaboradorRepository.getColaboradorById(input)
+
+        return colaborador
     }
 }
 

@@ -7,16 +7,30 @@ export const ColaboradorController = {
             const { page, pageSize, filter } = request.query
 
             const params = {
-                page: page,
-                pageSize: pageSize,
-                filter: filter,
+                page: page || 1,
+                pageSize: pageSize || 10,
+                filter: filter || {},
             }
 
-            const colaboradores = await ColaboradorService.getColaboradores()
+
+            const colaboradores = await ColaboradorService.getColaboradores(params)
 
             return response.status(200).json({
-                mensagem: 'Lista de Usuários',
                 dados: colaboradores,
+            });
+
+        } catch (error) {
+            next(error)
+        }
+    },
+    async ListarColaborador(request, response, next) {
+        try {
+            const { colaborador_id } = request.params
+
+            const colaborador = await ColaboradorService.getColaboradorById(colaborador_id)
+
+            return response.status(200).json({
+                dados: colaborador,
             });
 
         } catch (error) {

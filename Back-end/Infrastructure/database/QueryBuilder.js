@@ -54,7 +54,7 @@ export default class QueryBuilder {
         }
 
         if(this.pageValue){
-            const offset = (this.pageValue - 1) * this.pageValue
+            const offset = (this.pageValue - 1) * this.limitValue
             queryResult += ` OFFSET ${offset}`
         }
 

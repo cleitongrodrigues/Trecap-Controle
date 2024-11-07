@@ -1,24 +1,42 @@
+import ColaboradorResult from "../../Application/Contracts/Colaborador/ColaboradorResult.js";
 import Colaborador from "../../Domain/Entities/Colaborador.js";
 import connection from "../database/connection.js";
 import QueryBuilder from "../database/QueryBuilder.js";
 
 class ColaboradorRepository{
     constructor(){
-        this.queryBuilder = new QueryBuilder("colaboradores")
+        
     }
 
-    async getUsers(){
-        const sql = this.queryBuilder
-                                    .whereAnd('colaborador_ativo = 1')
-                                    .page()
-                                    .limit()
-                                    .build()
+    async getColaboradores(input){
+        const queryBuilder = new QueryBuilder("colaboradores")
+        const sql = queryBuilder
+                                .whereAnd('colaborador_ativo = 1')
+                                .page(input.page)
+                                .limit(input.pageSize)
+                                .build()
 
         const [colaboradores] = await connection.query(sql)
 
         return colaboradores.map(
-            (colaboradorInfo) => new Colaborador(colaboradorInfo.colaboradorId, colaboradorInfo.colaborador_nome, colaboradorInfo.colaborador_cpf, colaboradorInfo.colaborador_biometria, colaboradorInfo.colaborador_ativo, colaboradorInfo.colabora_telefone, colaboradorInfo.colaborador_email, colaboradorInfo.empresa_id, colaboradorInfo.setor_id)
+            (colaboradorInfo) => {
+                return new ColaboradorResult(colaboradorInfo.colaborador_id, colaboradorInfo.colaborador_nome, colaboradorInfo.colaborador_cpf, colaboradorInfo.colaborador_email, colaboradorInfo.empresa_id, colaboradorInfo.setor_id)
+            }
         )
+    }
+
+    async getColaboradorById(colaboradorId){
+        const queryBuilder = new QueryBuilder("colaboradores")
+        const sql = queryBuilder
+                                .whereAnd('colaborador_ativo = 1')
+                                .whereAnd(`colaborador_id = ${colaboradorId}`)
+                                .page()
+                                .limit()
+                                .build()
+
+        const [[colaboradorInfo]] = await connection.query(sql)
+
+        return new Colaborador(colaboradorInfo.colaborador_id, colaboradorInfo.colaborador_nome, colaboradorInfo.colaborador_cpf, colaboradorInfo.colaborador_biometria, 1, colaboradorInfo.colabora_telefone, colaboradorInfo.colaborador_email, colaboradorInfo.empresa_id, colaboradorInfo.setor_id)
     }
 }
 
