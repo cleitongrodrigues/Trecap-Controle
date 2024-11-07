@@ -3,7 +3,7 @@ import Employee from "./Colaborador.js"
 import Evento from "./Evento.js"
 
 export default class User {
-    constructor(userId, name, cpf, userType, status, email, password, telefone, registerDate, companyId) {
+    constructor(usu_id, usu_name, usu_CPF, tipo_usuario_id, usu_ativo, usu_email, password, telefone, registerDate, companyId) {
 
         if (!email) throw new ValidationException("O email não pode ser nulo")
         if (!cpf) throw new ValidationException("O CPF não pode ser vazio")
@@ -11,8 +11,8 @@ export default class User {
         this.userId = userId
         this.name = name
         this.cpf = cpf
-        this.userType = userType
-        this.status = status
+        this.tipo_usuario_id = tipo_usuario_id
+        this.usu_ativo = usu_ativo
         this.email = email
         this.password = password
         this.telefone = telefone
@@ -21,8 +21,8 @@ export default class User {
     }
 
     cancel() {
-        if (this.status == 0) throw new Error('Usuário inexistente!')
-        this.status = 0
+        if (this.usu_ativo == 0) throw new Error('Usuário inexistente!')
+        this.usu_ativo = 0
     }
 
     registerEmployee(employeeInfo) {

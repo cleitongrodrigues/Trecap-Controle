@@ -1,0 +1,5 @@
+class UserValidator{
+    validate(user){
+
+    }
+}
