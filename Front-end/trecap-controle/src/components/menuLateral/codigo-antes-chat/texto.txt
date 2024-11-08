@@ -18,6 +18,7 @@ import { usePathname } from "next/navigation";
 import Modal from "./ReactDom";
 import Swal from "sweetalert2";
 import InputMask from "react-input-mask";
+import Calendario from "@/app/Calendario/page";
 
 const validacoes = {
   email: {
@@ -63,6 +64,7 @@ const MenuLateral = () => {
     cpf: "",
     email: "",
     telefone: "",
+    visuImagem: ""
   });
   const [editando, setEditando] = useState(false);
 
@@ -76,39 +78,25 @@ const MenuLateral = () => {
 
   const pathName = usePathname();
 
-  const getUsuario = async () => {
-    try {
-      const response = await axios.get(`http://localhost:3333/usuario`);
-      const dadosUsuario = response.data.dados;
-      setLista(dadosUsuario);
-
-      const usuarioAtual = dadosUsuario[0];
-      setNomeUsuario(usuarioAtual.usu_nome);
-      setUsuarioInfo({
-        nome: usuarioAtual.usu_nome,
-        cpf: usuarioAtual.usu_CPF,
-        email: usuarioAtual.usu_email,
-        telefone: usuarioAtual.usu_telefone,
-      });
-    } catch (error) {
-      console.error("Erro ao buscar usuarios", error);
-    }
-  };
-
   useEffect(() => {
     const getUsuario = async () => {
       try {
         const response = await axios.get(`http://localhost:3333/usuario`);
         const dadosUsuario = response.data.dados;
+        console.log(dadosUsuario)
         setLista(dadosUsuario);
         const usuarioAtual = dadosUsuario[0];
         setNomeUsuario(usuarioAtual.usu_nome);
+
         setUsuarioInfo({
           nome: usuarioAtual.usu_nome,
           cpf: usuarioAtual.usu_CPF,
           email: usuarioAtual.usu_email,
           telefone: usuarioAtual.usu_telefone,
+          visuImagem: usuarioAtual.usu_img
         });
+
+        // console.log(usuarioAtual)
       } catch (error) {
         console.error("Erro ao buscar usuários", error);
       }
@@ -188,13 +176,14 @@ const MenuLateral = () => {
         usu_CPF: cpfSemFormatacao,
         usu_email: usuarioInfo.email,
         usu_telefone: usuarioInfo.telefone,
+        usu_img: usuarioInfo.visuImagem,
         tipo_usuario_id: 1,
         usu_ativo: 1,
         usu_data_cadastro: "2024-09-23",
         empresa_id: 1,
       };
 
-      console.log(usuarioInfo);
+      // console.log(usuarioInfo);
 
       const response = await axios.patch(
         `http://localhost:3333/usuario/${usuarioId}`,
@@ -210,6 +199,8 @@ const MenuLateral = () => {
           text: "Dados alterados com sucesso!",
           icon: "success",
           backdrop: false,
+        }).then(() => {
+          window.location.reload();
         });
         setEditando(false);
         setEmailErro("");
@@ -223,20 +214,35 @@ const MenuLateral = () => {
   };
 
   const handleSubmit = async () => {
-    const usuarioId = lista[0].usu_id;
+    if (!selecionaImagem) {
+      Swal.fire({ // Caixa de mensagem com icone
+        title: 'Erro!',
+        text: 'Selecione uma imagem antes de salvar.',
+        icon: 'error',
+        backdrop: false,
+      });
+      return; // Impede o envio se nenhuma imagem for selecionada
+    }
+    const usuarioId = lista[0].usu_id; // seleciona o primeiro usuário que vem no array
 
     const formData = new FormData();
-    formData.append('image', selecionaImagem);
+    formData.append('img', selecionaImagem);
     formData.append('userCode', usuarioId);
 
     try {
-      const response = await axios.post(`http://localhost:3333/upload`, formData,{
+      const response = await axios.patch(`http://localhost:3333/Usuario/${usuarioId}/imagem`, formData, { // faz a edição no banco via api
         headers: {
-          'content-type' : 'multipart/form-data',
+          'content-type': 'multipart/form-data',
         },
       });
 
-      if (response.status === 200){
+      if (response.status === 200) {
+        // setVisuImagem(response.data.dados.imgUrl)
+        const NovaImagem = response.data.imagePath;
+        setUsuarioInfo((prev) => ({
+          ...prev,
+          visuImagem: NovaImagem
+        }))
         Swal.fire({
           title: 'Enviado',
           text: 'Imagem enviada com sucesso',
@@ -247,8 +253,14 @@ const MenuLateral = () => {
       }
     } catch (error) {
       console.error("Erro ao fazer upload", error);
+      Swal.fire({
+        title: 'Erro!',
+        text: 'Houve um problema ao enviar a imagem.',
+        icon: 'error',
+        backdrop: false,
+      });
     }
-  }
+  };
 
   return (
     <>
@@ -264,9 +276,9 @@ const MenuLateral = () => {
 
             <div className={styles.Perfil}>
               <Link href="#" onClick={openModal}>
-                {visuImagem ? (
+                {usuarioInfo.visuImagem ? (
                   <img
-                    src={visuImagem}
+                    src={usuarioInfo.visuImagem}
                     alt="Foto do usuário"
                     className={styles.ImagemPerfil}
                   />
@@ -285,14 +297,14 @@ const MenuLateral = () => {
                   <form onSubmit={handleSubmit}>
                     <label>Foto de Perfil</label>
                     <div className={styles.imagePreviewContainer}>
-                      {visuImagem ? (
-                        <img src={visuImagem} alt="Foto de perfil" />
+                      {usuarioInfo.visuImagem ? (
+                        <img src={usuarioInfo.visuImagem} alt="Foto de perfil" />
                       ) : (
                         <MdAccountCircle size={64} />
                       )}
                     </div>
-                    <input type="file" accept="image/*" onChange={handleImagemChange}/>
                     <button type="submit">Salvar imagem</button>
+
                     <label
                       htmlFor="imageUpload"
                       className={styles.EscollherArquivo}
@@ -375,9 +387,15 @@ const MenuLateral = () => {
             <Link href="/historico">
               <MdHourglassBottom /> Histórico
             </Link>
-            <Link href="/calendario">
+            <Link
+              className={
+                pathName === "/Calendario" ? styles.active : ""
+              }
+              href="/Calendario"
+            >
               <MdCalendarMonth /> Calendário
             </Link>
+
             <Link
               className={
                 pathName === "/usuario/cadastroColaborador" ? styles.active : ""
