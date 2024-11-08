@@ -1,12 +1,12 @@
 export default class CreateAdministratorUserInput{
     constructor(userData)
     {
-        this.userId = userData.userId
-        this.name = userData.usu_nome
-        this.cpf = userData.usu_CPF
-        this.email = userData.usu_email
-        this.password = userData.usu_senha
-        this.telefone = userData.usu_telefone
-        this.companyId = userData.empresa_id
+        this.usu_id = userData.usu_id
+        this.usu_nome = userData.usu_nome
+        this.usu_CPF = userData.usu_CPF
+        this.usu_email = userData.usu_email
+        this.usu_senha = userData.usu_senha
+        this.usu_telefone = userData.usu_telefone
+        this.empresa_id = userData.empresa_id
     }
 }

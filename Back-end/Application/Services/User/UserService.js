@@ -5,6 +5,7 @@ import UnauthorizedException from "../../../Domain/Exception/UnauthorizedExcepti
 import Setor from "../../../Domain/Entities/Setor.js"
 import CreateAdministratorUserOutput from "../../Contracts/User/CreateAdministratorUserOutput.js"
 import userRepository from "../../../Infrastructure/repositories/userRepository.js"
+import UserValidator from "../../../Domain/Domain Service/Validators/UserValidator.js"
 
 class UserService {
     constructor(repository, factoryUser) {
@@ -13,6 +14,8 @@ class UserService {
     }
 
     async createUser(input) {
+        UserValidator.validate(input)
+
         input.userId = await this.repository.count() + 1
 
         const user = this.factoryUser.createAdminUser(input)

@@ -11,7 +11,7 @@ import { ColaboradorController } from '../controllers/ColaboradoresController.js
 
 router.get('/usuarios', UsuarioController.ListarUsuarios);
 router.get('/usuarios/:id', UsuarioController.ListarUsuario)
-router.post('/usuarios',userValidation, UsuarioController.CadastrarUsuario);
+router.post('/usuarios', UsuarioController.CadastrarUsuario);
 // router.patch('/Usuarios/:usu_id', UsuarioController.EditarUsuario);
 router.delete('/usuarios/:id', UsuarioController.ApagarUsuario);
 router.post('/usuario-info/', UsuarioController.getUserInfo)

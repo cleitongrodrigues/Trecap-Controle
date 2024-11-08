@@ -3,21 +3,17 @@ import Employee from "./Colaborador.js"
 import Evento from "./Evento.js"
 
 export default class User {
-    constructor(usu_id, usu_name, usu_CPF, tipo_usuario_id, usu_ativo, usu_email, password, telefone, registerDate, companyId) {
-
-        if (!email) throw new ValidationException("O email não pode ser nulo")
-        if (!cpf) throw new ValidationException("O CPF não pode ser vazio")
-
-        this.userId = userId
-        this.name = name
-        this.cpf = cpf
+    constructor(usu_id, usu_nome, usu_CPF, tipo_usuario_id, usu_ativo, usu_email, usu_senha, usu_telefone, usu_data_cadastro, empresa_id) {
+        this.usu_id = usu_id
+        this.usu_nome = usu_nome
+        this.usu_CPF = usu_CPF
         this.tipo_usuario_id = tipo_usuario_id
         this.usu_ativo = usu_ativo
-        this.email = email
-        this.password = password
-        this.telefone = telefone
-        this.registerDate = registerDate
-        this.companyId = companyId
+        this.usu_email = usu_email
+        this.usu_senha = usu_senha
+        this.usu_telefone = usu_telefone
+        this.usu_data_cadastro = usu_data_cadastro
+        this.empresa_id = empresa_id
     }
 
     cancel() {
@@ -26,8 +22,7 @@ export default class User {
     }
 
     registerEmployee(employeeInfo) {
-        const isAdmin = this.userType === 1
-        if (!isAdmin) throw new Error("Você não tem permissão para regisrtar um funcionário!")
+        if (!this.isAdmin()) throw new Error("Você não tem permissão para regisrtar um funcionário!")
 
         const newEmployee = new Employee(employeeInfo.employeeId, employeeInfo.name, employeeInfo.cpf, employeeInfo.biometria, 1, employeeInfo.telefone, employeeInfo.email, this.companyId)
 
@@ -35,10 +30,9 @@ export default class User {
     }
 
     registerEvento(eventoInfo) {
-        const isAdmin = this.userType === 1
-        if (!isAdmin) throw new Error("Você não tem permissão para registrar um evento!")
+        if (!this.isAdmin()) throw new Error("Você não tem permissão para registrar um evento!")
 
-        const newEvento = new Evento(eventoInfo.eventoId, eventoInfo.name, new Date(eventoInfo.dateStartTime), new Date(eventoInfo.dateEndTime), eventoInfo.local, 1, this.userId)
+        const newEvento = new Evento(eventoInfo.eventoId, eventoInfo.name, new Date(eventoInfo.dateStartTime), new Date(eventoInfo.dateEndTime), eventoInfo.local, 1, this.usu_id)
 
         return newEvento
     }
@@ -52,6 +46,6 @@ export default class User {
     }
 
     isAdmin() {
-        return this.userType === 1
+        return this.tipo_usuario_id === 1
     }
 }

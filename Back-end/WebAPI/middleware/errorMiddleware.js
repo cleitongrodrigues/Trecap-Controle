@@ -5,7 +5,7 @@ const errorTypes = {
     },
     ValidationError: {
         statusCode: 400,
-        message: (error) => error.message || "Dados de entrada inválidos!"
+        message: (error) => error || "Dados de entrada inválidos!"
     },
     UnauthorizedError:{
         statusCode: 403,
@@ -24,5 +24,5 @@ export default function errorHandler(error, request, response, next) {
 
     const { statusCode, message } = errorTypes[errorType] || errorTypes['ServerError']
 
-    return response.status(statusCode).send({ message: message(error) })
+    return response.status(statusCode).json({ message: message(error) })
 }
