@@ -18,7 +18,6 @@ console.log(path.join(__dirname, 'public/images'))
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.get('/public/images/:fileName', (req, res) => {
-  console.log("ASsa")
   const { fileName } = req.params
   res.sendFile(path.join(__dirname, 'public/images', fileName));
 });
