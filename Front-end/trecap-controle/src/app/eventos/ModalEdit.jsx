@@ -1,8 +1,11 @@
 import { useState } from 'react';
+import style from './modal.module.css';
 
 const ModalEdit = ({ evento, onClose, onSave }) => {
-    const [eventoEditado, setEventoEditado] = useState(evento);
+    // Cria uma cópia do evento para edição
+    const [eventoEditado, setEventoEditado] = useState({ ...evento });
 
+    // Função para lidar com as mudanças na data de início
     const handleChange = (e) => {
         const { name, value } = e.target;
         setEventoEditado((prev) => ({
@@ -11,37 +14,30 @@ const ModalEdit = ({ evento, onClose, onSave }) => {
         }));
     };
 
+    // Função para enviar as edições
     const handleSubmit = () => {
-        onSave(eventoEditado);  // Envia o evento editado para a função de salvar
+        onSave(eventoEditado); // Chama a função onSave com o evento editado
+        onClose(); // Fecha o modal
     };
 
     return (
-        <div className="modal">
-            <div className="modal-content">
-                <h2>Editar Evento</h2>
-                <label>Nome do Evento:</label>
-                <input
-                    type="text"
-                    name="evento_nome"
-                    value={eventoEditado.evento_nome}
-                    onChange={handleChange}
-                />
-                <label>Data de Início:</label>
+        <div className={style.modal}>
+            <div className={style.modalContent}>
+                <h2>Editar Data do Evento</h2>
+
+                <label htmlFor="evento_data_inicio">Data de Início:</label>
                 <input
                     type="datetime-local"
+                    id="evento_data_inicio"
                     name="evento_data_inicio"
                     value={eventoEditado.evento_data_inicio}
                     onChange={handleChange}
                 />
-                <label>Local:</label>
-                <input
-                    type="text"
-                    name="evento_local"
-                    value={eventoEditado.evento_local}
-                    onChange={handleChange}
-                />
-                <button onClick={handleSubmit}>Salvar</button>
-                <button onClick={onClose}>Fechar</button>
+
+                <div className={style.buttonContainer}>
+                    <button onClick={handleSubmit} className={style.button}>Salvar</button>
+                    <button onClick={onClose} className={style.button}>Fechar</button>
+                </div>
             </div>
         </div>
     );

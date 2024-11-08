@@ -6,7 +6,7 @@ import { IconContext } from 'react-icons';
 import { useRouter } from 'next/navigation';
 import MenuLateral from '@/components/menuLateral/page';
 import { useEffect, useState } from 'react';
-import ModalEdit from './ModalEdit'; // Importando a Modal de Edição
+import ModalEdit from './ModalEdit'; // Certifique-se de que o caminho está correto
 
 const Icones = {
     Psicologia() {
@@ -67,32 +67,59 @@ export default function Evento() {
         setModalOpen(true);          // Abre a modal
     };
 
-    // Função para salvar as edições
     const handleSaveEdit = async (eventoEditado) => {
         try {
-            const response = await fetch(`http://localhost:3333/Eventos/${eventoEditado.evento_id}`, {
+            // Verifica se a data de início é válida
+            const dataEventoInicio = new Date(eventoEditado.evento_data_inicio);
+            if (isNaN(dataEventoInicio.getTime())) {
+                alert("Data de início inválida!");
+                return;
+            }
+    
+            // Extrai a hora e minuto de 'evento_hora' e combina com a data de início
+            const [hora, minuto] = eventoEditado.evento_hora.split(':');
+            if (!hora || !minuto) {
+                alert("Hora de início inválida!");
+                return;
+            }
+            dataEventoInicio.setHours(hora, minuto, 0, 0); // Ajusta a hora e minuto para a data
+    
+            // Converte a data e hora para o formato ISO 8601 (UTC)
+            const eventoDataInicioISO = dataEventoInicio.toISOString(); // Exemplo: "2024-11-08T20:20:00.000Z"
+    
+            // Cria um novo objeto com a data de início no formato ISO
+            const eventoEditadoComData = {
+                ...eventoEditado,
+                evento_data_inicio: eventoDataInicioISO
+            };
+    
+            // Agora enviamos a requisição PATCH
+            const response = await fetch(`http://localhost:3333/Eventos/${eventoEditadoComData.evento_id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(eventoEditado),
+                body: JSON.stringify(eventoEditadoComData),
             });
-
+    
             if (!response.ok) {
                 throw new Error(`Erro ao salvar evento: ${response.status}`);
             }
-
-            // Atualiza o evento localmente
+    
+            // Atualiza o evento localmente no estado
             setEventos((prevEventos) =>
                 prevEventos.map((evento) =>
-                    evento.evento_id === eventoEditado.evento_id ? eventoEditado : evento
+                    evento.evento_id === eventoEditadoComData.evento_id ? eventoEditadoComData : evento
                 )
             );
+    
             setModalOpen(false); // Fecha a modal após salvar
         } catch (error) {
             console.error("Erro ao salvar evento:", error);
         }
     };
+    
+    
 
     // Função para iniciar o evento
     const handleStart = (evento) => {
@@ -177,8 +204,14 @@ export default function Evento() {
             {modalOpen && eventoEditando && (
                 <ModalEdit
                     evento={eventoEditando}
-                    onClose={() => setModalOpen(false)}
-                    onSave={handleSaveEdit}
+                    onClose={() => {
+                        console.log("Fechando modal"); // Log de depuração
+                        setModalOpen(false);
+                    }}
+                    onSave={(eventoEditado) => {
+                        console.log("Salvando evento editado: ", eventoEditado); // Log de depuração
+                        handleSaveEdit(eventoEditado);
+                    }}
                 />
             )}
         </>
