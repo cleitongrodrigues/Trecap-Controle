@@ -9,9 +9,8 @@ export const ColaboradorController = {
             const params = {
                 page: page || 1,
                 pageSize: pageSize || 10,
-                filter: filter || {},
+                filter: filter,
             }
-
 
             const colaboradores = await ColaboradorService.getColaboradores(params)
 
@@ -36,5 +35,5 @@ export const ColaboradorController = {
         } catch (error) {
             next(error)
         }
-    }
+    },
 }
