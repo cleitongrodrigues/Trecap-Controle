@@ -21,7 +21,8 @@ export default function CadastrarEvento() {
   const [selectedColaborador, setSelectedColaborador] = useState(null); // Colaborador a ser editado
   const [colaboradorToDelete, setColaboradorToDelete] = useState(null); // Colaborador a ser excluído
   const [pesquisar, setPesquisar] = useState('');
-
+  const [resultadosPesquisa, setResultadosPesquisa] = useState([]);
+  const [mensagemNaoEncontrado, setMensagemNaoEncontrado] = useState('');
   const nome = useForm("nome");
   const email = useForm("email");
   const CPF = useForm("CPF");
@@ -32,6 +33,7 @@ export default function CadastrarEvento() {
     const response = await axios.get(`http://localhost:3333/colaboradores`);
     const dadosColaboradores = response.data.dados;
     setLista(dadosColaboradores);
+    setResultadosPesquisa(dadosColaboradores);
   };
 
   useEffect(() => {
@@ -50,58 +52,69 @@ export default function CadastrarEvento() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  if (
-    !nome.value ||
-    !email.value ||
-    !CPF.value ||
-    !biometria.value ||
-    !telefone.value
-  ) {
-    Swal.fire({
-      icon: "error",
-      title: "Campos não preenchidos",
-      text: "Por favor, preencha todos os campos!",
-    });
-    return;
-  }
+    if (
+      !nome.value ||
+      !email.value ||
+      !CPF.value ||
+      !biometria.value ||
+      !telefone.value
+    ) {
+      Swal.fire({
+        icon: "error",
+        title: "Campos não preenchidos",
+        text: "Por favor, preencha todos os campos!",
+      });
+      return;
+    }
 
-  validaTudo();
+    validaTudo();
 
-  const colaboradorData = {
-    colaborador_nome: nome.value,
-    colaborador_email: email.value,
-    colaborador_CPF: CPF.value.replace(/[.-]/g, ""),
-    colaborador_biometria: biometria.value,
-    colaborador_telefone: telefone.value,
-    colaborador_ativo: 1,
-    empresa_id: 1,
-    setor_id: 1,
+    const colaboradorData = {
+      colaborador_nome: nome.value,
+      colaborador_email: email.value,
+      colaborador_CPF: CPF.value.replace(/[.-]/g, ""),
+      colaborador_biometria: biometria.value,
+      colaborador_telefone: telefone.value,
+      colaborador_ativo: 1,
+      empresa_id: 1,
+      setor_id: 1,
+    };
+
+    try {
+      // Cadastrar novo colaborador
+      await axios.post(`http://localhost:3333/colaboradores`, colaboradorData);
+
+      handleCancelar();
+      getColaboradores();
+      Swal.fire({
+        title: "Cadastrado com sucesso!",
+        icon: "success",
+      });
+    } catch (error) {
+      console.log("Erro ao cadastrar colaborador", error);
+    }
   };
 
-  try {
-    // Cadastrar novo colaborador
-    await axios.post(`http://localhost:3333/colaboradores`, colaboradorData);
-    
-    handleCancelar();
-    getColaboradores();
-    Swal.fire({
-      title: "Cadastrado com sucesso!",
-      icon: "success",
-    });
-  } catch (error) {
-    console.log("Erro ao cadastrar colaborador", error);
-  }
-  };
 
-
- // -----------------------------------------------------
+  // -----------------------------------------------------
   const pesquisaChange = (e) => {
     setPesquisar(e.target.value);
+    // handleSearch(e.target.value) //Atualiza na digitação
   };
 
-  const filterPesquisa = lista.filter(colaborador => 
-    colaborador.colaborador_nome.toLowerCase().includes(pesquisar.toLowerCase())
-  );
+  const handleSearch = (valor) => {
+    const filtrados = lista.filter(colaborador =>
+      colaborador.colaborador_nome.toLowerCase().startsWith(pesquisar.toLowerCase())
+    );
+    setResultadosPesquisa(filtrados);
+
+    if (filtrados.length === 0) {
+      setMensagemNaoEncontrado('Nenhum colaborador encontrado!');
+    } else {
+      setMensagemNaoEncontrado('');
+    }
+  };
+
 
   const handleSalvar = async (e) => {
     e.preventDefault();
@@ -157,6 +170,12 @@ export default function CadastrarEvento() {
     telefone.isValid();
     email.isValid();
     CPF.isValid();
+  };
+
+  const limparPesquisa = () => {
+    setPesquisar('');
+    setResultadosPesquisa(lista); // Retorna a lista completa
+    setMensagemNaoEncontrado('');
   };
 
   // -----------------------------------------------------
@@ -344,18 +363,25 @@ export default function CadastrarEvento() {
               )}
 
               <div className={style.Novo}>
-                <div className={style.InputIcon}>
-                  <label htmlFor="">Pesquisar Colaboradores:</label>
-                  <input
-                    type="text"
-                    placeholder="Digite o nome do Colaborador"
-                    value={pesquisar}
-                    onChange={pesquisaChange}
-                  />
-                  <IconContext.Provider value={{ size: 25 }}>
-                    <MdSearch />
-                  </IconContext.Provider>
-                </div>
+                <label htmlFor="">Pesquisar Colaboradores:</label>
+                <form onSubmit={(e) => { e.preventDefault(); handleSearch(); }}>
+                  <div className={style.InputIcon}>
+                    <input
+                      type="text"
+                      placeholder="Digite o nome do Colaborador"
+                      value={pesquisar}
+                      onChange={pesquisaChange}
+                    />
+                    <button onClick={handleSearch}>
+                      <IconContext.Provider value={{ size: 25 }}>
+                        <MdSearch />
+                      </IconContext.Provider>
+                    </button>
+                    <button type="button" onClick={limparPesquisa} className={style.ButtonLimpar}>
+                      Limpar
+                    </button>
+                  </div>
+                </form>
 
                 <div className={style.containerColaborador}>
                   <div className={style.ContainerCabecalho}>
@@ -364,8 +390,8 @@ export default function CadastrarEvento() {
                     <div className={style.ContainerEmail}>Email</div>
                     <div className={style.ContainerBotaoTeste}>Ações</div>
                   </div>
-                  {lista &&
-                    lista.map((colaborador, index) => (
+                  {resultadosPesquisa &&
+                    resultadosPesquisa.map((colaborador, index) => (
                       <div key={index} className={style.ContainerDivs}>
                         <div className={style.ContainerId}>
                           {colaborador.colaborador_id}
@@ -398,6 +424,9 @@ export default function CadastrarEvento() {
                         </div>
                       </div>
                     ))}
+                  {mensagemNaoEncontrado && (
+                    <p className={style.mensagemNaoEncontrado}>{mensagemNaoEncontrado}</p>
+                  )}
                 </div>
               </div>
             </div>
