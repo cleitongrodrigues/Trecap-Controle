@@ -89,8 +89,8 @@ export default function CheckinEvento() {
         <div className={styles.layout}>
           <div className={styles.mainContent}>
             <div className={styles.Header}>
-              <div className={styles.checkin}>
-                <h1>{nomeEvento}</h1>
+            <h1>{nomeEvento}</h1>
+              <div className={styles.checkin}>                
                 <div className={styles.cadastro}>
                   <h2>Adicionar Participantes</h2>
                   <h3>Setores Selecionados: {setores.length > 0 ? setores.join(", ") : "Nenhum setor selecionado"}</h3>

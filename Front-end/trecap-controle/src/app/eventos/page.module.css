@@ -117,6 +117,92 @@
     top: 5rem; /* 80px = 5rem */
 }
 
+/* Estilização do Filtro de Evento */
+
+.FiltroDataContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    background-color: var(--purple-300);
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 0.1875rem 0.5rem; /* 3px = 0.1875rem */
+    transition: all 0.15s ease-in-out;
+}
+
+.FiltroDataContainer label {
+    font-size: 1.2rem;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.FiltroDataContainer input {
+    border: none;
+    outline: none;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    color: var(--purpleMain);
+    background-color: white;
+    box-shadow: inset 0 0 0.125rem rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.15s ease-in-out;
+}
+
+.FiltroDataContainer input:focus {
+    box-shadow: 0 0 0.125rem 0.1875rem rgba(0, 0, 0, 0.24); /* 2px = 0.125rem, 3px = 0.1875rem */
+}
+
+.FiltroDataContainer button {
+    background-color: var(--purpleMain);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.FiltroDataContainer button:hover {
+    background-color: var(--purple-300);
+}
+
+@media (max-width: 48rem) {
+    .FiltroDataContainer {
+        flex-direction: column;
+        padding: 0.8rem;
+    }
+
+    .FiltroDataContainer label {
+        font-size: 1rem;
+    }
+
+    .FiltroDataContainer input,
+    .FiltroDataContainer button {
+        font-size: 0.9rem;
+        width: 100%;
+    }
+}
+
+@media (max-width: 30rem) {
+    .FiltroDataContainer {
+        padding: 0.5rem;
+    }
+
+    .FiltroDataContainer label {
+        font-size: 0.9rem;
+    }
+
+    .FiltroDataContainer input,
+    .FiltroDataContainer button {
+        font-size: 0.8rem;
+    }
+}
+
+
 @media (max-width: 48rem) {
     .Titulo {
         font-size: 2.5rem;

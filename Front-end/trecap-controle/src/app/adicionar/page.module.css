@@ -12,6 +12,16 @@
   border-radius: 10px;
 }
 
+.Header h1 {
+  text-align: center;
+  color: #694C9F;
+  font-size: 2.25rem;
+  margin-bottom: 2rem;
+  font-family: "Poppins", sans-serif;
+  font-weight: 200;
+  text-transform: uppercase;
+}
+
 .checkin {
   width: 100%;
   max-width: 600px;
@@ -27,6 +37,8 @@
   font-size: 24px;
   margin-bottom: 20px;
   color: #ffffff;
+  text-transform: uppercase;
+
 }
 
 /* Estilo da seção de cadastro */

@@ -45,8 +45,8 @@ export default function ParticipantesSelecionados() {
       <MenuLateral />
       <div className={styles.layout}>
         <div className={styles.Header}>
-          <div className={styles.checkin}>
-            <h1>{eventoSelecionado}</h1>
+        <h1>{eventoSelecionado}</h1>
+          <div className={styles.checkin}>            
             <div className={styles.cadastro}>
               <h2>Participantes Selecionados</h2>
 
