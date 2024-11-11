@@ -28,6 +28,12 @@ export default function CadastrarEvento() {
   const CPF = useForm("CPF");
   const biometria = useForm("biometria");
   const telefone = useForm("telefone");
+  const [paginaAtual, setPaginaAtual] = useState(1);
+  const itensPorPagina = 10;
+  const irParaPagina = (pagina) => {
+    setPaginaAtual(pagina);
+  };
+  
 
   const getColaboradores = async () => {
     const response = await axios.get(`http://localhost:3333/colaboradores`);
@@ -49,6 +55,14 @@ export default function CadastrarEvento() {
     setShowModal(false);
     setSelectedColaborador(null);
   };
+
+  const indiceInicial = (paginaAtual - 1 ) * itensPorPagina;
+  const colaboradoresPagina = resultadosPesquisa.slice(
+    indiceInicial,
+    indiceInicial + itensPorPagina
+  );
+
+  const totalPaginas = Math.ceil(resultadosPesquisa.length / itensPorPagina);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -424,6 +438,18 @@ export default function CadastrarEvento() {
                         </div>
                       </div>
                     ))}
+                    {/* Navegação de página */}
+        <div className={style.Paginacao}>
+          {Array.from({ length: totalPaginas }, (_, index) => (
+            <button
+              key={index}
+              onClick={() => irParaPagina(index + 1)}
+              className={paginaAtual === index + 1 ? style.PaginaAtiva : ""}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
                   {mensagemNaoEncontrado && (
                     <p className={style.mensagemNaoEncontrado}>{mensagemNaoEncontrado}</p>
                   )}

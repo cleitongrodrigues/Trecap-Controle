@@ -116,10 +116,11 @@ module.exports = {
             const {usu_id} = request.params;
             // console.log(request.file)
             const img = request.file.filename;
-            const imgUrl = `public/images/${img}`;
+            // `http://localhost:3333/public/images/${img}`
+            const imgUrl = "adsada";
 
             const sql = `UPDATE Usuario SET usu_img = ? WHERE usu_id = ?;`;
-            const values = [img, usu_id];
+            const values = [imgUrl, usu_id];
 
             const resultado = await db.query(sql, values);
 

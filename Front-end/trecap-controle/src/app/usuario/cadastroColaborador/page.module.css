@@ -1,7 +1,7 @@
 .ContainerGeral {
   display: flex;
   justify-content: center;
-  /* align-items: center; */
+  align-items: center;
   min-height: 100vh;
 }
 .Container {
@@ -161,6 +161,7 @@
   min-width: 100%;
   min-height: 50rem;
   background-color:gray;
+  padding-left: 270px;
 }
 .Novo{
   position: relative;
@@ -324,4 +325,7 @@
     transform: scale(1);
     opacity: 1;
   }
+}
+.Paginacao{
+  margin: 1rem;
 }
