@@ -5,7 +5,7 @@ module.exports = {
         try {
 
             const pagina = parseInt(request.query.pagina) || 1;
-            const itensPorPagina = parseInt(request.query.itensPorPagina) || 10;
+            const itensPorPagina = parseInt(request.query.itensPorPagina) || 5;
 
             // Calcular offset
             const offset = (pagina - 1) * itensPorPagina;
