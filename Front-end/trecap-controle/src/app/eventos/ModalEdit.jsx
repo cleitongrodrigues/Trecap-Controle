@@ -63,7 +63,7 @@ const ModalEdit = ({ evento, onClose, onSave }) => {
     
         try {
             // Enviar a requisição de atualização
-            const response = await axios.patch(`http://localhost:3000/eventos/${eventoEditado.evento_id}`, {
+            const response = await axios.patch(`http://localhost:3000/Eventos/${eventoEditado.evento_id}`, {
                 evento_nome: eventoEditado.evento_nome,
                 evento_data_inicio: eventoEditado.evento_data_inicio,
                 evento_hora: eventoEditado.evento_hora,  // Apenas os campos que precisam ser atualizados
@@ -77,8 +77,8 @@ const ModalEdit = ({ evento, onClose, onSave }) => {
                 alert('Erro ao atualizar o evento.');
             }
         } catch (error) {
-            alert('Erro ao salvar as alterações. Tente novamente.');
-            console.error('Erro no axios:', error);
+            console.error('Erro no axios:', error.response || error.message|| error);
+            // alert('Erro ao salvar as alterações. Tente novamente.');
         }
     };
 
