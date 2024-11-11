@@ -1,4 +1,4 @@
-export default class CreateAdministratorUserOutput{
+export default class ResponseGetUser{
     constructor(user)
     {
         this.usu_id = user.usu_id

@@ -3,30 +3,39 @@ import UserQueryParamys from "../QueryBuilders/UserQueryParams.js";
 import connection from '../database/connection.js'
 import NotFoundException from "../../Domain/Exception/NotFoundException.js";
 import ValidationException from "../../Domain/Exception/ValidationException.js";
+import QueryBuilder from "../database/QueryBuilder.js";
 
 
 class UserRepository {
     constructor() {}
     
-    async getUsers({ page = 1, pageSize = 10, filter = {} } = {}) {
-        const queryBuilder = new UserQueryParamys()
-
+    async getUsers(input) {
+        const queryBuilder = new QueryBuilder("usuario")
         queryBuilder
-            .setFilterName(filter.name)
-            .setFilterUserType(filter.userType)
-            .withPagnation(pageSize, page)
+                    .whereAnd('usu_ativo = 1')
+                    .page(input.page)
+                    .limit(input.pageSize)
+                                
+        if(input.filter){
+            queryBuilder.whereAnd(`usu_nome LIKE \'%${input.filter}%\'`)
+            queryBuilder.whereOr(`usu_email LIKE \'%${input.filter}%\'`)
+            queryBuilder.whereOr(`usu_id LIKE \'%${input.filter}%\'`)
+        }
 
-        const {query, params} = queryBuilder.build()
+        const sql = queryBuilder.build()
 
-        const [users] = await connection.query(query, params)
+        const [users] = await connection.query(sql)
 
         return users
     }
 
     async getUserById(Id) {
-        const sql = `SELECT usu_id, usu_nome, usu_CPF, tipo_usuario_id, usu_ativo = 1 AS usu_ativo,
-            usu_email, usu_senha, usu_telefone, usu_data_cadastro, empresa_id FROM Usuario
-            WHERE usu_ativo = 1 and usu_id = ?;`;
+        const queryBuilder = new QueryBuilder("usuario")
+        queryBuilder
+                    .whereAnd('usu_ativo = 1')
+                    .whereAnd(`usu_id = ${Id}`)
+
+        const sql = queryBuilder.build()
 
         const [queryResult] = await connection.query(sql, Id)
 
@@ -57,23 +66,7 @@ class UserRepository {
 
         return newUser
     }
-
-    async getUserByName(name) {
-        const sql = `SELECT usu_id, usu_nome, usu_CPF, tipo_usuario_id, usu_ativo = 1 AS usu_ativo,
-            usu_email, usu_senha, usu_telefone, usu_data_cadastro, empresa_id FROM Usuario
-            WHERE usu_ativo = 1 and usu_nome = ?;`;
-
-        const [queryResult] = await connection.query(sql, name)
-
-        if (queryResult.length === 0) throw new NotFoundException("Usuário Não Encontrado!")
-        const [userInfo] = queryResult
-
-        const newUser = new User(userInfo.usu_id, userInfo.usu_nome, userInfo.usu_CPF, userInfo.tipo_usuario_id, 1, userInfo.usu_email, userInfo.usu_senha, userInfo.usu_telefone, new Date(userInfo.usu_data_cadastro), userInfo.empresa_id)
-
-        return newUser
-    }
-
-    async getUserByCompanyId(companyId) {
+    async getUsersByEmpresaId(companyId) {
         const sql = `SELECT usu_id, usu_nome, usu_CPF, tipo_usuario_id, usu_ativo = 1 AS usu_ativo,
         usu_email, usu_senha, usu_telefone, usu_data_cadastro, empresa_id FROM Usuario
         WHERE usu_ativo = 1 and empresa_id = ?;`;
@@ -116,12 +109,6 @@ class UserRepository {
             user.registerDate,
             user.companyId
         ]
-
-            // const existUserWithSameEmail = await this.getUserByEmail(user.email)
-            // const existUserWithSameCPF = await this.getUserByCPF(user.cpf)
-
-            // if (existUserWithSameEmail) throw new ValidationException("Já existe um usuário cadastrado com esse Email!")
-            // if (existUserWithSameCPF) throw new ValidationException("Já existe um usuário cadastrado com esse CPF!")
 
             const sql = `
                 INSERT INTO Usuario 
