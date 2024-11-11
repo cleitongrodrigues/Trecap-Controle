@@ -93,7 +93,7 @@ const MenuLateral = () => {
           cpf: usuarioAtual.usu_CPF,
           email: usuarioAtual.usu_email,
           telefone: usuarioAtual.usu_telefone,
-          visuImagem: "http://localhost:3333/public/images/" + usuarioAtual.usu_img
+          visuImagem: usuarioAtual.usu_img
         });
 
         // console.log(usuarioAtual)
@@ -214,8 +214,41 @@ const MenuLateral = () => {
   };
 
   const handleSubmit = async () => {
+    // Validações dos campos de texto
+    const emailValido = validacoes.email.validate(usuarioInfo.email);
+    const cpfValido = validacoes.cpf.validate(usuarioInfo.cpf);
+    const nomeValido = validacoes.nome.validate(usuarioInfo.nome);
+    const telefoneValido = validacoes.telefone.validate(usuarioInfo.telefone);
+  
+    setEmailErro("");
+    setCpfErro("");
+    setNomeErro("");
+    setTelefoneErro("");
+  
+    // Verifica se todos os campos são válidos antes de continuar
+    if (!emailValido) {
+      setEmailErro(validacoes.email.messageError);
+      return;
+    }
+  
+    if (!cpfValido) {
+      setCpfErro(validacoes.cpf.messageError);
+      return;
+    }
+  
+    if (!nomeValido) {
+      setNomeErro(validacoes.nome.messageError);
+      return;
+    }
+  
+    if (!telefoneValido) {
+      setTelefoneErro(validacoes.telefone.messageError);
+      return;
+    }
+  
+    // Se a imagem foi alterada, faz o upload
     if (!selecionaImagem) {
-      Swal.fire({ // Caixa de mensagem com icone
+      Swal.fire({
         title: 'Erro!',
         text: 'Selecione uma imagem antes de salvar.',
         icon: 'error',
@@ -223,33 +256,34 @@ const MenuLateral = () => {
       });
       return; // Impede o envio se nenhuma imagem for selecionada
     }
-    const usuarioId = lista[0].usu_id; // seleciona o primeiro usuário que vem no array
-
+  
+    // Faz o envio da imagem
+    const usuarioId = lista[0].usu_id; // seleciona o primeiro usuário da lista
+  
     const formData = new FormData();
     formData.append('img', selecionaImagem);
     formData.append('userCode', usuarioId);
-
+  
     try {
-      const response = await axios.patch(`http://localhost:3333/Usuario/${usuarioId}/imagem`, formData, { // faz a edição no banco via api
-        headers: {
-          'content-type': 'multipart/form-data',
-        },
-      });
-
+      const response = await axios.patch(
+        `http://localhost:3333/Usuario/${usuarioId}/imagem`,
+        formData,
+        { headers: { 'content-type': 'multipart/form-data' } }
+      );
+  
       if (response.status === 200) {
-        // setVisuImagem(response.data.dados.imgUrl)
         const NovaImagem = response.data.imagePath;
         setUsuarioInfo((prev) => ({
           ...prev,
           visuImagem: NovaImagem
-        }))
+        }));
+  
         Swal.fire({
           title: 'Enviado',
-          text: 'Imagem enviada com sucesso',
+          text: 'Imagem enviada com sucesso!',
           icon: 'success',
           backdrop: false,
         });
-        setVisuImagem(response.data.imagePath);
       }
     } catch (error) {
       console.error("Erro ao fazer upload", error);
@@ -260,7 +294,49 @@ const MenuLateral = () => {
         backdrop: false,
       });
     }
+  
+    // Após o upload da imagem, salva os dados do usuário (nome, cpf, email, etc)
+    const cpfSemFormatacao = usuarioInfo.cpf.replace(/[.-]/g, "");
+    const dadosAtualizados = {
+      usu_nome: usuarioInfo.nome,
+      usu_CPF: cpfSemFormatacao,
+      usu_email: usuarioInfo.email,
+      usu_telefone: usuarioInfo.telefone,
+      usu_img: usuarioInfo.visuImagem,
+      tipo_usuario_id: 1,
+      usu_ativo: 1,
+      usu_data_cadastro: "2024-09-23",
+      empresa_id: 1,
+    };
+  
+    try {
+      const response = await axios.patch(
+        `http://localhost:3333/usuario/${usuarioId}`,
+        dadosAtualizados
+      );
+  
+      if (response.status === 200) {
+        Swal.fire({
+          title: "Enviado!",
+          text: "Dados alterados com sucesso!",
+          icon: "success",
+          backdrop: false,
+        }).then(() => {
+          window.location.reload();
+        });
+        setEditando(false);
+      }
+    } catch (error) {
+      console.error("Erro ao salvar alterações", error);
+      Swal.fire({
+        title: 'Erro!',
+        text: 'Erro ao salvar alterações',
+        icon: 'error',
+        backdrop: false,
+      });
+    }
   };
+  
 
   return (
     <>
@@ -290,93 +366,91 @@ const MenuLateral = () => {
             </div>
 
             {/* Modal */}
-            <Modal isOpen={modalOpen} closeModal={closeModal}>
-              <div className={styles.modalTeste}>
-                <div className={styles.modalContent}>
-                  <h2>Perfil </h2>
-                  <form onSubmit={handleSubmit}>
-                    <label>Foto de Perfil</label>
-                    <div className={styles.imagePreviewContainer}>
-                      {usuarioInfo.visuImagem ? (
-                        <img src={usuarioInfo.visuImagem} alt="Foto de perfil" />
-                      ) : (
-                        <MdAccountCircle size={64} />
-                      )}
-                    </div>
-                    <button type="submit">Salvar imagem</button>
+           <Modal isOpen={modalOpen} closeModal={closeModal}>
+  <div className={styles.modalTeste}>
+    <div className={styles.modalContent}>
+      <h2>Perfil</h2>
+      <form onSubmit={(e) => e.preventDefault()}>
+        <label>Foto de Perfil</label>
+        <div className={styles.imagePreviewContainer}>
+          {usuarioInfo.visuImagem ? (
+            <img src={usuarioInfo.visuImagem} alt="Foto de perfil" />
+          ) : (
+            <MdAccountCircle size={64} />
+          )}
+        </div>
 
-                    <label
-                      htmlFor="imageUpload"
-                      className={styles.EscollherArquivo}
-                    >
-                      Escolher Arquivo
-                    </label>
-                    <div className={styles.file}>
-                      <input
-                        className={styles.file}
-                        type="file"
-                        id="imageUpload"
-                        accept="image/*"
-                        onChange={handleImagemChange}
-                      />
-                    </div>
+        {editando && (
+          <>
+            <label htmlFor="imageUpload" className={styles.EscollherArquivo}>
+              Escolher Arquivo
+            </label>
+            <input
+              className={styles.file}
+              type="file"
+              id="imageUpload"
+              accept="image/*"
+              onChange={handleImagemChange}
+            />
+          </>
+        )}
 
-                    <label htmlFor="">Nome</label>
-                    <input
-                      id="nome"
-                      type="text"
-                      value={usuarioInfo.nome}
-                      onChange={handleChange}
-                      placeholder="Nome"
-                      readOnly={!editando}
-                    />
-                    {nomeErro && <p style={{ color: "red" }}>{nomeErro}</p>}
+        <label htmlFor="nome">Nome</label>
+        <input
+          id="nome"
+          type="text"
+          value={usuarioInfo.nome}
+          onChange={handleChange}
+          placeholder="Nome"
+          readOnly={!editando}
+        />
+        {nomeErro && <p style={{ color: "red" }}>{nomeErro}</p>}
 
-                    <label htmlFor="">CPF</label>
-                    <InputMask
-                      mask="999.999.999-99"
-                      id="cpf"
-                      type="text"
-                      value={usuarioInfo.cpf}
-                      onChange={handleChange}
-                      placeholder="CPF"
-                      readOnly={!editando}
-                    />
-                    {cpfErro && <p style={{ color: "red" }}>{cpfErro}</p>}
+        <label htmlFor="cpf">CPF</label>
+        <InputMask
+          mask="999.999.999-99"
+          id="cpf"
+          type="text"
+          value={usuarioInfo.cpf}
+          onChange={handleChange}
+          placeholder="CPF"
+          readOnly={!editando}
+        />
+        {cpfErro && <p style={{ color: "red" }}>{cpfErro}</p>}
 
-                    <label htmlFor="">Email</label>
-                    <input
-                      id="email"
-                      type="text"
-                      value={usuarioInfo.email}
-                      onChange={handleChange}
-                      placeholder="Nome"
-                      readOnly={!editando}
-                    />
-                    {emailErro && <p style={{ color: "red" }}>{emailErro}</p>}
+        <label htmlFor="email">Email</label>
+        <input
+          id="email"
+          type="text"
+          value={usuarioInfo.email}
+          onChange={handleChange}
+          placeholder="Email"
+          readOnly={!editando}
+        />
+        {emailErro && <p style={{ color: "red" }}>{emailErro}</p>}
 
-                    <label htmlFor="">Telefone</label>
-                    <InputMask
-                      id="telefone"
-                      mask="(99) 99999-9999"
-                      type="text"
-                      value={usuarioInfo.telefone}
-                      onChange={handleChange}
-                      placeholder="Telefone do usuário"
-                      readOnly={!editando}
-                    />
-                    {telefoneErro && (
-                      <p style={{ color: "red" }}>{telefoneErro}</p>
-                    )}
-                  </form>
-                  <button onClick={editando ? salvarAlteracoes : toggleEdit}>
-                    {editando ? "Salvar" : "Editar"}
-                  </button>
+        <label htmlFor="telefone">Telefone</label>
+        <InputMask
+          id="telefone"
+          mask="(99) 99999-9999"
+          type="text"
+          value={usuarioInfo.telefone}
+          onChange={handleChange}
+          placeholder="Telefone do usuário"
+          readOnly={!editando}
+        />
+        {telefoneErro && <p style={{ color: "red" }}>{telefoneErro}</p>}
+      </form>
 
-                  <button onClick={closeModal}>Fechar</button>
-                </div>
-              </div>
-            </Modal>
+      <button onClick={editando ? handleSubmit : toggleEdit}>
+        {editando ? "Salvar" : "Editar"}
+      </button>
+
+      <button onClick={closeModal}>Fechar</button>
+    </div>
+  </div>
+</Modal>
+
 
             <Link
               className={pathName === "/eventos" ? styles.active : ""}

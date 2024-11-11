@@ -28,17 +28,42 @@ export default function CadastrarEvento() {
   const CPF = useForm("CPF");
   const biometria = useForm("biometria");
   const telefone = useForm("telefone");
+  const [paginaAtual, setPaginaAtual] = useState(1);
+  const itensPorPagina = 10;
+  const irParaPagina = (pagina) => {
+    setPaginaAtual(pagina);
+  };
 
   const getColaboradores = async () => {
-    const response = await axios.get(`http://localhost:3333/colaboradores`);
-    const dadosColaboradores = response.data.dados;
-    setLista(dadosColaboradores);
-    setResultadosPesquisa(dadosColaboradores);
+    try {
+      const response = await axios.get(`http://localhost:3333/colaboradores?page=${paginaAtual}&limit=${itensPorPagina}`);
+      const dadosColaboradores = response.data.dados;
+      setLista(dadosColaboradores);
+      setResultadosPesquisa(dadosColaboradores);
+    } catch (error) {
+      console.log("Erro ao buscar colaboradores", error);
+    }
   };
 
   useEffect(() => {
     getColaboradores();
-  }, []);
+  }, [paginaAtual]);
+
+  const totalPaginas = Math.ceil(resultadosPesquisa.length / itensPorPagina);
+
+    // Função para ir para a página anterior
+    const paginaAnterior = () => {
+      if (paginaAtual > 1) {
+        setPaginaAtual(paginaAtual - 1);
+      }
+    };
+  
+    // Função para ir para a próxima página
+    const paginaSeguinte = () => {
+      if (paginaAtual < totalPaginas) {
+        setPaginaAtual(paginaAtual + 1);
+      }
+    };
 
   const handleCancelar = () => {
     CPF.setValue("");
@@ -49,6 +74,12 @@ export default function CadastrarEvento() {
     setShowModal(false);
     setSelectedColaborador(null);
   };
+
+  const indiceInicial = (paginaAtual - 1) * itensPorPagina;
+  const colaboradoresPagina = resultadosPesquisa.slice(
+    indiceInicial,
+    indiceInicial + itensPorPagina
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -107,6 +138,7 @@ export default function CadastrarEvento() {
       colaborador.colaborador_nome.toLowerCase().startsWith(pesquisar.toLowerCase())
     );
     setResultadosPesquisa(filtrados);
+    setPaginaAtual(1);
 
     if (filtrados.length === 0) {
       setMensagemNaoEncontrado('Nenhum colaborador encontrado!');
@@ -424,6 +456,35 @@ export default function CadastrarEvento() {
                         </div>
                       </div>
                     ))}
+                  {/* Navegação de página */}
+                  <div className={style.ContainerPaginacao}>
+                    <p>Página {paginaAtual} de {totalPaginas}</p>
+                    <div className={style.Paginacao}>
+
+                      <button
+                        disabled={paginaAtual === 1}
+                        onClick={() => irParaPagina(paginaAtual - 1)}
+                      >
+                        Anterior
+                      </button>
+                      {Array.from({ length: totalPaginas }, (_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => irParaPagina(index + 1)}
+                          className={paginaAtual === index + 1 ? style.PaginaAtiva : ""}
+                        >
+                          {index + 1}
+                        </button>
+
+                      ))}
+                      <button
+                        disabled={paginaAtual === totalPaginas}
+                        onClick={() => irParaPagina(paginaAtual + 1)}
+                      >
+                        Próxima
+                      </button>
+                    </div>
+                  </div>
                   {mensagemNaoEncontrado && (
                     <p className={style.mensagemNaoEncontrado}>{mensagemNaoEncontrado}</p>
                   )}
