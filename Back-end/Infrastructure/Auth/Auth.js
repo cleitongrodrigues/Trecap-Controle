@@ -10,10 +10,10 @@ class Auth {
 
     generateToken(user) {
         const payload = {
-            userId: user.userId,
-            name: user.name,
-            userType: user.userType,
-            companyId: user.companyId
+            usu_id: user.usu_id,
+            usu_nome: user.usu_nome,
+            tipo_usuario_id: user.tipo_usuario_id,
+            empresa_id: user.empresa_id
         }
 
         const token = jwt.sign(payload, 'secret', { expiresIn: '24h' })
@@ -27,7 +27,7 @@ class Auth {
 
         const user = await userRepository.getUserByEmail(loginInfo.email)
 
-        if (!user || user.password !== loginInfo.password) throw new Error("Credenciais inválidas!")
+        if (!user || user.usu_senha !== loginInfo.password) throw new Error("Credenciais inválidas!")
 
         return this.generateToken(user)
     }

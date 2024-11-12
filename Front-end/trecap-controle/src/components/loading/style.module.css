@@ -1,0 +1,22 @@
+.loading{
+    border: 3px solid transparent;
+    border-radius: 50%;
+    border-right-color: black;
+    width: 60px;
+    height: 60px;
+    animation: spinner-anim 0.8s linear infinite;
+}
+
+.container {
+    padding: 16px;
+    margin: auto;
+}
+
+@keyframes spinner-anim {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }

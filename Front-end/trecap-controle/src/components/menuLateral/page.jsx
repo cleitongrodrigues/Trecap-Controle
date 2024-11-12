@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Link from "next/link";
 import { IconContext } from "react-icons";
 import {
@@ -19,6 +19,7 @@ import Modal from "./ReactDom";
 import Swal from "sweetalert2";
 import InputMask from "react-input-mask";
 import Calendario from "@/app/Calendario/page";
+import { UserContext } from "@/context/userContext";
 
 const validacoes = {
   email: {
@@ -54,16 +55,21 @@ const validacoes = {
 };
 
 const MenuLateral = () => {
+  const { user } = useContext(UserContext)
+
+  const [userData, setUserData] = useState({ ...user})
+
+
   const [lista, setLista] = useState([]);
   const [nomeUsuario, setNomeUsuario] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [selecionaImagem, setSelecionaImagem] = useState(null);
   const [visuImagem, setVisuImagem] = useState(null);
   const [usuarioInfo, setUsuarioInfo] = useState({
-    nome: "",
-    cpf: "",
-    email: "",
-    telefone: "",
+    nome: '',
+    cpf: '',
+    email: '',
+    telefone: '',
     visuImagem: ""
   });
   const [editando, setEditando] = useState(false);
@@ -78,31 +84,30 @@ const MenuLateral = () => {
 
   const pathName = usePathname();
 
-  useEffect(() => {
-    const getUsuario = async () => {
-      try {
-        const response = await axios.get(`http://localhost:3333/usuario`);
-        const dadosUsuario = response.data.dados;
-        console.log(dadosUsuario)
-        setLista(dadosUsuario);
-        const usuarioAtual = dadosUsuario[0];
-        setNomeUsuario(usuarioAtual.usu_nome);
-
-        setUsuarioInfo({
-          nome: usuarioAtual.usu_nome,
-          cpf: usuarioAtual.usu_CPF,
-          email: usuarioAtual.usu_email,
-          telefone: usuarioAtual.usu_telefone,
-          visuImagem: usuarioAtual.usu_img
-        });
-
-        // console.log(usuarioAtual)
-      } catch (error) {
-        console.error("Erro ao buscar usuários", error);
+  const handleChangeDataUser = (event) => {
+    let value = event.target.value;
+    let name = event.target.name;
+    console.log(userData)
+    setUserData((prevalue) => {
+      return {
+        ...prevalue,   // Spread Operator               
+        [name]: value
       }
-    };
-    getUsuario();
+    })
+
+    
+  }
+
+  useEffect(() => {
+    getUserData(user.usu_id)
   }, []);
+  
+  const getUserData = async usu_id => {
+    const response = await axios.get(`http://localhost:3333/usuarios/${usu_id}`);
+    const userData = response.data.dados
+
+    setUserData(userData)
+  }
 
   // Funções para abrir e fechar o modal
   const openModal = () => setModalOpen(true);
@@ -219,33 +224,33 @@ const MenuLateral = () => {
     const cpfValido = validacoes.cpf.validate(usuarioInfo.cpf);
     const nomeValido = validacoes.nome.validate(usuarioInfo.nome);
     const telefoneValido = validacoes.telefone.validate(usuarioInfo.telefone);
-  
+
     setEmailErro("");
     setCpfErro("");
     setNomeErro("");
     setTelefoneErro("");
-  
+
     // Verifica se todos os campos são válidos antes de continuar
     if (!emailValido) {
       setEmailErro(validacoes.email.messageError);
       return;
     }
-  
+
     if (!cpfValido) {
       setCpfErro(validacoes.cpf.messageError);
       return;
     }
-  
+
     if (!nomeValido) {
       setNomeErro(validacoes.nome.messageError);
       return;
     }
-  
+
     if (!telefoneValido) {
       setTelefoneErro(validacoes.telefone.messageError);
       return;
     }
-  
+
     // Se a imagem foi alterada, faz o upload
     if (!selecionaImagem) {
       Swal.fire({
@@ -256,28 +261,28 @@ const MenuLateral = () => {
       });
       return; // Impede o envio se nenhuma imagem for selecionada
     }
-  
+
     // Faz o envio da imagem
     const usuarioId = lista[0].usu_id; // seleciona o primeiro usuário da lista
-  
+
     const formData = new FormData();
     formData.append('img', selecionaImagem);
     formData.append('userCode', usuarioId);
-  
+
     try {
       const response = await axios.patch(
         `http://localhost:3333/Usuario/${usuarioId}/imagem`,
         formData,
         { headers: { 'content-type': 'multipart/form-data' } }
       );
-  
+
       if (response.status === 200) {
         const NovaImagem = response.data.imagePath;
         setUsuarioInfo((prev) => ({
           ...prev,
           visuImagem: NovaImagem
         }));
-  
+
         Swal.fire({
           title: 'Enviado',
           text: 'Imagem enviada com sucesso!',
@@ -294,7 +299,7 @@ const MenuLateral = () => {
         backdrop: false,
       });
     }
-  
+
     // Após o upload da imagem, salva os dados do usuário (nome, cpf, email, etc)
     const cpfSemFormatacao = usuarioInfo.cpf.replace(/[.-]/g, "");
     const dadosAtualizados = {
@@ -308,13 +313,13 @@ const MenuLateral = () => {
       usu_data_cadastro: "2024-09-23",
       empresa_id: 1,
     };
-  
+
     try {
       const response = await axios.patch(
         `http://localhost:3333/usuario/${usuarioId}`,
         dadosAtualizados
       );
-  
+
       if (response.status === 200) {
         Swal.fire({
           title: "Enviado!",
@@ -336,7 +341,7 @@ const MenuLateral = () => {
       });
     }
   };
-  
+
 
   return (
     <>
@@ -366,90 +371,94 @@ const MenuLateral = () => {
             </div>
 
             {/* Modal */}
-           <Modal isOpen={modalOpen} closeModal={closeModal}>
-  <div className={styles.modalTeste}>
-    <div className={styles.modalContent}>
-      <h2>Perfil</h2>
-      <form onSubmit={(e) => e.preventDefault()}>
-        <label>Foto de Perfil</label>
-        <div className={styles.imagePreviewContainer}>
-          {usuarioInfo.visuImagem ? (
-            <img src={usuarioInfo.visuImagem} alt="Foto de perfil" />
-          ) : (
-            <MdAccountCircle size={64} />
-          )}
-        </div>
+            <Modal isOpen={modalOpen} closeModal={closeModal}>
+              <div className={styles.modalTeste}>
+                <div className={styles.modalContent}>
+                  <h2>Perfil</h2>
+                  <form onSubmit={(e) => e.preventDefault()}>
+                    <label>Foto de Perfil</label>
+                    <div className={styles.imagePreviewContainer}>
+                      {usuarioInfo.visuImagem ? (
+                        <img src={usuarioInfo.visuImagem} alt="Foto de perfil" />
+                      ) : (
+                        <MdAccountCircle size={64} />
+                      )}
+                    </div>
 
-        {editando && (
-          <>
-            <label htmlFor="imageUpload" className={styles.EscollherArquivo}>
-              Escolher Arquivo
-            </label>
-            <input
-              className={styles.file}
-              type="file"
-              id="imageUpload"
-              accept="image/*"
-              onChange={handleImagemChange}
-            />
-          </>
-        )}
+                    {editando && (
+                      <>
+                        <label htmlFor="imageUpload" className={styles.EscollherArquivo}>
+                          Escolher Arquivo
+                        </label>
+                        <input
+                          className={styles.file}
+                          type="file"
+                          id="imageUpload"
+                          accept="image/*"
+                          onChange={handleImagemChange}
+                        />
+                      </>
+                    )}
 
-        <label htmlFor="nome">Nome</label>
-        <input
-          id="nome"
-          type="text"
-          value={usuarioInfo.nome}
-          onChange={handleChange}
-          placeholder="Nome"
-          readOnly={!editando}
-        />
-        {nomeErro && <p style={{ color: "red" }}>{nomeErro}</p>}
+                    <label htmlFor="nome">Nome</label>
+                    <input
+                      id="nome"
+                      type="text"
+                      value={userData.usu_nome}
+                      name="usu_nome"
+                      onChange={handleChangeDataUser}
+                      placeholder="Nome"
+                      readOnly={!editando}
+                    />
+                    {nomeErro && <p style={{ color: "red" }}>{nomeErro}</p>}
 
-        <label htmlFor="cpf">CPF</label>
-        <InputMask
-          mask="999.999.999-99"
-          id="cpf"
-          type="text"
-          value={usuarioInfo.cpf}
-          onChange={handleChange}
-          placeholder="CPF"
-          readOnly={!editando}
-        />
-        {cpfErro && <p style={{ color: "red" }}>{cpfErro}</p>}
+                    <label htmlFor="cpf">CPF</label>
+                    <InputMask
+                      mask="999.999.999-99"
+                      id="cpf"
+                      type="text"
+                      name="usu_CPF"
+                      value={userData.usu_CPF}
+                      onChange={handleChangeDataUser}
+                      placeholder="CPF"
+                      readOnly={!editando}
+                    />
+                    {cpfErro && <p style={{ color: "red" }}>{cpfErro}</p>}
 
-        <label htmlFor="email">Email</label>
-        <input
-          id="email"
-          type="text"
-          value={usuarioInfo.email}
-          onChange={handleChange}
-          placeholder="Email"
-          readOnly={!editando}
-        />
-        {emailErro && <p style={{ color: "red" }}>{emailErro}</p>}
+                    <label htmlFor="email">Email</label>
+                    <input
+                      id="email"
+                      type="text"
+                      value={userData.usu_email}
+                      name="usu_email"
+                      onChange={handleChangeDataUser}
+                      placeholder="Email"
+                      readOnly={!editando}
+                    />
+                    {emailErro && <p style={{ color: "red" }}>{emailErro}</p>}
 
-        <label htmlFor="telefone">Telefone</label>
-        <InputMask
-          id="telefone"
-          mask="(99) 99999-9999"
-          type="text"
-          value={usuarioInfo.telefone}
-          onChange={handleChange}
-          placeholder="Telefone do usuário"
-          readOnly={!editando}
-        />
-        {telefoneErro && <p style={{ color: "red" }}>{telefoneErro}</p>}
-      </form>
+                    <label htmlFor="telefone">Telefone</label>
+                    <InputMask
+                      id="telefone"
+                      mask="(99) 99999-9999"
+                      type="text"
+                      value={userData.usu_telefone}
+                      name="usu_telefone"
+                      onChange={handleChangeDataUser}
+                      placeholder="Telefone do usuário"
+                      readOnly={!editando}
+                    />
+                    {telefoneErro && <p style={{ color: "red" }}>{telefoneErro}</p>}
+                  </form>
 
-      <button onClick={editando ? handleSubmit : toggleEdit}>
-        {editando ? "Salvar" : "Editar"}
-      </button>
+                  <button onClick={editando ? handleSubmit : toggleEdit}>
+                    {editando ? "Salvar" : "Editar"}
+                  </button>
 
-      <button onClick={closeModal}>Fechar</button>
-    </div>
-  </div>
-</Modal>
+                  <button onClick={closeModal}>Fechar</button>
+                </div>
+              </div>
+            </Modal>
 
 
             <Link

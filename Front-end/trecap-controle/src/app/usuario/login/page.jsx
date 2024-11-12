@@ -9,16 +9,21 @@ import { useRouter } from "next/navigation";
 import Form from "@/components/Form";
 import Link from "next/link";
 import useForm from "@/hooks/useForm";
+import { useContext } from "react";
+import { UserContext } from "@/context/userContext";
 
 export default function Login() {
   const email = useForm();
   const password = useForm();
 
+  const { handleLogin } = useContext(UserContext)
+
   const router = useRouter()
 
   const handleClick = (e) => {
     e.preventDefault()
-    router.push('/home/gestor')
+    handleLogin({email: email.value, password: password.value})
+    router.push('/usuario/cadastroColaborador')
   }
 
   return (

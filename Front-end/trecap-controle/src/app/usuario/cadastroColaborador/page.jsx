@@ -11,37 +11,47 @@ import { MdSearch, MdEdit, MdDelete } from "react-icons/md";
 import { IconContext } from "react-icons";
 import MenuLateral from "@/components/menuLateral/page";
 import Swal from "sweetalert2";
+import ColaboradorItem from "./colaboradorItem";
+import Loading from "@/components/loading";
+import ColaboradorList from "./ColaboradorList";
 
 export default function CadastrarEvento() {
   const router = useRouter();
 
-  const [lista, setLista] = useState([]);
-  const [showModal, setShowModal] = useState(false); // Estado para controlar o modal de edição
-  const [showDeleteModal, setShowDeleteModal] = useState(false); // Estado para o modal de exclusão
-  const [selectedColaborador, setSelectedColaborador] = useState(null); // Colaborador a ser editado
-  const [colaboradorToDelete, setColaboradorToDelete] = useState(null); // Colaborador a ser excluído
-  const [pesquisar, setPesquisar] = useState('');
-  const [resultadosPesquisa, setResultadosPesquisa] = useState([]);
-  const [mensagemNaoEncontrado, setMensagemNaoEncontrado] = useState('');
   const nome = useForm("nome");
   const email = useForm("email");
   const CPF = useForm("CPF");
   const biometria = useForm("biometria");
   const telefone = useForm("telefone");
+
+  const [showModal, setShowModal] = useState(false); // Estado para controlar o modal de edição
+  const [showDeleteModal, setShowDeleteModal] = useState(false); // Estado para o modal de exclusão
+  const [selectedColaborador, setSelectedColaborador] = useState(null); // Colaborador a ser editado
+  const [colaboradorToDelete, setColaboradorToDelete] = useState(null); // Colaborador a ser excluído
+  const [pesquisar, setPesquisar] = useState('');
   const [paginaAtual, setPaginaAtual] = useState(1);
   const itensPorPagina = 10;
   const irParaPagina = (pagina) => {
     setPaginaAtual(pagina);
   };
 
+  const [colaboradores, setColaboradores] = useState([]);
+  const [isLoading, setIsLoading] = useState(false)
+
   const getColaboradores = async () => {
     try {
-      const response = await axios.get(`http://localhost:3333/colaboradores?page=${paginaAtual}&limit=${itensPorPagina}`);
+      const filterColaborador = pesquisar.length === 0 ? '' : `filter=${pesquisar}`
+
+      setIsLoading(true)
+
+      const response = await axios.get(`http://localhost:3333/colaboradores?page=${paginaAtual}&${filterColaborador}`);
       const dadosColaboradores = response.data.dados;
-      setLista(dadosColaboradores);
-      setResultadosPesquisa(dadosColaboradores);
+
+      setColaboradores(dadosColaboradores);
     } catch (error) {
       console.log("Erro ao buscar colaboradores", error);
+    } finally {
+      setIsLoading(false)
     }
   };
 
@@ -49,21 +59,21 @@ export default function CadastrarEvento() {
     getColaboradores();
   }, [paginaAtual]);
 
-  const totalPaginas = Math.ceil(resultadosPesquisa.length / itensPorPagina);
+  const totalPaginas = 10;
 
-    // Função para ir para a página anterior
-    const paginaAnterior = () => {
-      if (paginaAtual > 1) {
-        setPaginaAtual(paginaAtual - 1);
-      }
-    };
-  
-    // Função para ir para a próxima página
-    const paginaSeguinte = () => {
-      if (paginaAtual < totalPaginas) {
-        setPaginaAtual(paginaAtual + 1);
-      }
-    };
+  // Função para ir para a página anterior
+  const paginaAnterior = () => {
+    if (paginaAtual > 1) {
+      setPaginaAtual(paginaAtual - 1);
+    }
+  };
+
+  // Função para ir para a próxima página
+  const paginaSeguinte = () => {
+    if (paginaAtual < totalPaginas) {
+      setPaginaAtual(paginaAtual + 1);
+    }
+  };
 
   const handleCancelar = () => {
     CPF.setValue("");
@@ -76,10 +86,10 @@ export default function CadastrarEvento() {
   };
 
   const indiceInicial = (paginaAtual - 1) * itensPorPagina;
-  const colaboradoresPagina = resultadosPesquisa.slice(
-    indiceInicial,
-    indiceInicial + itensPorPagina
-  );
+  // const colaboradoresPagina = resultadosPesquisa.slice(
+  //   indiceInicial,
+  //   indiceInicial + itensPorPagina
+  // );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -125,28 +135,6 @@ export default function CadastrarEvento() {
       console.log("Erro ao cadastrar colaborador", error);
     }
   };
-
-
-  // -----------------------------------------------------
-  const pesquisaChange = (e) => {
-    setPesquisar(e.target.value);
-    // handleSearch(e.target.value) //Atualiza na digitação
-  };
-
-  const handleSearch = (valor) => {
-    const filtrados = lista.filter(colaborador =>
-      colaborador.colaborador_nome.toLowerCase().startsWith(pesquisar.toLowerCase())
-    );
-    setResultadosPesquisa(filtrados);
-    setPaginaAtual(1);
-
-    if (filtrados.length === 0) {
-      setMensagemNaoEncontrado('Nenhum colaborador encontrado!');
-    } else {
-      setMensagemNaoEncontrado('');
-    }
-  };
-
 
   const handleSalvar = async (e) => {
     e.preventDefault();
@@ -206,8 +194,6 @@ export default function CadastrarEvento() {
 
   const limparPesquisa = () => {
     setPesquisar('');
-    setResultadosPesquisa(lista); // Retorna a lista completa
-    setMensagemNaoEncontrado('');
   };
 
   // -----------------------------------------------------
@@ -396,15 +382,15 @@ export default function CadastrarEvento() {
 
               <div className={style.Novo}>
                 <label htmlFor="">Pesquisar Colaboradores:</label>
-                <form onSubmit={(e) => { e.preventDefault(); handleSearch(); }}>
+                <div>
                   <div className={style.InputIcon}>
                     <input
                       type="text"
                       placeholder="Digite o nome do Colaborador"
                       value={pesquisar}
-                      onChange={pesquisaChange}
+                      onChange={({ target }) => setPesquisar(target.value)}
                     />
-                    <button onClick={handleSearch}>
+                    <button onClick={getColaboradores}>
                       <IconContext.Provider value={{ size: 25 }}>
                         <MdSearch />
                       </IconContext.Provider>
@@ -413,7 +399,7 @@ export default function CadastrarEvento() {
                       Limpar
                     </button>
                   </div>
-                </form>
+                </div>
 
                 <div className={style.containerColaborador}>
                   <div className={style.ContainerCabecalho}>
@@ -422,40 +408,9 @@ export default function CadastrarEvento() {
                     <div className={style.ContainerEmail}>Email</div>
                     <div className={style.ContainerBotaoTeste}>Ações</div>
                   </div>
-                  {resultadosPesquisa &&
-                    resultadosPesquisa.map((colaborador, index) => (
-                      <div key={index} className={style.ContainerDivs}>
-                        <div className={style.ContainerId}>
-                          {colaborador.colaborador_id}
-                        </div>
-                        <div className={style.ContainerNome}>
-                          {colaborador.colaborador_nome}
-                        </div>
-                        <div className={style.ContainerEmail}>
-                          {colaborador.colaborador_email}
-                        </div>
-                        <div className={style.ContainerBotaoEditar}>
-                          <button
-                            type="button"
-                            className={style.ButtonEditar}
-                            onClick={() => handleEdit(colaborador)}
-                          >
-                            <IconContext.Provider value={{ size: 20 }}>
-                              <MdEdit />
-                            </IconContext.Provider>
-                          </button>
-                          <button
-                            type="button"
-                            className={style.ButtonExcluir}
-                            onClick={() => confirmDelete(colaborador)}
-                          >
-                            <IconContext.Provider value={{ size: 20 }}>
-                              <MdDelete />
-                            </IconContext.Provider>
-                          </button>
-                        </div>
-                      </div>
-                    ))}
+                  {isLoading
+                    ? <Loading />
+                    : <ColaboradorList colaboradores={colaboradores} />}
                   {/* Navegação de página */}
                   <div className={style.ContainerPaginacao}>
                     <p>Página {paginaAtual} de {totalPaginas}</p>
@@ -485,9 +440,6 @@ export default function CadastrarEvento() {
                       </button>
                     </div>
                   </div>
-                  {mensagemNaoEncontrado && (
-                    <p className={style.mensagemNaoEncontrado}>{mensagemNaoEncontrado}</p>
-                  )}
                 </div>
               </div>
             </div>

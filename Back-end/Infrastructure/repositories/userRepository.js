@@ -53,7 +53,7 @@ class UserRepository {
 
     async getUserByEmail(email) {
         const sql = `SELECT usu_id, usu_nome, usu_CPF, tipo_usuario_id, usu_ativo = 1 AS usu_ativo,
-            usu_email, usu_senha, usu_telefone, usu_data_cadastro, empresa_id FROM Usuario
+            usu_email, usu_senha, usu_telefone, usu_data_cadastro, empresa_id FROM usuario
             WHERE usu_ativo = 1 and usu_email = ?;`;
 
         const [queryResult] = await connection.query(sql, email)
