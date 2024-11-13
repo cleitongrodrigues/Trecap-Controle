@@ -3,17 +3,17 @@
 import { useAuth } from "@/context/userContext"
 import { useEffect, useState } from 'react'
 import { useRouter } from "next/navigation";
+import Loading from "../loading";
 
 
-export default function ProtectedRoute({ children, allowedRoles = [1]}) {
-    const { user, isLogged } = useAuth()
+export default function ProtectedRoute({ children}) {
+    const { user, isLogged, isLoading, token } = useAuth()
     const router = useRouter()
     
+    if(isLoading) return <Loading />
     if(!isLogged) {
-        router.push('/usuario/login')
-        return null
+        router.push("/usuario/login")
     }
     
-    if(!allowedRoles.includes(user.userType)) return <div>Você não tem permissão para acessar essa rota</div>
     return children
 }

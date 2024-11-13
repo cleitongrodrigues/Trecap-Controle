@@ -24,10 +24,7 @@ router.get('/protected', isProtected(['admin']), UsuarioController.private)
 router.get('/colaboradores', isProtected(['admin']), ColaboradorController.ListarColaboradores);
 router.get('/colaboradores/:colaborador_id', ColaboradorController.ListarColaborador);
 router.post('/colaboradores', ColaboradorController.CadastrarColaborador)
-
-// router.post('/Colaboradores', ColaboradorController.CadastrarColaboradores);
-// router.patch('/Colaboradores/:colaborador_id', ColaboradorController.EditarColaboradores);
-// router.delete('/Colaboradores/:colaborador_id', ColaboradorController.ApagarColaboradores);
+router.delete('/colaboradores/:colaborador_id', ColaboradorController.ApagarColaborador)
 
 // router.get('/Empresa', EmpresaController.ListarEmpresa);
 // router.post('/Empresa', EmpresaController.CadastrarEmpresa);
@@ -39,12 +36,6 @@ router.post('/colaboradores', ColaboradorController.CadastrarColaborador)
 // router.post('/Evento', EventoController.CadastrarEvento);
 // router.patch('/Evento/:evento_id', EventoController.EditarEvento);
 // router.delete('/Evento/:evento_id', EventoController.ApagarEvento);
-
-
-// router.get('/TipoUsuario', TipoUsuarioController.ListarTipoUSuario);
-// router.post('/TipoUsuario', TipoUsuarioController.CadastrarTipoUsuario);
-// router.patch('/TipoUsuario/:tipo_usuario_id', TipoUsuarioController.EditarTipoUsuario);
-// router.delete('/TipoUsuario/:tipo_usuario_id', TipoUsuarioController.ApagarTipoUsuario);
 
 router.get("/setores/:empresa_id", SetorController.ListarSetores)
 

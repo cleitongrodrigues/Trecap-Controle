@@ -1,4 +1,5 @@
 import ColaboradorService from "../../Application/Services/Colaborador/ColaboradorService.js";
+import connection from "../../Infrastructure/database/connection.js";
 
 
 export const ColaboradorController = {
@@ -55,11 +56,23 @@ export const ColaboradorController = {
     async ApagarColaborador(request, response, next)
     {
         try{
+            const { colaborador_id } = request.params
+            const sql = `UPDATE colaboradores SET colaborador_ativo = 0
+                WHERE colaborador_id = ?;`;
 
+            const values = [colaborador_id];
+
+            const [result] = await connection.query(sql, values);
+
+            console.log(result)
+
+            return response.status(200).json({
+                message: "Sucess"
+            })
         }
         catch (error)
         {
-
+            next(error)
         }
     }
 }

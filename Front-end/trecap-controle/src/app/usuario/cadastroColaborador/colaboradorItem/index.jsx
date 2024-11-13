@@ -28,7 +28,7 @@ export default function ColaboradorItem({key, colaborador, onClickEditar, onClic
                 <button
                     type="button"
                     className={style.ButtonExcluir}
-                    onClick={onClickExcluir}
+                    onClick={()=>onClickExcluir(colaborador.colaborador_id)}
                 >
                     <IconContext.Provider value={{ size: 20 }}>
                         <MdDelete />
