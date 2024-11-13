@@ -38,7 +38,7 @@ export default function CadastrarEvento() {
 
   const [colaboradores, setColaboradores] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
-  const { user } = useContext(UserContext)
+  const { user, token } = useContext(UserContext)
 
   const getColaboradores = async () => {
     try {
@@ -46,7 +46,7 @@ export default function CadastrarEvento() {
 
       setIsLoading(true)
 
-      const response = await axios.get(`http://localhost:3333/colaboradores?page=${paginaAtual}&${filterColaborador}`, {headers:{'Authorization': `Bearer ${window.localStorage.getItem('token')}`}});
+      const response = await axios.get(`http://localhost:3333/colaboradores?page=${paginaAtual}&${filterColaborador}`, {headers:{'Authorization': `Bearer ${token}`}});
       const dadosColaboradores = response.data.dados;
 
       setColaboradores(dadosColaboradores);
