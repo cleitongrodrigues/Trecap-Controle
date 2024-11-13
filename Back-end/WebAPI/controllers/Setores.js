@@ -6,7 +6,7 @@ const SetorController = {
 
             const {empresa_id} = request.params
 
-            const sql = `SELECT setor_nome FROM Setores where empresa_id = ?;`;
+            const sql = `SELECT setor_id, setor_nome FROM Setores where empresa_id = ?;`;
 
             const Setoress = await connection.query(sql, empresa_id)
 

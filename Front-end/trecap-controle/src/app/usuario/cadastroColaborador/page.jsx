@@ -40,6 +40,7 @@ export default function CadastrarEvento() {
   const [isLoading, setIsLoading] = useState(false)
   const { user, token } = useContext(UserContext)
 
+  
   const getColaboradores = async () => {
     try {
       const filterColaborador = pesquisar.length === 0 ? '' : `filter=${pesquisar}`
