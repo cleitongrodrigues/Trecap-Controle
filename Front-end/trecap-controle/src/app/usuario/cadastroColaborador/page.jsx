@@ -78,7 +78,7 @@ export default function CadastrarEvento() {
     }
   };
 
-const getSetores = async () => {
+const getSetores = async () => { // para fazer a pesqusiar basta usar o user.empresaId
   try {
     const response = await axios.get("http://localhost:3333/setores"); // Ajuste a rota conforme necessário
     setSetores(response.data);
