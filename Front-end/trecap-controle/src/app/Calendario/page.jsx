@@ -76,31 +76,33 @@ export default function Calendario() {
 
       } else {
         // Criação de novo evento
-        const newEvent = {
-          title: eventData.title,
-          start: selectedDate.startStr,
-          end: selectedDate.endStr,
-          allDay: selectedDate.allDay,
-          professor: eventData.professor,
-          description: eventData.description,
-          usu_id: 1
-        };
+        if (selectedDate && selectedDate.startStr && selectedDate.endStr) {
+          const newEvent = {
+            title: eventData.title,
+            start: selectedDate.startStr,
+            end: selectedDate.endStr,
+            allDay: selectedDate.allDay,
+            professor: eventData.professor,
+            description: eventData.description,
+            usu_id: 1
+          };
 
-        try {
-          const response = await axios.post("http://localhost:3333/evento", {
-            usu_id: newEvent.usu_id,
-            evento_nome: newEvent.title,
-            evento_data_inicio: newEvent.start,
-            evento_data_termino: newEvent.end,
-            evento_local: "treino",
-            evento_status: 1,
-            evento_professor: newEvent.professor
-          });
+          try {
+            const response = await axios.post("http://localhost:3333/evento", {
+              usu_id: newEvent.usu_id,
+              evento_nome: newEvent.title,
+              evento_data_inicio: newEvent.start,
+              evento_data_termino: newEvent.end,
+              evento_local: "treino",
+              evento_status: 1,
+              evento_professor: newEvent.professor
+            });
 
-          const createdEvent = { ...newEvent, id: response.data.id }; // Adiciona ID real retornado pela API
-          setEvents([...events, createdEvent]);
-        } catch (error) {
-          console.error("Erro ao criar o evento:", error);
+            const createdEvent = { ...newEvent, id: response.data.id }; // Adiciona ID real retornado pela API
+            setEvents([...events, createdEvent]);
+          } catch (error) {
+            console.error("Erro ao criar o evento:", error);
+          }
         }
       }
     }
