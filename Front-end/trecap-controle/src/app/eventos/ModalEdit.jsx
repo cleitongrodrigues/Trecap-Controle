@@ -2,22 +2,14 @@ import { useState } from 'react';
 import style from './modal.module.css';
 import axios from 'axios';
 
-
-
-
 const ModalEdit = ({ evento, onClose, onSave }) => {
-    
-    // Cria uma cópia do evento para edição
     const [eventoEditado, setEventoEditado] = useState({ ...evento });
-
-    // Estados para mensagens de erro
     const [errors, setErrors] = useState({
         nome: '',
         dataInicio: '',
         horaInicio: '',
     });
 
-    // Função para lidar com as mudanças no nome, data e hora
     const handleChange = (e) => {
         const { name, value } = e.target;
         setEventoEditado((prev) => ({
@@ -32,43 +24,50 @@ const ModalEdit = ({ evento, onClose, onSave }) => {
         }));
     };
 
-    // Função para enviar as edições
     const handleSubmit = async () => {
         let isValid = true;
         const newErrors = {};
-    
+
         // Validação dos campos
         if (!eventoEditado.evento_nome) {
             newErrors.nome = 'O nome do evento não pode estar vazio.';
             isValid = false;
         }
-    
+
+        // Validação da data de início
         const dataEventoInicio = new Date(eventoEditado.evento_data_inicio);
         if (isNaN(dataEventoInicio.getTime())) {
             newErrors.dataInicio = 'Data de início inválida!';
             isValid = false;
         }
-    
+
         const horaEventoInicio = eventoEditado.evento_hora;
         if (!horaEventoInicio) {
             newErrors.horaInicio = 'A hora de início não pode estar vazia.';
             isValid = false;
         }
-    
+
         // Se houver algum erro, não prosseguir
         if (!isValid) {
             setErrors(newErrors);
             return;
         }
-    
+
         try {
+            // Evitar conversão de data para UTC ou outro fuso horário
+            const dataEventoInicio = eventoEditado.evento_data_inicio; // Não fazer "new Date()" aqui, pois o formato é YYYY-MM-DD
+            const dataHoraInicio = `${dataEventoInicio}T${eventoEditado.evento_hora}:00`; // Concatenando hora com a data
+
             // Enviar a requisição de atualização
-            const response = await axios.patch(`http://localhost:3000/Eventos/${eventoEditado.evento_id}`, {
-                evento_nome: eventoEditado.evento_nome,
-                evento_data_inicio: eventoEditado.evento_data_inicio,
-                evento_hora: eventoEditado.evento_hora,  // Apenas os campos que precisam ser atualizados
-            });
-    
+            const response = await axios.patch(
+                `http://localhost:3333/Eventos/${eventoEditado.evento_id}`,
+                {
+                    evento_nome: eventoEditado.evento_nome,
+                    evento_data_inicio: dataHoraInicio,  // Enviar a data e hora já no formato correto
+                    evento_hora: eventoEditado.evento_hora,
+                }
+            );
+
             if (response.status === 200) {
                 alert('Evento atualizado com sucesso!');
                 onSave(eventoEditado); // Atualiza a lista de eventos
@@ -77,8 +76,8 @@ const ModalEdit = ({ evento, onClose, onSave }) => {
                 alert('Erro ao atualizar o evento.');
             }
         } catch (error) {
-            console.error('Erro no axios:', error.response || error.message|| error);
-            // alert('Erro ao salvar as alterações. Tente novamente.');
+            console.error('Erro no axios:', error.response || error.message || error);
+            alert('Erro ao salvar as alterações. Tente novamente.');
         }
     };
 
@@ -105,7 +104,7 @@ const ModalEdit = ({ evento, onClose, onSave }) => {
                     type="date"
                     id="evento_data_inicio"
                     name="evento_data_inicio"
-                    value={eventoEditado.evento_data_inicio.split('T')[0]} // Exibindo apenas a data
+                    value={eventoEditado.evento_data_inicio} // Mostrar no formato YYYY-MM-DD
                     onChange={handleChange}
                 />
                 {errors.dataInicio && <p className={style.error}>{errors.dataInicio}</p>} {/* Mensagem de erro */}

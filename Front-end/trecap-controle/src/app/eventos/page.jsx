@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import MenuLateral from '@/components/menuLateral/page';
 import { useEffect, useState } from 'react';
 import ModalEdit from './ModalEdit'; // Certifique-se de que o caminho está correto
+import axios from 'axios'; // Certifique-se de importar o axios
 
 const Icones = {
     Psicologia() {
@@ -32,12 +33,11 @@ export default function Evento() {
     // Função para buscar os eventos
     const fetchEventos = async () => {
         try {
-            const response = await fetch('http://localhost:3333/Eventos');
-            if (!response.ok) {
+            const response = await axios.get('http://localhost:3333/Eventos');
+            if (response.status !== 200) {
                 throw new Error(`Erro ${response.status}: Não foi possível carregar os eventos.`);
             }
-            const data = await response.json();
-            console.log("Dados recebidos da API:", data);
+            const data = response.data;  // Alterado para acessar os dados com axios
 
             const eventosFiltrados = data.dados.filter(evento => {
                 if (!evento.evento_data_inicio || !evento.evento_hora) {
@@ -70,56 +70,48 @@ export default function Evento() {
     const handleSaveEdit = async (eventoEditado) => {
         try {
             // Verifica se a data de início é válida
-            const dataEventoInicio = new Date(eventoEditado.evento_data_inicio);
-            if (isNaN(dataEventoInicio.getTime())) {
+            const dataEventoInicio = eventoEditado.evento_data_inicio; // Data já no formato 'YYYY-MM-DD'
+            if (!dataEventoInicio) {
                 alert("Data de início inválida!");
                 return;
             }
-    
+
             // Extrai a hora e minuto de 'evento_hora' e combina com a data de início
             const [hora, minuto] = eventoEditado.evento_hora.split(':');
             if (!hora || !minuto) {
                 alert("Hora de início inválida!");
                 return;
             }
-            dataEventoInicio.setHours(hora, minuto, 0, 0); // Ajusta a hora e minuto para a data
-    
-            // Converte a data e hora para o formato ISO 8601 (UTC)
-            const eventoDataInicioISO = dataEventoInicio.toISOString(); // Exemplo: "2024-11-08T20:20:00.000Z"
-    
-            // Cria um novo objeto com a data de início no formato ISO
+
+            // Formata a data e hora no formato esperado pelo banco (sem manipulação de fuso horário)
+            const dataEventoStr = `${dataEventoInicio} ${hora}:${minuto}:00`;  // Exemplo: '2024-12-01 20:30:00'
+            
+            // Cria um novo objeto com a data e hora combinada
             const eventoEditadoComData = {
                 ...eventoEditado,
-                evento_data_inicio: eventoDataInicioISO
+                evento_data_inicio: dataEventoStr, // Salva no formato correto para o banco
             };
-    
-            // Agora enviamos a requisição PATCH
-            const response = await fetch(`http://localhost:3333/Eventos/${eventoEditadoComData.evento_id}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(eventoEditadoComData),
-            });
-    
-            if (!response.ok) {
+
+            // Envia a requisição PATCH para atualizar o evento
+            const response = await axios.patch(`http://localhost:3333/Eventos/${eventoEditadoComData.evento_id}`, eventoEditadoComData);
+
+            if (response.status !== 200) {
                 throw new Error(`Erro ao salvar evento: ${response.status}`);
             }
-    
+
             // Atualiza o evento localmente no estado
             setEventos((prevEventos) =>
                 prevEventos.map((evento) =>
                     evento.evento_id === eventoEditadoComData.evento_id ? eventoEditadoComData : evento
                 )
             );
-    
+
             setModalOpen(false); // Fecha a modal após salvar
         } catch (error) {
             console.error("Erro ao salvar evento:", error);
+            alert("Erro ao salvar evento. Tente novamente!");
         }
     };
-    
-    
 
     // Função para iniciar o evento
     const handleStart = (evento) => {
@@ -177,7 +169,7 @@ export default function Evento() {
                                 <div key={index} className={style.ContainerDivs}>
                                     <div className={style.IconeContainer}>
                                         <IconContext.Provider value={{ size: 100 }}>
-                                            {Icones[evento.iconeTipo] && Icones[evento.iconeTipo]()}
+                                            {Icones[evento.iconeTipo] && Icones[evento.iconeTipo]()} 
                                         </IconContext.Provider>
                                     </div>
                                     <div className={style.ContainerLabel}>
