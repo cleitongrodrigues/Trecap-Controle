@@ -64,8 +64,6 @@ export const ColaboradorController = {
 
             const [result] = await connection.query(sql, values);
 
-            console.log(result)
-
             return response.status(200).json({
                 message: "Sucess"
             })
