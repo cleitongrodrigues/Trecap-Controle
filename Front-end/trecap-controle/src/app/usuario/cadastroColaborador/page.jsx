@@ -15,6 +15,8 @@ import ColaboradorItem from "./colaboradorItem";
 import Loading from "@/components/loading";
 import ColaboradorList from "./ColaboradorList";
 import { UserContext } from "@/context/userContext";
+import ProtectedRoute from "@/components/ProtectedRoute";
+
 
 export default function CadastrarEvento() {
   const router = useRouter();
@@ -41,6 +43,13 @@ export default function CadastrarEvento() {
   const { user, token } = useContext(UserContext)
 
   
+  const onClickEditar = () => {}
+  const onClickExcluir = async (usu_id) =>
+  {
+    await axios.delete(`http://localhost:3333/colaboradores/${usu_id}`)
+    await getColaboradores();
+  }
+
   const getColaboradores = async () => {
     try {
       const filterColaborador = pesquisar.length === 0 ? '' : `filter=${pesquisar}`
@@ -57,6 +66,10 @@ export default function CadastrarEvento() {
       setIsLoading(false)
     }
   };
+
+  useEffect(() => {
+    getColaboradores();
+  }, [user]);
 
   useEffect(() => {
     getColaboradores();
@@ -234,6 +247,7 @@ export default function CadastrarEvento() {
 
   return (
     <>
+    <ProtectedRoute>
       {/* <CabecalhoLogado /> */}
       <MenuLateral />
       <div className={style.CorCinza}>
@@ -413,7 +427,7 @@ export default function CadastrarEvento() {
                   </div>
                   {isLoading
                     ? <Loading />
-                    : <ColaboradorList colaboradores={colaboradores} />}
+                    : <ColaboradorList onClickExcluir={onClickExcluir} colaboradores={colaboradores} />}
                   {/* Navegação de página */}
                   <div className={style.ContainerPaginacao}>
                     <p>Página {paginaAtual} de {totalPaginas}</p>
@@ -449,6 +463,7 @@ export default function CadastrarEvento() {
           </div>
         </div>
       </div>
+    </ProtectedRoute>
     </>
   );
 }

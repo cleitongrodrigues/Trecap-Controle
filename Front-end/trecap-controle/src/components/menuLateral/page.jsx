@@ -20,6 +20,7 @@ import Swal from "sweetalert2";
 import InputMask from "react-input-mask";
 import Calendario from "@/app/Calendario/page";
 import { UserContext } from "@/context/userContext";
+import ProtectedRoute from "../ProtectedRoute";
 
 const validacoes = {
   email: {
@@ -57,7 +58,7 @@ const validacoes = {
 const MenuLateral = () => {
   const { user } = useContext(UserContext)
 
-  const [userData, setUserData] = useState({ ...user})
+  const [userData, setUserData] = useState({ ...user })
 
 
   const [lista, setLista] = useState([]);
@@ -95,13 +96,13 @@ const MenuLateral = () => {
       }
     })
 
-    
+
   }
 
   useEffect(() => {
     getUserData(user.usu_id)
   }, []);
-  
+
   const getUserData = async usu_id => {
     const response = await axios.get(`http://localhost:3333/usuarios/${usu_id}`);
     const userData = response.data.dados
@@ -345,160 +346,162 @@ const MenuLateral = () => {
 
   return (
     <>
-      <div className={styles.menuLateral}>
-        <IconContext.Provider value={{ size: "2rem" }}>
-          <div className={styles.menuItems}>
-            <div className={styles.logo}>
-              <Link href="/home/gestor">
-                <h1 className={styles.logoTexto}>Trecap</h1>
-                <Image src={logo} className={styles.logoImage} />
-              </Link>
-            </div>
-
-            <div className={styles.Perfil}>
-              <Link href="#" onClick={openModal}>
-                {usuarioInfo.visuImagem ? (
-                  <img
-                    src={usuarioInfo.visuImagem}
-                    alt="Foto do usuário"
-                    className={styles.ImagemPerfil}
-                  />
-                ) : (
-                  <MdAccountCircle />
-                )}
-                {nomeUsuario || "Nome"}
-              </Link>
-            </div>
-
-            {/* Modal */}
-            <Modal isOpen={modalOpen} closeModal={closeModal}>
-              <div className={styles.modalTeste}>
-                <div className={styles.modalContent}>
-                  <h2>Perfil</h2>
-                  <form onSubmit={(e) => e.preventDefault()}>
-                    <label>Foto de Perfil</label>
-                    <div className={styles.imagePreviewContainer}>
-                      {usuarioInfo.visuImagem ? (
-                        <img src={usuarioInfo.visuImagem} alt="Foto de perfil" />
-                      ) : (
-                        <MdAccountCircle size={64} />
-                      )}
-                    </div>
-
-                    {editando && (
-                      <>
-                        <label htmlFor="imageUpload" className={styles.EscollherArquivo}>
-                          Escolher Arquivo
-                        </label>
-                        <input
-                          className={styles.file}
-                          type="file"
-                          id="imageUpload"
-                          accept="image/*"
-                          onChange={handleImagemChange}
-                        />
-                      </>
-                    )}
-
-                    <label htmlFor="nome">Nome</label>
-                    <input
-                      id="nome"
-                      type="text"
-                      value={userData.usu_nome}
-                      name="usu_nome"
-                      onChange={handleChangeDataUser}
-                      placeholder="Nome"
-                      readOnly={!editando}
-                    />
-                    {nomeErro && <p style={{ color: "red" }}>{nomeErro}</p>}
-
-                    <label htmlFor="cpf">CPF</label>
-                    <InputMask
-                      mask="999.999.999-99"
-                      id="cpf"
-                      type="text"
-                      name="usu_CPF"
-                      value={userData.usu_CPF}
-                      onChange={handleChangeDataUser}
-                      placeholder="CPF"
-                      readOnly={!editando}
-                    />
-                    {cpfErro && <p style={{ color: "red" }}>{cpfErro}</p>}
-
-                    <label htmlFor="email">Email</label>
-                    <input
-                      id="email"
-                      type="text"
-                      value={userData.usu_email}
-                      name="usu_email"
-                      onChange={handleChangeDataUser}
-                      placeholder="Email"
-                      readOnly={!editando}
-                    />
-                    {emailErro && <p style={{ color: "red" }}>{emailErro}</p>}
-
-                    <label htmlFor="telefone">Telefone</label>
-                    <InputMask
-                      id="telefone"
-                      mask="(99) 99999-9999"
-                      type="text"
-                      value={userData.usu_telefone}
-                      name="usu_telefone"
-                      onChange={handleChangeDataUser}
-                      placeholder="Telefone do usuário"
-                      readOnly={!editando}
-                    />
-                    {telefoneErro && <p style={{ color: "red" }}>{telefoneErro}</p>}
-                  </form>
-
-                  <button onClick={editando ? handleSubmit : toggleEdit}>
-                    {editando ? "Salvar" : "Editar"}
-                  </button>
-
-                  <button onClick={closeModal}>Fechar</button>
-                </div>
+      <ProtectedRoute>
+        <div className={styles.menuLateral}>
+          <IconContext.Provider value={{ size: "2rem" }}>
+            <div className={styles.menuItems}>
+              <div className={styles.logo}>
+                <Link href="/home/gestor">
+                  <h1 className={styles.logoTexto}>Trecap</h1>
+                  <Image src={logo} className={styles.logoImage} />
+                </Link>
               </div>
-            </Modal>
+
+              <div className={styles.Perfil}>
+                <Link href="#" onClick={openModal}>
+                  {usuarioInfo.visuImagem ? (
+                    <img
+                      src={usuarioInfo.visuImagem}
+                      alt="Foto do usuário"
+                      className={styles.ImagemPerfil}
+                    />
+                  ) : (
+                    <MdAccountCircle />
+                  )}
+                  {user.usu_nome || "Nome"}
+                </Link>
+              </div>
+
+              {/* Modal */}
+              <Modal isOpen={modalOpen} closeModal={closeModal}>
+                <div className={styles.modalTeste}>
+                  <div className={styles.modalContent}>
+                    <h2>Perfil</h2>
+                    <form onSubmit={(e) => e.preventDefault()}>
+                      <label>Foto de Perfil</label>
+                      <div className={styles.imagePreviewContainer}>
+                        {usuarioInfo.visuImagem ? (
+                          <img src={usuarioInfo.visuImagem} alt="Foto de perfil" />
+                        ) : (
+                          <MdAccountCircle size={64} />
+                        )}
+                      </div>
+
+                      {editando && (
+                        <>
+                          <label htmlFor="imageUpload" className={styles.EscollherArquivo}>
+                            Escolher Arquivo
+                          </label>
+                          <input
+                            className={styles.file}
+                            type="file"
+                            id="imageUpload"
+                            accept="image/*"
+                            onChange={handleImagemChange}
+                          />
+                        </>
+                      )}
+
+                      <label htmlFor="nome">Nome</label>
+                      <input
+                        id="nome"
+                        type="text"
+                        value={userData.usu_nome}
+                        name="usu_nome"
+                        onChange={handleChangeDataUser}
+                        placeholder="Nome"
+                        readOnly={!editando}
+                      />
+                      {nomeErro && <p style={{ color: "red" }}>{nomeErro}</p>}
+
+                      <label htmlFor="cpf">CPF</label>
+                      <InputMask
+                        mask="999.999.999-99"
+                        id="cpf"
+                        type="text"
+                        name="usu_CPF"
+                        value={userData.usu_CPF}
+                        onChange={handleChangeDataUser}
+                        placeholder="CPF"
+                        readOnly={!editando}
+                      />
+                      {cpfErro && <p style={{ color: "red" }}>{cpfErro}</p>}
+
+                      <label htmlFor="email">Email</label>
+                      <input
+                        id="email"
+                        type="text"
+                        value={userData.usu_email}
+                        name="usu_email"
+                        onChange={handleChangeDataUser}
+                        placeholder="Email"
+                        readOnly={!editando}
+                      />
+                      {emailErro && <p style={{ color: "red" }}>{emailErro}</p>}
+
+                      <label htmlFor="telefone">Telefone</label>
+                      <InputMask
+                        id="telefone"
+                        mask="(99) 99999-9999"
+                        type="text"
+                        value={userData.usu_telefone}
+                        name="usu_telefone"
+                        onChange={handleChangeDataUser}
+                        placeholder="Telefone do usuário"
+                        readOnly={!editando}
+                      />
+                      {telefoneErro && <p style={{ color: "red" }}>{telefoneErro}</p>}
+                    </form>
+
+                    <button onClick={editando ? handleSubmit : toggleEdit}>
+                      {editando ? "Salvar" : "Editar"}
+                    </button>
+
+                    <button onClick={closeModal}>Fechar</button>
+                  </div>
+                </div>
+              </Modal>
 
 
-            <Link
-              className={pathName === "/eventos" ? styles.active : ""}
-              href="/eventos"
-            >
-              <MdEventNote /> Eventos
-            </Link>
-            <Link href="/historico">
-              <MdHourglassBottom /> Histórico
-            </Link>
-            <Link
-              className={
-                pathName === "/Calendario" ? styles.active : ""
-              }
-              href="/Calendario"
-            >
-              <MdCalendarMonth /> Calendário
-            </Link>
+              <Link
+                className={pathName === "/eventos" ? styles.active : ""}
+                href="/eventos"
+              >
+                <MdEventNote /> Eventos
+              </Link>
+              <Link href="/historico">
+                <MdHourglassBottom /> Histórico
+              </Link>
+              <Link
+                className={
+                  pathName === "/Calendario" ? styles.active : ""
+                }
+                href="/Calendario"
+              >
+                <MdCalendarMonth /> Calendário
+              </Link>
 
-            <Link
-              className={
-                pathName === "/usuario/cadastroColaborador" ? styles.active : ""
-              }
-              href="/usuario/cadastroColaborador"
-            >
-              <MdPeople /> Colaboradores
-            </Link>
-          </div>
+              <Link
+                className={
+                  pathName === "/usuario/cadastroColaborador" ? styles.active : ""
+                }
+                href="/usuario/cadastroColaborador"
+              >
+                <MdPeople /> Colaboradores
+              </Link>
+            </div>
 
-          <div className={styles.menuFooter}>
-            <Link href="/configuracoes">
-              <MdSettings /> Configurações
-            </Link>
-            <Link href="/usuario/login">
-              <MdLogout /> Sair
-            </Link>
-          </div>
-        </IconContext.Provider>
-      </div>
+            <div className={styles.menuFooter}>
+              <Link href="/configuracoes">
+                <MdSettings /> Configurações
+              </Link>
+              <Link href="/usuario/login">
+                <MdLogout /> Sair
+              </Link>
+            </div>
+          </IconContext.Provider>
+        </div>
+      </ProtectedRoute>
     </>
   );
 };

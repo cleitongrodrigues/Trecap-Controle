@@ -116,7 +116,7 @@ export const UsuarioController = {
 
     },
 
-    async getUserInfo(request, response){
+    async getUserInfo(request, response, next){
         try {
             const { token } = request.body
             const tokenDecode = Auth.getTokenInfo(token)
