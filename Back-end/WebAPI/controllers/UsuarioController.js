@@ -111,12 +111,13 @@ export const UsuarioController = {
                 token: token
             })
         } catch (error) {
+            console.log(error)
             next(error)
         }
 
     },
 
-    async getUserInfo(request, response){
+    async getUserInfo(request, response, next){
         try {
             const { token } = request.body
             const tokenDecode = Auth.getTokenInfo(token)

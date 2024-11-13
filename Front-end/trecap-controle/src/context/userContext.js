@@ -43,7 +43,7 @@ export const UserProvider = ({ children }) => {
     useLayoutEffect(()=>{
         const token = window.localStorage.getItem('token')
 
-        if(token.length === 0) return
+        if(token?.length === 0) return
         setToken(token)
         handleGetUserInfo(token)
         setIsLogged(true)

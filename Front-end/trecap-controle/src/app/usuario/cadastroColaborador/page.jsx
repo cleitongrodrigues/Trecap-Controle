@@ -29,7 +29,7 @@ export default function CadastrarEvento() {
   const [showDeleteModal, setShowDeleteModal] = useState(false); // Estado para o modal de exclusão
   const [selectedColaborador, setSelectedColaborador] = useState(null); // Colaborador a ser editado
   const [colaboradorToDelete, setColaboradorToDelete] = useState(null); // Colaborador a ser excluído
-  const [pesquisar, setPesquisar] = useState('');
+  const [pesquisar, setPesquisar] = useState("");
   const [paginaAtual, setPaginaAtual] = useState(1);
   const itensPorPagina = 10;
   const irParaPagina = (pagina) => {
@@ -37,24 +37,29 @@ export default function CadastrarEvento() {
   };
 
   const [colaboradores, setColaboradores] = useState([]);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [setores, setSetores] = useState([]);
-  const { user, token } = useContext(UserContext)
+  const { user, token } = useContext(UserContext);
+  const [selectedOption, setSelectedOption] = useState("");
 
   const getColaboradores = async () => {
     try {
-      const filterColaborador = pesquisar.length === 0 ? '' : `filter=${pesquisar}`
+      const filterColaborador =
+        pesquisar.length === 0 ? "" : `filter=${pesquisar}`;
 
-      setIsLoading(true)
+      setIsLoading(true);
 
-      const response = await axios.get(`http://localhost:3333/colaboradores?page=${paginaAtual}&${filterColaborador}`, {headers:{'Authorization': `Bearer ${token}`}});
+      const response = await axios.get(
+        `http://localhost:3333/colaboradores?page=${paginaAtual}&${filterColaborador}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       const dadosColaboradores = response.data.dados;
 
       setColaboradores(dadosColaboradores);
     } catch (error) {
       console.log("Erro ao buscar colaboradores", error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
@@ -78,20 +83,20 @@ export default function CadastrarEvento() {
     }
   };
 
-const getSetores = async () => { // para fazer a pesqusiar basta usar o user.empresaId
-  try {
-    const response = await axios.get("http://localhost:3333/setores"); // Ajuste a rota conforme necessário
-    setSetores(response.data);
-  } catch (error) {
-    console.log("Erro ao buscar setores", error);
-  }
-};
+  const getSetores = async () => {
+    // para fazer a pesqusiar basta usar o user.empresaId
+    try {
+      const response = await axios.get("http://localhost:3333/setores"); // Ajuste a rota conforme necessário
+      setSetores(response.data);
+    } catch (error) {
+      console.log("Erro ao buscar setores", error);
+    }
+  };
 
-useEffect(() => {
-  getColaboradores();
-  getSetores(); // Busca setores quando o componente é montado
-}, [paginaAtual]);
-
+  useEffect(() => {
+    getColaboradores();
+    getSetores(); // Busca setores quando o componente é montado
+  }, [paginaAtual]);
 
   const handleCancelar = () => {
     CPF.setValue("");
@@ -99,6 +104,7 @@ useEffect(() => {
     nome.setValue("");
     biometria.setValue("");
     telefone.setValue("");
+    setSelectedOption("");
     setShowModal(false);
     setSelectedColaborador(null);
   };
@@ -116,7 +122,8 @@ useEffect(() => {
       !email.value ||
       !CPF.value ||
       !biometria.value ||
-      !telefone.value
+      !telefone.value ||
+      !selectedOption
     ) {
       Swal.fire({
         icon: "error",
@@ -136,7 +143,8 @@ useEffect(() => {
       colaborador_telefone: telefone.value,
       colaborador_ativo: 1,
       empresa_id: 1,
-      setor_id: 1,
+      // setor_id: 1,
+      setor_id: selectedOption
     };
 
     try {
@@ -211,7 +219,7 @@ useEffect(() => {
   };
 
   const limparPesquisa = () => {
-    setPesquisar('');
+    setPesquisar("");
   };
 
   // -----------------------------------------------------
@@ -303,6 +311,21 @@ useEffect(() => {
                         onBlur={telefone.onBlur}
                         placeholder="Digite o telefone do colaborador"
                       />
+                      <label>Setor</label>
+                      <select
+                      className={style.Combobox}
+                        // value={selectedOption}
+                        // onChange={handleChange}
+
+                      >
+                        <option value="" selected="selected">Setores</option>
+                        <option value="1">Gestão</option>
+                        <option value="2">Recursos Humanos</option>
+                        <option value="3">Produção</option>
+                        <option value="4">Administrativo</option>
+                        <option value="5">Financeiro</option>
+                        <option value="6">Jurídico</option>
+                      </select>
                     </div>
                   </div>
                 </form>
@@ -370,10 +393,7 @@ useEffect(() => {
                       <button type="submit" onClick={handleSalvar}>
                         Salvar
                       </button>
-                      <button
-                        type="button"
-                        onClick={handleCancelar}
-                      >
+                      <button type="button" onClick={handleCancelar}>
                         Cancelar
                       </button>
                     </form>
@@ -413,7 +433,11 @@ useEffect(() => {
                         <MdSearch />
                       </IconContext.Provider>
                     </button>
-                    <button type="button" onClick={limparPesquisa} className={style.ButtonLimpar}>
+                    <button
+                      type="button"
+                      onClick={limparPesquisa}
+                      className={style.ButtonLimpar}
+                    >
                       Limpar
                     </button>
                   </div>
@@ -426,14 +450,17 @@ useEffect(() => {
                     <div className={style.ContainerEmail}>Email</div>
                     <div className={style.ContainerBotaoTeste}>Ações</div>
                   </div>
-                  {isLoading
-                    ? <Loading />
-                    : <ColaboradorList colaboradores={colaboradores} />}
+                  {isLoading ? (
+                    <Loading />
+                  ) : (
+                    <ColaboradorList colaboradores={colaboradores} />
+                  )}
                   {/* Navegação de página */}
                   <div className={style.ContainerPaginacao}>
-                    <p>Página {paginaAtual} de {totalPaginas}</p>
+                    <p>
+                      Página {paginaAtual} de {totalPaginas}
+                    </p>
                     <div className={style.Paginacao}>
-
                       <button
                         disabled={paginaAtual === 1}
                         onClick={() => irParaPagina(paginaAtual - 1)}
@@ -444,11 +471,12 @@ useEffect(() => {
                         <button
                           key={index}
                           onClick={() => irParaPagina(index + 1)}
-                          className={paginaAtual === index + 1 ? style.PaginaAtiva : ""}
+                          className={
+                            paginaAtual === index + 1 ? style.PaginaAtiva : ""
+                          }
                         >
                           {index + 1}
                         </button>
-
                       ))}
                       <button
                         disabled={paginaAtual === totalPaginas}
