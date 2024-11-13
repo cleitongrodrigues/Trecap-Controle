@@ -37,6 +37,7 @@ export default function CadastrarEvento() {
 
   const [colaboradores, setColaboradores] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
+  const [setores, setSetores] = useState([]);
 
   const getColaboradores = async () => {
     try {
@@ -74,6 +75,21 @@ export default function CadastrarEvento() {
       setPaginaAtual(paginaAtual + 1);
     }
   };
+
+const getSetores = async () => {
+  try {
+    const response = await axios.get("http://localhost:3333/setores"); // Ajuste a rota conforme necessário
+    setSetores(response.data);
+  } catch (error) {
+    console.log("Erro ao buscar setores", error);
+  }
+};
+
+useEffect(() => {
+  getColaboradores();
+  getSetores(); // Busca setores quando o componente é montado
+}, [paginaAtual]);
+
 
   const handleCancelar = () => {
     CPF.setValue("");
