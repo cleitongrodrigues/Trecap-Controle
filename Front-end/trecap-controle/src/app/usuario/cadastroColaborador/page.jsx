@@ -2,7 +2,7 @@
 
 import CabecalhoLogado from "@/cabecalhoLogado/page";
 import style from "./page.module.css";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import InputMask from "react-input-mask";
 import { useRouter } from "next/navigation";
@@ -14,6 +14,7 @@ import Swal from "sweetalert2";
 import ColaboradorItem from "./colaboradorItem";
 import Loading from "@/components/loading";
 import ColaboradorList from "./ColaboradorList";
+import { UserContext } from "@/context/userContext";
 
 export default function CadastrarEvento() {
   const router = useRouter();
@@ -37,6 +38,7 @@ export default function CadastrarEvento() {
 
   const [colaboradores, setColaboradores] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
+  const { user } = useContext(UserContext)
 
   const getColaboradores = async () => {
     try {
@@ -44,7 +46,7 @@ export default function CadastrarEvento() {
 
       setIsLoading(true)
 
-      const response = await axios.get(`http://localhost:3333/colaboradores?page=${paginaAtual}&${filterColaborador}`);
+      const response = await axios.get(`http://localhost:3333/colaboradores?page=${paginaAtual}&${filterColaborador}`, {headers:{'Authorization': `Bearer ${window.localStorage.getItem('token')}`}});
       const dadosColaboradores = response.data.dados;
 
       setColaboradores(dadosColaboradores);

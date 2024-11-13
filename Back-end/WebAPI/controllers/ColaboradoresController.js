@@ -10,7 +10,9 @@ export const ColaboradorController = {
                 page: page || 1,
                 pageSize: pageSize || 10,
                 filter: filter,
+                usu_id: request.user.usu_id
             }
+
 
             const colaboradores = await ColaboradorService.getColaboradores(params)
 
