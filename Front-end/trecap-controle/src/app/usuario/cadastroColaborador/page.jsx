@@ -16,6 +16,7 @@ import Loading from "@/components/loading";
 import ColaboradorList from "./ColaboradorList";
 import { UserContext } from "@/context/userContext";
 
+
 export default function CadastrarEvento() {
   const router = useRouter();
 

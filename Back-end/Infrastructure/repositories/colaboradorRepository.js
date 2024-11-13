@@ -30,19 +30,17 @@ class ColaboradorRepository {
         const queryBuilder = new QueryBuilder("colaboradores")
         queryBuilder
             .whereAnd('colaborador_ativo = 1')
-            .whereAnd(`empresa_id = ${input.usu_id}`)
             .page(input.page)
             .limit(input.pageSize)
 
         if (input.filter) {
             queryBuilder.whereAnd(`colaborador_nome LIKE \'%${input.filter}%\'`)
-            queryBuilder.whereOr(`colaborador_email LIKE \'%${input.filter}%\'`)
-            queryBuilder.whereOr(`colaborador_id LIKE \'%${input.filter}%\'`)
         }
+
+        queryBuilder.whereAnd(`empresa_id = ${input.empresa_id}`)
 
         const sql = queryBuilder.build()
         const [colaboradores] = await connection.query(sql)
-
         return colaboradores.map(
             (colaboradorInfo) => {
                 return new ColaboradorResult(colaboradorInfo.colaborador_id, colaboradorInfo.colaborador_nome, colaboradorInfo.colaborador_cpf, colaboradorInfo.colaborador_email, colaboradorInfo.empresa_id, colaboradorInfo.setor_id)

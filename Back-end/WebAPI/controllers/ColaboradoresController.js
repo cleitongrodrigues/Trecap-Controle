@@ -10,7 +10,8 @@ export const ColaboradorController = {
                 page: page || 1,
                 pageSize: pageSize || 10,
                 filter: filter,
-                usu_id: request.user.usu_id
+                usu_id: request.user.usu_id,
+                empresa_id: request.user.empresa_id
             }
 
 
@@ -49,6 +50,16 @@ export const ColaboradorController = {
 
         } catch (error) {
             next(error)
+        }
+    },
+    async ApagarColaborador(request, response, next)
+    {
+        try{
+
+        }
+        catch (error)
+        {
+
         }
     }
 }
