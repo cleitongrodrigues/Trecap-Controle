@@ -1,6 +1,6 @@
-const db = require('../database/connection');
+import connection from "../../Infrastructure/database/connection.js";
 
-module.exports = {
+const SetorController = {
     async ListarSetores(request, response){
         try {
 
@@ -8,7 +8,7 @@ module.exports = {
 
             const sql = `SELECT setor_nome FROM Setores where empresa_id = ?;`;
 
-            const Setoress = await db.query(sql, empresa_id)
+            const Setoress = await connection.query(sql, empresa_id)
 
             const nItens = Setoress[0].length;
             return response.status(200).json({
@@ -37,7 +37,7 @@ module.exports = {
 
             const values = [setor_nome, empresa_id];
 
-            const execSql = await db.query(sql, values);
+            const execSql = await connectionb.query(sql, values);
 
             const setor_id = execSql[0].insertId;
             return response.status(200).json({
@@ -66,7 +66,7 @@ module.exports = {
 
             const values = [setor_nome, empresa_id];
 
-            const atualizaDados = await db.query(sql, values);
+            const atualizaDados = await connection.query(sql, values);
             return response.status(200).json({
                 sucesso: true,
                 mensagem: `Usuário ${setor_id} editado com sucesso!`,
@@ -89,7 +89,7 @@ module.exports = {
 
             const values = [setor_id];
 
-            const atualizacao = await db.query(sql, values);
+            const atualizacao = await connection.query(sql, values);
             return response.status(200).json({
                 sucesso: true,
                 mensagem: `Usuário ${setor_id} deletado com sucesso!`,
@@ -104,3 +104,5 @@ module.exports = {
         }
     }
 }
+
+export default SetorController

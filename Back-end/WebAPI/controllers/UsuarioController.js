@@ -1,6 +1,7 @@
 import CreateAdministratorUserInput from "../../Application/Contracts/User/CreateAdministratorUserInput.js";
 import UserService from "../../Application/Services/User/UserService.js"
 import Auth from "../../Infrastructure/Auth/Auth.js";
+import connection from "../../Infrastructure/database/connection.js";
 
 export const UsuarioController = {
     async ListarUsuarios(request, response, next) {
@@ -55,35 +56,33 @@ export const UsuarioController = {
         }
     },
 
-    // async EditarUsuario(request, response, next){
-    //     try {
+    async EditarUsuario(request, response, next){
+        try {
 
-    //         const {usu_nome, usu_CPF, tipo_usuario_id, 
-    //             usu_ativo, usu_email, usu_telefone, usu_data_cadastro, usu_ultimo_login} = request.body;
+            const {usu_nome, usu_CPF, tipo_usuario_id, usu_email, usu_telefone} = request.body;
 
-    //         const {usu_id} = request.params;
+            const {usu_id} = request.params;
 
-    //         const sql = `UPDATE Usuario SET usu_nome = ?, usu_CPF = ?, tipo_usuario_id = ?, 
-    //             usu_ativo = ?, usu_email = ?, usu_telefone = ?, usu_data_cadastro = ?, usu_ultimo_login = ?
-    //             WHERE usu_id = ?;`;
+            const sql = `UPDATE usuario SET usu_nome = ?, usu_CPF = ?, tipo_usuario_id = ?, usu_email = ?, usu_telefone = ?
+                WHERE usu_id = ?;`;
 
-    //         const values = [usu_nome, usu_CPF, tipo_usuario_id, 
-    //             usu_ativo, usu_email, usu_telefone, usu_data_cadastro, usu_ultimo_login, usu_id];
+            const values = [usu_nome, usu_CPF, tipo_usuario_id,  usu_email, usu_telefone, usu_id];
 
-    //         const atualizaDados = await db.query(sql, values);
-    //         return response.status(200).json({
-    //             sucesso: true,
-    //             mensagem: `Usuário ${usu_id} editado com sucesso!`,
-    //             dados: atualizaDados[0].affectedRows
-    //         });
-    //     } catch (error) {
-    //         return response.status(500).json({
-    //             sucesso: false,
-    //             mensagem: 'Erro ao editar usuário :(',
-    //             dados: error.mensagem
-    //         });
-    //     }
-    // },
+            const atualizaDados = await connection.query(sql, values);
+            return response.status(200).json({
+                sucesso: true,
+                mensagem: `Usuário ${usu_id} editado com sucesso!`,
+                dados: atualizaDados[0].affectedRows
+            });
+        } catch (error) {
+            console.log(error)
+            return response.status(500).json({
+                sucesso: false,
+                mensagem: 'Erro ao editar usuário :(',
+                dados: error.mensagem
+            });
+        }
+    },
 
     async ApagarUsuario(request, response, next) {
         try {

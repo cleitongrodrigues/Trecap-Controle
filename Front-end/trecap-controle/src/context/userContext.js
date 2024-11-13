@@ -2,7 +2,7 @@
 
 import { USER_GET_INFO, USER_GET_TOKEN } from "@/utils/endpointsAPI";
 import axios from "axios";
-import { useContext, createContext, useState, useLayoutEffect } from "react";
+import { useContext, createContext, useState, useLayoutEffect, useEffect } from "react";
 
 export const UserContext = createContext()
 
@@ -11,6 +11,7 @@ export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null)
     const [error, setError] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
+    const [token, setToken] = useState(null)
 
     const handleGetUserInfo = async token => {
         const userInfo = await axios.post(USER_GET_INFO, {token: token})
@@ -26,6 +27,7 @@ export const UserProvider = ({ children }) => {
             const responseToken = await axios.post(USER_GET_TOKEN, userInfo)
             const { token } = responseToken.data
             window.localStorage.setItem('token', token)
+            setToken(token)
             await handleGetUserInfo(token)
             return true
         } catch (e) {
@@ -37,6 +39,15 @@ export const UserProvider = ({ children }) => {
         }
 
     }
+
+    useLayoutEffect(()=>{
+        const token = window.localStorage.getItem('token')
+
+        if(token.length === 0) return
+        setToken(token)
+        handleGetUserInfo(token)
+        setIsLogged(true)
+    }, [])
 
     const handleLogout = () => {
         window.localStorage.removeItem('token')
@@ -52,7 +63,8 @@ export const UserProvider = ({ children }) => {
                 error,
                 isLogged,
                 handleLogin,
-                handleLogout
+                handleLogout,
+                token
             }
         }>
             {children}

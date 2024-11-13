@@ -9,7 +9,6 @@ class ColaboradorRepository {
     }
 
     async createColaborador(input) {
-        console.log(input)
         const { colaborador_nome, colaborador_CPF, colaborador_biometria, colaborador_ativo, colaborador_telefone, colaborador_email, empresa_id, setor_id } = input
 
         const values = [ colaborador_nome, colaborador_CPF, colaborador_biometria, colaborador_ativo, colaborador_telefone, colaborador_email, empresa_id, setor_id ]
@@ -31,6 +30,7 @@ class ColaboradorRepository {
         const queryBuilder = new QueryBuilder("colaboradores")
         queryBuilder
             .whereAnd('colaborador_ativo = 1')
+            .whereAnd(`empresa_id = ${input.usu_id}`)
             .page(input.page)
             .limit(input.pageSize)
 

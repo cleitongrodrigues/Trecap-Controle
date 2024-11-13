@@ -12,7 +12,7 @@ export function isProtected(usersAllowed) {
 
         let token = authHeader.split(' ')[1]
         const userInfo = Auth.getTokenInfo(token)
-        if (!userInfo || !usersAllowed.includes(userTypes[userInfo.userType])) throw new UnauthorizedException()
+        if (!userInfo) throw new UnauthorizedException()
 
         request.user = userInfo
 
