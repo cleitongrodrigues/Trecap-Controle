@@ -32,7 +32,7 @@ export default function Calendario() {
           professor: event.evento_professor,
           description: event.evento_local,
         }));
-        setEvents(fetchedEvents);
+        setEvents(fetchedEvents);  // Armazenando os eventos no estado
       } catch (error) {
         console.error("Erro ao carregar eventos:", error);
       }
@@ -165,7 +165,7 @@ export default function Calendario() {
           <FullCalendar
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
             initialView="dayGridMonth"
-            events={events}
+            events={events}  // Passando os eventos carregados para o calendário
             editable={true}
             selectable={true}
             selectMirror={true}

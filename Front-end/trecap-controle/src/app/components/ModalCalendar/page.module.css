@@ -75,3 +75,28 @@
 .btn-cancel:hover {
   background-color: #999;
 }
+
+.modal-clock {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.modal-time-picker {
+  margin-bottom: 10px;
+}
+
+.modal-time-picker label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.modal-time-picker input {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+}
+
+

@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function CustomModal({ isOpen, onClose, onConfirm }) {
+  const [startTime, setStartTime] = useState("00:00"); // Hora de início
+  const [endTime, setEndTime] = useState("00:00"); // Hora de término
+
   if (!isOpen) return null;
 
   const handleSubmit = (event) => {
@@ -9,7 +12,7 @@ export default function CustomModal({ isOpen, onClose, onConfirm }) {
     const professor = event.target.elements.professor.value;
     const description = event.target.elements.description.value;
 
-    onConfirm({ title, professor, description }); // Passa o título, professor e descrição
+    onConfirm({ title, professor, description, startTime, endTime });
   };
 
   return (
@@ -30,11 +33,37 @@ export default function CustomModal({ isOpen, onClose, onConfirm }) {
             className="modal-input"
           />
           <textarea
-            type="text"
             name="description"
             placeholder="Descrição do evento"
             className="modal-input"
           />
+
+          {/* Campo para a hora de início */}
+          <div className="modal-time-picker">
+            <label htmlFor="start-time">Hora de Início:</label>
+            <input
+              type="time"
+              id="start-time"
+              name="start-time"
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
+              className="modal-input"
+            />
+          </div>
+
+          {/* Campo para a hora de término */}
+          <div className="modal-time-picker">
+            <label htmlFor="end-time">Hora de Término:</label>
+            <input
+              type="time"
+              id="end-time"
+              name="end-time"
+              value={endTime}
+              onChange={(e) => setEndTime(e.target.value)}
+              className="modal-input"
+            />
+          </div>
+
           <div className="modal-actions">
             <button type="submit" className="btn-confirm">
               Confirmar
