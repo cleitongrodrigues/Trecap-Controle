@@ -36,4 +36,17 @@ export const ColaboradorController = {
             next(error)
         }
     },
+    async CadastrarColaborador(request, response, next)
+    {
+        try {
+            const colaborador = await ColaboradorService.createColaboradores(request.body)
+
+            return response.status(200).json({
+                dados: colaborador,
+            });
+
+        } catch (error) {
+            next(error)
+        }
+    }
 }

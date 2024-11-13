@@ -21,6 +21,7 @@ router.get('/protected', isProtected(['admin']), UsuarioController.private)
 
 router.get('/colaboradores', ColaboradorController.ListarColaboradores);
 router.get('/colaboradores/:colaborador_id', ColaboradorController.ListarColaborador);
+router.post('/colaboradores', ColaboradorController.CadastrarColaborador)
 // router.post('/Colaboradores', ColaboradorController.CadastrarColaboradores);
 // router.patch('/Colaboradores/:colaborador_id', ColaboradorController.EditarColaboradores);
 // router.delete('/Colaboradores/:colaborador_id', ColaboradorController.ApagarColaboradores);
