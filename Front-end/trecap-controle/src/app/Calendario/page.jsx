@@ -4,12 +4,12 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import ptLocale from '@fullcalendar/core/locales/pt-br'; 
-import { format } from "date-fns"; 
-import CabecalhoLogado from '@/cabecalhoLogado/page';
+import ptLocale from "@fullcalendar/core/locales/pt-br";
+import { format } from "date-fns";
+import CabecalhoLogado from "@/cabecalhoLogado/page";
 import CustomModal from "../components/ModalCalendar/customModal";
 
-import './calendar.css'; 
+import "./calendar.css";
 import axios from "axios";
 import MenuLateral from "@/components/menuLateral/page";
 
@@ -32,7 +32,7 @@ export default function Calendario() {
           professor: event.evento_professor,
           description: event.evento_local,
         }));
-        setEvents(fetchedEvents);  // Armazenando os eventos no estado
+        setEvents(fetchedEvents); // Armazenando os eventos no estado
       } catch (error) {
         console.error("Erro ao carregar eventos:", error);
       }
@@ -53,7 +53,7 @@ export default function Calendario() {
     if (eventData.title) {
       if (selectedEvent) {
         // Edição de evento
-        const updatedEvents = events.map(event =>
+        const updatedEvents = events.map((event) =>
           event.id === selectedEvent.id
             ? { ...event, title: eventData.title, professor: eventData.professor, description: eventData.description }
             : event
@@ -99,7 +99,7 @@ export default function Calendario() {
             });
 
             const createdEvent = { ...newEvent, id: response.data.id }; // Adiciona ID real retornado pela API
-            setEvents([...events, createdEvent]);
+            setEvents((prevEvents) => [...prevEvents, createdEvent]);
           } catch (error) {
             console.error("Erro ao criar o evento:", error);
           }
@@ -122,7 +122,7 @@ export default function Calendario() {
       console.error("Erro ao excluir o evento:", error);
     }
   };
-  
+
   const handleEventDrop = async (dropInfo) => {
     const { id, startStr, endStr } = dropInfo.event;
     const updatedEvents = events.map((event) =>

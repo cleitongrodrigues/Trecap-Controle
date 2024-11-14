@@ -210,3 +210,35 @@
 .edit-btn:active {
   background-color: #0b0b45; /* Cor mais escura quando clicado */
 }
+
+.event-list {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.event-item {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.event-item button {
+  margin-right: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border: none;
+  cursor: pointer;
+  color: white;
+  border-radius: 4px;
+}
+
+.edit-btn {
+  background-color: #007bff;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+}
