@@ -10,7 +10,7 @@ export const UserProvider = ({ children }) => {
     const [isLogged, setIsLogged] = useState(null)
     const [user, setUser] = useState(null)
     const [error, setError] = useState(null)
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     const [token, setToken] = useState(null)
 
     const handleGetUserInfo = async token => {
@@ -40,14 +40,23 @@ export const UserProvider = ({ children }) => {
 
     }
 
-    useLayoutEffect(()=>{
-        const token = window.localStorage.getItem('token')
-
-        if(token?.length === 0) return
-        setToken(token)
-        handleGetUserInfo(token)
-        setIsLogged(true)
-    }, [])
+    useEffect(() => {
+        async function teste(){
+            const token = window.localStorage.getItem('token');
+        if (token){
+            try {
+                setIsLoading(true)
+                setToken(token)
+                await handleGetUserInfo(token)
+                setIsLogged(true)
+            } finally {
+                setIsLoading(false)
+            }
+        }
+        }
+        
+        teste()
+    }, []);
 
     const handleLogout = () => {
         window.localStorage.removeItem('token')

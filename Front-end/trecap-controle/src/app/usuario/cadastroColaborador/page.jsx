@@ -15,6 +15,8 @@ import ColaboradorItem from "./colaboradorItem";
 import Loading from "@/components/loading";
 import ColaboradorList from "./ColaboradorList";
 import { UserContext } from "@/context/userContext";
+import ProtectedRoute from "@/components/ProtectedRoute";
+
 
 export default function CadastrarEvento() {
   const router = useRouter();
@@ -42,6 +44,8 @@ export default function CadastrarEvento() {
   const { user, token } = useContext(UserContext);
   const [selectedOption, setSelectedOption] = useState("");
 
+  
+
   const getColaboradores = async () => {
     try {
       const filterColaborador =
@@ -62,6 +66,10 @@ export default function CadastrarEvento() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    getColaboradores();
+  }, [user]);
 
   useEffect(() => {
     getColaboradores();
@@ -258,6 +266,7 @@ export default function CadastrarEvento() {
 
   return (
     <>
+    <ProtectedRoute>
       {/* <CabecalhoLogado /> */}
       <MenuLateral />
       <div className={style.CorCinza}>
@@ -417,7 +426,7 @@ export default function CadastrarEvento() {
               )}
 
               {/* Modal de Confirmação de Exclusão */}
-              {showDeleteModal && (
+              {/* {showDeleteModal && (
                 <div className={style.modal}>
                   <div className={style.modalContent}>
                     <h2>Confirmar Exclusão</h2>
@@ -425,13 +434,13 @@ export default function CadastrarEvento() {
                       Tem certeza de que deseja excluir o(a) colaborador(a){" "}
                       {colaboradorToDelete?.colaborador_nome}?
                     </p>
-                    <button onClick={handleDelete}>Excluir</button>
+                    <button onClick={onClickExcluir}>Excluir</button>
                     <button onClick={() => setShowDeleteModal(false)}>
                       Cancelar
                     </button>
                   </div>
                 </div>
-              )}
+              )} */}
 
               <div className={style.Novo}>
                 <label htmlFor="">Pesquisar Colaboradores:</label>
@@ -465,11 +474,9 @@ export default function CadastrarEvento() {
                     <div className={style.ContainerEmail}>Email</div>
                     <div className={style.ContainerBotaoTeste}>Ações</div>
                   </div>
-                  {isLoading ? (
-                    <Loading />
-                  ) : (
-                    <ColaboradorList colaboradores={colaboradores} />
-                  )}
+                  {isLoading
+                    ? <Loading />
+                    : <ColaboradorList  getColaboradores={getColaboradores} colaboradores={colaboradores} />}
                   {/* Navegação de página */}
                   <div className={style.ContainerPaginacao}>
                     <p>
@@ -507,6 +514,7 @@ export default function CadastrarEvento() {
           </div>
         </div>
       </div>
+    </ProtectedRoute>
     </>
   );
 }
