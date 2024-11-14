@@ -43,19 +43,6 @@ export default function CadastrarEvento() {
   const { user, token } = useContext(UserContext)
 
   
-  const onClickEditar = () => {}
-  const onClickExcluir = async (usu_id) =>
-  {
-    await axios.delete(`http://localhost:3333/colaboradores/${usu_id}`)
-    await getColaboradores();
-    setShowDeleteModal(false);
-      getColaboradores(); // Atualiza a lista após a exclusão
-      Swal.fire({
-        title: "Deletado com sucesso!",
-        icon: "success",
-      });
-
-  }
 
   const getColaboradores = async () => {
     try {
@@ -388,7 +375,7 @@ export default function CadastrarEvento() {
               )}
 
               {/* Modal de Confirmação de Exclusão */}
-              {showDeleteModal && (
+              {/* {showDeleteModal && (
                 <div className={style.modal}>
                   <div className={style.modalContent}>
                     <h2>Confirmar Exclusão</h2>
@@ -396,13 +383,13 @@ export default function CadastrarEvento() {
                       Tem certeza de que deseja excluir o(a) colaborador(a){" "}
                       {colaboradorToDelete?.colaborador_nome}?
                     </p>
-                    <button onClick={handleDelete}>Excluir</button>
+                    <button onClick={onClickExcluir}>Excluir</button>
                     <button onClick={() => setShowDeleteModal(false)}>
                       Cancelar
                     </button>
                   </div>
                 </div>
-              )}
+              )} */}
 
               <div className={style.Novo}>
                 <label htmlFor="">Pesquisar Colaboradores:</label>
@@ -434,7 +421,7 @@ export default function CadastrarEvento() {
                   </div>
                   {isLoading
                     ? <Loading />
-                    : <ColaboradorList onClickExcluir={onClickExcluir} colaboradores={colaboradores} />}
+                    : <ColaboradorList  getColaboradores={getColaboradores} colaboradores={colaboradores} />}
                   {/* Navegação de página */}
                   <div className={style.ContainerPaginacao}>
                     <p>Página {paginaAtual} de {totalPaginas}</p>
