@@ -6,8 +6,8 @@ import { IconContext } from 'react-icons';
 import { useRouter } from 'next/navigation';
 import MenuLateral from '@/components/menuLateral/page';
 import { useEffect, useState } from 'react';
-import ModalEdit from './ModalEdit'; // Certifique-se de que o caminho está correto
-import axios from 'axios'; // Certifique-se de importar o axios
+import ModalEdit from './ModalEdit';
+import axios from 'axios';
 
 const Icones = {
     Psicologia() {
@@ -26,18 +26,17 @@ export default function Evento() {
     const [eventos, setEventos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [mesAnoFiltro, setMesAnoFiltro] = useState(""); // Estado para o filtro de mês e ano
-    const [modalOpen, setModalOpen] = useState(false); // Estado para controlar a abertura da modal
-    const [eventoEditando, setEventoEditando] = useState(null); // Armazena o evento sendo editado
+    const [mesAnoFiltro, setMesAnoFiltro] = useState("");
+    const [modalOpen, setModalOpen] = useState(false);
+    const [eventoEditando, setEventoEditando] = useState(null);
 
-    // Função para buscar os eventos
     const fetchEventos = async () => {
         try {
             const response = await axios.get('http://localhost:3333/Eventos');
             if (response.status !== 200) {
                 throw new Error(`Erro ${response.status}: Não foi possível carregar os eventos.`);
             }
-            const data = response.data;  // Alterado para acessar os dados com axios
+            const data = response.data;
 
             const eventosFiltrados = data.dados.filter(evento => {
                 if (!evento.evento_data_inicio || !evento.evento_hora) {
@@ -60,66 +59,66 @@ export default function Evento() {
         }
     };
 
-    // Função para abrir o modal de edição
     const handleEdit = (evento) => {
-        console.log("Editando evento: ", evento); // Adicionando log de depuração
-        setEventoEditando(evento);  // Define o evento a ser editado
-        setModalOpen(true);          // Abre a modal
+        setEventoEditando(evento);
+        setModalOpen(true);
     };
 
     const handleSaveEdit = async (eventoEditado) => {
         try {
-            // Verifica se a data de início é válida
-            const dataEventoInicio = eventoEditado.evento_data_inicio; // Data já no formato 'YYYY-MM-DD'
+            const dataEventoInicio = eventoEditado.evento_data_inicio;
             if (!dataEventoInicio) {
                 alert("Data de início inválida!");
                 return;
             }
-
-            // Extrai a hora e minuto de 'evento_hora' e combina com a data de início
-            const [hora, minuto] = eventoEditado.evento_hora.split(':');
+    
+            // Formatar a data no formato YYYY-MM-DD
+            const dataFormatada = new Date(dataEventoInicio);
+            const dataEventoStr = dataFormatada.toISOString().split('T')[0]; // Pega apenas a data no formato YYYY-MM-DD
+    
+            // Verifica se a hora foi passada corretamente
+            let [hora, minuto] = eventoEditado.evento_hora.split(':');
             if (!hora || !minuto) {
                 alert("Hora de início inválida!");
                 return;
             }
-
-            // Formata a data e hora no formato esperado pelo banco (sem manipulação de fuso horário)
-            const dataEventoStr = `${dataEventoInicio} ${hora}:${minuto}:00`;  // Exemplo: '2024-12-01 20:30:00'
-            
-            // Cria um novo objeto com a data e hora combinada
+    
+            hora = String(hora).padStart(2, '0');
+            minuto = String(minuto).padStart(2, '0');
+    
             const eventoEditadoComData = {
                 ...eventoEditado,
-                evento_data_inicio: dataEventoStr, // Salva no formato correto para o banco
+                evento_data_inicio: dataEventoStr,  // Envia apenas a data formatada
+                evento_hora: `${hora}:${minuto}`,   // Envia a hora separada
             };
-
-            // Envia a requisição PATCH para atualizar o evento
+    
             const response = await axios.patch(`http://localhost:3333/Eventos/${eventoEditadoComData.evento_id}`, eventoEditadoComData);
-
+    
             if (response.status !== 200) {
                 throw new Error(`Erro ao salvar evento: ${response.status}`);
             }
-
-            // Atualiza o evento localmente no estado
+    
             setEventos((prevEventos) =>
                 prevEventos.map((evento) =>
                     evento.evento_id === eventoEditadoComData.evento_id ? eventoEditadoComData : evento
                 )
             );
-
-            setModalOpen(false); // Fecha a modal após salvar
+    
+            setModalOpen(false);
         } catch (error) {
             console.error("Erro ao salvar evento:", error);
             alert("Erro ao salvar evento. Tente novamente!");
         }
     };
-
-    // Função para iniciar o evento
+    
+    
+    
     const handleStart = (evento) => {
         const horaFormatada = evento.evento_hora.includes(':') ? evento.evento_hora : `${evento.evento_hora}:00`;
         const dataEventoStr = `${evento.evento_data_inicio.split('T')[0]}T${horaFormatada}`;
         const dataEvento = new Date(dataEventoStr);
         const dataAtual = new Date();
-        const tolerancia = 30 * 60 * 1000; // 30 minutos
+        const tolerancia = 30 * 60 * 1000;
 
         const dataEventoComTolerancia = new Date(dataEvento.getTime() - tolerancia);
 
@@ -134,7 +133,7 @@ export default function Evento() {
 
     useEffect(() => {
         fetchEventos();
-    }, [mesAnoFiltro]); // Atualizar os eventos ao mudar o filtro
+    }, [mesAnoFiltro]);
 
     if (loading) {
         return <div>Carregando eventos...</div>;
@@ -150,8 +149,6 @@ export default function Evento() {
             <div className={style.Geral}>
                 <div className={style.Container}>
                     <h1 className={style.Titulo}>Eventos</h1>
-
-                    {/* Input de Mês e Ano */}
                     <div className={style.FiltroDataContainer}>
                         <label htmlFor="mesAnoFiltro">Filtrar por mês e ano:</label>
                         <input
@@ -169,7 +166,7 @@ export default function Evento() {
                                 <div key={index} className={style.ContainerDivs}>
                                     <div className={style.IconeContainer}>
                                         <IconContext.Provider value={{ size: 100 }}>
-                                            {Icones[evento.iconeTipo] && Icones[evento.iconeTipo]()} 
+                                            {Icones[evento.iconeTipo] && Icones[evento.iconeTipo]()}
                                         </IconContext.Provider>
                                     </div>
                                     <div className={style.ContainerLabel}>
@@ -192,18 +189,11 @@ export default function Evento() {
                 </div>
             </div>
 
-            {/* Modal de Edição */}
             {modalOpen && eventoEditando && (
                 <ModalEdit
                     evento={eventoEditando}
-                    onClose={() => {
-                        console.log("Fechando modal"); // Log de depuração
-                        setModalOpen(false);
-                    }}
-                    onSave={(eventoEditado) => {
-                        console.log("Salvando evento editado: ", eventoEditado); // Log de depuração
-                        handleSaveEdit(eventoEditado);
-                    }}
+                    onClose={() => setModalOpen(false)}
+                    onSave={handleSaveEdit}
                 />
             )}
         </>

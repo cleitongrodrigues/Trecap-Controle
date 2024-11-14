@@ -54,27 +54,57 @@ module.exports = {
         }
     },
 
-    async EditarEvento(request, response){
+    async EditarEvento(request, response) {
         try {
-            const {evento_nome, evento_data_inicio, evento_data_termino, evento_local,
-                 evento_status, usu_id, evento_professor, evento_hora} = request.body;
-
-            const {evento_id} = request.params;
-
-            const sql = `UPDATE Eventos SET evento_nome = ?, evento_data_inicio = ?, evento_data_termino = ?,
-                evento_local = ?, evento_status = ?, usu_id = ?, evento_professor = ?, evento_hora = ?
-                WHERE evento_id = ?;`;
-
-            const values = [evento_nome, evento_data_inicio, evento_data_termino, evento_local,
-                 evento_status, usu_id, evento_professor, evento_id, evento_hora];
-
-            const atualizaDados = await db.query(sql, values);
+            const { evento_nome, evento_data_inicio, evento_data_termino, evento_local, 
+                    evento_status, usu_id, evento_professor, evento_hora } = request.body;
+            const { evento_id } = request.params;
+    
+            // Verificar se a data está no formato correto (YYYY-MM-DD)
+            if (!evento_data_inicio || !/^\d{4}-\d{2}-\d{2}$/.test(evento_data_inicio)) {
+                return response.status(400).json({
+                    sucesso: false,
+                    mensagem: 'Formato de data inválido. Utilize o formato YYYY-MM-DD',
+                    dados: null
+                });
+            }
+    
+            // SQL para atualizar o evento
+            const sql = `
+                UPDATE Eventos SET 
+                    evento_nome = ?, 
+                    evento_data_inicio = ?, 
+                    evento_data_termino = ?, 
+                    evento_local = ?, 
+                    evento_status = ?, 
+                    usu_id = ?, 
+                    evento_professor = ?, 
+                    evento_hora = ? 
+                WHERE evento_id = ?;
+            `;
+    
+            const values = [
+                evento_nome, evento_data_inicio, evento_data_termino, evento_local,
+                evento_status, usu_id, evento_professor, evento_hora, evento_id
+            ];
+    
+            const [result] = await db.query(sql, values);
+    
+            if (result.affectedRows === 0) {
+                return response.status(404).json({
+                    sucesso: false,
+                    mensagem: `Evento ${evento_id} não encontrado.`,
+                    dados: null
+                });
+            }
+    
             return response.status(200).json({
                 sucesso: true,
                 mensagem: `Evento ${evento_id} editado com sucesso!`,
-                dados: atualizaDados[0].affectedRows
+                dados: result.affectedRows
             });
         } catch (error) {
+            console.error("Erro ao editar evento:", error);
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao editar evento',
@@ -82,6 +112,7 @@ module.exports = {
             });
         }
     },
+    
 
     async ApagarEvento(request, response){
         try {
