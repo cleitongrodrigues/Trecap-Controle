@@ -40,10 +40,21 @@ class ColaboradorRepository {
         queryBuilder.whereAnd(`empresa_id = ${input.empresa_id}`)
 
         const sql = queryBuilder.build()
+    
         const [colaboradores] = await connection.query(sql)
+
+        for (const i in colaboradores) {
+            const setor_id = colaboradores[i].setor_id
+
+            const sql2 = `SELECT setor_nome FROM setores WHERE setor_id = ?`
+            const [[nome]] = await connection.query(sql2, [setor_id])
+
+
+            colaboradores[i].setor_nome = nome.setor_nome
+          }
         return colaboradores.map(
             (colaboradorInfo) => {
-                return new ColaboradorResult(colaboradorInfo.colaborador_id, colaboradorInfo.colaborador_nome, colaboradorInfo.colaborador_cpf, colaboradorInfo.colaborador_email, colaboradorInfo.empresa_id, colaboradorInfo.setor_id)
+                return new ColaboradorResult(colaboradorInfo.colaborador_id, colaboradorInfo.colaborador_nome, colaboradorInfo.colaborador_cpf, colaboradorInfo.colaborador_email, colaboradorInfo.empresa_id, colaboradorInfo.setor_id, colaboradorInfo.setor_nome)
             }
         )
     }
