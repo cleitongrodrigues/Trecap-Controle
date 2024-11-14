@@ -11,11 +11,11 @@ class ColaboradorRepository {
     async createColaborador(input) {
         const { colaborador_nome, colaborador_CPF, colaborador_biometria, colaborador_ativo, colaborador_telefone, colaborador_email, empresa_id, setor_id } = input
 
-        const values = [ colaborador_nome, colaborador_CPF, colaborador_biometria, colaborador_ativo, colaborador_telefone, colaborador_email, empresa_id, setor_id ]
+        const values = [ colaborador_nome, colaborador_CPF, colaborador_biometria,  colaborador_telefone, colaborador_email, empresa_id, setor_id ]
 
         const sql = `INSERT INTO Colaboradores (colaborador_nome, colaborador_CPF, colaborador_biometria, colaborador_ativo, colaborador_telefone, colaborador_email, empresa_id, setor_id)
                     VALUES
-                    (?, ?, ?, ?, ?, ?, 1, 1)`
+                    (?, ?, ?, 1, ?, ?, ?, ?)`
 
         const [result] = await connection.query(sql, values)
         const colaborador_id = result.insertId

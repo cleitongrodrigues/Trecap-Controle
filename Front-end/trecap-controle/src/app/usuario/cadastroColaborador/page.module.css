@@ -173,7 +173,7 @@
 .ContainerCabecalho{
   display: grid;
   align-items: center;
-  grid-template-columns: 4rem repeat(2, 1fr) 6rem;
+  grid-template-columns: 4rem repeat(3, 1fr) 6rem;
   border-bottom: solid 1px rgb(218, 215, 215);
   padding: 1rem;
 }

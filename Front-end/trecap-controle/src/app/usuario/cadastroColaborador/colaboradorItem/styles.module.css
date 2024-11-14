@@ -1,7 +1,7 @@
 .ContainerDivs {
     display: grid;
     align-items: center;
-    grid-template-columns: 4rem repeat(2, 1fr) 6rem;
+    grid-template-columns: 4rem repeat(3, 1fr) 6rem;
     border-bottom: solid 1px rgb(218, 215, 215);
     padding: 1rem;
 }
@@ -11,6 +11,7 @@
     justify-content: start;
     gap: 1rem;
     align-items: center;
+    grid-column: -1;
 }
 
 .ContainerBotaoEditar button:active {

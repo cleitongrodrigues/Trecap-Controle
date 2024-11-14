@@ -46,6 +46,9 @@ export default function ColaboradorItem({ key, colaborador, getColaboradores }) 
                 <div className={style.ContainerEmail}>
                     {colaborador.colaborador_email}
                 </div>
+                <div className={style.ContainerSetor}>
+                    {colaborador?.setor_nome}
+                </div>
                 <div className={style.ContainerBotaoEditar}>
                     <button
                         type="button"

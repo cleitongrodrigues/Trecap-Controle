@@ -69,11 +69,9 @@ export default function CadastrarEvento() {
 
   useEffect(() => {
     getColaboradores();
+    getSetores();
   }, [user]);
 
-  useEffect(() => {
-    getColaboradores();
-  }, [paginaAtual]);
 
   const totalPaginas = 10;
 
@@ -150,10 +148,11 @@ export default function CadastrarEvento() {
       colaborador_biometria: biometria.value,
       colaborador_telefone: telefone.value,
       colaborador_ativo: 1,
-      empresa_id: 1,
-      // setor_id: 1,
-      setor_id: selectedOption
+      empresa_id: user.empresa_id,
+      setor_id: parseInt(selectedOption)
     };
+
+    console.log(colaboradorData)
 
     try {
       // Cadastrar novo colaborador
@@ -262,8 +261,8 @@ export default function CadastrarEvento() {
     setColaboradorToDelete(colaborador);
     setShowDeleteModal(true); // Abre o modal de confirmação de exclusão
   };
-  console.log(setores);  // Verifique o conteúdo da variável setores
-
+    // Verifique o conteúdo da variável setores
+  useEffect(()=>{console.log(selectedOption)},[selectedOption])
   return (
     <>
     <ProtectedRoute>
@@ -325,7 +324,8 @@ export default function CadastrarEvento() {
                       <select
                         className={style.Combobox}
                         value={selectedOption}
-                        onChange={(e) => setSelectedOption(e.target.value)} // Atualiza o setor selecionado
+                         // Atualiza o setor selecionado
+                         onChange={(e) => setSelectedOption(e.target.value)}
                       >
                         <option value="" disabled>
                           Selecione um setor
@@ -472,6 +472,7 @@ export default function CadastrarEvento() {
                     <div className={style.ContainerId}>#</div>
                     <div className={style.ContainerNome}>Nome</div>
                     <div className={style.ContainerEmail}>Email</div>
+                    <div className={style.ContainerSetores}>Setor</div>
                     <div className={style.ContainerBotaoTeste}>Ações</div>
                   </div>
                   {isLoading
