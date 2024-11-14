@@ -86,8 +86,8 @@ export default function CadastrarEvento() {
   const getSetores = async () => {
     // para fazer a pesqusiar basta usar o user.empresaId
     try {
-      const response = await axios.get("http://localhost:3333/setores"); // Ajuste a rota conforme necessário
-      setSetores(response.data);
+      const response = await axios.get(`http://localhost:3333/setores/${user.empresa_id}`); // Ajuste a rota conforme necessário
+      setSetores(response.data.dados);
     } catch (error) {
       console.log("Erro ao buscar setores", error);
     }
@@ -254,6 +254,7 @@ export default function CadastrarEvento() {
     setColaboradorToDelete(colaborador);
     setShowDeleteModal(true); // Abre o modal de confirmação de exclusão
   };
+  console.log(setores);  // Verifique o conteúdo da variável setores
 
   return (
     <>
@@ -313,6 +314,20 @@ export default function CadastrarEvento() {
                       />
                       <label>Setor</label>
                       <select
+                        className={style.Combobox}
+                        value={selectedOption}
+                        onChange={(e) => setSelectedOption(e.target.value)} // Atualiza o setor selecionado
+                      >
+                        <option value="" disabled>
+                          Selecione um setor
+                        </option>
+                        {setores.map((setor) => (
+                          <option key={setor?.setor_id} value={setor.setor_id}>
+                            {setor?.setor_nome}
+                          </option>
+                        ))}
+                      </select>
+                      {/* <select
                       className={style.Combobox}
                         // value={selectedOption}
                         // onChange={handleChange}
@@ -325,7 +340,7 @@ export default function CadastrarEvento() {
                         <option value="4">Administrativo</option>
                         <option value="5">Financeiro</option>
                         <option value="6">Jurídico</option>
-                      </select>
+                      </select> */}
                     </div>
                   </div>
                 </form>
