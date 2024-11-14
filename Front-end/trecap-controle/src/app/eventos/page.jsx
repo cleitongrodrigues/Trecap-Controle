@@ -65,53 +65,55 @@ export default function Evento() {
     };
 
     const handleSaveEdit = async (eventoEditado) => {
-        try {
-            const dataEventoInicio = eventoEditado.evento_data_inicio;
-            if (!dataEventoInicio) {
-                alert("Data de início inválida!");
-                return;
-            }
-    
-            // Formatar a data no formato YYYY-MM-DD
-            const dataFormatada = new Date(dataEventoInicio);
-            const dataEventoStr = dataFormatada.toISOString().split('T')[0]; // Pega apenas a data no formato YYYY-MM-DD
-    
-            // Verifica se a hora foi passada corretamente
-            let [hora, minuto] = eventoEditado.evento_hora.split(':');
-            if (!hora || !minuto) {
-                alert("Hora de início inválida!");
-                return;
-            }
-    
-            hora = String(hora).padStart(2, '0');
-            minuto = String(minuto).padStart(2, '0');
-    
-            const eventoEditadoComData = {
-                ...eventoEditado,
-                evento_data_inicio: dataEventoStr,  // Envia apenas a data formatada
-                evento_hora: `${hora}:${minuto}`,   // Envia a hora separada
-            };
-    
-            const response = await axios.patch(`http://localhost:3333/Eventos/${eventoEditadoComData.evento_id}`, eventoEditadoComData);
-    
-            if (response.status !== 200) {
-                throw new Error(`Erro ao salvar evento: ${response.status}`);
-            }
-    
-            setEventos((prevEventos) =>
-                prevEventos.map((evento) =>
-                    evento.evento_id === eventoEditadoComData.evento_id ? eventoEditadoComData : evento
-                )
-            );
-    
-            setModalOpen(false);
-        } catch (error) {
-            console.error("Erro ao salvar evento:", error);
-            alert("Erro ao salvar evento. Tente novamente!");
+    try {
+        const dataEventoInicio = eventoEditado.evento_data_inicio;
+        const dataEventoTermino = eventoEditado.evento_data_termino;
+        if (!dataEventoInicio || !dataEventoTermino) {
+            alert("Datas inválidas!");
+            return;
         }
-    };
-    
-    
+
+        // Formatar as datas no formato YYYY-MM-DD
+        const dataInicioFormatada = new Date(dataEventoInicio).toISOString().split('T')[0];
+        const dataTerminoFormatada = new Date(dataEventoTermino).toISOString().split('T')[0];
+
+        // Validar e formatar a hora
+        let [hora, minuto] = eventoEditado.evento_hora.split(':');
+        if (!hora || !minuto) {
+            alert("Hora de início inválida!");
+            return;
+        }
+
+        hora = String(hora).padStart(2, '0');
+        minuto = String(minuto).padStart(2, '0');
+
+        const eventoEditadoComData = {
+            ...eventoEditado,
+            evento_data_inicio: dataInicioFormatada,
+            evento_data_termino: dataTerminoFormatada,
+            evento_hora: `${hora}:${minuto}`,
+        };
+
+        const response = await axios.patch(`http://localhost:3333/Eventos/${eventoEditadoComData.evento_id}`, eventoEditadoComData);
+
+        if (response.status !== 200) {
+            throw new Error(`Erro ao salvar evento: ${response.status}`);
+        }
+
+        // Atualizar o evento na lista de eventos localmente
+        setEventos((prevEventos) =>
+            prevEventos.map((evento) =>
+                evento.evento_id === eventoEditadoComData.evento_id ? eventoEditadoComData : evento
+            )
+        );
+
+        // Fechar o modal
+        setModalOpen(false);
+    } catch (error) {
+        console.error("Erro ao salvar evento:", error);
+    }
+};
+
     
     const handleStart = (evento) => {
         const horaFormatada = evento.evento_hora.includes(':') ? evento.evento_hora : `${evento.evento_hora}:00`;
@@ -125,7 +127,7 @@ export default function Evento() {
         if (dataAtual < dataEventoComTolerancia) {
             alert(`O evento ${evento.evento_nome} ainda não pode ser iniciado!`);
         } else if (dataAtual > dataEvento) {
-            alert(`O prazo para entrar no Evento ${evento.evento_nome} já ultrapassado!`);
+            alert(`O prazo para entrar no Evento ${evento.evento_nome} já ultrapassou!`);
         } else {
             router.push(`/cadastroP?evento=${encodeURIComponent(evento.evento_nome)}`);
         }
@@ -188,6 +190,7 @@ export default function Evento() {
                     </div>
                 </div>
             </div>
+            
 
             {modalOpen && eventoEditando && (
                 <ModalEdit
