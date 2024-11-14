@@ -48,6 +48,12 @@ export default function CadastrarEvento() {
   {
     await axios.delete(`http://localhost:3333/colaboradores/${usu_id}`)
     await getColaboradores();
+    Swal.fire({
+      icon: "error",
+      title: "Campos não preenchidos",
+      text: "Por favor, preencha todos os campos!",
+    });
+
   }
 
   const getColaboradores = async () => {
