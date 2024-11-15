@@ -29,7 +29,7 @@
 }
 
 .menuItems a:hover {
-  color: var(--purpleMain);
+  color: var(--neutral-100);
 }
 
 .menuItems a svg {
@@ -52,7 +52,7 @@
 }
 
 .menuFooter a:hover {
-  color: var(--purpleMain);
+  color: var(--neutral-100);
 }
 
 .menuFooter a svg {

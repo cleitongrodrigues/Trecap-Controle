@@ -212,7 +212,7 @@
   height: 3rem; 
   padding: 0 1.5rem; 
   /* background-color: #007bff;  */
-  background-color: #BDBDBD;
+  background-color: var(--purpleMain);
   color: #fff;
   font-size: 1.6rem;
   cursor: pointer;
