@@ -139,6 +139,25 @@ export const UsuarioController = {
             next(error)
         }
 
+    },
+    async verifyToken(request, response, next)
+    {
+        try{
+            const authHeader = request.headers['authorization']
+            if (!authHeader && !authHeader?.startsWith('Bearer ')) throw new UnauthorizedException()
+
+            let token = authHeader.split(' ')[1]
+
+            const isValidToken = Auth.verifyToken(token)
+
+            return response.status(200).json({
+                    valid_token: isValidToken
+            })
+
+        }catch(error)
+        {
+            next(error)
+        }
     }
 }
 

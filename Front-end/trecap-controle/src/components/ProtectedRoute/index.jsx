@@ -7,13 +7,21 @@ import Loading from "../loading";
 
 
 export default function ProtectedRoute({ children}) {
-    const { user, isLogged, isLoading, token } = useAuth()
+    const { user } = useAuth()
     const router = useRouter()
     
-    if(isLoading) return <Loading />
-    if(!isLogged) {
-        router.push("/usuario/login")
+    if(user === undefined) 
+    {
+        return <Loading />
     }
-    
+        
+
+    if( user === null) 
+    {
+        router.push('/usuario/login')
+        return null
+    }
+
     return children
+
 }

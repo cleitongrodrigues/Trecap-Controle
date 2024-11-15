@@ -346,7 +346,6 @@ const MenuLateral = () => {
 
   return (
     <>
-      <ProtectedRoute>
         <div className={styles.menuLateral}>
           <IconContext.Provider value={{ size: "2rem" }}>
             <div className={styles.menuItems}>
@@ -501,7 +500,6 @@ const MenuLateral = () => {
             </div>
           </IconContext.Provider>
         </div>
-      </ProtectedRoute>
     </>
   );
 };

@@ -10,13 +10,13 @@ import Form from "@/components/Form";
 import Link from "next/link";
 import useForm from "@/hooks/useForm";
 import { useContext } from "react";
-import { UserContext } from "@/context/userContext";
+import { useAuth, UserContext } from "@/context/userContext";
 
 export default function Login() {
   const email = useForm('email');
   const password = useForm();
 
-  const { handleLogin, error, isLoading } = useContext(UserContext)
+  const userContext = useAuth()
 
   const router = useRouter()
 
@@ -25,9 +25,9 @@ export default function Login() {
 
     if(email.isValid() && password.isValid())
     {
-      const isValidCredential = await handleLogin({email: email.value, password: password.value})
+      await userContext.handleLogin({email: email.value, password: password.value})
 
-      if(isValidCredential) router.push('/usuario/cadastroColaborador')
+      router.push('/usuario/cadastroColaborador')
     }
     
   }
@@ -60,8 +60,8 @@ export default function Login() {
           </div>
           <Link className={style.forgotPassword} href="/esqueceusenha">Esqueceu a senha</Link>
         </div>
-        <ButtonForm disabled={isLoading} onClick={handleClick}>Entrar</ButtonForm>
-        {error && <p className={style.error}>Login e/ou senha erradas</p>}
+        <ButtonForm onClick={handleClick}>Entrar</ButtonForm>
+        {userContext.error && <p className={style.error}>Login e/ou senha erradas</p>}
       </form>
     </Form>
   );

@@ -19,6 +19,7 @@ router.delete('/usuarios/:id', UsuarioController.ApagarUsuario);
 router.post('/usuario-info/', UsuarioController.getUserInfo)
 
 router.post('/login', UsuarioController.Login)
+router.get('/verify-token', UsuarioController.verifyToken)
 router.get('/protected', isProtected(['admin']), UsuarioController.private)
 
 router.get('/colaboradores', isProtected(['admin']), ColaboradorController.ListarColaboradores);

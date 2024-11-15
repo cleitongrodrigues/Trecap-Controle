@@ -41,6 +41,16 @@ class Auth {
         }
         
     }
+
+    verifyToken(token)
+    {
+        try {
+            const decodeToken = jwt.verify(token, 'secret')
+            return true
+        } catch (e){
+            return false
+        }
+    }
 }
 
 

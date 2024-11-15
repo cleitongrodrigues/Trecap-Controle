@@ -14,7 +14,7 @@ import Swal from "sweetalert2";
 import ColaboradorItem from "./colaboradorItem";
 import Loading from "@/components/loading";
 import ColaboradorList from "./ColaboradorList";
-import { UserContext } from "@/context/userContext";
+import { useAuth, UserContext } from "@/context/userContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
 
@@ -41,7 +41,7 @@ export default function CadastrarEvento() {
   const [colaboradores, setColaboradores] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [setores, setSetores] = useState([]);
-  const { user, token } = useContext(UserContext);
+  const { user } = useAuth()
   const [selectedOption, setSelectedOption] = useState("");
 
   
@@ -54,8 +54,7 @@ export default function CadastrarEvento() {
       setIsLoading(true);
 
       const response = await axios.get(
-        `http://localhost:3333/colaboradores?page=${paginaAtual}&${filterColaborador}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        `http://localhost:3333/colaboradores?page=${paginaAtual}&${filterColaborador}`
       );
       const dadosColaboradores = response.data.dados;
 
@@ -68,9 +67,15 @@ export default function CadastrarEvento() {
   };
 
   useEffect(() => {
-    getColaboradores();
-    getSetores();
-  }, [user]);
+    if(user){
+      const fetchData = async () => {
+        await getColaboradores();
+        await getSetores();
+      };
+      fetchData();
+    }
+    
+  }, [user, paginaAtual]);
 
 
   const totalPaginas = 10;
@@ -99,10 +104,6 @@ export default function CadastrarEvento() {
     }
   };
 
-  useEffect(() => {
-    getColaboradores();
-    getSetores(); // Busca setores quando o componente é montado
-  }, [paginaAtual]);
 
   const handleCancelar = () => {
     CPF.setValue("");
@@ -261,12 +262,8 @@ export default function CadastrarEvento() {
     setColaboradorToDelete(colaborador);
     setShowDeleteModal(true); // Abre o modal de confirmação de exclusão
   };
-    // Verifique o conteúdo da variável setores
-  useEffect(()=>{console.log(selectedOption)},[selectedOption])
   return (
-    <>
     <ProtectedRoute>
-      {/* <CabecalhoLogado /> */}
       <MenuLateral />
       <div className={style.CorCinza}>
         <div className={style.ContainerGeral}>
@@ -516,6 +513,5 @@ export default function CadastrarEvento() {
         </div>
       </div>
     </ProtectedRoute>
-    </>
   );
 }
