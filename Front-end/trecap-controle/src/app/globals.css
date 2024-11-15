@@ -4,16 +4,21 @@
 */
 :root{
 	/* --purpleMain: #6750A4; */
-	--purpleMain: #7C00FE;
+	--purpleMain: rgb(7, 7, 59);
 	/* --purpleMain: #07073B; */
 	--purple-200: #8576FF;
-	--purple-700: #17153B;
+	--purple-700: rgb(30, 30, 90);
 	--purple-500: #4541fe;
 	--purple-300: #ab9ff2;
 	--purpleButton: #8E74B5;
+  --neutral-100: #FFFFFF;
 }
 * {
   box-sizing: border-box;
+}
+
+a, a:visited{
+  text-decoration: none;
 }
 
 html,

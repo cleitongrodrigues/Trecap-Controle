@@ -2,8 +2,8 @@
     padding: 1rem;
     border-radius: 1.5rem;
     border: none;
-    background-color: var(--purple-200);
-    color: var(--white);
+    background-color: var(--purpleMain);
+    color: var(--neutral-100);
     font-weight: 700;
     cursor: pointer;
     transition: all .1s ease-in;

@@ -10,7 +10,7 @@ export const UserProvider = ({ children }) => {
     const [isLogged, setIsLogged] = useState(null)
     const [user, setUser] = useState(null)
     const [error, setError] = useState(null)
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
     const [token, setToken] = useState(null)
 
     const handleGetUserInfo = async token => {
@@ -61,6 +61,8 @@ export const UserProvider = ({ children }) => {
     const handleLogout = () => {
         window.localStorage.removeItem('token')
         setIsLogged(false)
+        setIsLoading(false)
+        setUser(null)
     }
 
 
