@@ -18,7 +18,7 @@ export default function RelatorioPresenca() {
   useEffect(() => {
     const fetchEventoData = async () => {
       const eventoId = 123; // Substitua pelo ID do evento selecionado
-  
+
       try {
         const response = await fetch(`http://localhost:3333/evento/${eventoId}`);
         if (!response.ok) {
@@ -32,43 +32,39 @@ export default function RelatorioPresenca() {
         console.error("Erro ao buscar os dados do evento:", error);
       }
     };
-  
+
     if (typeof window !== "undefined") {
       // Recuperando os participantes do localStorage e associando nome com horário
       const participantesLocalStorage = JSON.parse(localStorage.getItem("participantesPresentes")) || {};
-      const participantesArray = Object.entries(participantesLocalStorage).map(([nome, horario]) => {
-        const dataHora = dayjs(horario);
-        if (!dataHora.isValid()) {
-          console.warn(`Data inválida encontrada: ${horario}`);
-        }
+      
+      // Transformar o objeto em um array com nome e horário
+      const participantesArray = Object.entries(participantesLocalStorage).map(([id, { nome, hora }]) => {
+        const dataHora = dayjs(hora, "DD/MM/YYYY HH:mm:ss"); // Ajustando o formato de data/hora
         return { nome, horario: dataHora };
       });
-  
+
       // Ordenando os participantes pela data/hora de chegada
       const participantesOrdenados = participantesArray.sort((a, b) => a.horario - b.horario);
       setParticipantesPresentes(participantesOrdenados);
-  
+
       // Definindo o nome do evento
       const evento = localStorage.getItem("eventoSelecionado");
       setEventoSelecionado(evento || "Nome do Evento Não Encontrado");
-  
+
       // Buscando os dados do evento
       fetchEventoData();
-  
+
       // Recuperando e setando o horário de início do evento
       const horarioInicio = localStorage.getItem("horarioInicioEvento");
       setHorarioInicioEvento(horarioInicio || "Horário de Início Não Encontrado");
     }
   }, []);
-  
-  const formatarDataHora = (dataHoraString) => {
-    const dataHora = dayjs(dataHoraString);
 
-    // Verifica se a data é válida
-    if (!dataHora.isValid()) {
+  // Função para converter e formatar data/hora para exibição
+  const formatarDataHora = (dataHora) => {
+    if (!dataHora || !dataHora.isValid()) {
       return "Data Inválida"; // Retorna uma mensagem padrão se a data for inválida
     }
-
     return dataHora.format("DD/MM/YYYY HH:mm");
   };
 
@@ -94,7 +90,7 @@ export default function RelatorioPresenca() {
     const eventoX = (pageWidth - eventoWidth) / 2;
     doc.text(eventoSelecionado.toUpperCase(), eventoX, 30);
 
-    const horarioFormatado = formatarDataHora(horarioInicioEvento);
+    const horarioFormatado = formatarDataHora(dayjs(horarioInicioEvento, "YYYY-MM-DD HH:mm:ss"));
     const inicioWidth = doc.getTextWidth(`Horário de Início: ${horarioFormatado}`);
     const inicioX = (pageWidth - inicioWidth) / 2;
     doc.text(`Horário de Início: ${horarioFormatado}`, inicioX, 50);
@@ -108,7 +104,7 @@ export default function RelatorioPresenca() {
       startY: 60,
       theme: "striped",
       headStyles: { fillColor: [74, 20, 140] },
-      styles: { halign: "center" }
+      styles: { halign: "center" },
     });
 
     const agora = new Date();

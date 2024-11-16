@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import dayjs from "dayjs";
 import styles from "./page.module.css";
 import MenuLateral from '@/components/menuLateral/page';
 
@@ -23,16 +24,15 @@ export default function RegistrarPresenca() {
 
   const registrarPresenca = (id, nome, isChecked) => {
     console.log(`Participante: ${nome}, ID: ${id}, Checked: ${isChecked}`); // Debug
-    const agora = new Date();
+    const agora = dayjs();
 
-    // Formatar a data e hora no formato local
-    const formattedDate = agora.toLocaleString('pt-BR', {
-      timeZone: 'America/Sao_Paulo', // Defina o fuso horário correto
-      hour12: false, // Se você quiser usar o formato de 24 horas
-    });
+    // Formatar a data e hora no formato desejado
+    const formattedDate = agora.format("YYYY-MM-DD HH:mm:ss"); // Formato para salvar no backend
+    const formattedDateDisplay = agora.format("DD/MM/YYYY HH:mm"); // Formato para exibir
 
     // Log para verificar o valor da data formatada
-    console.log("Data formatada:", formattedDate);
+    console.log("Data formatada para o backend:", formattedDate);
+    console.log("Data formatada para exibição:", formattedDateDisplay);
 
     setParticipantesPresentes((prev) => {
       const novosPresentes = { ...prev };
@@ -113,7 +113,7 @@ export default function RegistrarPresenca() {
                           {participante.nome}
                           {participantesPresentes[participante.id] && (
                             <span className={styles.horario}>
-                              (Chegada: {participantesPresentes[participante.id]?.hora})
+                              (Chegada: {dayjs(participantesPresentes[participante.id]?.hora).format("DD/MM/YYYY HH:mm")})
                             </span>
                           )}
                         </label>

@@ -1,29 +1,47 @@
 const db = require('../database/connection');
 
 module.exports = {
-    async ListarRegistros(request, response){
+    async ListarRegistros(request, response) {
         try {
-            const sql = `SELECT registros_id, registros_presenca = 1 AS registro_presenca, registros_hora_entrada, 
-            registros_hora_saida, evento_id, colaborador_id FROM Registros;`;
-
-            const registros = await db.query(sql)
-
+            const sql = `
+                SELECT 
+                    r.registros_id, 
+                    r.registros_presenca, 
+                    r.registros_hora_entrada, 
+                    r.registros_hora_saida,
+                    e.evento_id, 
+                    e.evento_nome, 
+                    e.evento_data_inicio,
+                    c.colaborador_nome
+                FROM 
+                    Registros r
+                JOIN Eventos e ON r.evento_id = e.evento_id
+                JOIN Colaboradores c ON r.colaborador_id = c.colaborador_id
+                WHERE 
+                    r.registros_presenca = 1
+                AND
+                    e.evento_id = 1;
+            `;
+        
+            const registros = await db.query(sql);
+        
             const nItens = registros[0].length;
             return response.status(200).json({
                 sucesso: true,
-                mensagem: 'Lista de Usuários!',
+                mensagem: 'Lista de Registros com informações de evento e colaborador!',
                 dados: registros[0],
                 nItens
             });
-            
+        
         } catch (error) {
             return response.status(500).json({
                 sucesso: false,
-                mensagem: 'Erro ao listar usuário :(',
+                mensagem: 'Erro ao listar registros :(',
                 dados: error.message
             });
         }
     },
+    
 
     async CadastrarRegistros(request, response){
         try {
