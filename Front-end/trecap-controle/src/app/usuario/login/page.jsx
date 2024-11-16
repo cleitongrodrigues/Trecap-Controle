@@ -10,27 +10,33 @@ import Form from "@/components/Form";
 import Link from "next/link";
 import useForm from "@/hooks/useForm";
 import { useContext } from "react";
-import { UserContext } from "@/context/userContext";
+import { useAuth, UserContext } from "@/context/userContext";
 
 export default function Login() {
-  const email = useForm();
+  const email = useForm('email');
   const password = useForm();
 
-  const { handleLogin } = useContext(UserContext)
+  const userContext = useAuth()
 
   const router = useRouter()
 
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     e.preventDefault()
-    handleLogin({email: email.value, password: password.value})
-    router.push('/usuario/cadastroColaborador')
+
+    if(email.isValid() && password.isValid())
+    {
+      await userContext.handleLogin({email: email.value, password: password.value})
+
+      router.push('/usuario/cadastroColaborador')
+    }
+    
   }
 
   return (
     <Form message={'Por favor, faça login!'}>
       <div className={style.formHeader}>
         <h2>Login</h2>
-        <Link href="/cadastrar">Criar nova conta</Link>
+        <Link href="/">Criar nova conta</Link>
       </div>
       <form className={style.form}>
         <Input
@@ -52,9 +58,10 @@ export default function Login() {
             <input id="remember" type="checkbox" />
             <label htmlFor='remember'>Lembrar de mim</label>
           </div>
-          <Link href="/esqueceusenha">Esqueceu a senha</Link>
+          <Link className={style.forgotPassword} href="/esqueceusenha">Esqueceu a senha</Link>
         </div>
         <ButtonForm onClick={handleClick}>Entrar</ButtonForm>
+        {userContext.error && <p className={style.error}>Login e/ou senha erradas</p>}
       </form>
     </Form>
   );

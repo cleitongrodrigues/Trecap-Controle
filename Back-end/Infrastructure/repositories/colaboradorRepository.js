@@ -40,10 +40,21 @@ class ColaboradorRepository {
         queryBuilder.whereAnd(`empresa_id = ${input.empresa_id}`)
 
         const sql = queryBuilder.build()
+    
         const [colaboradores] = await connection.query(sql)
+
+        for (const i in colaboradores) {
+            const setor_id = colaboradores[i].setor_id
+
+            const sql2 = `SELECT setor_nome FROM setores WHERE setor_id = ?`
+            const [[nome]] = await connection.query(sql2, [setor_id])
+
+
+            colaboradores[i].setor_nome = nome.setor_nome
+          }
         return colaboradores.map(
             (colaboradorInfo) => {
-                return new ColaboradorResult(colaboradorInfo.colaborador_id, colaboradorInfo.colaborador_nome, colaboradorInfo.colaborador_cpf, colaboradorInfo.colaborador_email, colaboradorInfo.empresa_id, colaboradorInfo.setor_id)
+                return new ColaboradorResult(colaboradorInfo.colaborador_id, colaboradorInfo.colaborador_nome, colaboradorInfo.colaborador_cpf, colaboradorInfo.colaborador_email, colaboradorInfo.empresa_id, colaboradorInfo.setor_id, colaboradorInfo.setor_nome)
             }
         )
     }
@@ -77,6 +88,25 @@ class ColaboradorRepository {
                 return new ColaboradorResult(colaboradorInfo.colaborador_id, colaboradorInfo.colaborador_nome, colaboradorInfo.colaborador_cpf, colaboradorInfo.colaborador_email, colaboradorInfo.empresa_id, colaboradorInfo.setor_id)
             }
         )
+    }
+
+    async length(empresa_id, filter)
+    {
+        let values;
+        let sql
+        console.log(filter)
+        if(filter)
+        {
+            sql = `SELECT COUNT(*) AS total_registros FROM colaboradores WHERE empresa_id = ? And colaborador_ativo = 1 And colaborador_nome LIKE ?`
+            values = [empresa_id, `%${filter}%`]
+        } else {
+            sql = "SELECT COUNT(*) AS total_registros FROM colaboradores WHERE empresa_id = ?"
+            values = [empresa_id]
+        }
+            
+
+        const [result] = await connection.query(sql, values)
+        return result[0].total_registros
     }
 }
 

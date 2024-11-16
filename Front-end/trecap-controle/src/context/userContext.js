@@ -2,65 +2,91 @@
 
 import { USER_GET_INFO, USER_GET_TOKEN } from "@/utils/endpointsAPI";
 import axios from "axios";
-import { useContext, createContext, useState, useLayoutEffect, useEffect } from "react";
+import { useContext, createContext, useState, useEffect, useLayoutEffect } from "react";
 
 export const UserContext = createContext()
 
 export const UserProvider = ({ children }) => {
-    const [isLogged, setIsLogged] = useState(null)
-    const [user, setUser] = useState(null)
+    const [user, setUser] = useState()
     const [error, setError] = useState(null)
-    const [isLoading, setIsLoading] = useState(true)
-    const [token, setToken] = useState(null)
+    const [token, setToken] = useState()
 
-    const handleGetUserInfo = async token => {
-        const userInfo = await axios.post(USER_GET_INFO, {token: token})
+    const fetchUserData = async token => {
+        const userInfo = await axios.post(USER_GET_INFO, { token: token })
         setUser(userInfo.data.user)
-        console.log(userInfo.data.user)
-        setIsLogged(true)
     }
 
     const handleLogin = async userInfo => {
+        setError(false)
+
         try {
-            setIsLoading(true)
-            setError(false)
             const responseToken = await axios.post(USER_GET_TOKEN, userInfo)
             const { token } = responseToken.data
             window.localStorage.setItem('token', token)
             setToken(token)
-            await handleGetUserInfo(token)
-            return true
+            await fetchUserData(token)
         } catch (e) {
             setError(e.response.data.message)
-            return false
         }
-        finally {
-            setIsLoading(false)
-        }
-
     }
 
     useEffect(() => {
-        async function teste(){
+        async function fetchUserDataOnFirstRendering() {
+
             const token = window.localStorage.getItem('token');
-        if (token){
-            try {
-                setIsLoading(true)
-                setToken(token)
-                await handleGetUserInfo(token)
-                setIsLogged(true)
-            } finally {
-                setIsLoading(false)
+
+            if (token) {
+                try{
+                    const isValidToken = await fetchVerifyToken(token)
+                    if(isValidToken){
+                        setToken(token)
+                        await fetchUserData(token)
+                    } else {
+                        setToken(null)
+                        setUser(null)
+                    }
+                } catch (e){
+                    setToken(null)
+                    setUser(null)
+                }
+            } else {
+                setToken(null)
+                setUser(null)
             }
         }
+
+        fetchUserDataOnFirstRendering()
+
+        async function fetchVerifyToken(token){
+            try {
+                const response = await axios.get('http://localhost:3333/verify-token', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                return response.data.valid_token;
+            } catch (error) {
+                console.log(error)
+            }
         }
-        
-        teste()
     }, []);
+
+    useLayoutEffect(()=>{
+        const authInterceptor = axios.interceptors.request.use((config) =>{
+            config.headers.Authorization = token ? `Bearer ${token}` : config.headers.Authorization
+
+            return config
+        })
+
+        return () => {
+            axios.interceptors.request.eject(authInterceptor)
+        }
+    },[token])
 
     const handleLogout = () => {
         window.localStorage.removeItem('token')
-        setIsLogged(false)
+        setUser(null)
+        setToken(null)
     }
 
 
@@ -68,9 +94,7 @@ export const UserProvider = ({ children }) => {
         <UserContext.Provider value={
             {
                 user,
-                isLoading,
                 error,
-                isLogged,
                 handleLogin,
                 handleLogout,
                 token

@@ -47,6 +47,6 @@ input:not(:placeholder-shown) ~ .label{
 .error {
     position: absolute;
     left: 0;
-    bottom: -1.225rem;
+    bottom: -1.4rem;
     color: red;
 }

@@ -1,0 +1,48 @@
+.container{
+    margin: 1.5rem auto;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.containerPages{
+    display: flex;
+    gap: .5rem;
+}
+
+.containerPages button{
+    border: none;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    transition: all .2s;
+    cursor: pointer;
+}
+
+.containerPages button:hover{
+    background-color: var(--purpleMain);
+    color: var(--neutral-100)
+}
+
+.buttonChangePage {
+    border: none;
+    background-color: transparent;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 32px;
+    display: grid;
+    place-content: center;
+    transition: all .2s;
+    cursor: pointer;
+}
+
+.buttonChangePage:hover {
+    background-color: var(--purpleMain);
+    color: var(--neutral-100)
+}
+
+.active{
+    background-color: var(--purpleMain);
+    color: var(--neutral-100);
+}

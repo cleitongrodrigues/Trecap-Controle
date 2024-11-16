@@ -56,7 +56,7 @@ const validacoes = {
 };
 
 const MenuLateral = () => {
-  const { user } = useContext(UserContext)
+  const { user, handleLogout } = useContext(UserContext)
 
   const [userData, setUserData] = useState({ ...user })
 
@@ -346,7 +346,6 @@ const MenuLateral = () => {
 
   return (
     <>
-      <ProtectedRoute>
         <div className={styles.menuLateral}>
           <IconContext.Provider value={{ size: "2rem" }}>
             <div className={styles.menuItems}>
@@ -495,13 +494,12 @@ const MenuLateral = () => {
               <Link href="/configuracoes">
                 <MdSettings /> Configurações
               </Link>
-              <Link href="/usuario/login">
+              <Link href="/usuario/login" onClick={handleLogout}>
                 <MdLogout /> Sair
               </Link>
             </div>
           </IconContext.Provider>
         </div>
-      </ProtectedRoute>
     </>
   );
 };

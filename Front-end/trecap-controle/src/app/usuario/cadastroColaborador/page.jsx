@@ -14,8 +14,9 @@ import Swal from "sweetalert2";
 import ColaboradorItem from "./colaboradorItem";
 import Loading from "@/components/loading";
 import ColaboradorList from "./ColaboradorList";
-import { UserContext } from "@/context/userContext";
+import { useAuth, UserContext } from "@/context/userContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import Pagination from "@/components/pagination";
 
 
 export default function CadastrarEvento() {
@@ -38,10 +39,12 @@ export default function CadastrarEvento() {
     setPaginaAtual(pagina);
   };
 
+  const [totalPaginas, setTotalPaginas] = useState()
+
   const [colaboradores, setColaboradores] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [setores, setSetores] = useState([]);
-  const { user, token } = useContext(UserContext);
+  const { user } = useAuth()
   const [selectedOption, setSelectedOption] = useState("");
 
   
@@ -54,12 +57,13 @@ export default function CadastrarEvento() {
       setIsLoading(true);
 
       const response = await axios.get(
-        `http://localhost:3333/colaboradores?page=${paginaAtual}&${filterColaborador}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        `http://localhost:3333/colaboradores?page=${paginaAtual}&${filterColaborador}`
       );
       const dadosColaboradores = response.data.dados;
+      const dataLength = response.data.length
 
       setColaboradores(dadosColaboradores);
+      setTotalPaginas(Math.max(1, Math.ceil(dataLength / 10)))
     } catch (error) {
       console.log("Erro ao buscar colaboradores", error);
     } finally {
@@ -68,12 +72,15 @@ export default function CadastrarEvento() {
   };
 
   useEffect(() => {
-    getColaboradores();
-    getSetores();
-  }, [user]);
-
-
-  const totalPaginas = 10;
+    if(user){
+      const fetchData = async () => {
+        await getColaboradores();
+        await getSetores();
+      };
+      fetchData();
+    }
+    
+  }, [user, paginaAtual]);
 
   // Função para ir para a página anterior
   const paginaAnterior = () => {
@@ -99,10 +106,6 @@ export default function CadastrarEvento() {
     }
   };
 
-  useEffect(() => {
-    getColaboradores();
-    getSetores(); // Busca setores quando o componente é montado
-  }, [paginaAtual]);
 
   const handleCancelar = () => {
     CPF.setValue("");
@@ -261,12 +264,8 @@ export default function CadastrarEvento() {
     setColaboradorToDelete(colaborador);
     setShowDeleteModal(true); // Abre o modal de confirmação de exclusão
   };
-    // Verifique o conteúdo da variável setores
-  useEffect(()=>{console.log(selectedOption)},[selectedOption])
   return (
-    <>
     <ProtectedRoute>
-      {/* <CabecalhoLogado /> */}
       <MenuLateral />
       <div className={style.CorCinza}>
         <div className={style.ContainerGeral}>
@@ -452,7 +451,10 @@ export default function CadastrarEvento() {
                       value={pesquisar}
                       onChange={({ target }) => setPesquisar(target.value)}
                     />
-                    <button onClick={getColaboradores}>
+                    <button onClick={async ()=>{
+                      await getColaboradores()
+                      setPaginaAtual(1)
+                      }}>
                       <IconContext.Provider value={{ size: 25 }}>
                         <MdSearch />
                       </IconContext.Provider>
@@ -479,36 +481,7 @@ export default function CadastrarEvento() {
                     ? <Loading />
                     : <ColaboradorList  getColaboradores={getColaboradores} colaboradores={colaboradores} />}
                   {/* Navegação de página */}
-                  <div className={style.ContainerPaginacao}>
-                    <p>
-                      Página {paginaAtual} de {totalPaginas}
-                    </p>
-                    <div className={style.Paginacao}>
-                      <button
-                        disabled={paginaAtual === 1}
-                        onClick={() => irParaPagina(paginaAtual - 1)}
-                      >
-                        Anterior
-                      </button>
-                      {Array.from({ length: totalPaginas }, (_, index) => (
-                        <button
-                          key={index}
-                          onClick={() => irParaPagina(index + 1)}
-                          className={
-                            paginaAtual === index + 1 ? style.PaginaAtiva : ""
-                          }
-                        >
-                          {index + 1}
-                        </button>
-                      ))}
-                      <button
-                        disabled={paginaAtual === totalPaginas}
-                        onClick={() => irParaPagina(paginaAtual + 1)}
-                      >
-                        Próxima
-                      </button>
-                    </div>
-                  </div>
+                  <Pagination setPaginaAtual={setPaginaAtual} currentPage={paginaAtual} length={totalPaginas}  prev={paginaAnterior} next={paginaSeguinte}/>
                 </div>
               </div>
             </div>
@@ -516,6 +489,5 @@ export default function CadastrarEvento() {
         </div>
       </div>
     </ProtectedRoute>
-    </>
   );
 }

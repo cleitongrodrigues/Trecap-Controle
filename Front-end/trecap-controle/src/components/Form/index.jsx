@@ -14,7 +14,7 @@ export default function Form({message, children}) {
             <div className={styles.containerLogin}>
                 <div className={styles.containerLogo}>
                     <Link href="/" className={styles.logoHome}>
-                        <BiSolidHome />
+                        <BiSolidHome style={{ fontSize: '20px' }}/>
                     </Link>
                     <div>
                         <h2>TreCap</h2>
