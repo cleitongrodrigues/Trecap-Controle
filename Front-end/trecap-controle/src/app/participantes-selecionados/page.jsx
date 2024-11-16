@@ -45,8 +45,8 @@ export default function ParticipantesSelecionados() {
       <MenuLateral />
       <div className={styles.layout}>
         <div className={styles.Header}>
-        <h1>{eventoSelecionado}</h1>
-          <div className={styles.checkin}>            
+          <h1>{eventoSelecionado}</h1>
+          <div className={styles.checkin}>
             <div className={styles.cadastro}>
               <h2>Participantes Selecionados</h2>
 
@@ -57,7 +57,7 @@ export default function ParticipantesSelecionados() {
                   {participantesSelecionados.length > 0 ? (
                     participantesSelecionados.map((participante, index) => (
                       <li key={index} className={styles.participanteItem}>
-                        <label>{participante}</label>
+                        <label>{participante.nome}</label> {/* Exibe o nome do participante */}
                       </li>
                     ))
                   ) : (
@@ -67,12 +67,14 @@ export default function ParticipantesSelecionados() {
               )}
             </div>
 
-            <button className={styles.botaoCadastro} onClick={iniciarChamada}>
-              Iniciar Chamada para Evento
-            </button>
-            <button className={styles.botaoCadastro} onClick={router.back}>
-              Voltar
-            </button>
+            <div className={styles.botaoContainer}>
+              <button className={styles.botaoCadastro} onClick={iniciarChamada}>
+                Iniciar Chamada para Evento
+              </button>
+              <button className={styles.botaoCadastro} onClick={router.back}>
+                Voltar
+              </button>
+            </div>
           </div>
         </div>
       </div>

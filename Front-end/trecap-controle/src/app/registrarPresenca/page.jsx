@@ -15,28 +15,32 @@ export default function RegistrarPresenca() {
     if (typeof window !== 'undefined') {
       const selecionados = localStorage.getItem('participantesSelecionados');
       setParticipantesSelecionados(selecionados ? JSON.parse(selecionados) : []);
-      
+
       const evento = localStorage.getItem('eventoSelecionado');
       setEventoSelecionado(evento || "Nome do Evento Não Encontrado");
     }
   }, []);
 
-  const registrarPresenca = (nome, isChecked) => {
-    console.log(`Participante: ${nome}, Checked: ${isChecked}`); // Debug
+  const registrarPresenca = (id, nome, isChecked) => {
+    console.log(`Participante: ${nome}, ID: ${id}, Checked: ${isChecked}`); // Debug
     const agora = new Date();
-    
-    // Formatar a data e hora no seu horário local
+
+    // Formatar a data e hora no formato local
     const formattedDate = agora.toLocaleString('pt-BR', {
       timeZone: 'America/Sao_Paulo', // Defina o fuso horário correto
+      hour12: false, // Se você quiser usar o formato de 24 horas
     });
+
+    // Log para verificar o valor da data formatada
+    console.log("Data formatada:", formattedDate);
 
     setParticipantesPresentes((prev) => {
       const novosPresentes = { ...prev };
 
       if (isChecked) {
-        novosPresentes[nome] = formattedDate;
+        novosPresentes[id] = { nome, hora: formattedDate };
       } else {
-        delete novosPresentes[nome];
+        delete novosPresentes[id];
       }
 
       localStorage.setItem('participantesPresentes', JSON.stringify(novosPresentes));
@@ -45,45 +49,39 @@ export default function RegistrarPresenca() {
   };
 
   const salvarPresenca = async () => {
-    const dadosPresenca = Object.entries(participantesPresentes).map(([nome, hora]) => {
-      // Aqui você deve garantir que o ID do colaborador seja obtido corretamente
-      const colaboradorId = nome; // Ajuste isso para pegar o ID correto
-
-      return {
-        registros_presenca: 1,
-        registros_hora_entrada: hora,
-        registros_hora_saida: null,
-        evento_id: 1, // Substitua pelo evento real
-        colaborador_id: colaboradorId // Aqui você deve garantir que o ID está correto
-      };
-    });
+    const dadosPresenca = Object.entries(participantesPresentes).map(([id, { nome, hora }]) => ({
+      registros_presenca: 1,
+      registros_hora_entrada: hora,
+      registros_hora_saida: null,
+      evento_id: 1, // Substitua pelo ID do evento real
+      colaborador_id: id, // ID do colaborador
+    }));
 
     if (dadosPresenca.length === 0) {
       alert("Nenhum participante presente selecionado.");
       return; // Evita enviar se não houver dados
     }
 
-    for (const dado of dadosPresenca) {
-      try {
-        const response = await fetch('http://localhost:3333/registro', {
+    try {
+      const promises = dadosPresenca.map(dado =>
+        fetch('http://localhost:3333/registro', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(dado),
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(`Erro ${response.status}: ${errorData.message || 'Erro ao registrar presença'}`);
-        }
-
-        const data = await response.json();
-        console.log('Registros de presença salvos com sucesso:', data);
-      } catch (error) {
-        console.error('Erro ao salvar a presença:', error);
-        // alert("Ocorreu um erro ao salvar a presença: " + error.message);
-      }
+        }).then(response => {
+          if (!response.ok) {
+            throw new Error(`Erro ${response.status}`);
+          }
+          return response.json();
+        })
+      );
+      await Promise.all(promises);
+      console.log('Todos os registros de presença salvos com sucesso');
+    } catch (error) {
+      console.error('Erro ao salvar a presença:', error);
+      // Exiba uma mensagem de erro para o usuário de forma mais amigável
     }
 
     // Redirecionar após salvar todos os registros
@@ -95,7 +93,7 @@ export default function RegistrarPresenca() {
       <MenuLateral />
       <div className={styles.layout}>
         <div className={styles.Header}>
-        <h1>{eventoSelecionado}</h1>
+          <h1>{eventoSelecionado}</h1>
           <div className={styles.checkin}>
             <div className={styles.cadastro}>
               <h2>REGISTRO DE PRESENÇA</h2>
@@ -104,18 +102,18 @@ export default function RegistrarPresenca() {
                 <h3>Selecione os participantes presentes:</h3>
                 <ul className={styles.lista}>
                   {participantesSelecionados.length > 0 ? (
-                    participantesSelecionados.map((participante, index) => (
-                      <li key={index} className={styles.participanteItem}>
+                    participantesSelecionados.map((participante) => (
+                      <li key={participante.id} className={styles.participanteItem}>
                         <label>
                           <input
                             type="checkbox"
-                            checked={participantesPresentes[participante] !== undefined}
-                            onChange={(e) => registrarPresenca(participante, e.target.checked)}
+                            checked={participantesPresentes[participante.id] !== undefined}
+                            onChange={(e) => registrarPresenca(participante.id, participante.nome, e.target.checked)}
                           />
-                          {participante}
-                          {participantesPresentes[participante] && (
+                          {participante.nome}
+                          {participantesPresentes[participante.id] && (
                             <span className={styles.horario}>
-                              (Chegada: {participantesPresentes[participante]})
+                              (Chegada: {participantesPresentes[participante.id]?.hora})
                             </span>
                           )}
                         </label>

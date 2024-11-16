@@ -73,8 +73,9 @@
 
 /* Estilo da lista de participantes */
 .listaParticipantes {
-  width: 100%;
+  max-width: 100%;
   text-transform: uppercase;
+  width: 50rem;
 }
 
 .listaParticipantes h3 {

@@ -20,6 +20,7 @@
     "@heroicons/react": "^2.1.5",
     "axios": "^1.7.7",
     "date-fns": "^4.1.0",
+    "dayjs": "^1.11.13",
     "framer-motion": "^11.5.5",
     "interactions": "^0.0.1",
     "ionicons": "^7.4.0",

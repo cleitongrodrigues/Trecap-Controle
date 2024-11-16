@@ -62,24 +62,31 @@ export default function CheckinEvento() {
   const salvarParticipantes = async () => {
     const selecionados = participantes
       .filter((_, index) => participantesSelecionados[index])
-      .map((participante) => participante.colaborador_nome);
-
+      .map((participante) => ({
+        id: participante.colaborador_id,
+        nome: participante.colaborador_nome
+      })); // Agora salvamos tanto o id quanto o nome
+    
     if (selecionados.length === 0) {
       setMensagemErro("Nenhum participante está selecionado.");
       return;
     }
-
+  
     try {
       // Salvar os participantes selecionados no localStorage
       localStorage.setItem('participantesSelecionados', JSON.stringify(selecionados));
       console.log('Participantes selecionados salvos no localStorage:', selecionados);
-
+  
       // Redirecionar para a página de confirmação
       router.push('/participantes-selecionados');
     } catch (error) {
       console.error('Erro ao salvar participantes:', error);
       setMensagemErro("Ocorreu um erro ao salvar os participantes.");
     }
+  };
+
+  const handleVoltar = () => {
+    router.back(); // Redireciona de volta para a página anterior
   };
 
   return (
@@ -89,7 +96,7 @@ export default function CheckinEvento() {
         <div className={styles.layout}>
           <div className={styles.mainContent}>
             <div className={styles.Header}>
-            <h1>{nomeEvento}</h1>
+              <h1>{nomeEvento}</h1>
               <div className={styles.checkin}>                
                 <div className={styles.cadastro}>
                   <h2>Adicionar Participantes</h2>
@@ -99,7 +106,7 @@ export default function CheckinEvento() {
                       <ul className={styles.participantes}>
                         {participantes.length > 0 ? (
                           participantes.map((participante, index) => (
-                            <li key={index} className={styles.participanteItem}>
+                            <li key={participante.colaborador_id} className={styles.participanteItem}>
                               <label>
                                 <input
                                   type="checkbox"
@@ -107,7 +114,7 @@ export default function CheckinEvento() {
                                   checked={participantesSelecionados[index]}
                                   onChange={() => handleCheckboxChange(index)}
                                 />
-                                {participante.colaborador_nome}
+                                {participante.colaborador_nome} {/* Renderizando o nome do participante */}
                               </label>
                             </li>
                           ))
@@ -121,6 +128,7 @@ export default function CheckinEvento() {
                   </div>
                 </div>
                 <button className={styles.botaoCadastro} onClick={salvarParticipantes}>Salvar</button>
+                <button className={styles.botaoCadastro} onClick={handleVoltar}>Voltar</button> {/* Botão de voltar */}
               </div>
             </div>
           </div>
