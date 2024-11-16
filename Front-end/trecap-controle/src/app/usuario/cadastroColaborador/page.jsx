@@ -262,31 +262,31 @@ export default function CadastrarEvento() {
 
   // -----------------------------------------------------
 
-  const handleEdit = (colaborador) => {
-    setSelectedColaborador(colaborador);
-    nome.setValue(colaborador.colaborador_nome);
-    email.setValue(colaborador.colaborador_email);
-    CPF.setValue(colaborador.colaborador_CPF);
-    biometria.setValue(colaborador.colaborador_biometria);
-    telefone.setValue(colaborador.colaborador_telefone);
-    setShowModal(true);
-  };
+  // const handleEdit = (colaborador) => {
+  //   setSelectedColaborador(colaborador);
+  //   nome.setValue(colaborador.colaborador_nome);
+  //   email.setValue(colaborador.colaborador_email);
+  //   CPF.setValue(colaborador.colaborador_CPF);
+  //   biometria.setValue(colaborador.colaborador_biometria);
+  //   telefone.setValue(colaborador.colaborador_telefone);
+  //   setShowModal(true);
+  // };
 
-  const handleDelete = async () => {
-    try {
-      await axios.delete(
-        `http://localhost:3333/colaboradores/${colaboradorToDelete.colaborador_id}`
-      );
-      setShowDeleteModal(false);
-      getColaboradores(); // Atualiza a lista após a exclusão
-      Swal.fire({
-        title: "Deletado com sucesso!",
-        icon: "success",
-      });
-    } catch (error) {
-      console.log("Erro ao excluir colaborador", error);
-    }
-  };
+  // const handleDelete = async () => {
+  //   try {
+  //     await axios.delete(
+  //       `http://localhost:3333/colaboradores/${colaboradorToDelete.colaborador_id}`
+  //     );
+  //     setShowDeleteModal(false);
+  //     getColaboradores(); // Atualiza a lista após a exclusão
+  //     Swal.fire({
+  //       title: "Deletado com sucesso!",
+  //       icon: "success",
+  //     });
+  //   } catch (error) {
+  //     console.log("Erro ao excluir colaborador", error);
+  //   }
+  // };
 
   const confirmDelete = (colaborador) => {
     setColaboradorToDelete(colaborador);

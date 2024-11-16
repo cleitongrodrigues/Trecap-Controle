@@ -31,7 +31,6 @@ const SetorController = {
         try {
             const { empresa_id } = request.params
             const {setor_nome} = request.body;
-            console.log(setor_nome, empresa_id)
             const sql = `INSERT INTO setores
                 (setor_nome, empresa_id) 
                 VALUES (?, ?)`;

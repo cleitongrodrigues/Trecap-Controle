@@ -16,7 +16,7 @@ export const ColaboradorController = {
             }
 
 
-            const  { colaboradores, length } = await ColaboradorService.getColaboradores(params)
+            const { colaboradores, length } = await ColaboradorService.getColaboradores(params)
 
             return response.status(200).json({
                 dados: colaboradores,
@@ -41,8 +41,7 @@ export const ColaboradorController = {
             next(error)
         }
     },
-    async CadastrarColaborador(request, response, next)
-    {
+    async CadastrarColaborador(request, response, next) {
         try {
             const colaborador = await ColaboradorService.createColaboradores(request.body)
 
@@ -54,9 +53,8 @@ export const ColaboradorController = {
             next(error)
         }
     },
-    async ApagarColaborador(request, response, next)
-    {
-        try{
+    async ApagarColaborador(request, response, next) {
+        try {
             const { colaborador_id } = request.params
             const sql = `UPDATE colaboradores SET colaborador_ativo = 0
                 WHERE colaborador_id = ?;`;
@@ -69,9 +67,40 @@ export const ColaboradorController = {
                 message: "Sucess"
             })
         }
-        catch (error)
-        {
+        catch (error) {
             next(error)
+        }
+    },
+
+    async AtualizarColaborador(request, response, next) {
+        try {
+            const { colaborador_nome, colaborador_CPF, colaborador_biometria, colaborador_telefone, colaborador_email, colaborador_id} = request.body
+            const sql = `
+                    UPDATE colaboradores 
+                    SET 
+                        colaborador_nome = ?,
+                        colaborador_CPF = ?,
+                        colaborador_biometria = ?,
+                        colaborador_telefone = ?,
+                        colaborador_email = ?
+                    WHERE colaborador_id = ?
+                    `;
+
+            // Executa o comando SQL com os valores fornecidos
+            const [result] = await connection.query(sql, [
+                colaborador_nome,
+                colaborador_CPF,
+                colaborador_biometria,
+                colaborador_telefone,
+                colaborador_email,
+                colaborador_id
+            ]);
+
+            return response.status(200).json({
+                message: "Atualizado com sucesso"
+            })
+        } catch (e) {
+            next(e)
         }
     }
 }

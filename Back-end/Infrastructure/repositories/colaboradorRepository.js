@@ -54,7 +54,7 @@ class ColaboradorRepository {
           }
         return colaboradores.map(
             (colaboradorInfo) => {
-                return new ColaboradorResult(colaboradorInfo.colaborador_id, colaboradorInfo.colaborador_nome, colaboradorInfo.colaborador_cpf, colaboradorInfo.colaborador_email, colaboradorInfo.empresa_id, colaboradorInfo.setor_id, colaboradorInfo.setor_nome)
+                return new ColaboradorResult(colaboradorInfo.colaborador_id, colaboradorInfo.colaborador_nome, colaboradorInfo.colaborador_CPF, colaboradorInfo.colaborador_email, colaboradorInfo.colaborador_telefone, colaboradorInfo.colaborador_biometria,colaboradorInfo.empresa_id, colaboradorInfo.setor_id, colaboradorInfo.setor_nome)
             }
         )
     }
