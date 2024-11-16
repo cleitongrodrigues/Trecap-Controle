@@ -174,7 +174,7 @@ export default function CadastrarEvento() {
 
   const handleSubmitSetor = async (e) => {
     e.preventDefault();
-    if (!novoSetorNome) {
+    if (novoSetorNome.length === 0) {
       Swal.fire({
         icon: "error",
         title: "Campo não preenchido",
@@ -185,18 +185,16 @@ export default function CadastrarEvento() {
 
     const setorData = {
       setor_nome: novoSetorNome,
-      empresa_id: user.empresa_id,
     };
 
     try {
       await axios.post(`http://localhost:3333/setores/${user.empresa_id}`, setorData);
-      console.log("Resposta do servidor:", response.data);
       Swal.fire({
         title: "Setor cadastrado com sucesso!",
         icon: "success",
       });
       fecharSetorModal();
-      getSetores(); // Atualiza a lista de setores
+      await getSetores(); // Atualiza a lista de setores
     } catch (error) {
       console.log("Erro ao cadastrar setor", error);
     }

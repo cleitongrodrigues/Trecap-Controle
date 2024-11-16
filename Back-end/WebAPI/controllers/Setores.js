@@ -29,23 +29,25 @@ const SetorController = {
 
     async CadastrarSetores(request, response){
         try {
-            const {setor_nome, empresa_id} = request.body;
-
-            const sql = `INSERT INTO Setores
+            const { empresa_id } = request.params
+            const {setor_nome} = request.body;
+            console.log(setor_nome, empresa_id)
+            const sql = `INSERT INTO setores
                 (setor_nome, empresa_id) 
-                VALUES (?, ?);`;
+                VALUES (?, ?)`;
 
             const values = [setor_nome, empresa_id];
 
-            const execSql = await connectionb.query(sql, values);
+            const execSql = await connection.query(sql, values);
 
             const setor_id = execSql[0].insertId;
             return response.status(200).json({
                 sucesso: true,
-                mensagem: `Usuário ${setor_id} cadastrado com sucesso!`,
+                mensagem: `Setor ${setor_id} cadastrado com sucesso!`,
                 dados: setor_id
             });
         } catch (error) {
+            console.log(error)
             return response.status(500).json({
                 sucesso: false,
                 mensagem: 'Erro ao cadastrar usuário :(',

@@ -39,5 +39,6 @@ router.delete('/colaboradores/:colaborador_id', ColaboradorController.ApagarCola
 // router.delete('/Evento/:evento_id', EventoController.ApagarEvento);
 
 router.get("/setores/:empresa_id", SetorController.ListarSetores)
+router.post("/setores/:empresa_id", SetorController.CadastrarSetores)
 
 export default router
