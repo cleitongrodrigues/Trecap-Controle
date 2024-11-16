@@ -46,8 +46,8 @@ export default function CadastrarEvento() {
   const [setores, setSetores] = useState([]);
   const { user } = useAuth()
   const [selectedOption, setSelectedOption] = useState("");
-
-  
+  const [showSetorModal, setShowSetorModal] = useState(false);
+  const [novoSetorNome, setNovoSetorNome] = useState("");
 
   const getColaboradores = async () => {
     try {
@@ -72,14 +72,14 @@ export default function CadastrarEvento() {
   };
 
   useEffect(() => {
-    if(user){
+    if (user) {
       const fetchData = async () => {
         await getColaboradores();
         await getSetores();
       };
       fetchData();
     }
-    
+
   }, [user, paginaAtual]);
 
   // Função para ir para a página anterior
@@ -169,6 +169,36 @@ export default function CadastrarEvento() {
       });
     } catch (error) {
       console.log("Erro ao cadastrar colaborador", error);
+    }
+  };
+
+  const handleSubmitSetor = async (e) => {
+    e.preventDefault();
+    if (!novoSetorNome) {
+      Swal.fire({
+        icon: "error",
+        title: "Campo não preenchido",
+        text: "Por favor, preencha o nome do setor!",
+      });
+      return;
+    }
+
+    const setorData = {
+      setor_nome: novoSetorNome,
+      empresa_id: user.empresa_id,
+    };
+
+    try {
+      await axios.post(`http://localhost:3333/setores/${user.empresa_id}`, setorData);
+      console.log("Resposta do servidor:", response.data);
+      Swal.fire({
+        title: "Setor cadastrado com sucesso!",
+        icon: "success",
+      });
+      fecharSetorModal();
+      getSetores(); // Atualiza a lista de setores
+    } catch (error) {
+      console.log("Erro ao cadastrar setor", error);
     }
   };
 
@@ -264,6 +294,15 @@ export default function CadastrarEvento() {
     setColaboradorToDelete(colaborador);
     setShowDeleteModal(true); // Abre o modal de confirmação de exclusão
   };
+
+  const abrirSetorModal = () => {
+    setShowSetorModal(true);
+  };
+
+  const fecharSetorModal = () => {
+    setShowSetorModal(false);
+  };
+
   return (
     <ProtectedRoute>
       <MenuLateral />
@@ -323,8 +362,8 @@ export default function CadastrarEvento() {
                       <select
                         className={style.Combobox}
                         value={selectedOption}
-                         // Atualiza o setor selecionado
-                         onChange={(e) => setSelectedOption(e.target.value)}
+                        // Atualiza o setor selecionado
+                        onChange={(e) => setSelectedOption(e.target.value)}
                       >
                         <option value="" disabled>
                           Selecione um setor
@@ -335,20 +374,9 @@ export default function CadastrarEvento() {
                           </option>
                         ))}
                       </select>
-                      {/* <select
-                      className={style.Combobox}
-                        // value={selectedOption}
-                        // onChange={handleChange}
 
-                      >
-                        <option value="" selected="selected">Setores</option>
-                        <option value="1">Gestão</option>
-                        <option value="2">Recursos Humanos</option>
-                        <option value="3">Produção</option>
-                        <option value="4">Administrativo</option>
-                        <option value="5">Financeiro</option>
-                        <option value="6">Jurídico</option>
-                      </select> */}
+                      <label className={style.LabelSetor} onClick={abrirSetorModal}>Adicionar Setores...</label>
+
                     </div>
                   </div>
                 </form>
@@ -369,6 +397,40 @@ export default function CadastrarEvento() {
                   Cancelar
                 </button>
               </div>
+
+              {showSetorModal && (
+                <div className={style.modalOverlay}>
+                  <div className={style.modalContent}>
+                    <h2>Cadastrar Novo Setor</h2>
+                    <form onSubmit={handleSubmitSetor}>
+                      <label>Nome do Setor:</label>
+                      <input
+                        type="text"
+                        value={novoSetorNome}
+                        onChange={(e) => setNovoSetorNome(e.target.value)}
+                        placeholder="Digite o nome do setor"
+                      />
+                      <div className={style.modalButtons}>
+                        <button
+                          type="submit"
+                          className={style.ButtonCadastrar}
+                          >
+                          Cadastrar
+                        </button>
+                        <button
+                          type="button"
+                          className={style.ButtonCancelar}
+                          onClick={fecharSetorModal}
+                        >
+                          Cancelar
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              )}
+
+
 
               {/* Modal de Edição */}
               {showModal && (
@@ -451,10 +513,10 @@ export default function CadastrarEvento() {
                       value={pesquisar}
                       onChange={({ target }) => setPesquisar(target.value)}
                     />
-                    <button onClick={async ()=>{
+                    <button onClick={async () => {
                       await getColaboradores()
                       setPaginaAtual(1)
-                      }}>
+                    }}>
                       <IconContext.Provider value={{ size: 25 }}>
                         <MdSearch />
                       </IconContext.Provider>
@@ -479,9 +541,9 @@ export default function CadastrarEvento() {
                   </div>
                   {isLoading
                     ? <Loading />
-                    : <ColaboradorList  getColaboradores={getColaboradores} colaboradores={colaboradores} />}
+                    : <ColaboradorList getColaboradores={getColaboradores} colaboradores={colaboradores} />}
                   {/* Navegação de página */}
-                  <Pagination setPaginaAtual={setPaginaAtual} currentPage={paginaAtual} length={totalPaginas}  prev={paginaAnterior} next={paginaSeguinte}/>
+                  <Pagination setPaginaAtual={setPaginaAtual} currentPage={paginaAtual} length={totalPaginas} prev={paginaAnterior} next={paginaSeguinte} />
                 </div>
               </div>
             </div>

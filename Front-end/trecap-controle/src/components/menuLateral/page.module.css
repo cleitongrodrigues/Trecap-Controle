@@ -1,7 +1,8 @@
 /* CSS para o menu lateral */
 .menuLateral {
   min-width: 270px;
-  background-color: rgb(7, 7, 59);
+  /* background-color: rgb(7, 7, 59); */
+  background-color: var(--purpleMain);
   padding: 2rem;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   display: flex;
