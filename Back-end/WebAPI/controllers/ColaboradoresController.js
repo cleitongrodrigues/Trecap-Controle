@@ -16,10 +16,11 @@ export const ColaboradorController = {
             }
 
 
-            const colaboradores = await ColaboradorService.getColaboradores(params)
+            const  { colaboradores, length } = await ColaboradorService.getColaboradores(params)
 
             return response.status(200).json({
                 dados: colaboradores,
+                length: length
             });
 
         } catch (error) {

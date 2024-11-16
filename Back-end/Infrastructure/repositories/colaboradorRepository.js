@@ -89,6 +89,25 @@ class ColaboradorRepository {
             }
         )
     }
+
+    async length(empresa_id, filter)
+    {
+        let values;
+        let sql
+        console.log(filter)
+        if(filter)
+        {
+            sql = `SELECT COUNT(*) AS total_registros FROM colaboradores WHERE empresa_id = ? And colaborador_ativo = 1 And colaborador_nome LIKE ?`
+            values = [empresa_id, `%${filter}%`]
+        } else {
+            sql = "SELECT COUNT(*) AS total_registros FROM colaboradores WHERE empresa_id = ?"
+            values = [empresa_id]
+        }
+            
+
+        const [result] = await connection.query(sql, values)
+        return result[0].total_registros
+    }
 }
 
 export default new ColaboradorRepository()

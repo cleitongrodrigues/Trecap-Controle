@@ -16,6 +16,7 @@ import Loading from "@/components/loading";
 import ColaboradorList from "./ColaboradorList";
 import { useAuth, UserContext } from "@/context/userContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import Pagination from "@/components/pagination";
 
 
 export default function CadastrarEvento() {
@@ -38,6 +39,8 @@ export default function CadastrarEvento() {
     setPaginaAtual(pagina);
   };
 
+  const [totalPaginas, setTotalPaginas] = useState()
+
   const [colaboradores, setColaboradores] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [setores, setSetores] = useState([]);
@@ -57,8 +60,10 @@ export default function CadastrarEvento() {
         `http://localhost:3333/colaboradores?page=${paginaAtual}&${filterColaborador}`
       );
       const dadosColaboradores = response.data.dados;
+      const dataLength = response.data.length
 
       setColaboradores(dadosColaboradores);
+      setTotalPaginas(Math.max(1, Math.ceil(dataLength / 10)))
     } catch (error) {
       console.log("Erro ao buscar colaboradores", error);
     } finally {
@@ -76,9 +81,6 @@ export default function CadastrarEvento() {
     }
     
   }, [user, paginaAtual]);
-
-
-  const totalPaginas = 10;
 
   // Função para ir para a página anterior
   const paginaAnterior = () => {
@@ -449,7 +451,10 @@ export default function CadastrarEvento() {
                       value={pesquisar}
                       onChange={({ target }) => setPesquisar(target.value)}
                     />
-                    <button onClick={getColaboradores}>
+                    <button onClick={async ()=>{
+                      await getColaboradores()
+                      setPaginaAtual(1)
+                      }}>
                       <IconContext.Provider value={{ size: 25 }}>
                         <MdSearch />
                       </IconContext.Provider>
@@ -476,36 +481,7 @@ export default function CadastrarEvento() {
                     ? <Loading />
                     : <ColaboradorList  getColaboradores={getColaboradores} colaboradores={colaboradores} />}
                   {/* Navegação de página */}
-                  <div className={style.ContainerPaginacao}>
-                    <p>
-                      Página {paginaAtual} de {totalPaginas}
-                    </p>
-                    <div className={style.Paginacao}>
-                      <button
-                        disabled={paginaAtual === 1}
-                        onClick={() => irParaPagina(paginaAtual - 1)}
-                      >
-                        Anterior
-                      </button>
-                      {Array.from({ length: totalPaginas }, (_, index) => (
-                        <button
-                          key={index}
-                          onClick={() => irParaPagina(index + 1)}
-                          className={
-                            paginaAtual === index + 1 ? style.PaginaAtiva : ""
-                          }
-                        >
-                          {index + 1}
-                        </button>
-                      ))}
-                      <button
-                        disabled={paginaAtual === totalPaginas}
-                        onClick={() => irParaPagina(paginaAtual + 1)}
-                      >
-                        Próxima
-                      </button>
-                    </div>
-                  </div>
+                  <Pagination setPaginaAtual={setPaginaAtual} currentPage={paginaAtual} length={totalPaginas}  prev={paginaAnterior} next={paginaSeguinte}/>
                 </div>
               </div>
             </div>

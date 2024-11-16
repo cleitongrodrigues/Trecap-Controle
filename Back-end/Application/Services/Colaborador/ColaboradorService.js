@@ -17,9 +17,10 @@ class ColaboradorService{
 
     async getColaboradores(input)
     {
-        const colaboradores = colaboradorRepository.getColaboradores(input)
-
-        return colaboradores
+        const colaboradores = await colaboradorRepository.getColaboradores(input)
+        const length = await colaboradorRepository.length(input.empresa_id, input.filter)
+        return { colaboradores: colaboradores, length: length }
+        
     }
 
     async getColaboradorById(input){
