@@ -25,17 +25,18 @@ export default function RelatorioPresenca() {
           throw new Error("Erro ao buscar os dados do evento.");
         }
         const eventoData = await response.json();
-        setDataEvento(eventoData.data); // Ajuste conforme os campos da API
-        setHorarioEvento(eventoData.evento_hora); // Agora utilizando evento_hora
-        setHorarioInicioEvento(eventoData.evento_hora || "Horário de Início Não Encontrado"); // Corrigido aqui
+        setDataEvento(eventoData.data);
+        setHorarioEvento(eventoData.evento_hora);
+        setHorarioInicioEvento(eventoData.evento_hora || "Horário de Início Não Encontrado");
       } catch (error) {
         console.error("Erro ao buscar os dados do evento:", error);
       }
     };
   
     if (typeof window !== "undefined") {
-      const presentes = JSON.parse(localStorage.getItem("participantesPresentes")) || {};
-      const presentesArray = Object.entries(presentes).map(([nome, horario]) => {
+      // Recuperando os participantes do localStorage e associando nome com horário
+      const participantesLocalStorage = JSON.parse(localStorage.getItem("participantesPresentes")) || {};
+      const participantesArray = Object.entries(participantesLocalStorage).map(([nome, horario]) => {
         const dataHora = dayjs(horario);
         if (!dataHora.isValid()) {
           console.warn(`Data inválida encontrada: ${horario}`);
@@ -43,16 +44,18 @@ export default function RelatorioPresenca() {
         return { nome, horario: dataHora };
       });
   
-      const presentesOrdenados = presentesArray.sort(
-        (a, b) => a.horario - b.horario
-      );
-      setParticipantesPresentes(presentesOrdenados);
+      // Ordenando os participantes pela data/hora de chegada
+      const participantesOrdenados = participantesArray.sort((a, b) => a.horario - b.horario);
+      setParticipantesPresentes(participantesOrdenados);
   
+      // Definindo o nome do evento
       const evento = localStorage.getItem("eventoSelecionado");
       setEventoSelecionado(evento || "Nome do Evento Não Encontrado");
   
-      fetchEventoData(); // Chama a função para buscar dados do evento
+      // Buscando os dados do evento
+      fetchEventoData();
   
+      // Recuperando e setando o horário de início do evento
       const horarioInicio = localStorage.getItem("horarioInicioEvento");
       setHorarioInicioEvento(horarioInicio || "Horário de Início Não Encontrado");
     }
@@ -99,7 +102,7 @@ export default function RelatorioPresenca() {
     doc.autoTable({
       head: [["Nome", "Horário de Chegada"]], // Definindo o cabeçalho da tabela
       body: participantesPresentes.map((participante) => [
-        participante.nome.toUpperCase(),
+        participante.nome.toUpperCase(), // Exibindo o nome do colaborador
         formatarDataHora(participante.horario),
       ]),
       startY: 60,
