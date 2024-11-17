@@ -17,8 +17,8 @@ export default function RegistrarPresenca() {
       const selecionados = localStorage.getItem('participantesSelecionados');
       setParticipantesSelecionados(selecionados ? JSON.parse(selecionados) : []);
 
-      const evento = localStorage.getItem('eventoSelecionado');
-      setEventoSelecionado(evento || "Nome do Evento Não Encontrado");
+      const evento = localStorage.getItem('eventoId');
+      setEventoSelecionado(evento|| "Nome do Evento Não Encontrado");
     }
   }, []);
 
@@ -53,7 +53,7 @@ export default function RegistrarPresenca() {
       registros_presenca: 1,
       registros_hora_entrada: hora,
       registros_hora_saida: null,
-      evento_id: 1, // Substitua pelo ID do evento real
+      evento_id: eventoSelecionado, // Substitua pelo ID do evento real
       colaborador_id: id, // ID do colaborador
     }));
 

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import styles from './page.module.css';
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -8,15 +8,33 @@ import axios from 'axios';
 export default function CadastroP() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const evento = searchParams.get('evento'); // Captura o nome do evento da URL
+
+  // Recuperando a ID do evento do localStorage ou da query string da URL
+  const eventoId = searchParams.get('eventoId') || localStorage.getItem('eventoSelecionado');
+
+  const [eventoNome, setEventoNome] = useState(''); // Armazena o nome do evento
   const [selectedSetores, setSelectedSetores] = useState([]);
-  const [loading, setLoading] = useState(true); // Para controlar o estado de carregamento
-  const [error, setError] = useState(null); // Para armazenar erros
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    getSetores();
-  }, []);
+  // Função para buscar detalhes do evento
+  const fetchEventoDetails = async (eventoId) => {
+    try {
+      const response = await axios.get(`http://localhost:3333/Eventos/${eventoId}`);
+      const evento = response.data.dados;
 
+      if (evento && evento.evento_nome) {
+        setEventoNome(evento.evento_nome); // Armazenando o nome do evento
+      } else {
+        setError('Evento não encontrado.');
+      }
+    } catch (error) {
+      console.error('Erro ao buscar detalhes do evento:', error);
+      // setError('Erro ao buscar detalhes do evento.');
+    }
+  };
+
+  // Função para buscar setores
   const getSetores = async () => {
     try {
       const response = await axios.get('http://localhost:3333/Setores/1');
@@ -36,6 +54,13 @@ export default function CadastroP() {
     }
   };
 
+  useEffect(() => {
+    if (eventoId) {
+      fetchEventoDetails(eventoId);
+    }
+    getSetores();
+  }, [eventoId]);
+
   const handleCheckboxChange = (index) => {
     const newSelectedSetores = [...selectedSetores];
     newSelectedSetores[index].checked = !newSelectedSetores[index].checked;
@@ -44,18 +69,18 @@ export default function CadastroP() {
 
   const handleClick = () => {
     const setoresSelecionados = selectedSetores.filter((setor) => setor.checked);
-    
+
     if (setoresSelecionados.length === 0) {
-      alert("Nenhum setor selecionado.");
+      alert('Nenhum setor selecionado.');
       return;
     }
 
-    const setoresSelecionadosNome = setoresSelecionados.map(setor => setor.setor_nome);
+    const setoresSelecionadosNome = setoresSelecionados.map((setor) => setor.setor_nome);
     localStorage.setItem('setorSelecionado', JSON.stringify(setoresSelecionadosNome));
-    
-    // Salvar o nome do evento no localStorage
-    if (evento) {
-      localStorage.setItem('eventoSelecionado', evento);
+
+    // Salvar a ID do evento no localStorage
+    if (eventoId) {
+      localStorage.setItem('eventoSelecionado', eventoId);
     }
 
     router.push('/adicionar');
@@ -67,7 +92,7 @@ export default function CadastroP() {
       <div className={styles.layout}>
         <div className={styles.container}>
           <div className={styles.header}>
-            <h1>{evento ? evento : 'Nome do Evento Não Encontrado'}</h1>
+            <h1>{eventoNome ? `Evento: ${eventoNome}` : 'Evento não encontrado'}</h1>
           </div>
           <div className={styles.content}>
             <h2>Antes de iniciar, selecione os setores que irão participar do treinamento.</h2>
@@ -100,7 +125,7 @@ export default function CadastroP() {
                 </div>
                 <div className={styles.buttonContainer}>
                   <button className={styles.button} onClick={handleClick}>
-                    Ir para a seleção de participantes.
+                    Ir para a seleção de participantes
                   </button>
                 </div>
               </div>

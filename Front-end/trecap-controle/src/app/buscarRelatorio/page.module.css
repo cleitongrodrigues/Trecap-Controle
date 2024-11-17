@@ -13,6 +13,22 @@
     margin-bottom: 20px;
     text-align: center;
   }
+
+  .spacingButton {
+    margin-right: 10px; /* Ajuste este valor conforme necessário */
+}
+
+.modal {
+    background: #fff;
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+}
+
+.overlay {
+    background: rgba(0, 0, 0, 0.5);
+}
+
   
   /* Container de busca */
   .searchContainer {
@@ -104,6 +120,7 @@
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-bottom: 0.2rem;
   }
   
   .gerarPDFButton:hover {

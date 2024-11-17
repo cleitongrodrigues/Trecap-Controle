@@ -31,6 +31,7 @@ router.patch('/Eventos/:evento_id', EventoController.EditarEvento);
 router.delete('/Eventos/:evento_id', EventoController.ApagarEvento);
 
 router.get('/Registro', RegistroController.ListarRegistros);
+router.get('/Registros/:evento_id', RegistroController.ListarRegistros);
 router.post('/Registro', RegistroController.CadastrarRegistros);
 router.patch('/Registro/:registros_id', RegistroController.EditarRegistros);
 router.delete('/Registro/:registros_id', RegistroController.ApagarRegistros);
