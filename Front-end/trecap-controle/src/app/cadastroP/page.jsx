@@ -1,50 +1,61 @@
-'use client';
-import styles from './page.module.css';
+'use client'
+
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import MenuLateral from '@/components/menuLateral/page';
 import axios from 'axios';
+import MenuLateral from '@/components/menuLateral/page';
+import styles from './page.module.css';
 
 export default function CadastroP() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // Recuperando a ID do evento do localStorage ou da query string da URL
-  const eventoId = searchParams.get('eventoId') || localStorage.getItem('eventoSelecionado');
-
-  const [eventoNome, setEventoNome] = useState(''); // Armazena o nome do evento
+  // Estados
+  const [eventoId, setEventoId] = useState('');
+  const [eventoNome, setEventoNome] = useState('');
   const [selectedSetores, setSelectedSetores] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // useEffect para configurar o eventoId
+  useEffect(() => {
+    const idFromParams = searchParams.get('eventoId');
+    const idFromLocalStorage = localStorage.getItem('eventoSelecionado');
+    setEventoId(idFromParams || idFromLocalStorage || '');
+  }, [searchParams]);
 
   // Função para buscar detalhes do evento
   const fetchEventoDetails = async (eventoId) => {
     try {
       const response = await axios.get(`http://localhost:3333/Eventos/${eventoId}`);
       const evento = response.data.dados;
-
       if (evento && evento.evento_nome) {
-        setEventoNome(evento.evento_nome); // Armazenando o nome do evento
+        setEventoNome(evento.evento_nome);  // Define o nome do evento
       } else {
         setError('Evento não encontrado.');
       }
     } catch (error) {
-      console.error('Erro ao buscar detalhes do evento:', error);
       // setError('Erro ao buscar detalhes do evento.');
+      console.error('Erro ao buscar detalhes do evento:', error);
     }
   };
+
+  // useEffect para buscar os dados do evento e setores quando o eventoId mudar
+  useEffect(() => {
+    if (eventoId) {
+      fetchEventoDetails(eventoId);
+    }
+  }, [eventoId]);
 
   // Função para buscar setores
   const getSetores = async () => {
     try {
       const response = await axios.get('http://localhost:3333/Setores/1');
       const setores = response.data.dados;
-
       const newSetores = setores.map((setor) => ({
         ...setor,
         checked: false,
       }));
-
       setSelectedSetores(newSetores);
     } catch (error) {
       setError('Erro ao buscar setores. Por favor, tente novamente.');
@@ -54,35 +65,31 @@ export default function CadastroP() {
     }
   };
 
+  // useEffect para buscar setores
   useEffect(() => {
-    if (eventoId) {
-      fetchEventoDetails(eventoId);
-    }
     getSetores();
-  }, [eventoId]);
+  }, []);
 
+  // Manipulador para mudança no checkbox
   const handleCheckboxChange = (index) => {
     const newSelectedSetores = [...selectedSetores];
     newSelectedSetores[index].checked = !newSelectedSetores[index].checked;
     setSelectedSetores(newSelectedSetores);
   };
 
+  // Manipulador para clique no botão
   const handleClick = () => {
     const setoresSelecionados = selectedSetores.filter((setor) => setor.checked);
-
     if (setoresSelecionados.length === 0) {
       alert('Nenhum setor selecionado.');
       return;
     }
-
     const setoresSelecionadosNome = setoresSelecionados.map((setor) => setor.setor_nome);
     localStorage.setItem('setorSelecionado', JSON.stringify(setoresSelecionadosNome));
 
-    // Salvar a ID do evento no localStorage
     if (eventoId) {
       localStorage.setItem('eventoSelecionado', eventoId);
     }
-
     router.push('/adicionar');
   };
 
@@ -92,7 +99,8 @@ export default function CadastroP() {
       <div className={styles.layout}>
         <div className={styles.container}>
           <div className={styles.header}>
-            <h1>{eventoNome ? `Evento: ${eventoNome}` : 'Evento não encontrado'}</h1>
+            {/* Exibe o nome do evento ou um texto alternativo */}
+            <h1>{eventoId || 'Nome do evento não encontrado'}</h1>
           </div>
           <div className={styles.content}>
             <h2>Antes de iniciar, selecione os setores que irão participar do treinamento.</h2>
