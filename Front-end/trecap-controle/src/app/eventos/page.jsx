@@ -116,6 +116,7 @@ export default function Evento() {
 
 
     const handleStart = (evento) => {
+        
         const horaFormatada = evento.evento_hora.includes(':') ? evento.evento_hora : `${evento.evento_hora}:00`;
         const dataEventoStr = `${evento.evento_data_inicio.split('T')[0]}T${horaFormatada}`;
         const dataEvento = new Date(dataEventoStr);
