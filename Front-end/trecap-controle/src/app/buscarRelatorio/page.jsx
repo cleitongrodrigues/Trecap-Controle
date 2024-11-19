@@ -92,7 +92,10 @@ export default function BuscarRelatorio() {
                 body: linhas,
                 startY: 60,  // Começar a tabela 60mm abaixo do topo
                 theme: 'grid', // Usar o tema de grade para a tabela
-                margin: { horizontal: 14 }
+                margin: { horizontal: 14 },
+                theme: 'striped',
+                headStyles: { fillColor: [74, 20, 140] },
+                styles: { halign: 'center' },
             });
     
             // Salvar o arquivo PDF gerado

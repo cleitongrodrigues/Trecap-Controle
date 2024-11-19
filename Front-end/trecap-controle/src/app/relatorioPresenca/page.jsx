@@ -121,6 +121,9 @@ export default function RelatorioPresenca() {
       startY: 60,
       theme: "grid",
       margin: { horizontal: 14 },
+      theme: 'striped',
+      headStyles: { fillColor: [74, 20, 140] },
+      styles: { halign: 'center' },
     });
 
     doc.save(`Relatorio_Presenca_${evento.evento_nome}.pdf`);
