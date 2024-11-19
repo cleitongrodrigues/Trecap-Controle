@@ -33,14 +33,14 @@
   text-align: left;
 }
 
-label {
+.label {
   font-size: 14px;
   font-weight: 500;
   color: #6a3c92;
   margin-bottom: 8px;
 }
 
-input {
+.input {
   padding: 12px;
   font-size: 16px;
   border: 1px solid #ddd;
@@ -48,7 +48,7 @@ input {
   transition: border-color 0.3s ease;
 }
 
-input:focus {
+.input:focus {
   border-color: #a066b0;
   outline: none;
 }
@@ -59,7 +59,7 @@ input:focus {
   font-size: 14px;
 }
 
-button {
+.button {
   width: 100%;
   background-color: #a066b0;
   color: white;
@@ -72,7 +72,7 @@ button {
   transition: background-color 0.3s ease;
 }
 
-button:hover {
+.button:hover {
   background-color: #6a3c92;
 }
 
