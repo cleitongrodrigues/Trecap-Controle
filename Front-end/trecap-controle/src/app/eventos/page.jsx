@@ -69,7 +69,7 @@ export default function Evento() {
             const dataEventoInicio = eventoEditado.evento_data_inicio;
             const dataEventoTermino = eventoEditado.evento_data_termino;
             if (!dataEventoInicio || !dataEventoTermino) {
-                alert("Datas inválidas!");
+                // alert("Datas inválidas!");
                 return;
             }
 
