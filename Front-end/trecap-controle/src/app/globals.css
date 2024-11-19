@@ -4,12 +4,12 @@
 */
 :root{
 	/* --purpleMain: #6750A4; */
-	--purpleMain: rgb(7, 7, 59);
+	--purpleMain: #352e66;
 	/* --purpleMain: #07073B; */
 	--purple-200: #8576FF;
 	--purple-700: #17153B;
 	--purple-500: #4541fe;
-	--purple-300: #352e66;
+	--purple-300: rgb(7, 7, 59);
 	--purpleButton: #8E74B5;
 }
 *{
