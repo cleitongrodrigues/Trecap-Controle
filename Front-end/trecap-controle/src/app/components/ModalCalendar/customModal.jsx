@@ -2,17 +2,35 @@ import React, { useState } from "react";
 
 export default function CustomModal({ isOpen, onClose, onConfirm }) {
   const [startTime, setStartTime] = useState("00:00"); // Hora de início
-  const [endTime, setEndTime] = useState("00:00"); // Hora de término
 
   if (!isOpen) return null;
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    // Coletando os valores dos campos
     const title = event.target.elements.title.value;
     const professor = event.target.elements.professor.value;
     const description = event.target.elements.description.value;
 
-    onConfirm({ title, professor, description, startTime, endTime });
+    // Formatando a hora de início, se necessário (HH:mm:ss)
+    const formattedStartTime = `${startTime}:00`;
+
+    // Log para depuração no console
+    console.log("Dados enviados:", {
+      title,
+      professor,
+      description,
+      startTime: formattedStartTime,
+    });
+
+    // Envia os dados para a função onConfirm
+    onConfirm({
+      title,
+      professor,
+      description,
+      startTime: formattedStartTime, // Enviando a hora formatada
+    });
   };
 
   return (
@@ -47,19 +65,6 @@ export default function CustomModal({ isOpen, onClose, onConfirm }) {
               name="start-time"
               value={startTime}
               onChange={(e) => setStartTime(e.target.value)}
-              className="modal-input"
-            />
-          </div>
-
-          {/* Campo para a hora de término */}
-          <div className="modal-time-picker">
-            <label htmlFor="end-time">Hora de Término:</label>
-            <input
-              type="time"
-              id="end-time"
-              name="end-time"
-              value={endTime}
-              onChange={(e) => setEndTime(e.target.value)}
               className="modal-input"
             />
           </div>
