@@ -17,11 +17,13 @@ module.exports = {
                     e.evento_nome, 
                     e.evento_data_inicio,
                     c.colaborador_id,
-                    c.colaborador_nome
+                    c.colaborador_nome,
+                    s.setor_nome
                 FROM 
                     Registros r
                 JOIN Eventos e ON r.evento_id = e.evento_id
                 JOIN Colaboradores c ON r.colaborador_id = c.colaborador_id
+                JOIN setores s ON c.setor_id = s.setor_id
                 WHERE 
                     r.registros_presenca = 1
                 AND
