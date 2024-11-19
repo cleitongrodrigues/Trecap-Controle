@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import MenuLateral from '@/components/menuLateral/page';
+import axios from "axios";
 
 export default function CheckinEvento() {
   const [participantes, setParticipantes] = useState([]);
@@ -47,9 +48,16 @@ export default function CheckinEvento() {
       fetchParticipantes();
     }
 
+    async function getEventoNome()
+    {
+      const response = await axios.get(`http://localhost:3333/Eventos/${eventoSelecionado}`);
+      const evento = response.data.dados[0];
+      setNomeEvento(evento.evento_nome);
+    }
+
     // Define o nome do evento
     if (eventoSelecionado) {
-      setNomeEvento(eventoSelecionado); // Define corretamente o nome do evento
+      getEventoNome()
     }
   }, []);
 

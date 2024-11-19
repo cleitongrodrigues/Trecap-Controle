@@ -26,6 +26,7 @@ router.patch('/Empresa/:empresa_id', EmpresaController.EditarEmpresa);
 router.delete('/Empresa/:empresa_id', EmpresaController.ApagarEmpresa);
 
 router.get('/Eventos', EventoController.ListarEvento);
+router.get('/Eventos/:evento_id', EventoController.ListarEventoPorId); // alteração 18/11 (tentando fazer o nome aparecer)
 router.post('/Eventos', EventoController.CadastrarEvento);
 router.patch('/Eventos/:evento_id', EventoController.EditarEvento);
 router.delete('/Eventos/:evento_id', EventoController.ApagarEvento);

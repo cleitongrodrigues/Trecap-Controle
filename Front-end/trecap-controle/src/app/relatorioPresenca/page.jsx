@@ -6,6 +6,7 @@ import "jspdf-autotable";
 import styles from "./page.module.css";
 import MenuLateral from "@/components/menuLateral/page";
 import dayjs from "dayjs";
+import axios from "axios";
 
 export default function RelatorioPresenca() {
   const [participantesPresentes, setParticipantesPresentes] = useState([]);
@@ -16,9 +17,16 @@ export default function RelatorioPresenca() {
   const [horarioInicioEvento, setHorarioInicioEvento] = useState("");
 
   useEffect(() => {
-    const fetchEventoData = async () => {
-      const eventoId = 123; // Substitua pelo ID do evento selecionado
+    
+    async function getEventoNome(eventoSelecionado)
+    {
+      const response = await axios.get(`http://localhost:3333/Eventos/${eventoSelecionado}`);
+      const evento = response.data.dados[0];
+      setEventoSelecionado(evento.evento_nome);
+    }
 
+    const fetchEventoData = async () => {
+      const eventoId = localStorage.getItem('eventoSelecionado');
       try {
         const response = await fetch(`http://localhost:3333/evento/${eventoId}`);
         if (!response.ok) {
@@ -49,7 +57,7 @@ export default function RelatorioPresenca() {
 
       // Definindo o nome do evento
       const evento = localStorage.getItem("eventoSelecionado");
-      setEventoSelecionado(evento || "Nome do Evento Não Encontrado");
+      getEventoNome(evento)
 
       // Buscando os dados do evento
       fetchEventoData();

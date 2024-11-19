@@ -16,6 +16,9 @@ export default function CadastroP() {
   const [selectedSetores, setSelectedSetores] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [nomeEventoError, setNomeEventoError] = useState(null)
+  const [detalhesEventoError, setDetalhesEventoError] = useState(null)
+
 
   // useEffect para configurar o eventoId
   useEffect(() => {
@@ -28,14 +31,16 @@ export default function CadastroP() {
   const fetchEventoDetails = async (eventoId) => {
     try {
       const response = await axios.get(`http://localhost:3333/Eventos/${eventoId}`);
-      const evento = response.data.dados;
+      const evento = response.data.dados[0];
+
       if (evento && evento.evento_nome) {
         setEventoNome(evento.evento_nome);  // Define o nome do evento
+        console.log (eventoNome)
       } else {
-        setError('Evento não encontrado.');
+        setNomeEventoError('Evento não encontrado.');
       }
     } catch (error) {
-      // setError('Erro ao buscar detalhes do evento.');
+      setDetalhesEventoError('Erro ao buscar detalhes do evento.');
       console.error('Erro ao buscar detalhes do evento:', error);
     }
   };
@@ -46,6 +51,7 @@ export default function CadastroP() {
       fetchEventoDetails(eventoId);
     }
   }, [eventoId]);
+
 
   // Função para buscar setores
   const getSetores = async () => {
@@ -100,7 +106,7 @@ export default function CadastroP() {
         <div className={styles.container}>
           <div className={styles.header}>
             {/* Exibe o nome do evento ou um texto alternativo */}
-            <h1>{eventoId || 'Nome do evento não encontrado'}</h1>
+            <h1>{eventoNome || 'Nome do evento não encontrado'}</h1>
           </div>
           <div className={styles.content}>
             <h2>Antes de iniciar, selecione os setores que irão participar do treinamento.</h2>
