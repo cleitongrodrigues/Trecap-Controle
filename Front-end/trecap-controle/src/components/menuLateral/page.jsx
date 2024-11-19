@@ -393,11 +393,11 @@ const MenuLateral = () => {
 
                       {editando && (
                         <>
-                          <label htmlFor="imageUpload" className={styles.EscollherArquivo}>
+                          <label className={styles.EscollherArquivo}>
                             Escolher Arquivo
                           </label>
                           <input
-                            className={styles.file}
+                            className={styles.hiddenFileInput}
                             type="file"
                             id="imageUpload"
                             accept="image/*"

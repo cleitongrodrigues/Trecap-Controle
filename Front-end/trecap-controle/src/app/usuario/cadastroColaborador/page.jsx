@@ -397,6 +397,7 @@ export default function CadastrarEvento() {
                 </button>
               </div>
 
+              {/* modal para cadastro de setores */}
               {showSetorModal && (
                 <div className={style.modalOverlay}>
                   <div className={style.modalContent}>
