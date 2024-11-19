@@ -18,7 +18,8 @@ module.exports = {
                     e.evento_data_inicio,
                     c.colaborador_id,
                     c.colaborador_nome,
-                    s.setor_nome
+                    s.setor_nome,
+                    e.evento_hora
                 FROM 
                     Registros r
                 JOIN Eventos e ON r.evento_id = e.evento_id

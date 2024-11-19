@@ -22,6 +22,7 @@ export default function RelatorioPresenca() {
         const response = await axios.get(`http://localhost:3333/Eventos/${eventoId}`);
         const evento = response.data.dados[0];
         setEventoSelecionado(evento.evento_nome);
+        setHorarioEvento(evento.evento_hora);
       } catch (error) {
         console.error("Erro ao buscar nome do evento:", error);
       }
@@ -86,16 +87,15 @@ export default function RelatorioPresenca() {
     const participantes = response.data.dados;
 
     const doc = new jsPDF();
-    doc.setFontSize(18);
-    doc.text("Relatório de Presença", 14, 22);
-    
+        
     // Certifique-se de que evento.evento_data_inicio e evento.evento_hora estão no formato correto
-
-   
-
+    
     const dataEventoFormatada = dayjs(eventos.evento_data_inicio).format("DD/MM/YYYY"); // Formato de data
     const horaEventoFormatada = dayjs(eventos.evento_hora, "HH:mm:ss").format("HH:mm"); // Formato de hora
+    console.log(horaEventoFormatada)
 
+    doc.setFontSize(18);
+    doc.text("Relatório de Presença", 14, 22);
     doc.setFontSize(12);
     doc.text(`Evento: ${evento.evento_nome}`, 14, 32);
     doc.text(`Data: ${dataEventoFormatada}`, 14, 40);
@@ -131,6 +131,7 @@ export default function RelatorioPresenca() {
     console.error("Erro ao gerar PDF:", error);
   }
 };
+
 
   return (
     <>
