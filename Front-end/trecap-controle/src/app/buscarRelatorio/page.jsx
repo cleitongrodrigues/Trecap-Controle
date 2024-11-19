@@ -1,20 +1,12 @@
 'use client';
 
 import style from './page.module.css';
-import { MdWash, MdPsychology, MdEdit, MdPlayArrow } from "react-icons/md";
-import { IconContext } from 'react-icons';
 import { useRouter } from 'next/navigation';
 import MenuLateral from '@/components/menuLateral/page';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-
-const Icones = {
-    Timer() {
-        return <MdPlayArrow />;
-    }
-};
 
 export default function BuscarRelatorio() {
     const router = useRouter();
