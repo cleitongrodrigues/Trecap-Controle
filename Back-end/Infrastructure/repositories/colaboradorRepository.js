@@ -100,7 +100,7 @@ class ColaboradorRepository {
             sql = `SELECT COUNT(*) AS total_registros FROM colaboradores WHERE empresa_id = ? And colaborador_ativo = 1 And colaborador_nome LIKE ?`
             values = [empresa_id, `%${filter}%`]
         } else {
-            sql = "SELECT COUNT(*) AS total_registros FROM colaboradores WHERE empresa_id = ?"
+            sql = "SELECT COUNT(*) AS total_registros FROM colaboradores WHERE empresa_id = ? And colaborador_ativo = 1"
             values = [empresa_id]
         }
             

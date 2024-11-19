@@ -26,6 +26,7 @@ class UserRepository {
 
         const [users] = await connection.query(sql)
 
+
         return users
     }
 
@@ -46,7 +47,7 @@ class UserRepository {
 
 
 
-        const newUser = new User(userInfo.usu_id, userInfo.usu_nome, userInfo.usu_CPF, userInfo.tipo_usuario_id, 1, userInfo.usu_email, userInfo.usu_senha, userInfo.usu_telefone, new Date(userInfo.usu_data_cadastro), userInfo.empresa_id)
+        const newUser = new User(userInfo.usu_id, userInfo.usu_nome, userInfo.usu_CPF, userInfo.tipo_usuario_id, 1, userInfo.usu_email, userInfo.usu_senha, userInfo.usu_telefone, new Date(userInfo.usu_data_cadastro), userInfo.empresa_id, userInfo.usu_img)
 
         return newUser
     }

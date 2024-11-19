@@ -8,5 +8,6 @@ export default class ResponseGetUser{
         this.usu_telefone = user.usu_telefone
         this.usu_tipo = user.tipo_usuario_id
         this.empresa_id = user.empresa_id
+        this.usu_img = user.usu_img
     }
 }

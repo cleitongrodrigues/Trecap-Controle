@@ -61,6 +61,8 @@ export default function CadastrarEvento() {
       );
       const dadosColaboradores = response.data.dados;
       const dataLength = response.data.length
+      console.log(dadosColaboradores)
+      console.log(dataLength)
 
       setColaboradores(dadosColaboradores);
       setTotalPaginas(Math.max(1, Math.ceil(dataLength / 10)))
@@ -155,14 +157,13 @@ export default function CadastrarEvento() {
       setor_id: parseInt(selectedOption)
     };
 
-    console.log(colaboradorData)
 
     try {
       // Cadastrar novo colaborador
       await axios.post(`http://localhost:3333/colaboradores`, colaboradorData);
 
       handleCancelar();
-      getColaboradores();
+      await getColaboradores();
       Swal.fire({
         title: "Cadastrado com sucesso!",
         icon: "success",

@@ -3,7 +3,7 @@ import Employee from "./Colaborador.js"
 import Evento from "./Evento.js"
 
 export default class User {
-    constructor(usu_id, usu_nome, usu_CPF, tipo_usuario_id, usu_ativo, usu_email, usu_senha, usu_telefone, usu_data_cadastro, empresa_id) {
+    constructor(usu_id, usu_nome, usu_CPF, tipo_usuario_id, usu_ativo, usu_email, usu_senha, usu_telefone, usu_data_cadastro, empresa_id, usu_img) {
         this.usu_id = usu_id
         this.usu_nome = usu_nome
         this.usu_CPF = usu_CPF
@@ -14,6 +14,7 @@ export default class User {
         this.usu_telefone = usu_telefone
         this.usu_data_cadastro = usu_data_cadastro
         this.empresa_id = empresa_id
+        this.usu_img = usu_img
     }
 
     cancel() {

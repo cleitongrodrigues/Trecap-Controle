@@ -97,6 +97,8 @@ export const UserProvider = ({ children }) => {
                 error,
                 handleLogin,
                 handleLogout,
+                fetchUserData,
+                setUser,
                 token
             }
         }>
