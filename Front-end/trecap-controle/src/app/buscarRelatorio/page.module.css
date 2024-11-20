@@ -1,0 +1,145 @@
+/* Container principal */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f4f4f9;
+  }
+  
+  /* Título da página */
+  .h1 {
+    font-size: 2rem;
+    color: #4a148c;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  /* Container de busca */
+  .searchContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
+  
+  /* Input de busca */
+  .searchInput {
+    width: 80%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .searchInput:focus {
+    border-color: #4a148c;
+    outline: none;
+  }
+  
+  /* Botão de busca */
+  .searchButton {
+    width: 15%;
+    padding: 10px;
+    font-size: 1rem;
+    color: white;
+    background-color: #4a148c;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .searchButton:hover {
+    background-color: #7e1fff;
+  }
+  
+  /* Container de resultados */
+  .resultContainer {
+    margin-top: 20px;
+  }
+  
+  /* Lista de relatórios */
+  .listaRelatorios {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .relatorioItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .relatorioItem:hover {
+    background-color: #f2f2f2;
+  }
+  
+  .relatorioItem div {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .relatorioItem h3 {
+    font-size: 1.2rem;
+    color: #4a148c;
+    margin: 0;
+  }
+  
+  .relatorioItem p {
+    font-size: 0.9rem;
+    color: #777;
+  }
+  
+  /* Botão para gerar o PDF */
+  .gerarPDFButton {
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #4a148c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .gerarPDFButton:hover {
+    background-color: #7e1fff;
+  }
+  
+  /* Mensagem quando não há relatórios */
+  .resultContainer p {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #888;
+  }
+  
+  /* Responsividade para telas menores */
+  @media (max-width: 768px) {
+    .searchContainer {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .searchInput {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  
+    .searchButton {
+      width: 100%;
+    }
+  
+    .relatorioItem {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .relatorioItem div {
+      margin-bottom: 10px;
+    }
+  }
+  

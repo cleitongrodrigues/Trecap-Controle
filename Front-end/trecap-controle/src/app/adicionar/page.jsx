@@ -6,30 +6,30 @@ import styles from "./page.module.css";
 import MenuLateral from '@/components/menuLateral/page';
 
 export default function CheckinEvento() {
-  const [mostrarAlerta, setMostrarAlerta] = useState(true);
-  const [participantes, setParticipantes] = useState([]); // Inicializado como array vazio
+  const [participantes, setParticipantes] = useState([]);
   const [participantesSelecionados, setParticipantesSelecionados] = useState([]);
   const [mensagemErro, setMensagemErro] = useState("");
-  const [setores, setSetores] = useState([]); // Armazenar os setores selecionados
+  const [setores, setSetores] = useState([]);
+  const [nomeEvento, setNomeEvento] = useState(""); // Adicionado para armazenar o nome do evento
   const router = useRouter();
 
   useEffect(() => {
-    // Recupera os setores selecionados do localStorage
+    // Recupera os setores selecionados e o nome do evento do localStorage
     const setoresSelecionados = JSON.parse(localStorage.getItem('setorSelecionado'));
+    const eventoSelecionado = localStorage.getItem('eventoSelecionado'); // Recupera o nome do evento
+
     if (setoresSelecionados && setoresSelecionados.length > 0) {
       setSetores(setoresSelecionados);
-
+      
       // Faz a requisição para a API de colaboradores filtrada pelos setores
       const fetchParticipantes = async () => {
         try {
           const promises = setoresSelecionados.map((setor) =>
             fetch(`http://localhost:3333/colaboradores?setor=${setor}`).then((res) => res.json())
           );
-          
+
           // Resolve todas as promessas
           const resultados = await Promise.all(promises);
-
-          // Combina os dados de todos os setores
           const todosParticipantes = resultados.flatMap((res) => res.dados || []);
           
           setParticipantes(todosParticipantes);
@@ -43,11 +43,12 @@ export default function CheckinEvento() {
 
       fetchParticipantes();
     }
-  }, []);
 
-  const fecharAlerta = () => {
-    setMostrarAlerta(false);
-  };
+    // Define o nome do evento
+    if (eventoSelecionado) {
+      setNomeEvento(eventoSelecionado);
+    }
+  }, []);
 
   const handleCheckboxChange = (index) => {
     setMensagemErro("");
@@ -61,25 +62,31 @@ export default function CheckinEvento() {
   const salvarParticipantes = async () => {
     const selecionados = participantes
       .filter((_, index) => participantesSelecionados[index])
-      .map((participante) => participante.colaborador_nome);
-
+      .map((participante) => ({
+        id: participante.colaborador_id,
+        nome: participante.colaborador_nome
+      })); // Agora salvamos tanto o id quanto o nome
+    
     if (selecionados.length === 0) {
       setMensagemErro("Nenhum participante está selecionado.");
       return;
     }
-
+  
     try {
       // Salvar os participantes selecionados no localStorage
       localStorage.setItem('participantesSelecionados', JSON.stringify(selecionados));
-
       console.log('Participantes selecionados salvos no localStorage:', selecionados);
-
+  
       // Redirecionar para a página de confirmação
       router.push('/participantes-selecionados');
     } catch (error) {
       console.error('Erro ao salvar participantes:', error);
       setMensagemErro("Ocorreu um erro ao salvar os participantes.");
     }
+  };
+
+  const handleVoltar = () => {
+    router.back(); // Redireciona de volta para a página anterior
   };
 
   return (
@@ -89,24 +96,17 @@ export default function CheckinEvento() {
         <div className={styles.layout}>
           <div className={styles.mainContent}>
             <div className={styles.Header}>
-              <div className={styles.checkin}>
-                <h1>TREINAMENTO SOBRE HIGIENE NO TRABALHO</h1>
+              <h1>{nomeEvento}</h1>
+              <div className={styles.checkin}>                
                 <div className={styles.cadastro}>
                   <h2>Adicionar Participantes</h2>
                   <h3>Setores Selecionados: {setores.length > 0 ? setores.join(", ") : "Nenhum setor selecionado"}</h3>
                   <div className={styles.containerContent}>
-                    {mostrarAlerta && (
-                      <div className={styles.alerta}>
-                        <p>Selecione os participantes.</p>
-                        <button onClick={fecharAlerta} className={styles.botaoFechar}>Ok</button>
-                      </div>
-                    )}
-
                     <div className={styles.listaParticipantes}>
                       <ul className={styles.participantes}>
                         {participantes.length > 0 ? (
                           participantes.map((participante, index) => (
-                            <li key={index} className={styles.participanteItem}>
+                            <li key={participante.colaborador_id} className={styles.participanteItem}>
                               <label>
                                 <input
                                   type="checkbox"
@@ -114,7 +114,7 @@ export default function CheckinEvento() {
                                   checked={participantesSelecionados[index]}
                                   onChange={() => handleCheckboxChange(index)}
                                 />
-                                {participante.colaborador_nome}
+                                {participante.colaborador_nome} {/* Renderizando o nome do participante */}
                               </label>
                             </li>
                           ))
@@ -128,6 +128,7 @@ export default function CheckinEvento() {
                   </div>
                 </div>
                 <button className={styles.botaoCadastro} onClick={salvarParticipantes}>Salvar</button>
+                <button className={styles.botaoCadastro} onClick={handleVoltar}>Voltar</button> {/* Botão de voltar */}
               </div>
             </div>
           </div>

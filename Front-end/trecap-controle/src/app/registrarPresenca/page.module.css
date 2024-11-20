@@ -13,6 +13,16 @@
   padding: 20px;
 }
 
+.Header h1 {
+  text-align: center;
+  color: #694C9F;
+  font-size: 2.25rem;
+  margin-bottom: 2rem;
+  font-family: "Poppins", sans-serif;
+  font-weight: 200;
+  text-transform: uppercase;
+}
+
 /* Estilo da seção de check-in */
 .checkin {
   width: 100%;
@@ -36,6 +46,7 @@
   margin-bottom: 20px;
   font-family: "Poppins", sans-serif;
   font-weight: 300;
+  text-transform: uppercase;
 }
 
 /* Estilo da seção de cadastro */
@@ -62,7 +73,9 @@
 
 /* Estilo da lista de participantes */
 .listaParticipantes {
-  width: 100%;
+  max-width: 100%;
+  text-transform: uppercase;
+  width: 50rem;
 }
 
 .listaParticipantes h3 {
@@ -82,7 +95,7 @@
   border-radius: 5px;
   font-size: 16px; /* Tamanho ajustado */
   width: 100%;
-  max-width: 600px;
+  max-width: 800px;
   justify-content: space-between;
 }
 

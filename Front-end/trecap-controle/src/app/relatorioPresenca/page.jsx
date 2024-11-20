@@ -1,106 +1,143 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { jsPDF } from "jspdf"; // Importa jsPDF
-import "jspdf-autotable"; // Importa autoTable
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 import styles from "./page.module.css";
 import MenuLateral from "@/components/menuLateral/page";
+import dayjs from "dayjs";
 
 export default function RelatorioPresenca() {
   const [participantesPresentes, setParticipantesPresentes] = useState([]);
-  const [curso, setCurso] = useState("TREINAMENTO SOBRE HIGIENE NO TRABALHO"); // Nome do curso
+  const [curso, setCurso] = useState("");
+  const [eventoSelecionado, setEventoSelecionado] = useState("");
+  const [dataEvento, setDataEvento] = useState("");
+  const [horarioEvento, setHorarioEvento] = useState("");
+  const [horarioInicioEvento, setHorarioInicioEvento] = useState("");
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // Recuperar os participantes presentes do localStorage
-      const presentes = JSON.parse(localStorage.getItem('participantesPresentes')) || [];
+    const fetchEventoData = async () => {
+      const eventoId = 123; // Substitua pelo ID do evento selecionado
+
+      try {
+        const response = await fetch(`http://localhost:3333/evento/${eventoId}`);
+        if (!response.ok) {
+          throw new Error("Erro ao buscar os dados do evento.");
+        }
+        const eventoData = await response.json();
+        setDataEvento(eventoData.data);
+        setHorarioEvento(eventoData.evento_hora);
+        setHorarioInicioEvento(eventoData.evento_hora || "Horário de Início Não Encontrado");
+      } catch (error) {
+        console.error("Erro ao buscar os dados do evento:", error);
+      }
+    };
+
+    if (typeof window !== "undefined") {
+      // Recuperando os participantes do localStorage e associando nome com horário
+      const participantesLocalStorage = JSON.parse(localStorage.getItem("participantesPresentes")) || {};
       
-      // Transformar o objeto em um array com { nome, horario }
-      const presentesArray = Object.entries(presentes).map(([nome, horario]) => ({
-        nome,
-        horario
-      }));
+      // Transformar o objeto em um array com nome e horário
+      const participantesArray = Object.entries(participantesLocalStorage).map(([id, { nome, hora }]) => {
+        const dataHora = dayjs(hora, "DD/MM/YYYY HH:mm:ss"); // Ajustando o formato de data/hora
+        return { nome, horario: dataHora };
+      });
 
-      // Ordenar os participantes pela ordem de chegada (horário)
-      const presentesOrdenados = presentesArray.sort((a, b) => new Date(a.horario) - new Date(b.horario));
+      // Ordenando os participantes pela data/hora de chegada
+      const participantesOrdenados = participantesArray.sort((a, b) => a.horario - b.horario);
+      setParticipantesPresentes(participantesOrdenados);
 
-      setParticipantesPresentes(presentesOrdenados);
+      // Definindo o nome do evento
+      const evento = localStorage.getItem("eventoSelecionado");
+      setEventoSelecionado(evento || "Nome do Evento Não Encontrado");
 
-      // Verifique se os participantes estão sendo carregados corretamente
-      console.log('Participantes presentes carregados e ordenados:', presentesOrdenados);
+      // Buscando os dados do evento
+      fetchEventoData();
+
+      // Recuperando e setando o horário de início do evento
+      const horarioInicio = localStorage.getItem("horarioInicioEvento");
+      setHorarioInicioEvento(horarioInicio || "Horário de Início Não Encontrado");
     }
   }, []);
 
-  // Função para imprimir o relatório
-  const imprimirRelatorio = () => {
-    window.print(); // Abre a caixa de diálogo de impressão do navegador
+  // Função para converter e formatar data/hora para exibição
+  const formatarDataHora = (dataHora) => {
+    if (!dataHora || !dataHora.isValid()) {
+      return "Data Inválida"; // Retorna uma mensagem padrão se a data for inválida
+    }
+    return dataHora.format("DD/MM/YYYY HH:mm");
   };
 
-  // Função para salvar o relatório como PDF em formato de tabela
+  const imprimirRelatorio = () => {
+    window.print();
+  };
+
   const salvarRelatorioPDF = () => {
     const doc = new jsPDF();
 
-    // Centralizar o título "Relatório de Presença"
     const title = "Relatório de Presença";
-    const pageWidth = doc.internal.pageSize.getWidth(); // Largura da página
-    const textWidth = doc.getTextWidth(title); // Largura do texto
-    const textX = (pageWidth - textWidth) / 2; // Cálculo para centralizar o texto
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const textWidth = doc.getTextWidth(title);
+    const textX = (pageWidth - textWidth) / 2;
 
-    // Adicionar o título
     doc.text(title, textX, 10);
 
-    // Adicionar nome do curso logo abaixo do título
     const cursoWidth = doc.getTextWidth(curso);
-    const cursoX = (pageWidth - cursoWidth) / 2; 
+    const cursoX = (pageWidth - cursoWidth) / 2;
     doc.text(curso, cursoX, 20);
 
-    // Adicionar tabela de participantes presentes no PDF
+    const eventoWidth = doc.getTextWidth(eventoSelecionado.toUpperCase());
+    const eventoX = (pageWidth - eventoWidth) / 2;
+    doc.text(eventoSelecionado.toUpperCase(), eventoX, 30);
+
+    const horarioFormatado = formatarDataHora(dayjs(horarioInicioEvento, "YYYY-MM-DD HH:mm:ss"));
+    const inicioWidth = doc.getTextWidth(`Horário de Início: ${horarioFormatado}`);
+    const inicioX = (pageWidth - inicioWidth) / 2;
+    doc.text(`Horário de Início: ${horarioFormatado}`, inicioX, 50);
+
     doc.autoTable({
-      head: [['Nome', 'Horário de Chegada']], // Cabeçalhos da tabela
-      body: participantesPresentes.map(participante => [participante.nome, participante.horario]), // Linhas da tabela
-      startY: 30, // Define a posição Y inicial para a tabela
-      theme: 'striped', // Tema da tabela
-      headStyles: { fillColor: [74, 20, 140] }, // Cor do cabeçalho em RGB (roxo escuro)
-      styles: { halign: 'center' }, // Alinhamento horizontal centralizado
+      head: [["Nome", "Horário de Chegada"]], // Definindo o cabeçalho da tabela
+      body: participantesPresentes.map((participante) => [
+        participante.nome.toUpperCase(), // Exibindo o nome do colaborador
+        formatarDataHora(participante.horario),
+      ]),
+      startY: 60,
+      theme: "striped",
+      headStyles: { fillColor: [74, 20, 140] },
+      styles: { halign: "center" },
     });
 
-    // Adicionar informações adicionais
     const agora = new Date();
-    const dataGeracao = `Data e Hora de Geração: ${agora.toLocaleDateString()} ${agora.toLocaleTimeString()}`;
-    const metodoGeracao = 'Relatório gerado usando o sistema de gestão de presença. Trecap';
+    const dataGeracao = `Data e Hora de Geração: ${agora.toLocaleString("pt-BR")}`;
+    const metodoGeracao = "Relatório gerado usando o sistema de gestão de presença. Trecap";
     doc.setFontSize(8);
 
     doc.text(dataGeracao, 10, doc.internal.pageSize.height - 20);
     doc.text(metodoGeracao, 10, doc.internal.pageSize.height - 15);
 
-    // Adicionar assinatura digital com fonte pequena e no rodapé
-    const assinatura = 'Assinado digitalmente por: Sistema de Gestão de Presença Trecap';
-    doc.setFontSize(8); // Define o tamanho da fonte para 8
-    doc.text(assinatura, 10, doc.internal.pageSize.height - 10); // Posiciona o texto no rodapé
+    const assinatura = "Assinado digitalmente por: Sistema de Gestão de Presença Trecap";
+    doc.text(assinatura, 10, doc.internal.pageSize.height - 10);
 
-    // Salvar o PDF
     doc.save("relatorio-presenca.pdf");
   };
 
   return (
     <>
       <MenuLateral />
-
       <div className={styles.Header}>
         <div className={styles.relatorio}>
           <h1>RELATÓRIO DE PRESENÇA</h1>
-          <h2>{curso}</h2> {/* Nome do curso na página */}
+          <h1>{eventoSelecionado}</h1>
 
           <div className={styles.cadastro}>
             <h2>Participantes Presentes</h2>
-
             <div className={styles.listaParticipantes}>
               <ul className={styles.lista}>
                 {participantesPresentes.length > 0 ? (
                   participantesPresentes.map((participante, index) => (
                     <li key={index} className={styles.participanteItem}>
                       <label>
-                        {participante.nome} - Chegada: {participante.horario}
+                        {participante.nome} - Chegada: {formatarDataHora(participante.horario)}
                       </label>
                     </li>
                   ))
@@ -111,12 +148,10 @@ export default function RelatorioPresenca() {
             </div>
           </div>
 
-          {/* Botão para imprimir o relatório */}
           <button className={styles.botaoImprimir} onClick={imprimirRelatorio}>
             Imprimir Relatório
           </button>
 
-          {/* Botão para salvar o relatório em PDF */}
           <button className={styles.botaoImprimir} onClick={salvarRelatorioPDF}>
             Salvar Relatório
           </button>
