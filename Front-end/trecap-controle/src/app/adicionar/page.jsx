@@ -4,19 +4,23 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import MenuLateral from '@/components/menuLateral/page';
+import axios from "axios";
 
 export default function CheckinEvento() {
   const [participantes, setParticipantes] = useState([]);
   const [participantesSelecionados, setParticipantesSelecionados] = useState([]);
   const [mensagemErro, setMensagemErro] = useState("");
   const [setores, setSetores] = useState([]);
-  const [nomeEvento, setNomeEvento] = useState(""); // Adicionado para armazenar o nome do evento
+  const [nomeEvento, setNomeEvento] = useState(""); // Variável para armazenar o nome do evento
   const router = useRouter();
 
   useEffect(() => {
     // Recupera os setores selecionados e o nome do evento do localStorage
     const setoresSelecionados = JSON.parse(localStorage.getItem('setorSelecionado'));
     const eventoSelecionado = localStorage.getItem('eventoSelecionado'); // Recupera o nome do evento
+
+    console.log("Setores selecionados do localStorage:", setoresSelecionados);
+    console.log("Evento selecionado do localStorage:", eventoSelecionado);
 
     if (setoresSelecionados && setoresSelecionados.length > 0) {
       setSetores(setoresSelecionados);
@@ -44,9 +48,16 @@ export default function CheckinEvento() {
       fetchParticipantes();
     }
 
+    async function getEventoNome()
+    {
+      const response = await axios.get(`http://localhost:3333/Eventos/${eventoSelecionado}`);
+      const evento = response.data.dados[0];
+      setNomeEvento(evento.evento_nome);
+    }
+
     // Define o nome do evento
     if (eventoSelecionado) {
-      setNomeEvento(eventoSelecionado);
+      getEventoNome()
     }
   }, []);
 
@@ -65,7 +76,7 @@ export default function CheckinEvento() {
       .map((participante) => ({
         id: participante.colaborador_id,
         nome: participante.colaborador_nome
-      })); // Agora salvamos tanto o id quanto o nome
+      }));
     
     if (selecionados.length === 0) {
       setMensagemErro("Nenhum participante está selecionado.");
@@ -86,7 +97,7 @@ export default function CheckinEvento() {
   };
 
   const handleVoltar = () => {
-    router.back(); // Redireciona de volta para a página anterior
+    router.back();
   };
 
   return (
@@ -96,11 +107,11 @@ export default function CheckinEvento() {
         <div className={styles.layout}>
           <div className={styles.mainContent}>
             <div className={styles.Header}>
-              <h1>{nomeEvento}</h1>
+              <h1>{nomeEvento || "Evento não encontrado"}</h1> {/* Adicione uma mensagem padrão se o nome do evento não estiver disponível */}
               <div className={styles.checkin}>                
                 <div className={styles.cadastro}>
-                  <h2>Adicionar Participantes</h2>
                   <h3>Setores Selecionados: {setores.length > 0 ? setores.join(", ") : "Nenhum setor selecionado"}</h3>
+                  <h2>Adicionar Participantes</h2>
                   <div className={styles.containerContent}>
                     <div className={styles.listaParticipantes}>
                       <ul className={styles.participantes}>
@@ -114,7 +125,7 @@ export default function CheckinEvento() {
                                   checked={participantesSelecionados[index]}
                                   onChange={() => handleCheckboxChange(index)}
                                 />
-                                {participante.colaborador_nome} {/* Renderizando o nome do participante */}
+                                {participante.colaborador_nome}
                               </label>
                             </li>
                           ))
@@ -128,7 +139,7 @@ export default function CheckinEvento() {
                   </div>
                 </div>
                 <button className={styles.botaoCadastro} onClick={salvarParticipantes}>Salvar</button>
-                <button className={styles.botaoCadastro} onClick={handleVoltar}>Voltar</button> {/* Botão de voltar */}
+                <button className={styles.botaoCadastro} onClick={handleVoltar}>Voltar</button>
               </div>
             </div>
           </div>

@@ -1,134 +1,158 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import styles from "./page.module.css";
-import MenuLateral from "@/components/menuLateral/page";
-import jsPDF from "jspdf";
-import "jspdf-autotable";
-import dayjs from "dayjs";
+import style from './page.module.css';
+import { useRouter } from 'next/navigation';
+import MenuLateral from '@/components/menuLateral/page';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 export default function BuscarRelatorio() {
-  const [eventos, setEventos] = useState([]);  // Armazena os eventos
-  const [registros, setRegistros] = useState([]);  // Armazena os registros de presença
-  const [criterioBusca, setCriterioBusca] = useState("");
-  const [registrosFiltrados, setRegistrosFiltrados] = useState([]);  // Registros após filtragem
+    const router = useRouter();
+    const [eventos, setEventos] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [mesAnoFiltro, setMesAnoFiltro] = useState("");
 
-  // Função para buscar os eventos e registros do backend
-  useEffect(() => {
     const fetchEventos = async () => {
-      try {
-        const response = await fetch("http://localhost:3333/eventos"); // URL para buscar eventos
-        if (!response.ok) {
-          throw new Error("Erro ao buscar os eventos.");
+        try {
+            const response = await axios.get('http://localhost:3333/Eventos');
+            if (response.status !== 200) {
+                throw new Error(`Erro ${response.status}: Não foi possível carregar os eventos.`);
+            }
+
+            // Filtra eventos pela data (se fornecido o filtro)
+            const eventosFiltrados = response.data.dados.filter(evento => {
+                if (!evento.evento_data_inicio || !evento.evento_hora) {
+                    console.warn("Evento com data ou hora inválida:", evento);
+                    return false;
+                }
+
+                const dataEvento = new Date(evento.evento_data_inicio);
+                const anoMesEvento = `${dataEvento.getFullYear()}-${String(dataEvento.getMonth() + 1).padStart(2, '0')}`;
+
+                return !mesAnoFiltro || anoMesEvento === mesAnoFiltro;
+            });
+
+            // Carregar a presença dos participantes para cada evento
+            const eventosComPresenca = await Promise.all(eventosFiltrados.map(async (evento) => {
+                const presencaResponse = await axios.get(`http://localhost:3333/registros/${evento.evento_id}`);
+                if (presencaResponse.status === 200) {
+                    evento.participantes = presencaResponse.data.dados; // Adiciona os participantes ao evento
+                }
+                return evento;
+            }));
+
+            setEventos(eventosComPresenca);
+        } catch (error) {
+            console.error("Erro ao buscar eventos:", error);
+            setError(error.message || 'Erro ao buscar eventos');
+        } finally {
+            setLoading(false);
         }
-        const data = await response.json();
-        setEventos(data); // Salva os eventos
-      } catch (error) {
-        console.error("Erro ao buscar os eventos:", error);
-      }
     };
 
-    const fetchRegistros = async () => {
-      try {
-        const response = await fetch("http://localhost:3333/registros"); // URL para buscar os registros
-        if (!response.ok) {
-          throw new Error("Erro ao buscar os registros.");
+    const gerarPDF = (evento) => {
+        try {
+            const participantes = evento.participantes || [];
+            
+            // Criar o PDF com os dados de presença
+            const doc = new jsPDF();
+            doc.setFontSize(18);
+            doc.text("Relatório de Presença", 14, 22);
+            doc.setFontSize(12);
+            doc.text(`Evento: ${evento.evento_nome}`, 14, 32);
+            doc.text(`Data: ${new Date(evento.evento_data_inicio).toLocaleDateString('pt-BR')}`, 14, 40);
+            doc.text(`Horário: ${evento.evento_hora.slice(0, 5)}`, 14, 48);
+
+            // Adiciona uma linha separadora antes da tabela
+            doc.setLineWidth(0.5);
+            doc.line(14, 53, 200, 53);  // Linha de 200mm de comprimento
+
+            // Tabelas com os dados dos participantes
+            const colunas = ["Nome", "Setor", "Data de Chegada", "Hora de Chegada"];
+            const linhas = participantes.map((p) => [
+                p.colaborador_nome, // Nome do colaborador
+                p.setor_nome || "Desconhecido", // Se o setor for nulo ou indefinido
+                new Date(p.registros_hora_entrada).toLocaleDateString('pt-BR'), // Data de Chegada
+                new Date(p.registros_hora_entrada).toLocaleTimeString('pt-BR') // Hora de Chegada
+            ]);
+
+            // Definindo o início da tabela
+            doc.autoTable({
+                head: [colunas],
+                body: linhas,
+                startY: 60,  // Começar a tabela 60mm abaixo do topo
+                theme: 'grid', // Usar o tema de grade para a tabela
+                margin: { horizontal: 14 },
+                theme: 'striped',
+                headStyles: { fillColor: [74, 20, 140] },
+                styles: { halign: 'center' },
+            });
+
+            // Salvar o arquivo PDF gerado
+            doc.save(`Relatorio_Presenca_${evento.evento_nome}.pdf`);
+        } catch (error) {
+            console.error("Erro ao gerar PDF:", error);
         }
-        const data = await response.json();
-        setRegistros(data);
-        setRegistrosFiltrados(data); // Inicialmente, exibe todos os registros
-      } catch (error) {
-        console.error("Erro ao buscar os registros:", error);
-      }
     };
 
-    fetchEventos();
-    fetchRegistros();
-  }, []);
+    useEffect(() => {
+        fetchEventos();
+    }, [mesAnoFiltro]);
 
-  // Função para filtrar registros com base no critério de busca
-  const handleBusca = () => {
-    const filtrados = registros.filter((registro) =>
-      registro.evento_nome.toLowerCase().includes(criterioBusca.toLowerCase())
+    if (loading) {
+        return <div className={style.loading}>Carregando eventos...</div>;
+    }
+
+    if (error) {
+        return <div className={style.error}>Erro: {error}</div>;
+    }
+
+    return (
+        <>
+            <MenuLateral />
+            <div className={style.container}>
+                <h1 className={style.h1}>Eventos</h1>
+                <div className={style.searchContainer}>
+                    <input
+                        type="month"
+                        id="mesAnoFiltro"
+                        className={style.searchInput}
+                        value={mesAnoFiltro}
+                        onChange={(e) => setMesAnoFiltro(e.target.value)}
+                    />
+                    <button className={style.searchButton} onClick={() => setMesAnoFiltro("")}>
+                        Limpar Filtro
+                    </button>
+                </div>
+
+                <div className={style.resultContainer}>
+                    {eventos.length > 0 ? (
+                        <ul className={style.listaRelatorios}>
+                            {eventos.map((evento, index) => (
+                                <li key={index} className={style.relatorioItem}>
+                                    <div>
+                                        <h3>{evento.evento_nome}</h3>
+                                        <p>Data: {new Date(evento.evento_data_inicio).toLocaleDateString('pt-BR')}</p>
+                                        <p>Horário de início: {evento.evento_hora.slice(0, 5)}</p>
+                                    </div>
+                                    <div>
+                                        <button
+                                            className={style.gerarPDFButton}
+                                            onClick={() => gerarPDF(evento)}>
+                                            Gerar PDF
+                                        </button>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>Nenhum evento encontrado</p>
+                    )}
+                </div>
+            </div>
+        </>
     );
-    setRegistrosFiltrados(filtrados);
-  };
-
-  // Função para gerar o PDF
-  const gerarRelatorioPDF = (registro) => {
-    const doc = new jsPDF();
-
-    const title = "Relatório de Presença";
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const textWidth = doc.getTextWidth(title);
-    const textX = (pageWidth - textWidth) / 2;
-    doc.text(title, textX, 10);
-
-    doc.text(`Evento: ${registro.evento_nome}`, 10, 20);
-    doc.text(`Data: ${dayjs(registro.evento_data_inicio).format("DD/MM/YYYY")}`, 10, 30);
-
-    const participantes = registro.participantes.map((p) => [
-      p.colaborador_nome,
-      dayjs(p.registros_hora_entrada).format("HH:mm"),
-    ]);
-
-    doc.autoTable({
-      head: [["Nome", "Horário de Chegada"]],
-      body: participantes,
-      startY: 40,
-      theme: "striped",
-      headStyles: { fillColor: [74, 20, 140] },
-      bodyStyles: { fontSize: 10, textColor: [0, 0, 0] },
-      margin: { top: 40, bottom: 20 },
-    });
-
-    doc.text(`Gerado em: ${dayjs().format("DD/MM/YYYY HH:mm")}`, 10, doc.internal.pageSize.height - 10);
-
-    doc.save(`${registro.evento_nome}-relatorio.pdf`);
-  };
-
-  return (
-    <>
-      <MenuLateral />
-      <div className={styles.container}>
-        <h1>Gerar relatórios de presença em evento.</h1>
-
-        <div className={styles.searchContainer}>
-          <input
-            type="text"
-            placeholder="Buscar pelo nome do evento"
-            value={criterioBusca}
-            onChange={(e) => setCriterioBusca(e.target.value)}
-            className={styles.searchInput}
-          />
-          <button onClick={handleBusca} className={styles.searchButton}>
-            Buscar
-          </button>
-        </div>
-
-        <div className={styles.resultContainer}>
-          {registrosFiltrados.length > 0 ? (
-            <ul className={styles.listaRelatorios}>
-              {registrosFiltrados.map((registro) => (
-                <li key={registro.registros_id} className={styles.relatorioItem}>
-                  <div>
-                    <h3>{registro.evento_nome}</h3>
-                    <p>Data: {dayjs(registro.evento_data_inicio).format("DD/MM/YYYY")}</p>
-                  </div>
-                  <button
-                    onClick={() => gerarRelatorioPDF(registro)}
-                    className={styles.gerarPDFButton}
-                  >
-                    Gerar PDF
-                  </button>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>Nenhum registro encontrado.</p>
-          )}
-        </div>
-      </div>
-    </>
-  );
 }

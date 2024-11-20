@@ -29,6 +29,7 @@ export default function Evento() {
     const [mesAnoFiltro, setMesAnoFiltro] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
     const [eventoEditando, setEventoEditando] = useState(null);
+    const [mensagemErro, setMensagemErro] = useState({});
 
     const fetchEventos = async () => {
         try {
@@ -65,56 +66,56 @@ export default function Evento() {
     };
 
     const handleSaveEdit = async (eventoEditado) => {
-    try {
-        const dataEventoInicio = eventoEditado.evento_data_inicio;
-        const dataEventoTermino = eventoEditado.evento_data_termino;
-        if (!dataEventoInicio || !dataEventoTermino) {
-            alert("Datas inválidas!");
-            return;
+        try {
+            const dataEventoInicio = eventoEditado.evento_data_inicio;
+            const dataEventoTermino = eventoEditado.evento_data_termino;
+            if (!dataEventoInicio || !dataEventoTermino) {
+                // alert("Datas inválidas!");
+                return;
+            }
+
+            // Formatar as datas no formato YYYY-MM-DD
+            const dataInicioFormatada = new Date(dataEventoInicio).toISOString().split('T')[0];
+            const dataTerminoFormatada = new Date(dataEventoTermino).toISOString().split('T')[0];
+
+            // Validar e formatar a hora
+            let [hora, minuto] = eventoEditado.evento_hora.split(':');
+            if (!hora || !minuto) {
+                alert("Hora de início inválida!");
+                return;
+            }
+
+            hora = String(hora).padStart(2, '0');
+            minuto = String(minuto).padStart(2, '0');
+
+            const eventoEditadoComData = {
+                ...eventoEditado,
+                evento_data_inicio: dataInicioFormatada,
+                evento_data_termino: dataTerminoFormatada,
+                evento_hora: `${hora}:${minuto}`,
+            };
+
+            const response = await axios.patch(`http://localhost:3333/Eventos/${eventoEditadoComData.evento_id}`, eventoEditadoComData);
+
+            if (response.status !== 200) {
+                throw new Error(`Erro ao salvar evento: ${response.status}`);
+            }
+
+            // Atualizar o evento na lista de eventos localmente
+            setEventos((prevEventos) =>
+                prevEventos.map((evento) =>
+                    evento.evento_id === eventoEditadoComData.evento_id ? eventoEditadoComData : evento
+                )
+            );
+
+            // Fechar o modal
+            setModalOpen(false);
+        } catch (error) {
+            console.error("Erro ao salvar evento:", error);
         }
+    };
 
-        // Formatar as datas no formato YYYY-MM-DD
-        const dataInicioFormatada = new Date(dataEventoInicio).toISOString().split('T')[0];
-        const dataTerminoFormatada = new Date(dataEventoTermino).toISOString().split('T')[0];
 
-        // Validar e formatar a hora
-        let [hora, minuto] = eventoEditado.evento_hora.split(':');
-        if (!hora || !minuto) {
-            alert("Hora de início inválida!");
-            return;
-        }
-
-        hora = String(hora).padStart(2, '0');
-        minuto = String(minuto).padStart(2, '0');
-
-        const eventoEditadoComData = {
-            ...eventoEditado,
-            evento_data_inicio: dataInicioFormatada,
-            evento_data_termino: dataTerminoFormatada,
-            evento_hora: `${hora}:${minuto}`,
-        };
-
-        const response = await axios.patch(`http://localhost:3333/Eventos/${eventoEditadoComData.evento_id}`, eventoEditadoComData);
-
-        if (response.status !== 200) {
-            throw new Error(`Erro ao salvar evento: ${response.status}`);
-        }
-
-        // Atualizar o evento na lista de eventos localmente
-        setEventos((prevEventos) =>
-            prevEventos.map((evento) =>
-                evento.evento_id === eventoEditadoComData.evento_id ? eventoEditadoComData : evento
-            )
-        );
-
-        // Fechar o modal
-        setModalOpen(false);
-    } catch (error) {
-        console.error("Erro ao salvar evento:", error);
-    }
-};
-
-    
     const handleStart = (evento) => {
         const horaFormatada = evento.evento_hora.includes(':') ? evento.evento_hora : `${evento.evento_hora}:00`;
         const dataEventoStr = `${evento.evento_data_inicio.split('T')[0]}T${horaFormatada}`;
@@ -125,11 +126,13 @@ export default function Evento() {
         const dataEventoComTolerancia = new Date(dataEvento.getTime() - tolerancia);
 
         if (dataAtual < dataEventoComTolerancia) {
-            alert(`O evento ${evento.evento_nome} ainda não pode ser iniciado!`);
+            setMensagemErro({ [evento.evento_id]: `O evento ${evento.evento_nome} ainda não pode ser iniciado!` });
         } else if (dataAtual > dataEvento) {
-            alert(`O prazo para entrar no Evento ${evento.evento_nome} já ultrapassou!`);
+            setMensagemErro({ [evento.evento_id]: `O prazo para entrar no Evento ${evento.evento_nome} já ultrapassou!` });
         } else {
-            router.push(`/cadastroP?evento=${encodeURIComponent(evento.evento_nome)}`);
+            localStorage.setItem('eventoId', evento.evento_id);
+            setMensagemErro({});
+            router.push(`/cadastroP?eventoId=${encodeURIComponent(evento.evento_id)}`);
         }
     };
 
@@ -175,11 +178,18 @@ export default function Evento() {
                                         <label className={style.labelTitle}>{evento.evento_nome}</label>
                                         <label className={style.labelData}>Data: {new Date(evento.evento_data_inicio).toLocaleDateString('pt-BR')}</label>
                                         <label className={style.labelData}>Horário de início: {evento.evento_hora.slice(0, 5)}</label>
+                                        {mensagemErro[evento.evento_id] && (
+                                            <div className={style.MensagemErro}>{mensagemErro[evento.evento_id]}</div>
+                                        )}
                                     </div>
                                     <div className={style.Icones}>
                                         <IconContext.Provider value={{ size: 45 }}>
                                             <MdEdit onClick={() => handleEdit(evento)} style={{ cursor: 'pointer' }} />
-                                            <MdPlayArrow onClick={() => handleStart(evento)} style={{ cursor: 'pointer' }} />
+                                            <MdPlayArrow
+                                                onClick={() => handleStart(evento)}
+                                                style={{ cursor: 'pointer' }}
+                                                title={mensagemErro[evento.evento_id] || ''}
+                                            />
                                         </IconContext.Provider>
                                     </div>
                                 </div>
@@ -190,7 +200,7 @@ export default function Evento() {
                     </div>
                 </div>
             </div>
-            
+
 
             {modalOpen && eventoEditando && (
                 <ModalEdit

@@ -56,6 +56,35 @@ const EventosController = {
         }
     },
 
+    async ListarEventoPorId(request, response){
+        try {
+
+            const { evento_id } = request.params
+
+            console.log(evento_id)
+            const sql = ` SELECT evento_id, evento_nome, evento_data_inicio, 
+            evento_data_termino, evento_local, evento_status = 1 AS evento_status, usu_id, evento_professor, evento_hora FROM Eventos
+            WHERE evento_status = 1 and usu_id = 1 AND evento_id =?`;
+
+            const evento = await db.query(sql, [evento_id])
+
+            const nItens = evento[0].length;
+            return response.status(200).json({
+                sucesso: true,
+                mensagem: 'Listar de evento',
+                dados: evento[0],
+                nItens
+            });
+            
+        } catch (error) {
+            return response.status(500).json({
+                sucesso: false,
+                mensagem: 'Erro ao listar evento :(',
+                dados: error.message
+            });
+        }
+    },
+
     async CadastrarEvento(request, response){
         try {
             const {evento_nome, evento_data_inicio, evento_data_termino, evento_local, evento_status, usu_id, evento_professor, evento_hora} = request.body;

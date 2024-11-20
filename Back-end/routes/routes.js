@@ -26,11 +26,13 @@ router.patch('/Empresa/:empresa_id', EmpresaController.EditarEmpresa);
 router.delete('/Empresa/:empresa_id', EmpresaController.ApagarEmpresa);
 
 router.get('/Eventos', EventoController.ListarEvento);
+router.get('/Eventos/:evento_id', EventoController.ListarEventoPorId); // alteração 18/11 (tentando fazer o nome aparecer)
 router.post('/Eventos', EventoController.CadastrarEvento);
 router.patch('/Eventos/:evento_id', EventoController.EditarEvento);
 router.delete('/Eventos/:evento_id', EventoController.ApagarEvento);
 
 router.get('/Registro', RegistroController.ListarRegistros);
+router.get('/Registros/:evento_id', RegistroController.ListarRegistros);
 router.post('/Registro', RegistroController.CadastrarRegistros);
 router.patch('/Registro/:registros_id', RegistroController.EditarRegistros);
 router.delete('/Registro/:registros_id', RegistroController.ApagarRegistros);

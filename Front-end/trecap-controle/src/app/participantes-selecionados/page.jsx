@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import MenuLateral from "@/components/menuLateral/page";
+import axios from "axios";
 
 export default function ParticipantesSelecionados() {
   const [participantesSelecionados, setParticipantesSelecionados] = useState([]);
@@ -13,6 +14,12 @@ export default function ParticipantesSelecionados() {
   const router = useRouter();
 
   useEffect(() => {
+    async function getEventoNome(eventoSelecionado) {
+      const response = await axios.get(`http://localhost:3333/Eventos/${eventoSelecionado}`);
+      const evento = response.data.dados[0];
+      setEventoSelecionado(evento.evento_nome);
+    }
+
     if (typeof window !== 'undefined') {
       try {
         const selecionados = JSON.parse(localStorage.getItem('participantesSelecionados')) || [];
@@ -20,7 +27,7 @@ export default function ParticipantesSelecionados() {
 
         // Recupera o nome do evento do localStorage
         const evento = localStorage.getItem('eventoSelecionado');
-        setEventoSelecionado(evento || "Nome do Evento Não Encontrado");
+        getEventoNome(evento);
       } catch (error) {
         console.error('Erro ao carregar participantes do localStorage:', error);
         setParticipantesSelecionados([]);
@@ -72,7 +79,7 @@ export default function ParticipantesSelecionados() {
                 Iniciar Chamada para Evento
               </button>
               <button className={styles.botaoCadastro} onClick={router.back}>
-                Voltar
+                Retornar à seleção de participantes
               </button>
             </div>
           </div>

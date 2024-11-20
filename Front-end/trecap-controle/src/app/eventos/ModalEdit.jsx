@@ -126,12 +126,11 @@ const ModalEdit = ({ evento, onClose, onSave }) => {
             if (response.status === 200) {
                 alert('Evento atualizado com sucesso!');
 
-            const updateEvent = await axios.get(
-                `http://localhost:3333/Eventos/${eventoEditado.evento_id}`
-            );
+                const updateEvent = await axios.get(
+                    `http://localhost:3333/Eventos/${eventoEditado.evento_id}`
+                );
 
                 onSave(updateEvent.data);
-
                 onClose();
             } else {
                 alert('Erro ao atualizar o evento.');
@@ -141,7 +140,6 @@ const ModalEdit = ({ evento, onClose, onSave }) => {
             // alert('Erro ao salvar as alterações. Tente novamente.');
         }
     };
-    
 
     return (
         <div className={style.modal}>
