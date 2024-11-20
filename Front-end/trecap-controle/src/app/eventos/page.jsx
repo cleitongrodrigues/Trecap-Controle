@@ -29,6 +29,7 @@ export default function Evento() {
     const [mesAnoFiltro, setMesAnoFiltro] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
     const [eventoEditando, setEventoEditando] = useState(null);
+    const [mensagemErro, setMensagemErro] = useState({});
 
     const fetchEventos = async () => {
         try {
@@ -116,7 +117,6 @@ export default function Evento() {
 
 
     const handleStart = (evento) => {
-
         const horaFormatada = evento.evento_hora.includes(':') ? evento.evento_hora : `${evento.evento_hora}:00`;
         const dataEventoStr = `${evento.evento_data_inicio.split('T')[0]}T${horaFormatada}`;
         const dataEvento = new Date(dataEventoStr);
@@ -126,14 +126,12 @@ export default function Evento() {
         const dataEventoComTolerancia = new Date(dataEvento.getTime() - tolerancia);
 
         if (dataAtual < dataEventoComTolerancia) {
-            alert(`O evento ${evento.evento_nome} ainda não pode ser iniciado!`);
+            setMensagemErro({ [evento.evento_id]: `O evento ${evento.evento_nome} ainda não pode ser iniciado!` });
         } else if (dataAtual > dataEvento) {
-            alert(`O prazo para entrar no Evento ${evento.evento_nome} já ultrapassou!`);
+            setMensagemErro({ [evento.evento_id]: `O prazo para entrar no Evento ${evento.evento_nome} já ultrapassou!` });
         } else {
-
             localStorage.setItem('eventoId', evento.evento_id);
-
-            // Aqui estamos passando a ID do evento (evento.evento_id) ao invés do nome
+            setMensagemErro({});
             router.push(`/cadastroP?eventoId=${encodeURIComponent(evento.evento_id)}`);
         }
     };
@@ -180,11 +178,18 @@ export default function Evento() {
                                         <label className={style.labelTitle}>{evento.evento_nome}</label>
                                         <label className={style.labelData}>Data: {new Date(evento.evento_data_inicio).toLocaleDateString('pt-BR')}</label>
                                         <label className={style.labelData}>Horário de início: {evento.evento_hora.slice(0, 5)}</label>
+                                        {mensagemErro[evento.evento_id] && (
+                                            <div className={style.MensagemErro}>{mensagemErro[evento.evento_id]}</div>
+                                        )}
                                     </div>
                                     <div className={style.Icones}>
                                         <IconContext.Provider value={{ size: 45 }}>
                                             <MdEdit onClick={() => handleEdit(evento)} style={{ cursor: 'pointer' }} />
-                                            <MdPlayArrow onClick={() => handleStart(evento)} style={{ cursor: 'pointer' }} />
+                                            <MdPlayArrow
+                                                onClick={() => handleStart(evento)}
+                                                style={{ cursor: 'pointer' }}
+                                                title={mensagemErro[evento.evento_id] || ''}
+                                            />
                                         </IconContext.Provider>
                                     </div>
                                 </div>

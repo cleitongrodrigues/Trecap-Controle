@@ -14,9 +14,7 @@ export default function ParticipantesSelecionados() {
   const router = useRouter();
 
   useEffect(() => {
-
-    async function getEventoNome(eventoSelecionado)
-    {
+    async function getEventoNome(eventoSelecionado) {
       const response = await axios.get(`http://localhost:3333/Eventos/${eventoSelecionado}`);
       const evento = response.data.dados[0];
       setEventoSelecionado(evento.evento_nome);
@@ -29,7 +27,7 @@ export default function ParticipantesSelecionados() {
 
         // Recupera o nome do evento do localStorage
         const evento = localStorage.getItem('eventoSelecionado');
-        getEventoNome(evento)
+        getEventoNome(evento);
       } catch (error) {
         console.error('Erro ao carregar participantes do localStorage:', error);
         setParticipantesSelecionados([]);
@@ -40,10 +38,10 @@ export default function ParticipantesSelecionados() {
   }, []);
 
   const iniciarChamada = () => {
-    // const agora = new Date();
-    // setHorarioInicioEvento(agora); // Armazena a hora de início do evento
-    // localStorage.setItem('horarioInicioEvento', agora.toISOString()); // Armazena como string ISO
-    // console.log(`Evento iniciado em: ${agora.toLocaleString('pt-BR')}`); // Exibe no console
+    const agora = new Date();
+    setHorarioInicioEvento(agora); // Armazena a hora de início do evento
+    localStorage.setItem('horarioInicioEvento', agora.toISOString()); // Armazena como string ISO
+    console.log(`Evento iniciado em: ${agora.toLocaleString('pt-BR')}`); // Exibe no console
 
     // Redireciona para a página de registrar presença
     router.push('/registrarPresenca');
