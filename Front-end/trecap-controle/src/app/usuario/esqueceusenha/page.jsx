@@ -35,13 +35,13 @@ export default function esqueceuSenha() {
                     </h1>
 
                     <div className={styles.containerMensagem}>
-                        <h1 className={styles.bkTitleBold}>Atenção!</h1>
-                        <h1 className={styles.bkSubTittle}>Insra o seu email para recuperação de senha</h1>
+                        {/* <h1 className={styles.bkTitleBold}>Atenção!</h1> */}
+                        <h1 className={styles.bkSubTittle}>Um email de recuperação foi encaminhado para o email informado!</h1>
                     </div>
 
-                    <input className={styles.textBox}
-                        placeholder="Digiete Seu Email"
-                    />
+                    {/* <input className={styles.textBox}
+                        placeholder="Digite Seu Email"
+                    /> */}
 
                     <button className={styles.button}>ENVIAR!</button>
 

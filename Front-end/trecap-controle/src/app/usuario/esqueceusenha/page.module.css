@@ -11,7 +11,8 @@
 
 .divflexbox{
     display: flex;
-    background-color: #8E7AB5;
+    /* background-color: #8E7AB5; */
+    background-color: rgb(7,7,59);
     align-items: center;
     justify-content: center;
     border-radius: 2.5rem;
@@ -21,7 +22,8 @@
 
 .containerRoxo{
     display: flex;
-    background-color: #8E7AB5;
+    /* background-color: #8E7AB5; */
+    background-color: rgb(7,7,59);
     align-items: center;
     text-align: center;
     justify-content: center;
@@ -72,6 +74,7 @@
     padding-right: 15rem;
     font-family: "Poppins", sans-serif;
     font-style: normal;
+    text-decoration: underline;
 }
 
 .bkTitleBold{
@@ -84,16 +87,20 @@
 
 .bkSubTittle{
     margin: 0.9rem;
-    font-size: 1rem;
-    color: black;
+    font-size: 1.2rem;
+    color: white;
     opacity: 100%;
+
 }
 
 
 .containerMensagem{
-    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-top: 8rem;
-    background-color: #d5bfff50;
+    /* background-color: #d5bfff50; */
+    background-color: rgb(137, 137, 201);
     border-radius: 2.5rem;
     width: 30rem;
     height: 7rem;
@@ -116,10 +123,12 @@
     height: 2.5rem;
     margin-top: 2.5rem;
     border-radius: 2.5rem;
-    background-color: #8E7AB5;
+    /* background-color: #8E7AB5; */
+    background-color: rgb(7,7,59);
     font-weight: bold;
     font-size: 1rem;
-    border-color: #8E7AB5;
+    border-color: rgb(7,7,59);
+    color: white;
 }
 
 .image{
