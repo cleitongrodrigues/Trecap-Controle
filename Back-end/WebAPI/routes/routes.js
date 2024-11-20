@@ -9,6 +9,8 @@ import { ColaboradorController } from '../controllers/ColaboradoresController.js
 import SetorController from '../controllers/Setores.js';
 import upload from '../../midleware/uploadimage.js';
 import RegistroController from '../controllers/Registros.js';
+import EmpresaController from '../controllers/Empresa.js';
+import EventosController from '../controllers/Eventos.js';
 
 
 
@@ -36,10 +38,10 @@ router.post('/Empresa', EmpresaController.CadastrarEmpresa);
 router.patch('/Empresa/:empresa_id', EmpresaController.EditarEmpresa);
 router.delete('/Empresa/:empresa_id', EmpresaController.ApagarEmpresa);
 
-router.get('/Eventos', EventoController.ListarEvento);
-router.post('/Eventos', EventoController.CadastrarEvento);
-router.patch('/Eventos/:evento_id', EventoController.EditarEvento);
-router.delete('/Eventos/:evento_id', EventoController.ApagarEvento);
+router.get('/Eventos', EventosController.ListarEvento);
+router.post('/Eventos', EventosController.CadastrarEvento);
+router.patch('/Eventos/:evento_id', EventosController.EditarEvento);
+router.delete('/Eventos/:evento_id', EventosController.ApagarEvento);
 
 router.get('/Registro', RegistroController.ListarRegistros);
 router.post('/Registro', RegistroController.CadastrarRegistros);

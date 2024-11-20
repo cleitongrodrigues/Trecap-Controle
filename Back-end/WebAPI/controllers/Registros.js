@@ -1,8 +1,11 @@
-const db = require('../database/connection');
+import connection from "../../Infrastructure/database/connection.js"
 
 const RegistroController = {
     async ListarRegistros(request, response) {
         try {
+            const { evento_id } = request.params;
+            console.log("Evento ID recebido:", evento_id); // Log para verificar o valor de evento_id
+    
             const sql = `
                 SELECT 
                     r.registros_id, 
@@ -10,42 +13,37 @@ const RegistroController = {
                     r.registros_hora_entrada, 
                     r.registros_hora_saida,
                     e.evento_id, 
-                    e.evento_nome, 
+                    e.evento_nome,
+                    e.evento_hora, 
                     e.evento_data_inicio,
-                    c.colaborador_nome
+                    c.colaborador_id,
+                    c.colaborador_nome,
+                    s.setor_nome                    
                 FROM 
                     Registros r
                 JOIN Eventos e ON r.evento_id = e.evento_id
                 JOIN Colaboradores c ON r.colaborador_id = c.colaborador_id
+                JOIN setores s ON c.setor_id = s.setor_id
                 WHERE 
                     r.registros_presenca = 1
                 AND
-                    e.evento_id = 1;
+                    e.evento_id = ?;
             `;
-        
-            const registros = await db.query(sql);
-        
-            const nItens = registros[0].length;
-            return response.status(200).json({
-                sucesso: true,
-                mensagem: 'Lista de Registros com informações de evento e colaborador!',
-                dados: registros[0],
-                nItens
-            });
-        
+            const [result] = await connection.query(sql, [evento_id]);
+    
+            console.log("Resultado da consulta:", result); // Log para verificar o resultado da consulta SQL
+    
+            return response.status(200).json({ dados: result });
         } catch (error) {
-            return response.status(500).json({
-                sucesso: false,
-                mensagem: 'Erro ao listar registros :(',
-                dados: error.message
-            });
+            console.error("Erro ao listar registros:", error);
+            return response.status(500).json({ message: "Erro ao listar registros." });
         }
     },
-    
 
-    async CadastrarRegistros(request, response){
+    // Função para cadastrar registros
+    async CadastrarRegistros(request, response) {
         try {
-            const {registros_presenca, registros_hora_entrada, registros_hora_saida, evento_id, colaborador_id} = request.body;
+            const { registros_presenca, registros_hora_entrada, registros_hora_saida, evento_id, colaborador_id } = request.body;
 
             const sql = `INSERT INTO Registros
                 (registros_presenca, registros_hora_entrada, registros_hora_saida, evento_id, colaborador_id) 
@@ -53,7 +51,7 @@ const RegistroController = {
 
             const values = [registros_presenca, registros_hora_entrada, registros_hora_saida, evento_id, colaborador_id];
 
-            const execSql = await db.query(sql, values);
+            const execSql = await connection.query(sql, values);
 
             const registros_id = execSql[0].insertId;
             return response.status(200).json({
@@ -71,12 +69,11 @@ const RegistroController = {
         }
     },
 
-    async EditarRegistros(request, response){
+    // Função para editar registros
+    async EditarRegistros(request, response) {
         try {
-
-            const {registros_presenca, registros_hora_entrada, registros_hora_saida, evento_id, colaborador_id} = request.body;
-
-            const {registros_id} = request.params;
+            const { registros_presenca, registros_hora_entrada, registros_hora_saida, evento_id, colaborador_id } = request.body;
+            const { registros_id } = request.params;
 
             const sql = `UPDATE Registros SET registros_presenca = ?, registros_hora_entrada = ?, 
                 registros_hora_saida = ?, evento_id = ?, colaborador_id = ?
@@ -84,7 +81,7 @@ const RegistroController = {
 
             const values = [registros_presenca, registros_hora_entrada, registros_hora_saida, evento_id, colaborador_id, registros_id];
 
-            const atualizaDados = await db.query(sql, values);
+            const atualizaDados = await connection.query(sql, values);
             return response.status(200).json({
                 sucesso: true,
                 mensagem: `Usuário ${registros_id} editado com sucesso!`,
@@ -99,15 +96,16 @@ const RegistroController = {
         }
     },
 
-    async ApagarRegistros(request, response){
+    // Função para apagar registros
+    async ApagarRegistros(request, response) {
         try {
-            const {registros_id} = request.params;
+            const { registros_id } = request.params;
 
             const sql = `DELETE FROM Registros WHERE registros_id = ?;`;
 
             const values = [registros_id];
 
-            const atualizacao = await db.query(sql, values);
+            const atualizacao = await connection.query(sql, values);
             return response.status(200).json({
                 sucesso: true,
                 mensagem: `Registro ${registros_id} deletado com sucesso!`,
