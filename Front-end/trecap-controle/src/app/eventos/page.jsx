@@ -116,15 +116,15 @@ export default function Evento() {
 
 
     const handleStart = (evento) => {
-        
+
         const horaFormatada = evento.evento_hora.includes(':') ? evento.evento_hora : `${evento.evento_hora}:00`;
         const dataEventoStr = `${evento.evento_data_inicio.split('T')[0]}T${horaFormatada}`;
         const dataEvento = new Date(dataEventoStr);
         const dataAtual = new Date();
         const tolerancia = 30 * 60 * 1000;
-    
+
         const dataEventoComTolerancia = new Date(dataEvento.getTime() - tolerancia);
-    
+
         if (dataAtual < dataEventoComTolerancia) {
             alert(`O evento ${evento.evento_nome} ainda não pode ser iniciado!`);
         } else if (dataAtual > dataEvento) {
@@ -136,7 +136,7 @@ export default function Evento() {
             // Aqui estamos passando a ID do evento (evento.evento_id) ao invés do nome
             router.push(`/cadastroP?eventoId=${encodeURIComponent(evento.evento_id)}`);
         }
-    };    
+    };
 
     useEffect(() => {
         fetchEventos();

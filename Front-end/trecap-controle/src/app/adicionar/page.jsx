@@ -110,8 +110,8 @@ export default function CheckinEvento() {
               <h1>{nomeEvento || "Evento não encontrado"}</h1> {/* Adicione uma mensagem padrão se o nome do evento não estiver disponível */}
               <div className={styles.checkin}>                
                 <div className={styles.cadastro}>
-                  <h2>Adicionar Participantes</h2>
                   <h3>Setores Selecionados: {setores.length > 0 ? setores.join(", ") : "Nenhum setor selecionado"}</h3>
+                  <h2>Adicionar Participantes</h2>
                   <div className={styles.containerContent}>
                     <div className={styles.listaParticipantes}>
                       <ul className={styles.participantes}>

@@ -40,10 +40,10 @@ export default function ParticipantesSelecionados() {
   }, []);
 
   const iniciarChamada = () => {
-    const agora = new Date();
-    setHorarioInicioEvento(agora); // Armazena a hora de início do evento
-    localStorage.setItem('horarioInicioEvento', agora.toISOString()); // Armazena como string ISO
-    console.log(`Evento iniciado em: ${agora.toLocaleString('pt-BR')}`); // Exibe no console
+    // const agora = new Date();
+    // setHorarioInicioEvento(agora); // Armazena a hora de início do evento
+    // localStorage.setItem('horarioInicioEvento', agora.toISOString()); // Armazena como string ISO
+    // console.log(`Evento iniciado em: ${agora.toLocaleString('pt-BR')}`); // Exibe no console
 
     // Redireciona para a página de registrar presença
     router.push('/registrarPresenca');
@@ -81,7 +81,7 @@ export default function ParticipantesSelecionados() {
                 Iniciar Chamada para Evento
               </button>
               <button className={styles.botaoCadastro} onClick={router.back}>
-                Voltar
+                Retornar à seleção de participantes
               </button>
             </div>
           </div>
