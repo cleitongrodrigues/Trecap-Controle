@@ -553,3 +553,4 @@ export default function CadastrarEvento() {
     </ProtectedRoute>
   );
 }
+// url imagem usuario http://localhost:3333/public/images/img-1731104522158-548349954.png
