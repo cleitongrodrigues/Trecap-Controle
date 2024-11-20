@@ -1,6 +1,6 @@
 const db = require('../database/connection');
 
-module.exports = {
+const RegistroController = {
     async ListarRegistros(request, response) {
         try {
             const sql = `
@@ -122,3 +122,5 @@ module.exports = {
         }
     }
 }
+
+export default RegistroController
