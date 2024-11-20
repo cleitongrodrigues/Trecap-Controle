@@ -257,3 +257,11 @@
     opacity: 1;
   }
 }
+.hiddenFileInput {
+  opacity: 0;           /* Torna o input invisível */
+  position: absolute;   /* Posiciona o input fora do fluxo normal */
+  z-index: -1;          /* Coloca o input atrás de outros elementos */
+  width: 0;              /* Remove qualquer tamanho visível */
+  height: 0;
+}
+

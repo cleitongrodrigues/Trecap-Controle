@@ -7,13 +7,15 @@ import { isProtected } from '../middleware/AuthMiddleware.js';
 import userValidation from '../middleware/validations/UserValidationMiddleware.js';
 import { ColaboradorController } from '../controllers/ColaboradoresController.js';
 import SetorController from '../controllers/Setores.js';
+import upload from '../../midleware/uploadimage.js';
 
 
 
 router.get('/usuarios', UsuarioController.ListarUsuarios);
 router.get('/usuarios/:id', UsuarioController.ListarUsuario)
 router.post('/usuarios', UsuarioController.CadastrarUsuario);
-router.patch('/Usuarios/:usu_id', UsuarioController.EditarUsuario);
+router.patch('/usuario/:usu_id', UsuarioController.EditarUsuario);
+router.patch("/usuario/:usu_id/image", upload.single('img'), UsuarioController.CadastrarImagem)
 
 router.delete('/usuarios/:id', UsuarioController.ApagarUsuario);
 router.post('/usuario-info/', UsuarioController.getUserInfo)

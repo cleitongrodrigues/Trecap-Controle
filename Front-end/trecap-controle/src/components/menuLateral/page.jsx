@@ -56,7 +56,7 @@ const validacoes = {
 };
 
 const MenuLateral = () => {
-  const { user, handleLogout } = useContext(UserContext)
+  const { user, handleLogout, fetchUserData, token } = useContext(UserContext)
 
   const [userData, setUserData] = useState({ ...user })
 
@@ -88,7 +88,6 @@ const MenuLateral = () => {
   const handleChangeDataUser = (event) => {
     let value = event.target.value;
     let name = event.target.name;
-    console.log(userData)
     setUserData((prevalue) => {
       return {
         ...prevalue,   // Spread Operator               
@@ -100,15 +99,17 @@ const MenuLateral = () => {
   }
 
   useEffect(() => {
-    getUserData(user.usu_id)
+    async function teste(){
+      await fetchUserData(token)
+    }
+    teste()
   }, []);
 
-  const getUserData = async usu_id => {
-    const response = await axios.get(`http://localhost:3333/usuarios/${usu_id}`);
-    const userData = response.data.dados
-
-    setUserData(userData)
-  }
+  // const getUserData = async usu_id => {
+  //   const response = await axios.get(`http://localhost:3333/usuarios/${usu_id}`);
+  //   const userData = response.data.dados
+  //   setUserData(userData)
+  // }
 
   // Funções para abrir e fechar o modal
   const openModal = () => setModalOpen(true);
@@ -221,10 +222,10 @@ const MenuLateral = () => {
 
   const handleSubmit = async () => {
     // Validações dos campos de texto
-    const emailValido = validacoes.email.validate(usuarioInfo.email);
-    const cpfValido = validacoes.cpf.validate(usuarioInfo.cpf);
-    const nomeValido = validacoes.nome.validate(usuarioInfo.nome);
-    const telefoneValido = validacoes.telefone.validate(usuarioInfo.telefone);
+    // const emailValido = validacoes.email.validate(usuarioInfo.email);
+    // const cpfValido = validacoes.cpf.validate(usuarioInfo.cpf);
+    // const nomeValido = validacoes.nome.validate(usuarioInfo.nome);
+    // const telefoneValido = validacoes.telefone.validate(usuarioInfo.telefone);
 
     setEmailErro("");
     setCpfErro("");
@@ -232,25 +233,25 @@ const MenuLateral = () => {
     setTelefoneErro("");
 
     // Verifica se todos os campos são válidos antes de continuar
-    if (!emailValido) {
-      setEmailErro(validacoes.email.messageError);
-      return;
-    }
+    // if (!emailValido) {
+    //   setEmailErro(validacoes.email.messageError);
+    //   return;
+    // }
 
-    if (!cpfValido) {
-      setCpfErro(validacoes.cpf.messageError);
-      return;
-    }
+    // if (!cpfValido) {
+    //   setCpfErro(validacoes.cpf.messageError);
+    //   return;
+    // }
 
-    if (!nomeValido) {
-      setNomeErro(validacoes.nome.messageError);
-      return;
-    }
+    // if (!nomeValido) {
+    //   setNomeErro(validacoes.nome.messageError);
+    //   return;
+    // }
 
-    if (!telefoneValido) {
-      setTelefoneErro(validacoes.telefone.messageError);
-      return;
-    }
+    // if (!telefoneValido) {
+    //   setTelefoneErro(validacoes.telefone.messageError);
+    //   return;
+    // }
 
     // Se a imagem foi alterada, faz o upload
     if (!selecionaImagem) {
@@ -264,7 +265,7 @@ const MenuLateral = () => {
     }
 
     // Faz o envio da imagem
-    const usuarioId = lista[0].usu_id; // seleciona o primeiro usuário da lista
+    const usuarioId = userData.usu_id // seleciona o primeiro usuário da lista
 
     const formData = new FormData();
     formData.append('img', selecionaImagem);
@@ -272,17 +273,17 @@ const MenuLateral = () => {
 
     try {
       const response = await axios.patch(
-        `http://localhost:3333/Usuario/${usuarioId}/imagem`,
+        `http://localhost:3333/usuario/${usuarioId}/imagem`,
         formData,
         { headers: { 'content-type': 'multipart/form-data' } }
       );
 
       if (response.status === 200) {
         const NovaImagem = response.data.imagePath;
-        setUsuarioInfo((prev) => ({
-          ...prev,
-          visuImagem: NovaImagem
-        }));
+        // setUsuarioInfo((prev) => ({
+        //   ...prev,
+        //   visuImagem: NovaImagem
+        // }));
 
         Swal.fire({
           title: 'Enviado',
@@ -302,23 +303,25 @@ const MenuLateral = () => {
     }
 
     // Após o upload da imagem, salva os dados do usuário (nome, cpf, email, etc)
-    const cpfSemFormatacao = usuarioInfo.cpf.replace(/[.-]/g, "");
-    const dadosAtualizados = {
-      usu_nome: usuarioInfo.nome,
-      usu_CPF: cpfSemFormatacao,
-      usu_email: usuarioInfo.email,
-      usu_telefone: usuarioInfo.telefone,
-      usu_img: usuarioInfo.visuImagem,
-      tipo_usuario_id: 1,
-      usu_ativo: 1,
-      usu_data_cadastro: "2024-09-23",
-      empresa_id: 1,
-    };
+    // const cpfSemFormatacao = usuarioInfo.cpf.replace(/[.-]/g, "");
+    // const dadosAtualizados = {
+    //   usu_nome: usuarioInfo.nome,
+    //   usu_CPF: cpfSemFormatacao,
+    //   usu_email: usuarioInfo.email,
+    //   usu_telefone: usuarioInfo.telefone,
+    //   usu_img: usuarioInfo.visuImagem,
+    //   tipo_usuario_id: 1,
+    //   usu_ativo: 1,
+    //   usu_data_cadastro: "2024-09-23",
+    //   empresa_id: 1,
+    // };
+
+    
 
     try {
       const response = await axios.patch(
         `http://localhost:3333/usuario/${usuarioId}`,
-        dadosAtualizados
+        userData
       );
 
       if (response.status === 200) {
@@ -328,7 +331,7 @@ const MenuLateral = () => {
           icon: "success",
           backdrop: false,
         }).then(() => {
-          window.location.reload();
+          
         });
         setEditando(false);
       }
@@ -341,6 +344,8 @@ const MenuLateral = () => {
         backdrop: false,
       });
     }
+
+    await fetchUserData(token)
   };
 
 
@@ -358,9 +363,9 @@ const MenuLateral = () => {
 
               <div className={styles.Perfil}>
                 <Link href="#" onClick={openModal}>
-                  {usuarioInfo.visuImagem ? (
+                  {user ? (
                     <img
-                      src={usuarioInfo.visuImagem}
+                      src={userData.usu_img}
                       alt="Foto do usuário"
                       className={styles.ImagemPerfil}
                     />
@@ -379,8 +384,8 @@ const MenuLateral = () => {
                     <form onSubmit={(e) => e.preventDefault()}>
                       <label>Foto de Perfil</label>
                       <div className={styles.imagePreviewContainer}>
-                        {usuarioInfo.visuImagem ? (
-                          <img src={usuarioInfo.visuImagem} alt="Foto de perfil" />
+                        {userData.usu_img ? (
+                          <img src={userData.usu_img} alt="Foto de perfil" />
                         ) : (
                           <MdAccountCircle size={64} />
                         )}
@@ -388,11 +393,11 @@ const MenuLateral = () => {
 
                       {editando && (
                         <>
-                          <label htmlFor="imageUpload" className={styles.EscollherArquivo}>
+                          <label className={styles.EscollherArquivo}>
                             Escolher Arquivo
                           </label>
                           <input
-                            className={styles.file}
+                            className={styles.hiddenFileInput}
                             type="file"
                             id="imageUpload"
                             accept="image/*"
