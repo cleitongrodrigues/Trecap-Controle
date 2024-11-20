@@ -22,11 +22,11 @@ VALUES
 ('Bruno Lima', '98765432122', 'biometria_bruno', 1, '(21) 99999-2222', 'bruno.lima@techsolutions.com', 2, 2),
 ('Clara Mendes', '11223344567', 'biometria_clara', 1, '(31) 99999-3333', 'clara.mendes@globalservices.com', 3, 3);
 
-INSERT INTO Eventos (evento_nome, evento_data_inicio, evento_data_termino, evento_local, evento_status, usu_id, evento_professor)
+INSERT INTO Eventos (evento_nome, evento_data_inicio, evento_data_termino, evento_local, evento_status, usu_id, evento_professor, evento_hora)
 VALUES
-('Workshop de Desenvolvimento', '2024-09-01', '2024-09-05', 'Auditório Empresa ABC', 1, 1, 'João Silva'),
-('Treinamento de Vendas', '2024-09-10', '2024-09-12', 'Sala de Conferências Tech Solutions', 1, 2, 'Maria Souza'),
-('Curso de Gestão Financeira', '2024-09-15', '2024-09-18', 'Sala de Reuniões Global Services', 1, 3, 'Carlos Oliveira');
+('Workshop de Desenvolvimento', '2024-09-01', '2024-09-05', 'Auditório Empresa ABC', 1, 1, 'João Silva', 20:00:00),
+('Treinamento de Vendas', '2024-09-10', '2024-09-12', 'Sala de Conferências Tech Solutions', 1, 2, 'Maria Souza', 20:00:00),
+('Curso de Gestão Financeira', '2024-09-15', '2024-09-18', 'Sala de Reuniões Global Services', 1, 3, 'Carlos Oliveira', 20:00:00);
 
 INSERT INTO Registros (registros_presenca, registros_hora_entrada, registros_hora_saida, evento_id, colaborador_id)
 VALUES
