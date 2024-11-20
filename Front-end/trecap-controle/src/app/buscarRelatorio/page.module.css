@@ -33,9 +33,24 @@
   /* Container de busca */
   .searchContainer {
     display: flex;
-    justify-content: flex-end; /* Alinha os itens à direita */
+    justify-content: space-between; /* Alinha os itens à direita */
     align-items: center; /* Alinha verticalmente os itens no centro */
     margin-bottom: 30px;
+  }
+
+  .buscarInput {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-right: 10px; /* Espaçamento entre o input e o botão */
+    padding: 1rem;
+    width: 100%; /* Aumenta o comprimento do input */
+    max-width: 300px; /* Define uma largura máxima menor */
+    height: 3rem; /* Define uma altura consistente */
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 0.1875rem 0.5rem; /* 3px = 0.1875rem */
+    transition: all 0.15s ease-in-out;
   }
   
   /* Input de busca */
@@ -44,11 +59,19 @@
     align-items: center;
     justify-content: center;
     gap: 1rem;
-    margin-right: 10px; /* Espaçamento entre o input e o botão */
+    margin-left: auto; /* Alinha o campo de filtro à direita */
+    margin-right: 1rem;
     padding: 1rem;
+    height: 3rem; /* Define uma altura consistente */
     border-radius: 1rem;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 0.1875rem 0.5rem; /* 3px = 0.1875rem */
     transition: all 0.15s ease-in-out;
+  }
+
+  .eventInfo {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
   }
   
   .searchInput:focus {

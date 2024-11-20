@@ -14,6 +14,7 @@ export default function BuscarRelatorio() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [mesAnoFiltro, setMesAnoFiltro] = useState("");
+    const [termoBusca, setTermoBusca] = useState("");
 
     const fetchEventos = async () => {
         try {
@@ -91,6 +92,15 @@ export default function BuscarRelatorio() {
                 styles: { halign: 'center' },
             });
 
+            // rodapé
+      const agora = new Date();
+      const dataGeracao = `Data e Hora de Geração: ${agora.toLocaleString("pt-BR")}`;
+      const metodoGeracao = "Relatório gerado usando o sistema de gestão de presença Trecap";
+      doc.setFontSize(8);
+
+      doc.text(dataGeracao, 10, doc.internal.pageSize.height - 10);
+      doc.text(metodoGeracao, 10, doc.internal.pageSize.height - 5);
+
             // Salvar o arquivo PDF gerado
             doc.save(`Relatorio_Presenca_${evento.evento_nome}.pdf`);
         } catch (error) {
@@ -110,12 +120,23 @@ export default function BuscarRelatorio() {
         return <div className={style.error}>Erro: {error}</div>;
     }
 
+    const eventosFiltrados = eventos.filter(evento =>
+        evento.evento_nome.toLowerCase().includes(termoBusca.toLowerCase())
+    );
+
     return (
         <>
             <MenuLateral />
             <div className={style.container}>
                 <h1 className={style.h1}>Eventos</h1>
                 <div className={style.searchContainer}>
+                    <input
+                        type="text"
+                        placeholder="Buscar evento"
+                        className={style.buscarInput}
+                        value={termoBusca}
+                        onChange={(e) => setTermoBusca(e.target.value)}
+                    />
                     <input
                         type="month"
                         id="mesAnoFiltro"
@@ -129,24 +150,37 @@ export default function BuscarRelatorio() {
                 </div>
 
                 <div className={style.resultContainer}>
-                    {eventos.length > 0 ? (
+                    {eventosFiltrados.length > 0 ? (
                         <ul className={style.listaRelatorios}>
-                            {eventos.map((evento, index) => (
-                                <li key={index} className={style.relatorioItem}>
-                                    <div>
-                                        <h3>{evento.evento_nome}</h3>
-                                        <p>Data: {new Date(evento.evento_data_inicio).toLocaleDateString('pt-BR')}</p>
-                                        <p>Horário de início: {evento.evento_hora.slice(0, 5)}</p>
-                                    </div>
-                                    <div>
-                                        <button
-                                            className={style.gerarPDFButton}
-                                            onClick={() => gerarPDF(evento)}>
-                                            Gerar PDF
-                                        </button>
-                                    </div>
-                                </li>
-                            ))}
+                            {eventosFiltrados.map((evento, index) => {
+                                const dataEvento = (
+                                    <p className={style.eventInfo}>
+                                        Data: {new Date(evento.evento_data_inicio).toLocaleDateString('pt-BR')}
+                                    </p>
+                                );
+                                const horarioEvento = (
+                                    <p className={style.eventInfo}>
+                                        Horário de início: {evento.evento_hora.slice(0, 5)}
+                                    </p>
+                                );
+
+                                return (
+                                    <li key={index} className={style.relatorioItem}>
+                                        <div>
+                                            <h3>{evento.evento_nome}</h3>
+                                            {dataEvento}
+                                            {horarioEvento}
+                                        </div>
+                                        <div>
+                                            <button
+                                                className={style.gerarPDFButton}
+                                                onClick={() => gerarPDF(evento)}>
+                                                Gerar PDF
+                                            </button>
+                                        </div>
+                                    </li>
+                                );
+                            })}
                         </ul>
                     ) : (
                         <p>Nenhum evento encontrado</p>
