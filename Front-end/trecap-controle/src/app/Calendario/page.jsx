@@ -1,50 +1,67 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import ptLocale from '@fullcalendar/core/locales/pt-br'; 
-import { format } from "date-fns"; 
-import CabecalhoLogado from '@/cabecalhoLogado/page';
+import ptLocale from "@fullcalendar/core/locales/pt-br";
+import { format } from "date-fns";
+import CabecalhoLogado from "@/cabecalhoLogado/page";
 import CustomModal from "../components/ModalCalendar/customModal";
 
-import './calendar.css'; 
+import "./calendar.css";
 import axios from "axios";
 import MenuLateral from "@/components/menuLateral/page";
 
 export default function Calendario() {
-  
   const [events, setEvents] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedEvent, setSelectedEvent] = useState(null); // Armazena o evento a ser editado
+  const [selectedEvent, setSelectedEvent] = useState(null);
+
+  // Carregar eventos do banco de dados ao montar o componente
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await axios.get("http://localhost:3333/eventos");
+        const fetchedEvents = response.data.dados.map((event) => ({
+          id: event.id,
+          title: event.evento_nome,
+          start: event.evento_data_inicio,
+          end: event.evento_data_termino,
+          professor: event.evento_professor,
+          description: event.evento_local,
+        }));
+        setEvents(fetchedEvents); // Armazenando os eventos no estado
+      } catch (error) {
+        console.error("Erro ao carregar eventos:", error);
+      }
+    };
+    fetchEvents();
+  }, []);
 
   const handleDateSelect = (selectInfo) => {
-    setSelectedDate(selectInfo); // Armazena a data selecionada
-    setSelectedEvent(null); // Reseta o evento selecionado para adicionar novo
-    setIsModalOpen(true); // Abre o modal
+    setSelectedDate(selectInfo);
+    setSelectedEvent(null);
+    setIsModalOpen(true);
   };
 
-  // Função para adicionar ou editar o evento
   const handleAddEvent = async (eventData) => {
     let calendarApi = selectedDate?.view.calendar;
-  
-    calendarApi?.unselect(); // Limpar seleção
+    calendarApi?.unselect();
 
     if (eventData.title) {
       if (selectedEvent) {
-        // Edição do evento existente
-        const updatedEvents = events.map(event =>
+        // Edição de evento
+        const updatedEvents = events.map((event) =>
           event.id === selectedEvent.id
             ? { ...event, title: eventData.title, professor: eventData.professor, description: eventData.description }
             : event
         );
         setEvents(updatedEvents);
-        
-        // Atualiza o evento no backend via API (requisição PUT)
+
         try {
-          await axios.put(`http://localhost:3333/evento/${selectedEvent.id}`, {
+          await axios.put(`http://localhost:3333/eventos/${selectedEvent.id}`, {
             evento_nome: eventData.title,
             evento_professor: eventData.professor,
             evento_data_inicio: selectedEvent.start,
@@ -59,67 +76,63 @@ export default function Calendario() {
 
       } else {
         // Criação de novo evento
-        const newEvent = {
-          id: Date.now(),
-          title: eventData.title,
-          start: selectedDate.startStr,
-          end: selectedDate.endStr,
-          allDay: selectedDate.allDay,
-          professor: eventData.professor,
-          description: eventData.description,
-          usu_id: 1
-        };
+        if (selectedDate && selectedDate.startStr && selectedDate.endStr) {
+          const newEvent = {
+            title: eventData.title,
+            start: selectedDate.startStr,
+            end: selectedDate.endStr,
+            allDay: selectedDate.allDay,
+            professor: eventData.professor,
+            description: eventData.description,
+            usu_id: 1
+          };
 
-        try {
-          const response = await axios.post("http://localhost:3333/evento", {
-            usu_id: newEvent.usu_id,
-            evento_nome: newEvent.title,
-            evento_data_inicio: newEvent.start,
-            evento_data_termino: newEvent.end,
-            evento_local: "treino",
-            evento_status: 1,
-            evento_professor: newEvent.professor
-          });
-          
-          console.log(response);
-          setEvents([...events, newEvent]);
-        } catch (error) {
-          console.error("Erro ao criar o evento:", error);
+          try {
+            const response = await axios.post("http://localhost:3333/eventos", {
+              usu_id: newEvent.usu_id,
+              evento_nome: newEvent.title,
+              evento_data_inicio: newEvent.start,
+              evento_data_termino: newEvent.end,
+              evento_hora: "13:00:00",
+              evento_local: "treino",
+              evento_status: 1,
+              evento_professor: newEvent.professor
+            });
+
+            const createdEvent = { ...newEvent, id: response.data.id }; // Adiciona ID real retornado pela API
+            setEvents((prevEvents) => [...prevEvents, createdEvent]);
+          } catch (error) {
+            console.error("Erro ao criar o evento:", error);
+          }
         }
       }
     }
-
     setIsModalOpen(false);
   };
 
-  // Função para abrir o modal para editar evento
   const handleEditEvent = (event) => {
-    setSelectedEvent(event); // Armazena o evento a ser editado
-    setIsModalOpen(true); // Abre o modal para edição
+    setSelectedEvent(event);
+    setIsModalOpen(true);
   };
 
-  // Função para excluir eventos
   const handleDeleteEvent = async (id) => {
     try {
-      await axios.delete(`http://localhost:3333/evento/${id}`); // Deleta no backend
+      await axios.delete(`http://localhost:3333/eventos/${id}`);
       setEvents(events.filter(event => event.id !== id));
     } catch (error) {
       console.error("Erro ao excluir o evento:", error);
     }
   };
-  
-  // Função para lidar com drag and drop dos eventos
+
   const handleEventDrop = async (dropInfo) => {
     const { id, startStr, endStr } = dropInfo.event;
-
     const updatedEvents = events.map((event) =>
       event.id === parseInt(id) ? { ...event, start: startStr, end: endStr } : event
     );
     setEvents(updatedEvents);
 
-    // Atualiza o evento no backend após o drag and drop
     try {
-      await axios.put(`http://localhost:3333/evento/${id}`, {
+      await axios.put(`http://localhost:3333/eventos/${id}`, {
         evento_data_inicio: startStr,
         evento_data_termino: endStr
       });
@@ -128,7 +141,6 @@ export default function Calendario() {
     }
   };
 
-  // Função para exibir os eventos na lateral direita
   const renderEventList = () => {
     return events.map((event) => (
       <li key={event.id}>
@@ -148,20 +160,19 @@ export default function Calendario() {
 
   return (
     <>
-      <MenuLateral/>
+      <MenuLateral />
       <div className="calendar-container">
         <div className="calendar">
           <FullCalendar
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
             initialView="dayGridMonth"
-            events={events}
+            events={events}  // Passando os eventos carregados para o calendário
             editable={true}
             selectable={true}
             selectMirror={true}
             droppable={true}
             select={handleDateSelect}
             eventDrop={handleEventDrop}
-            eventClick={(info) => alert(info.event.title)}
             headerToolbar={{
               left: 'prev,next today',
               center: 'title',
@@ -206,7 +217,7 @@ export default function Calendario() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={handleAddEvent}
-        selectedEvent={selectedEvent} // Passa o evento selecionado para o modal
+        selectedEvent={selectedEvent}
       />
     </>
   );
