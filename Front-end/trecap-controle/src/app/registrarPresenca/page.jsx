@@ -72,18 +72,13 @@ export default function RegistrarPresenca() {
 
     try {
       const promises = dadosPresenca.map(dado =>
-        fetch('http://localhost:3333/registro', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(dado),
-        }).then(response => {
-          if (!response.ok) {
-            throw new Error(`Erro ${response.status}`);
-          }
-          return response.json();
-        })
+        axios.post('http://localhost:3333/registro', dado)
+          .then(response => {
+            if (response.status !== 200) {
+              throw new Error(`Erro ${response.status}`);
+            }
+            return response.data;
+          })
       );
       await Promise.all(promises);
       console.log('Todos os registros de presença salvos com sucesso');
