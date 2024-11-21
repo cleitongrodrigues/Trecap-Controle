@@ -8,6 +8,9 @@ import userValidation from '../middleware/validations/UserValidationMiddleware.j
 import { ColaboradorController } from '../controllers/ColaboradoresController.js';
 import SetorController from '../controllers/Setores.js';
 import upload from '../../midleware/uploadimage.js';
+import RegistroController from '../controllers/Registros.js';
+import EmpresaController from '../controllers/Empresa.js';
+import EventosController from '../controllers/Eventos.js';
 
 
 
@@ -29,6 +32,22 @@ router.get('/colaboradores/:colaborador_id', ColaboradorController.ListarColabor
 router.post('/colaboradores', ColaboradorController.CadastrarColaborador)
 router.delete('/colaboradores/:colaborador_id', ColaboradorController.ApagarColaborador)
 router.patch('/colaboradores', ColaboradorController.AtualizarColaborador)
+
+router.get('/Empresa', EmpresaController.ListarEmpresa);
+router.post('/Empresa', EmpresaController.CadastrarEmpresa);
+router.patch('/Empresa/:empresa_id', EmpresaController.EditarEmpresa);
+router.delete('/Empresa/:empresa_id', EmpresaController.ApagarEmpresa);
+
+router.get('/Eventos', EventosController.ListarEvento);
+router.get('/Eventos/:evento_id', EventosController.ListarEventoPorId); // alteração 18/11 (tentando fazer o nome aparecer)
+router.post('/Eventos', EventosController.CadastrarEvento);
+router.patch('/Eventos/:evento_id', EventosController.EditarEvento);
+router.delete('/Eventos/:evento_id', EventosController.ApagarEvento);
+
+router.get('/Registro', RegistroController.ListarRegistros);
+router.post('/Registro', RegistroController.CadastrarRegistros);
+router.patch('/Registro/:registros_id', RegistroController.EditarRegistros);
+router.delete('/Registro/:registros_id', RegistroController.ApagarRegistros);
 
 // router.get('/Empresa', EmpresaController.ListarEmpresa);
 // router.post('/Empresa', EmpresaController.CadastrarEmpresa);

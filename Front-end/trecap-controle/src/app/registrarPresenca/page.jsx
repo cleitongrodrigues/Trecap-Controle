@@ -2,86 +2,93 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import dayjs from "dayjs";
 import styles from "./page.module.css";
-import CabecalhoLogado from "@/CabecalhoLogado/page";
 import MenuLateral from '@/components/menuLateral/page';
+import axios from "axios";
 
 export default function RegistrarPresenca() {
   const [participantesSelecionados, setParticipantesSelecionados] = useState([]);
   const [participantesPresentes, setParticipantesPresentes] = useState({});
+  const [eventoSelecionado, setEventoSelecionado] = useState("");
   const router = useRouter();
 
   useEffect(() => {
+    async function getEventoNome(eventoSelecionado)
+    {
+      const response = await axios.get(`http://localhost:3333/Eventos/${eventoSelecionado}`);
+      const evento = response.data.dados[0];
+      setEventoSelecionado(evento.evento_nome);
+    }
+
     if (typeof window !== 'undefined') {
-      const selecionados = JSON.parse(localStorage.getItem('participantesSelecionados')) || [];
-      setParticipantesSelecionados(selecionados);
+      const selecionados = localStorage.getItem('participantesSelecionados');
+      setParticipantesSelecionados(selecionados ? JSON.parse(selecionados) : []);
+
+      const evento = localStorage.getItem('eventoId');
+      getEventoNome(evento)
     }
   }, []);
 
-  const registrarPresenca = (nome, isChecked) => {
-    const agora = new Date().toLocaleString();
+  const registrarPresenca = (id, nome, isChecked) => {
+    console.log(`Participante: ${nome}, ID: ${id}, Checked: ${isChecked}`); // Debug
+    const agora = dayjs();
+
+    // Formatar a data e hora no formato desejado
+    const formattedDate = agora.format("YYYY-MM-DD HH:mm:ss"); // Formato para salvar no backend
+    const formattedDateDisplay = agora.format("DD/MM/YYYY HH:mm"); // Formato para exibir
+
+    // Log para verificar o valor da data formatada
+    console.log("Data formatada para o backend:", formattedDate);
+    console.log("Data formatada para exibição:", formattedDateDisplay);
 
     setParticipantesPresentes((prev) => {
       const novosPresentes = { ...prev };
 
       if (isChecked) {
-        novosPresentes[nome] = agora;
+        novosPresentes[id] = { nome, hora: formattedDate };
       } else {
-        delete novosPresentes[nome];
+        delete novosPresentes[id];
       }
 
       localStorage.setItem('participantesPresentes', JSON.stringify(novosPresentes));
-
       return novosPresentes;
     });
   };
 
   const salvarPresenca = async () => {
-    console.log("Tentando salvar presença...");
-
-    const dadosPresenca = Object.entries(participantesPresentes).map(([nome, hora]) => ({
+    const dadosPresenca = Object.entries(participantesPresentes).map(([id, { nome, hora }]) => ({
       registros_presenca: 1,
       registros_hora_entrada: hora,
-      registros_hora_saida: null, // Lógica para hora de saída pode ser adicionada
-      evento_id: 123, // Substitua pelo evento real
-      colaborador_id: nome // Supondo que o nome é o ID do colaborador
+      registros_hora_saida: null,
+      evento_id:  localStorage.getItem('eventoId'), // Substitua pelo ID do evento real
+      colaborador_id: id, // ID do colaborador
     }));
 
-    console.log("Dados a serem enviados:", dadosPresenca);
+    if (dadosPresenca.length === 0) {
+      alert("Nenhum participante presente selecionado.");
+      return; // Evita enviar se não houver dados
+    }
 
-    dadosPresenca.forEach(async dado =>{
-      dado = {
-        ...dado,
-        evento_id: 1,
-        registro_presenca: 1,
-        registros_hora_entrada: "2024-09-01 17:00:00",
-        registros_hora_saida: "2024-09-01 17:00:00",
-        colaborador_id: 10
-      }
-      console.log(dado)
-      try {
-        const response = await fetch('http://localhost:3333/registro', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(dado),
-        });
-  
-        if (!response.ok) {
-          throw new Error('Erro ao registrar presença');
-        }
-  
-        const data = await response.json();
-        console.log('Registros de presença salvos com sucesso:', data);
-        router.push('/relatorioPresenca'); // Redirecionar após salvar
-      } catch (error) {
-        console.error('Erro ao salvar a presença:', error);
-        alert("Ocorreu um erro ao salvar a presença: " + error.message);
-      }
-    })
+    try {
+      const promises = dadosPresenca.map(dado =>
+        axios.post('http://localhost:3333/registro', dado)
+          .then(response => {
+            if (response.status !== 200) {
+              throw new Error(`Erro ${response.status}`);
+            }
+            return response.data;
+          })
+      );
+      await Promise.all(promises);
+      console.log('Todos os registros de presença salvos com sucesso');
+    } catch (error) {
+      console.error('Erro ao salvar a presença:', error);
+      // Exiba uma mensagem de erro para o usuário de forma mais amigável
+    }
 
-    
+    // Redirecionar após salvar todos os registros
+    router.push('/relatorioPresenca');
   };
 
   return (
@@ -89,9 +96,8 @@ export default function RegistrarPresenca() {
       <MenuLateral />
       <div className={styles.layout}>
         <div className={styles.Header}>
+          <h1>{eventoSelecionado}</h1>
           <div className={styles.checkin}>
-            <h1>TREINAMENTO SOBRE HIGIENE NO TRABALHO</h1>
-
             <div className={styles.cadastro}>
               <h2>REGISTRO DE PRESENÇA</h2>
 
@@ -99,18 +105,18 @@ export default function RegistrarPresenca() {
                 <h3>Selecione os participantes presentes:</h3>
                 <ul className={styles.lista}>
                   {participantesSelecionados.length > 0 ? (
-                    participantesSelecionados.map((participante, index) => (
-                      <li key={index} className={styles.participanteItem}>
+                    participantesSelecionados.map((participante) => (
+                      <li key={participante.id} className={styles.participanteItem}>
                         <label>
                           <input
                             type="checkbox"
-                            checked={participantesPresentes[participante] !== undefined}
-                            onChange={(e) => registrarPresenca(participante, e.target.checked)}
+                            checked={participantesPresentes[participante.id] !== undefined}
+                            onChange={(e) => registrarPresenca(participante.id, participante.nome, e.target.checked)}
                           />
-                          {participante}
-                          {participantesPresentes[participante] && (
+                          {participante.nome}
+                          {participantesPresentes[participante.id] && (
                             <span className={styles.horario}>
-                              (Chegada: {participantesPresentes[participante]})
+                              (Chegada: {dayjs(participantesPresentes[participante.id]?.hora).format("DD/MM/YYYY HH:mm")})
                             </span>
                           )}
                         </label>
@@ -124,7 +130,7 @@ export default function RegistrarPresenca() {
             </div>
 
             <button className={styles.botaoCadastro} onClick={salvarPresenca}>
-              Salvar
+              Registrar presenças
             </button>
             <button className={styles.botaoCadastro} onClick={router.back}>
               Voltar

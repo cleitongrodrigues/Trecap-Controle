@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS Eventos (
     evento_status bit(1) not null,
     usu_id int NOT NULL,
     evento_professor varchar(100) NOT NULL,
+    evento_hora time NOT NULL,
     PRIMARY KEY (evento_id),
     FOREIGN KEY (usu_id) REFERENCES Usuario(usu_id)
 );
