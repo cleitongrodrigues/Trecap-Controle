@@ -25,8 +25,10 @@ export const UserProvider = ({ children }) => {
             window.localStorage.setItem('token', token)
             setToken(token)
             await fetchUserData(token)
+            return true
         } catch (e) {
             setError(e.response.data.message)
+            return false
         }
     }
 

@@ -25,9 +25,7 @@ export default function Login() {
 
     if(email.isValid() && password.isValid())
     {
-      await userContext.handleLogin({email: email.value, password: password.value})
-
-      router.push('/usuario/cadastroColaborador')
+      if(await userContext.handleLogin({email: email.value, password: password.value})) router.push('/usuario/cadastroColaborador')
     }
     
   }
