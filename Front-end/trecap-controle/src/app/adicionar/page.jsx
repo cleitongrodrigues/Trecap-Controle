@@ -29,7 +29,7 @@ export default function CheckinEvento() {
       const fetchParticipantes = async () => {
         try {
           const promises = setoresSelecionados.map((setor) =>
-            fetch(`http://localhost:3333/colaboradores?setor=${setor}`).then((res) => res.json())
+            fetch(`http://localhost:3333/all-colaboradores?setor=${setor}`).then((res) => res.json())
           );
 
           // Resolve todas as promessas

@@ -28,6 +28,7 @@ router.get('/verify-token', UsuarioController.verifyToken)
 router.get('/protected', isProtected(['admin']), UsuarioController.private)
 
 router.get('/colaboradores', isProtected(['admin']), ColaboradorController.ListarColaboradores);
+router.get('/all-colaboradores', ColaboradorController.GetAllColaboradores);
 router.get('/colaboradores/:colaborador_id', ColaboradorController.ListarColaborador);
 router.post('/colaboradores', ColaboradorController.CadastrarColaborador)
 router.delete('/colaboradores/:colaborador_id', ColaboradorController.ApagarColaborador)

@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import MenuLateral from '@/components/menuLateral/page';
 import styles from './page.module.css';
+import { useAuth } from '@/context/userContext';
 
 export default function CadastroP() {
   const router = useRouter();
@@ -18,6 +19,7 @@ export default function CadastroP() {
   const [error, setError] = useState(null);
   const [nomeEventoError, setNomeEventoError] = useState(null)
   const [detalhesEventoError, setDetalhesEventoError] = useState(null)
+  const { user } = useAuth()
 
 
   // useEffect para configurar o eventoId
@@ -56,7 +58,7 @@ export default function CadastroP() {
   // Função para buscar setores
   const getSetores = async () => {
     try {
-      const response = await axios.get('http://localhost:3333/Setores/1');
+      const response = await axios.get(`http://localhost:3333/Setores/${user?.empresa_id}`);
       const setores = response.data.dados;
       const newSetores = setores.map((setor) => ({
         ...setor,

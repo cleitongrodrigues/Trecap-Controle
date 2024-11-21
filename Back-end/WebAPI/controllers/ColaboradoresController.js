@@ -102,5 +102,79 @@ export const ColaboradorController = {
         } catch (e) {
             next(e)
         }
+    },
+
+    async GetAllColaboradores(request, response)
+    {
+        try {
+            const { setor } = request.query;  // Setor vindo da query
+    
+            // Verifique se 'setor' é uma string e transforme em um array, se necessário
+            const setoresArray = Array.isArray(setor) ? setor : [setor];
+    
+            let sql;
+    
+            if (!setor) {
+                // Caso não haja setor especificado, selecione todos os colaboradores ativos
+                sql = `
+                    SELECT 
+                        colaborador_id, 
+                        colaborador_nome, 
+                        colaborador_CPF, 
+                        colaborador_biometria, 
+                        colaborador_ativo = 1 AS colaborador_ativo, 
+                        colaborador_telefone, 
+                        colaborador_email, 
+                        Colaboradores.empresa_id, 
+                        Colaboradores.setor_id, 
+                        setor_nome
+                    FROM 
+                        Colaboradores
+                    WHERE 
+                        colaborador_ativo = 1
+                `;
+            } else {
+                // Caso haja setor, construa o SQL com IN para múltiplos setores
+                const placeholders = setoresArray.map(() => '?').join(', ');
+                sql = `
+                    SELECT 
+                        colaborador_id, 
+                        colaborador_nome, 
+                        colaborador_CPF, 
+                        colaborador_biometria, 
+                        colaborador_ativo = 1 AS colaborador_ativo, 
+                        colaborador_telefone, 
+                        colaborador_email, 
+                        Colaboradores.empresa_id, 
+                        Colaboradores.setor_id, 
+                        setor_nome
+                    FROM 
+                        Colaboradores
+                    INNER JOIN 
+                        Setores ON Setores.setor_id = Colaboradores.setor_id 
+                    WHERE 
+                        colaborador_ativo = 1 
+                        AND setor_nome IN (${placeholders})
+                `;
+            }
+    
+            const params = setor ? setoresArray : [];
+            const colaboradores = await connection.query(sql, params);
+    
+            const nItens = colaboradores[0].length;
+            return response.status(200).json({
+                sucesso: true,
+                mensagem: 'Lista de colaboradores',
+                dados: colaboradores[0],
+                nItens
+            });
+    
+        } catch (error) {
+            return response.status(500).json({
+                sucesso: false,
+                mensagem: 'Erro ao listar colaborador',
+                dados: error.message
+            });
+        }
     }
 }
