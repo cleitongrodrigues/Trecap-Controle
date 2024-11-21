@@ -372,7 +372,7 @@ const MenuLateral = () => {
                   ) : (
                     <MdAccountCircle />
                   )}
-                  {user.usu_nome || "Nome"}
+                  {user?.usu_nome || "Nome"}
                 </Link>
               </div>
 
