@@ -114,9 +114,9 @@ export default function CadastroP() {
             <h2>Antes de iniciar, selecione os setores que irão participar do treinamento.</h2>
             <div className={styles.content2}>
               <div className={styles.setores}>
-                <div className={styles.set}>
+                {/* <div className={styles.set}>
                   <h3>Selecione setores participantes</h3>
-                </div>
+                </div> */}
                 <div className={styles.checkbox}>
                   {loading ? (
                     <p>Carregando setores...</p>
@@ -124,18 +124,18 @@ export default function CadastroP() {
                     <p style={{ color: 'red' }}>{error}</p>
                   ) : (
                     selectedSetores.map((setor, index) => (
-                      <div key={setor.setor_id} className={styles.containerInput}>
+                      <label htmlFor={setor.id} key={setor.setor_id} className={styles.containerInput}>
                         <input
                           type="checkbox"
-                          id={setor.setor_nome}
+                          id={setor.id}
                           checked={setor.checked}
                           onChange={() => handleCheckboxChange(index)}
                           className={styles.input}
                         />
-                        <label className={styles.label} htmlFor={setor.setor_nome}>
+                        <span className={styles.label} >
                           {setor.setor_nome}
-                        </label>
-                      </div>
+                        </span>
+                      </label>
                     ))
                   )}
                 </div>

@@ -16,17 +16,18 @@
 /* Cabeçalho */
 .header h1 {
   text-align: center;
-  color: #694C9F;
-  font-size: 2.25rem;
+  /* color: #694C9F; */
+  color: var(--purpleMain);
+  font-size: 3rem;
   margin-bottom: 2rem;
   font-family: "Poppins", sans-serif;
-  font-weight: 200;
+  font-weight: 400;
   text-transform: uppercase;
 }
 
 
 .content {
-  background-color: var(--purple-300);
+  /* background-color: var(--purple-300); */
   border-radius: 1.125rem;
   padding: 0.0625rem;
   text-align: center;
@@ -34,7 +35,7 @@
 
 .content h2 {
   text-align: center;
-  color: white;
+  color: var(--purpleMain);
   font-size: 2.25rem;
   margin-bottom: 2rem;
   font-family: "Poppins", sans-serif;
@@ -48,7 +49,7 @@
   border-radius: 1.125rem;
   color: white;
   padding: 1.25rem;
-  background-color: var(--purpleMain);
+  /* background-color: var(--purpleMain); */
   margin-top: 0.625rem;
   display: grid;
   place-items: center;
@@ -65,7 +66,7 @@
 
 .setores {
   width: 100%;
-  background-color: var(--purpleMain);
+  /* background-color: var(--purpleMain); */
   padding: 1rem;
   border-radius: 0.5rem;
   font-family: "Poppins", sans-serif;
@@ -76,20 +77,10 @@
 
 
 .checkbox {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  margin-bottom: 1.25rem;
+  margin-bottom: 3rem;
 }
 
-.label {
-  font-size: 2rem;
-  color: white;
-  cursor: pointer;
-  margin-left: 0.625rem;
-  cursor: pointer;
-}
+
 
 .input[type='checkbox'] {
   margin-right: 0.625rem;
@@ -99,13 +90,14 @@
 
 /* Botão */
 .button {
-  padding: 10px 20px;
+  padding: 1.5rem 2rem;
   background-color: var(--purpleButton);
   color: white; 
   border: none; 
-  border-radius: 5px;
+  border-radius: 2rem;
   cursor: pointer;
   transition: background-color 0.3s;
+  font-size: 1.25rem;
 }
 
 .button:hover {
@@ -119,9 +111,35 @@
 
 .containerInput {
   display: flex;
-  align-items: center;
   margin-bottom: 1rem;
+  background-color: var(--neutral-100);
+  width: 100%;
+  padding: 1rem .8rem;
+  cursor: pointer;
+  border-radius: .825rem;
+  transition: .2s transform ease-in-out;
+  border: 1px solid rgb(216, 216, 216);
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  color: var(--purpleMain)
 }
+
+.containerInput:has(input[type="checkbox"]:checked) {
+  color: var(--neutral-100);
+  background-color: var(--purpleMain);
+}
+
+.containerInput:hover {
+  border: 1px solid var(--purpleMain);
+  transform: scale(1.04);
+}
+
+.label {
+  font-size: 2rem;
+  margin-left: 0.625rem;
+  cursor: pointer;
+  color: inherit;
+}
+
 
 
 .menuLateral {
