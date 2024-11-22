@@ -3,40 +3,34 @@
 .Geral {
     padding-top: 5rem;
     display: flex;
+    background-color:gray;
+    min-height: 100vh;
 }
 
 .Container {
     display: flex;
     flex-direction: column;
-    background-color: var(--purple-300);
-    justify-content: center;
+    /* background-color: var(--purple-300); */
+    background-color: white;
+    /* justify-content: center; */
     max-width: 100rem;
     align-items: center;
     border-radius: 1rem;
     padding: 1rem;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 0.1875rem 0.5rem; /* 3px = 0.1875rem */
     margin: auto;
-}
-
-@media (max-width: 48rem) { /* 768px = 48rem */
-    .Container {
-        max-width: 90%;
-        padding: 1rem;
-    }
-}
-
-@media (max-width: 30rem) { /* 480px = 30rem */
-    .Container {
-        max-width: 100%;
-        padding: 0.5rem;
-    }
+    /* height: 60rem; */
+    min-height: 80vh;
+    min-width: 85vh;
 }
 
 .Titulo {
-    color: white;
+    /* color: white; */
     margin: 1rem;
     font-size: 4rem;
     font-weight: bold;
+    margin-top: 0.5rem;
+    color: var(--purpleMain);
 }
 
 .containerContent {
@@ -49,9 +43,11 @@
 .ContainerDivs {
     display: flex; /* Para que ícones e texto fiquem alinhados */
     align-items: center; /* Centraliza verticalmente */
-    background-color: var(--purpleMain);
+    /* background-color: var(--purpleMain); */
+    background-color: rgb(236, 231, 231);
+    /* background-color: gray; */
     box-shadow: 0 0 0.125rem 0.1875rem var(--purple-300); /* 2px = 0.125rem, 3px = 0.1875rem */
-    color: white;
+    /* color: white; */
     border-radius: 1rem;
     gap: 1rem;
     padding: 1rem;
@@ -76,6 +72,7 @@
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis;
+    min-height: 7rem;
 }
 
 .ContainerLabel label {
@@ -89,6 +86,29 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.MensagemErro {
+    color: red;
+    font-weight: bold;
+    margin-top: 0.2rem;
+}
+
+.Vazio
+{
+    background-color: rgb(236, 231, 231);
+    /* color: white; */
+    font-size: 1.5rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    text-align: center;
+    margin-top: 1rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    min-width: 80rem;
 }
 
 .labelData {
@@ -168,6 +188,62 @@
 
 .FiltroDataContainer button:hover {
     background-color: var(--purple-300);
+}
+
+.botoesInicio {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+    margin-top: auto;    
+}
+
+.iconesEditar {
+    border: none;
+    /* background-color: red; */
+    background-color: #4CAF50;
+    color: white;
+    font-weight: 400;
+    font-size: 1.5rem;
+    border-radius: 0.325rem;
+    padding: 1rem 2rem;
+    cursor: pointer;
+    margin-bottom: 2rem;
+}
+
+.iconesEditar:hover {
+    transform: scale(1.04);
+}
+
+.iconesIniciar {
+    border: none;
+  /* background-color: red; */
+  background-color: #FFD54F;
+  color: white;
+  font-weight: 400;
+  font-size: 1.5rem;
+  border-radius: 0.325rem;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  margin-bottom: 2rem;
+}
+
+.iconesIniciar:hover {
+    transform: scale(1.04);
+}
+
+@media (max-width: 48rem) { /* 768px = 48rem */
+    .Container {
+        max-width: 90%;
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 30rem) { /* 480px = 30rem */
+    .Container {
+        max-width: 100%;
+        padding: 0.5rem;
+    }
 }
 
 @media (max-width: 48rem) {

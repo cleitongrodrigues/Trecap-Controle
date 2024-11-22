@@ -212,8 +212,8 @@ const ModalEdit = ({ evento, onClose, onSave }) => {
                 {errors.professor && <p className={style.error}>{errors.professor}</p>}
 
                 <div className={style.buttonContainer}>
-                    <button onClick={handleSubmit} className={style.button}>Salvar</button>
-                    <button onClick={onClose} className={style.button}>Fechar</button>
+                    <button onClick={handleSubmit} className={style.buttonSalvar}>Salvar</button>
+                    <button onClick={onClose} className={style.buttonCancelar}>Cancelar</button>
                 </div>
             </div>
         </div>

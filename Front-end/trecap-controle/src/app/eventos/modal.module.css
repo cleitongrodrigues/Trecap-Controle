@@ -6,7 +6,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,13 +14,13 @@
 }
 
 .modalContent {
-    background-color: var(--purple-300);
+    background-color: white;
     border-radius: 1rem;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 0.1875rem 0.5rem;
     padding: 2rem;
     max-width: 40rem;
     width: 100%;
-    color: white;
+    /* color: white; */
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -73,7 +73,8 @@
     border: none;
     outline: none;
     color: var(--purpleMain);
-    background-color: white;
+    /* background-color: white; */
+    background-color: rgb(236, 231, 231);
     box-shadow: inset 0 0 0.125rem rgba(0, 0, 0, 0.15);
     transition: box-shadow 0.15s ease-in-out;
 }
@@ -83,14 +84,15 @@
     box-shadow: 0 0 0.125rem 0.1875rem rgba(0, 0, 0, 0.24);
 }
 
+
 .buttonContainer {
     display: flex;
     gap: 1rem;
     justify-content: flex-end;
 }
 
-.button {
-    background-color: var(--purpleMain);
+.buttonCancelar {
+    background-color: #FF6E6E;
     color: white;
     border: none;
     padding: 0.5rem 1rem;
@@ -98,6 +100,25 @@
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.15s ease-in-out;
+}
+
+.buttonCancelar:hover {
+    transform: scale(1.04);
+}
+
+.buttonSalvar {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.buttonSalvar:hover {
+    transform: scale(1.04);
 }
 
 .button:hover {

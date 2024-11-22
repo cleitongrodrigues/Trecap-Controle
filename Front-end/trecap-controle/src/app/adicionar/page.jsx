@@ -12,6 +12,8 @@ export default function CheckinEvento() {
   const [mensagemErro, setMensagemErro] = useState("");
   const [setores, setSetores] = useState([]);
   const [nomeEvento, setNomeEvento] = useState(""); // Variável para armazenar o nome do evento
+  const [termoBusca, setTermoBusca] = useState('');
+  const [participantesFiltrados, setParticipantesFiltrados] = useState([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -37,6 +39,7 @@ export default function CheckinEvento() {
           const todosParticipantes = resultados.flatMap((res) => res.dados || []);
           
           setParticipantes(todosParticipantes);
+          setParticipantesFiltrados(todosParticipantes);
           setParticipantesSelecionados(new Array(todosParticipantes.length).fill(false));
 
         } catch (error) {
@@ -100,34 +103,49 @@ export default function CheckinEvento() {
     router.back();
   };
 
+  const handleBusca = () => {
+    const filtrados = participantes.filter(participante =>
+      participante.colaborador_nome.toLowerCase().includes(termoBusca.toLowerCase())
+    );
+    setParticipantesFiltrados(filtrados);
+  };
+
   return (
     <>
-      <MenuLateral />
-      <div className={styles.body}>
+      <MenuLateral />      
         <div className={styles.layout}>
-          <div className={styles.mainContent}>
-            <div className={styles.Header}>
-              <h1>{nomeEvento || "Evento não encontrado"}</h1> {/* Adicione uma mensagem padrão se o nome do evento não estiver disponível */}
-              <div className={styles.checkin}>                
+          <div className={styles.container}>
+            <div className={styles.header}>     
+              <h1>{nomeEvento || "Evento não encontrado"}</h1> {/* Adicione uma mensagem padrão se o nome do evento não estiver disponível */}           
                 <div className={styles.cadastro}>
                   <h3>Setores Selecionados: {setores.length > 0 ? setores.join(", ") : "Nenhum setor selecionado"}</h3>
                   <h2>Adicionar Participantes</h2>
                   <div className={styles.containerContent}>
+                    <div className={styles.busca}>
+                      <input
+                        type="text"
+                        value={termoBusca}
+                        onChange={(e) => setTermoBusca(e.target.value)}
+                        placeholder="Buscar participantes"
+                        className={styles.inputBusca}
+                      />
+                      <button onClick={handleBusca} className={styles.botaoBusca}>Buscar</button>
+                    </div>
                     <div className={styles.listaParticipantes}>
                       <ul className={styles.participantes}>
-                        {participantes.length > 0 ? (
-                          participantes.map((participante, index) => (
-                            <li key={participante.colaborador_id} className={styles.participanteItem}>
-                              <label>
-                                <input
-                                  type="checkbox"
-                                  className={styles.checkbox}
-                                  checked={participantesSelecionados[index]}
-                                  onChange={() => handleCheckboxChange(index)}
-                                />
+                        {participantesFiltrados.length > 0 ? (
+                          participantesFiltrados.map((participante, index) => (
+                            <label key={participante.colaborador_id} className={styles.containerInput}>
+                              <input
+                                type="checkbox"
+                                checked={participantesSelecionados[index]}
+                                onChange={() => handleCheckboxChange(index)}
+                                className={styles.input}
+                              />
+                              <span className={styles.label}>
                                 {participante.colaborador_nome}
-                              </label>
-                            </li>
+                              </span>
+                            </label>
                           ))
                         ) : (
                           <p>Nenhum participante encontrado</p>
@@ -138,13 +156,11 @@ export default function CheckinEvento() {
                     {mensagemErro && <div className={styles.mensagemErro}>{mensagemErro}</div>}
                   </div>
                 </div>
-                <button className={styles.botaoCadastro} onClick={salvarParticipantes}>Salvar</button>
-                <button className={styles.botaoCadastro} onClick={handleVoltar}>Voltar</button>
+                <button className={styles.botaoSalvar} onClick={salvarParticipantes}>Salvar</button>
+                <button className={styles.botaoVoltar} onClick={handleVoltar}>Voltar</button>
               </div>
             </div>
           </div>
-        </div>
-      </div>
     </>
   );
 }

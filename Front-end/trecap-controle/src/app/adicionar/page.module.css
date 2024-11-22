@@ -1,18 +1,40 @@
 .layout {
+  padding-top: 5rem;
   display: flex;
+  background-color:gray;
+  min-height: 100vh;
 }
 
 /* Estilo geral do container */
-.Header {
+.container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #ffffff; /* Cor de fundo roxa clara */
-  padding: 20px;
-  border-radius: 10px;
+    flex-direction: column;
+    /* background-color: var(--purple-300); */
+    background-color: white;
+    /* justify-content: center; */
+    max-width: 100rem;
+    align-items: center;
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 0.1875rem 0.5rem; /* 3px = 0.1875rem */
+    margin: auto;
+    /* height: 60rem; */
+    min-height: 75vh;
+    max-width: 95vh;
 }
 
-.Header h1 {
+.container h1 {
+  text-align: center;
+  /* color: #694C9F; */
+  color: var(--purpleMain);
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+/* .header h1 {
   text-align: center;
   color: #694C9F;
   font-size: 2.25rem;
@@ -20,7 +42,7 @@
   font-family: "Poppins", sans-serif;
   font-weight: 200;
   text-transform: uppercase;
-}
+} */
 
 .checkin {
   width: 100%;
@@ -42,21 +64,42 @@
 }
 
 /* Estilo da seção de cadastro */
-.cadastro {
+
+.input[type='checkbox'] {
+  margin-right: 0.625rem;
+  transform: scale(1.2);
+}
+
+.label {
+  font-size: 2rem;
+  margin-left: 0.625rem;
+  cursor: pointer;
+  color: inherit;
+}
+
+.containerInput {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 2rem;
-  color: white;
+  margin-bottom: 1rem;
+  background-color: var(--neutral-100);
+  width: 100%;
+  padding: 1rem .8rem;
+  cursor: pointer;
+  border-radius: .825rem;
+  transition: .2s transform ease-in-out;
+  border: 1px solid rgb(216, 216, 216);
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  color: var(--purpleMain)
+}
+
+.containerInput:has(input[type="checkbox"]:checked) {
+  color: var(--neutral-100);
   background-color: var(--purpleMain);
-  border-radius: 20px;
-  padding: 2rem;
 }
 
 .cadastro h2 {
   font-size: 20px;
   margin-bottom: 15px;
-  color: white;
+  color: var(--purpleMain);
   margin-top: 10px;
 }
 
@@ -66,9 +109,10 @@
   align-items: left;
   font-size: 15px;
   margin-bottom: 10px;
-  color: white;
+  color: var(--purpleMain);
   margin-top: 5px;
 }
+
 
 /* Estilo do alerta */
 .alerta {
@@ -97,6 +141,71 @@
   padding: 5px 10px;
   border-radius: 3px;
   cursor: pointer;
+}
+
+.botaoSalvar {
+  padding: 1.5rem 2rem;
+  background-color: #4CAF50;
+  color: white; 
+  border: none; 
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 1.25rem;
+  margin-top: 36rem;
+}
+
+.botaoSalvar:hover {
+  background-color: var(--purple-300);
+}
+
+.botaoVoltar {
+  padding: 1.5rem 2rem;
+  background-color: #FF6E6E;
+  color: white; 
+  border: none; 
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 1.25rem;
+  margin-top: 36rem;
+  margin: 1rem;
+}
+
+.botaoBusca {
+  display: flex;
+  padding: 1.5rem 2rem;
+  background-color: var(--purpleButton);
+  color: white; 
+  border: none; 
+  border-radius: 2rem;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 1.25rem;
+  margin: 1rem;
+  height: 1rem;
+  width: 6rem;
+}
+
+.busca input{
+  flex: 1;
+  background-color: rgb(236, 231, 231);
+  border-radius: 0.7rem;
+  border: none;
+  height: 2rem;
+  margin: 1rem 0rem;
+  padding: 1.5rem;
+  min-width: 95rem;
+  font-size: 1.6rem;
+  min-width: 90vh;
+  margin-top: auto;
+
+}
+
+.botaoBusca:hover {
+  background-color: var(--purpleMain);
 }
 
 .containerContent{

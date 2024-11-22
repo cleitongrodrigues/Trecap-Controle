@@ -126,9 +126,9 @@ export default function Evento() {
         const dataEventoComTolerancia = new Date(dataEvento.getTime() - tolerancia);
 
         if (dataAtual < dataEventoComTolerancia) {
-            setMensagemErro({ [evento.evento_id]: `O evento ${evento.evento_nome} ainda não pode ser iniciado!` });
+            setMensagemErro({ [evento.evento_id]: `O evento ainda não pode ser iniciado!` });
         } else if (dataAtual > dataEvento) {
-            setMensagemErro({ [evento.evento_id]: `O prazo para entrar no Evento ${evento.evento_nome} já ultrapassou!` });
+            setMensagemErro({ [evento.evento_id]: `O prazo para entrar no evento já ultrapassou!` });
         } else {
             localStorage.setItem('eventoId', evento.evento_id);
             setMensagemErro({});
@@ -182,20 +182,22 @@ export default function Evento() {
                                             <div className={style.MensagemErro}>{mensagemErro[evento.evento_id]}</div>
                                         )}
                                     </div>
-                                    <div className={style.Icones}>
-                                        <IconContext.Provider value={{ size: 45 }}>
-                                            <MdEdit onClick={() => handleEdit(evento)} style={{ cursor: 'pointer' }} />
-                                            <MdPlayArrow
-                                                onClick={() => handleStart(evento)}
-                                                style={{ cursor: 'pointer' }}
-                                                title={mensagemErro[evento.evento_id] || ''}
-                                            />
-                                        </IconContext.Provider>
+                                    <div className={style.botoesInicio}>
+                                        <button className={style.iconesIniciar} onClick={() => handleEdit(evento)} style={{ cursor: 'pointer' }}>
+                                            Editar
+                                        </button>
+                                        <button className={style.iconesEditar}
+                                            onClick={() => handleStart(evento)}
+                                            style={{ cursor: 'pointer' }}
+                                            title={mensagemErro[evento.evento_id] || ''}
+                                        >
+                                            Iniciar
+                                        </button>
                                     </div>
                                 </div>
                             ))
                         ) : (
-                            <div>Nenhum evento encontrado</div>
+                            <div className={style.Vazio}>Sem eventos nesse período!</div>
                         )}
                     </div>
                 </div>
