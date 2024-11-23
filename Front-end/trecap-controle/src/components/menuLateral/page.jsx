@@ -494,9 +494,9 @@ const MenuLateral = () => {
             </div>
 
             <div className={styles.menuFooter}>
-              <Link href="/configuracoes">
+              {/* <Link href="/configuracoes">
                 <MdSettings /> Configurações
-              </Link>
+              </Link> */}
               <Link href="/usuario/login" onClick={handleLogout}>
                 <MdLogout /> Sair
               </Link>
