@@ -11,6 +11,8 @@ export default function ParticipantesSelecionados() {
   const [eventoSelecionado, setEventoSelecionado] = useState("");
   const [loading, setLoading] = useState(true);
   const [horarioInicioEvento, setHorarioInicioEvento] = useState(null); // Estado para armazenar o horário de início
+  const [paginaAtual, setPaginaAtual] = useState(1);
+  const itensPorPagina = 10;
   const router = useRouter();
 
   useEffect(() => {
@@ -47,13 +49,22 @@ export default function ParticipantesSelecionados() {
     router.push('/registrarPresenca');
   };
 
+  const mudarPagina = (novaPagina) => {
+    setPaginaAtual(novaPagina);
+  };
+
+  // Calcular os participantes a serem exibidos na página atual
+  const indiceUltimoParticipante = paginaAtual * itensPorPagina;
+  const indicePrimeiroParticipante = indiceUltimoParticipante - itensPorPagina;
+  const participantesPaginaAtual = participantesSelecionados.slice(indicePrimeiroParticipante, indiceUltimoParticipante);
+
   return (
     <>
       <MenuLateral />
       <div className={styles.layout}>
-        <div className={styles.Header}>
-          <h1>{eventoSelecionado}</h1>
-          <div className={styles.checkin}>
+        <div className={styles.container}>
+          <div className={styles.header}>
+            <h1>{eventoSelecionado}</h1>
             <div className={styles.cadastro}>
               <h2>Participantes Selecionados</h2>
 
@@ -61,10 +72,10 @@ export default function ParticipantesSelecionados() {
                 <p>Carregando participantes...</p>
               ) : (
                 <ul className={styles.listaParticipantes}>
-                  {participantesSelecionados.length > 0 ? (
-                    participantesSelecionados.map((participante, index) => (
+                  {participantesPaginaAtual.length > 0 ? (
+                    participantesPaginaAtual.map((participante, index) => (
                       <li key={index} className={styles.participanteItem}>
-                        <label>{participante.nome}</label> {/* Exibe o nome do participante */}
+                        <span className={styles.participanteNome}>{participante.nome}</span> {/* Exibe o nome do participante */}
                       </li>
                     ))
                   ) : (
@@ -73,12 +84,23 @@ export default function ParticipantesSelecionados() {
                 </ul>
               )}
             </div>
+            <div className={styles.numerosPagina}>
+              {Array.from({ length: Math.ceil(participantesSelecionados.length / itensPorPagina) }, (_, index) => (
+                <button
+                  key={index}
+                  onClick={() => mudarPagina(index + 1)}
+                  className={paginaAtual === index + 1 ? styles.pagina : styles.pagina}
+                >
+                  {index + 1}
+                </button>
+              ))}
+            </div>
 
             <div className={styles.botaoContainer}>
               <button className={styles.botaoCadastro} onClick={iniciarChamada}>
                 Iniciar Chamada para Evento
               </button>
-              <button className={styles.botaoCadastro} onClick={router.back}>
+              <button className={styles.botaoCadastro} onClick={() => router.back()}>
                 Retornar à seleção de participantes
               </button>
             </div>
