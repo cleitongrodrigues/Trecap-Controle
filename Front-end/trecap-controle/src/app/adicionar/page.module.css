@@ -1,47 +1,76 @@
+.html, .body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 .layout {
-  padding-top: 5rem;
   display: flex;
-  background-color:gray;
-  min-height: 100vh;
+  flex-direction: column;
+  min-height: 100vh; /* Garante que o layout ocupe pelo menos 100% da altura da viewport */
+  background-color: gray; /* Ajuste a cor conforme necessário */
 }
 
-/* Estilo geral do container */
 .container {
+  background-color: white;
+  flex: 1; /* Permite que o container cresça para ocupar o espaço disponível */
   display: flex;
-    flex-direction: column;
-    /* background-color: var(--purple-300); */
-    background-color: white;
-    /* justify-content: center; */
-    max-width: 100rem;
-    align-items: center;
-    border-radius: 1rem;
-    padding: 1rem;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 0.1875rem 0.5rem; /* 3px = 0.1875rem */
-    margin: auto;
-    /* height: 60rem; */
-    min-height: 75vh;
-    max-width: 95vh;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 0.1875rem 0.5rem; /* 3px = 0.1875rem */
+  margin: 1rem auto; /* Ajuste a margem para garantir que o container ocupe todo o espaço disponível */
+  height: 100%; /* Garante que o container ocupe toda a altura disponível */
+  max-width: 95vh; /* Ajuste a largura conforme necessário */
+  justify-content: space-between; /* Garante que os itens sejam distribuídos com espaço entre eles */
+  position: relative; /* Necessário para posicionar os botões na parte inferior */
 }
 
-.container h1 {
+.header {
   text-align: center;
-  /* color: #694C9F; */
   color: var(--purpleMain);
   font-size: 3rem;
   margin-bottom: 2rem;
-  font-family: "Poppins", sans-serif;
-  font-weight: 400;
-  text-transform: uppercase;
 }
 
-/* .header h1 {
-  text-align: center;
-  color: #694C9F;
-  font-size: 2.25rem;
-  margin-bottom: 2rem;
-  font-family: "Poppins", sans-serif;
-  font-weight: 200;
-  text-transform: uppercase;
+.paginacao {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 1rem; /* Ajuste a margem superior conforme necessário */
+  margin-bottom: 1rem; /* Ajuste a margem inferior conforme necessário */
+  position: absolute; /* Posiciona a div de paginação na parte inferior */
+  bottom: 1rem; /* Ajuste conforme necessário */
+  padding: 0 2rem; /* Adiciona padding para garantir que os botões não saiam da div */
+}
+
+.numerosPagina {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.paginacao button {
+  background-color: var(--purpleButton);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin: 0 0.25rem;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 2rem;
+  
+}
+
+.paginacao button:hover {
+  background-color: var(--purpleMain);
+}
+
+/* .paginacao button.paginaAtiva {
+  background-color: var(--purpleDark);
+  font-weight: bold;
 } */
 
 .checkin {
@@ -134,32 +163,7 @@
   margin-block-end: .5rem;
 }
 
-.botaoFechar {
-  background-color: var(--purpleButton);
-  color: #fff;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-.botaoSalvar {
-  padding: 1.5rem 2rem;
-  background-color: #4CAF50;
-  color: white; 
-  border: none; 
-  border-radius: 2rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  font-size: 1.25rem;
-  margin-top: 36rem;
-}
-
-.botaoSalvar:hover {
-  background-color: var(--purple-300);
-}
-
-.botaoVoltar {
+/* .botaoVoltar {
   padding: 1.5rem 2rem;
   background-color: #FF6E6E;
   color: white; 
@@ -170,6 +174,21 @@
   font-size: 1.25rem;
   margin-top: 36rem;
   margin: 1rem;
+} */
+
+/* .botaoSalvar {
+  background-color: var(--purpleButton);
+  padding: 1.5rem 2rem;
+  color: white; 
+  border: none; 
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 1.25rem;
+} */
+
+.botaoSalvar:hover {
+  background-color: var(--purple-300);
 }
 
 .botaoBusca {
@@ -187,6 +206,10 @@
   margin: 1rem;
   height: 1rem;
   width: 6rem;
+}
+
+.botaoBusca:hover {
+  background-color: var(--purpleDark); /* Ajuste a cor conforme necessário */
 }
 
 .busca input{
@@ -300,5 +323,3 @@
   margin-block-start: .5rem;
   font-size: 1.5rem;
 }
-
-

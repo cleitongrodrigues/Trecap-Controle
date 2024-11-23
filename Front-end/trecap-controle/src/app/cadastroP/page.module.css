@@ -9,20 +9,19 @@
 
 
 .container {
+  background-color: white;
+  flex: 1; /* Permite que o container cresça para ocupar o espaço disponível */
   display: flex;
-    flex-direction: column;
-    /* background-color: var(--purple-300); */
-    background-color: white;
-    /* justify-content: center; */
-    /* max-width: 100rem; */
-    align-items: center;
-    border-radius: 1rem;
-    padding: 1rem;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 0.1875rem 0.5rem; /* 3px = 0.1875rem */
-    margin: auto;
-    /* height: 60rem; */
-    min-height: 80vh;
-    max-width: 95vh;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 0.1875rem 0.5rem; /* 3px = 0.1875rem */
+  margin: 1rem auto; /* Ajuste a margem para garantir que o container ocupe todo o espaço disponível */
+  height: 100%; /* Garante que o container ocupe toda a altura disponível */
+  max-width: 95vh; /* Ajuste a largura conforme necessário */
+  justify-content: space-between; /* Garante que os itens sejam distribuídos com espaço entre eles */
+  position: relative; /* Necessário para posicionar os botões na parte inferior */
 }
 
 /* Cabeçalho */
@@ -253,4 +252,10 @@
   .content2 {
     max-width: 100%; /* Ajustar conteúdo secundário para caber na tela */
   }
+
+  
+.mensagemErro{
+  margin-block-start: .5rem;
+  font-size: 1.5rem;
+}
 }

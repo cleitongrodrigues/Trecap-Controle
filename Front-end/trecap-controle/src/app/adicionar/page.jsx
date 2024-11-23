@@ -14,6 +14,8 @@ export default function CheckinEvento() {
   const [nomeEvento, setNomeEvento] = useState(""); // Variável para armazenar o nome do evento
   const [termoBusca, setTermoBusca] = useState('');
   const [participantesFiltrados, setParticipantesFiltrados] = useState([]);
+  const [paginaAtual, setPaginaAtual] = useState(1);
+  const itensPorPagina = 10;
   const router = useRouter();
 
   useEffect(() => {
@@ -108,7 +110,17 @@ export default function CheckinEvento() {
       participante.colaborador_nome.toLowerCase().includes(termoBusca.toLowerCase())
     );
     setParticipantesFiltrados(filtrados);
+    setPaginaAtual(1); // Resetar para a primeira página após a busca
   };
+
+  const mudarPagina = (novaPagina) => {
+    setPaginaAtual(novaPagina);
+  };
+
+  // Calcular os participantes a serem exibidos na página atual
+  const indiceUltimoParticipante = paginaAtual * itensPorPagina;
+  const indicePrimeiroParticipante = indiceUltimoParticipante - itensPorPagina;
+  const participantesPaginaAtual = participantesFiltrados.slice(indicePrimeiroParticipante, indiceUltimoParticipante);
 
   return (
     <>
@@ -133,13 +145,13 @@ export default function CheckinEvento() {
                     </div>
                     <div className={styles.listaParticipantes}>
                       <ul className={styles.participantes}>
-                        {participantesFiltrados.length > 0 ? (
-                          participantesFiltrados.map((participante, index) => (
+                        {participantesPaginaAtual.length > 0 ? (
+                          participantesPaginaAtual.map((participante, index) => (
                             <label key={participante.colaborador_id} className={styles.containerInput}>
                               <input
                                 type="checkbox"
-                                checked={participantesSelecionados[index]}
-                                onChange={() => handleCheckboxChange(index)}
+                                checked={participantesSelecionados[indicePrimeiroParticipante + index]}
+                                onChange={() => handleCheckboxChange(indicePrimeiroParticipante + index)}
                                 className={styles.input}
                               />
                               <span className={styles.label}>
@@ -156,8 +168,23 @@ export default function CheckinEvento() {
                     {mensagemErro && <div className={styles.mensagemErro}>{mensagemErro}</div>}
                   </div>
                 </div>
-                <button className={styles.botaoSalvar} onClick={salvarParticipantes}>Salvar</button>
-                <button className={styles.botaoVoltar} onClick={handleVoltar}>Voltar</button>
+                <div className={styles.paginacao}>
+                  <div className={styles.numerosPagina}>
+                    {Array.from({ length: Math.ceil(participantesFiltrados.length / itensPorPagina) }, (_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => mudarPagina(index + 1)}
+                        className={paginaAtual === index + 1 ? styles.paginaAtiva : styles.pagina}
+                      >
+                        {index + 1}
+                      </button>
+                    ))}
+                  </div>
+                  <div>
+                    <button className={styles.botaoSalvar} onClick={salvarParticipantes}>Salvar</button>
+                    <button className={styles.botaoVoltar} onClick={handleVoltar}>Voltar</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
