@@ -355,10 +355,8 @@ const MenuLateral = () => {
           <IconContext.Provider value={{ size: "2rem" }}>
             <div className={styles.menuItems}>
               <div className={styles.logo}>
-                <Link href="/home/gestor">
                   <h1 className={styles.logoTexto}>Trecap</h1>
                   <Image src={logo} className={styles.logoImage} />
-                </Link>
               </div>
 
               <div className={styles.Perfil}>
