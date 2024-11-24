@@ -4,33 +4,40 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #ffffff;
+    background-color: gray;
     padding: 20px;
     border-radius: 10px;
+    min-height: 100vh; /* Garante que o layout ocupe pelo menos 100% da altura da viewport */
   }
   
   /* Estilo do Relatório */
   .relatorio {
-    width: 100%;
-    max-width: 600px;
-    color: #4a148c;
-    background-color: var(--purple-300);
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    flex: 1; /* Permite que o container cresça para ocupar o espaço disponível */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 0.1875rem 0.5rem; /* 3px = 0.1875rem */
+    margin: 1rem auto; /* Ajuste a margem para garantir que o container ocupe todo o espaço disponível */
+    height: 100%; /* Garante que o container ocupe toda a altura disponível */
+    max-width: 95vh; /* Ajuste a largura conforme necessário */
+    justify-content: space-between; /* Garante que os itens sejam distribuídos com espaço entre eles */
+    position: relative; /* Necessário para posicionar os botões na parte inferior */
   }
   
   /* Estilo do cabeçalho */
   .relatorio h1 {
     font-size: 24px;
     margin-bottom: 20px;
-    color: #ffffff;
+    color: var(--purpleMain);
     text-align: center;
     text-transform: uppercase;
   }
   
   /* Estilo da seção de cadastro */
-  .cadastro {
+  /* .cadastro {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -40,12 +47,15 @@
     background-color: var(--purpleMain);
     border-radius: 20px;
     padding: 1rem;
-  }
+  } */
   
   .cadastro h2 {
-    font-size: 20px;
-    margin-bottom: 15px;
-    color: #ffffff;
+    text-align: center;
+    color: var(--purpleMain);
+    font-size: 28px; /* Tamanho ajustado */
+    margin-bottom: 20px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
   }
   
   /* Estilo da lista de participantes */
@@ -105,3 +115,24 @@
   background-color: var(--purpleMain);
   }
   
+  .infoBox h2 {
+    margin-bottom: 0.5rem;
+    text-align: center;
+    color: var(--purpleMain);
+  }
+  
+  .total {
+    color: blue;
+  }
+  
+  .presentes {
+    color: #4CAF50;
+  }
+  
+  .ausentes {
+    color: #FF0000;
+  }
+  
+  .porcentagem {
+    color: #FFA500;
+  }

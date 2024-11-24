@@ -57,6 +57,7 @@ export default function ParticipantesSelecionados() {
   const indiceUltimoParticipante = paginaAtual * itensPorPagina;
   const indicePrimeiroParticipante = indiceUltimoParticipante - itensPorPagina;
   const participantesPaginaAtual = participantesSelecionados.slice(indicePrimeiroParticipante, indiceUltimoParticipante);
+  
 
   return (
     <>
@@ -85,6 +86,7 @@ export default function ParticipantesSelecionados() {
                 </ul>
               )}
             </div>
+
             <div className={styles.paginacao}>
             <div className={styles.numerosPagina}>
               {Array.from({ length: Math.ceil(participantesSelecionados.length / itensPorPagina) }, (_, index) => (

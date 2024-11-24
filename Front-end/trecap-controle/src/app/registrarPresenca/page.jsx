@@ -6,11 +6,14 @@ import dayjs from "dayjs";
 import styles from "./page.module.css";
 import MenuLateral from '@/components/menuLateral/page';
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default function RegistrarPresenca() {
   const [participantesSelecionados, setParticipantesSelecionados] = useState([]);
   const [participantesPresentes, setParticipantesPresentes] = useState({});
   const [eventoSelecionado, setEventoSelecionado] = useState("");
+  const [paginaAtual, setPaginaAtual] = useState(1);
+  const itensPorPagina = 12;
   const router = useRouter();
 
   useEffect(() => {
@@ -66,7 +69,12 @@ export default function RegistrarPresenca() {
     }));
 
     if (dadosPresenca.length === 0) {
-      alert("Nenhum participante presente selecionado.");
+      Swal.fire({
+        title: 'Sem participantes Presentes!',
+        text: 'O evento necessita de participantes presentes para ser registrado.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
       return; // Evita enviar se não houver dados
     }
 
@@ -81,31 +89,59 @@ export default function RegistrarPresenca() {
           })
       );
       await Promise.all(promises);
-      console.log('Todos os registros de presença salvos com sucesso');
-    } catch (error) {
-      console.error('Erro ao salvar a presença:', error);
-      // Exiba uma mensagem de erro para o usuário de forma mais amigável
-    }
 
-    // Redirecionar após salvar todos os registros
-    router.push('/relatorioPresenca');
+      // Exibir alerta de sucesso
+      Swal.fire({
+        title: 'Sucesso!',
+        text: 'Presenças registradas com sucesso.',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      }).then(() => {
+        // Redirecionar para a página de relatório de presença
+        router.push('/relatorioPresenca');
+      });
+    } catch (error) {
+      console.error('Erro ao salvar registros de presença:', error);
+      // Exibir alerta de erro
+      Swal.fire({
+        title: 'Erro!',
+        text: 'Ocorreu um erro ao registrar as presenças.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    }
+  };
+
+  const totalParticipantes = participantesSelecionados.length;
+  const totalPresentes = Object.keys(participantesPresentes).length;
+  const totalAusentes = totalParticipantes - totalPresentes;
+  const porcentagemPresentes = ((totalPresentes / totalParticipantes) * 100).toFixed(2);
+
+  const indiceUltimoParticipante = paginaAtual * itensPorPagina;
+  const indicePrimeiroParticipante = indiceUltimoParticipante - itensPorPagina;
+  const participantesPaginaAtual = participantesSelecionados.slice(indicePrimeiroParticipante, indiceUltimoParticipante);
+  const numeroPaginas = Math.ceil(totalParticipantes / itensPorPagina);
+
+  const mudarPagina = (novaPagina) => {
+    setPaginaAtual(novaPagina);
   };
 
   return (
     <>
       <MenuLateral />
       <div className={styles.layout}>
-        <div className={styles.Header}>
-          <div className={styles.checkin}>
+        <div className={styles.container}>
+          <div className={styles.header}>
           <h1>{eventoSelecionado}</h1>
             <div className={styles.cadastro}>
               <h2>REGISTRO DE PRESENÇA</h2>
 
               <div className={styles.listaParticipantes}>
                 <h3>Selecione os participantes presentes:</h3>
+                <br></br>
                 <ul className={styles.lista}>
-                  {participantesSelecionados.length > 0 ? (
-                    participantesSelecionados.map((participante) => (
+                  {participantesPaginaAtual.length > 0 ? (
+                    participantesPaginaAtual.map((participante) => (
                       <li key={participante.id} className={styles.participanteItem}>
                         <label>
                           <input
@@ -114,10 +150,12 @@ export default function RegistrarPresenca() {
                             onChange={(e) => registrarPresenca(participante.id, participante.nome, e.target.checked)}
                           />
                           {participante.nome}
-                          {participantesPresentes[participante.id] && (
+                          {participantesPresentes[participante.id] ? (
                             <span className={styles.horario}>
-                              (Chegada: {dayjs(participantesPresentes[participante.id]?.hora).format("DD/MM/YYYY HH:mm")})
+                              (Presente: {dayjs(participantesPresentes[participante.id]?.hora).format("DD/MM/YYYY HH:mm")})
                             </span>
+                          ) : (
+                            <span className={styles.ausente}> (Ausente) </span>
                           )}
                         </label>
                       </li>
@@ -128,14 +166,31 @@ export default function RegistrarPresenca() {
                 </ul>
               </div>
             </div>
+            {numeroPaginas > 1 && (
+              <div className={styles.paginacao}>
+                {Array.from({ length: numeroPaginas }, (_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => mudarPagina(index + 1)}
+                    className={paginaAtual === index + 1 ? styles.paginaAtiva : styles.pagina}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+              </div>
+            )}
 
-            <button className={styles.botaoCadastro} onClick={salvarPresenca}>
+            <button className={styles.botaoRegistro} onClick={salvarPresenca}>
               Registrar presenças
             </button>
-            <button className={styles.botaoCadastro} onClick={router.back}>
-              Voltar
-            </button>
           </div>
+        </div>
+        <div className={styles.infoBox}>
+          <h2>CONTADOR</h2>
+          <p className={styles.total}>Total de Participantes: {totalParticipantes}</p>          
+          <p className={styles.ausentes}>Ausentes: {totalAusentes}</p>
+          <p className={styles.presentes}>Presentes: {totalPresentes}</p>
+          <p className={styles.porcentagem}>Percentual: {porcentagemPresentes}%</p>
         </div>
       </div>
     </>

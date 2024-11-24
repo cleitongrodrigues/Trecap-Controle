@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import MenuLateral from '@/components/menuLateral/page';
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default function CheckinEvento() {
   const [participantes, setParticipantes] = useState([]);
@@ -84,7 +85,12 @@ export default function CheckinEvento() {
       }));
     
     if (selecionados.length === 0) {
-      setMensagemErro("Nenhum participante está selecionado.");
+      Swal.fire({
+        title: 'ATENÇÃO!',
+        text: 'Selecione pelo menos um colaborador para continuar.',
+        icon: 'warning',
+        confirmButtonText: 'OK'
+      })
       return;
     }
   

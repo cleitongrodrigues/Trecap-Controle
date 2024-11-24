@@ -8,6 +8,7 @@ import MenuLateral from '@/components/menuLateral/page';
 import { useEffect, useState } from 'react';
 import ModalEdit from './ModalEdit';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const Icones = {
     Psicologia() {
@@ -126,9 +127,19 @@ export default function Evento() {
         const dataEventoComTolerancia = new Date(dataEvento.getTime() - tolerancia);
 
         if (dataAtual < dataEventoComTolerancia) {
-            setMensagemErro({ [evento.evento_id]: `O evento ainda não pode ser iniciado!` });
+            Swal.fire({
+                title: 'Calma!',
+                text: 'Este evento ainda não começou!',
+                icon: 'info',
+                confirmButtonText: 'OK'
+              })
         } else if (dataAtual > dataEvento) {
-            setMensagemErro({ [evento.evento_id]: `O prazo para entrar no evento já ultrapassou!` });
+            Swal.fire({
+                title: 'Shiii!',
+                text: 'O prazo para iniciar já encerrou!',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+              })
         } else {
             localStorage.setItem('eventoId', evento.evento_id);
             setMensagemErro({});

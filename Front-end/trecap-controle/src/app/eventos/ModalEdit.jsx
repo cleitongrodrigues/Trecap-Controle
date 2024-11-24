@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import style from './modal.module.css';
 import axios from 'axios';
+import Swal from "sweetalert2";
 
 const ModalEdit = ({ evento, onClose, onSave }) => {
     const [eventoEditado, setEventoEditado] = useState({
@@ -124,7 +125,12 @@ const ModalEdit = ({ evento, onClose, onSave }) => {
             );
     
             if (response.status === 200) {
-                alert('Evento atualizado com sucesso!');
+                Swal.fire({
+                    title: 'Sucesso!',
+                    text: 'Evento atualizado com sucesso.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                  })
 
                 const updateEvent = await axios.get(
                     `http://localhost:3333/Eventos/${eventoEditado.evento_id}`
@@ -133,7 +139,12 @@ const ModalEdit = ({ evento, onClose, onSave }) => {
                 onSave(updateEvent.data);
                 onClose();
             } else {
-                alert('Erro ao atualizar o evento.');
+                Swal.fire({
+                    title: 'Erro!',
+                    text: 'Erro ao atualizar evento.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                  })
             }
         } catch (error) {
             console.error('Erro no axios:', error.response || error.message || error);

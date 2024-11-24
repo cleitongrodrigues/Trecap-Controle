@@ -6,6 +6,7 @@ import axios from 'axios';
 import MenuLateral from '@/components/menuLateral/page';
 import styles from './page.module.css';
 import { useAuth } from '@/context/userContext';
+import Swal from 'sweetalert2';
 
 export default function CadastroP() {
   const router = useRouter();
@@ -89,7 +90,12 @@ export default function CadastroP() {
   const handleClick = () => {
     const setoresSelecionados = selectedSetores.filter((setor) => setor.checked);
     if (setoresSelecionados.length === 0) {
-      alert('Nenhum setor selecionado.');
+      Swal.fire({
+        title: 'Selecione ao menos um SETOR!',
+        text: '',
+        icon: 'warning',
+        confirmButtonText: 'OK'
+      })
       return;
     }
     const setoresSelecionadosNome = setoresSelecionados.map((setor) => setor.setor_nome);

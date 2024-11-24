@@ -30,13 +30,13 @@ export default function RelatorioPresenca() {
 
 
     const fetchEventoData = async () => {
-        try {
+      try {
         const eventoId = localStorage.getItem("eventoSelecionado");
         const response = await axios.patch(`http://localhost:3333/evento/${eventoId}`);
         if (!response.ok) {
           throw new Error("Erro ao buscar os dados do evento.");
         }
-        
+
         const eventoData = response.data.dados[0];
         setDataEvento(eventoData.data);
         setHorarioEvento(eventoData.evento_hora);
@@ -74,6 +74,11 @@ export default function RelatorioPresenca() {
     return dataHora.format("DD/MM/YYYY HH:mm");
   };
 
+  const totalParticipantes = JSON.parse(localStorage.getItem('participantesSelecionados')).length;
+  const totalPresentes = participantesPresentes.length;
+  const totalAusentes = totalParticipantes - totalPresentes;
+  const porcentagemPresentes = ((totalPresentes / totalParticipantes) * 100).toFixed(2);
+
   const salvarRelatorioPDF = async (evento) => {
     try {
       // Buscar os registros de presença para o evento
@@ -84,11 +89,14 @@ export default function RelatorioPresenca() {
       const participantes = response.data.dados;
       const eventos = response.data.dados[0];
 
+
       //FORMATA A DATA PARA EXIBIR
       const dataEventoFormatada = dayjs(eventos.evento_data_inicio, "YYYY/MM/DD").format("DD/MM/YYYY");
 
       // Criar o PDF com os dados de presença
       const doc = new jsPDF();
+
+
 
       doc.setFontSize(18);
       doc.text("Relatório de Presença", 14, 22);
@@ -98,7 +106,7 @@ export default function RelatorioPresenca() {
       doc.text(`Evento: ${evento.evento_nome}`, 14, 32);
       doc.text(`Data: ${dataEventoFormatada}`, 14, 40);
       doc.text(`Horário: ${evento.evento_hora.slice(0, 5)}`, 14, 48);
-      
+
 
       // Adiciona uma linha separadora antes da tabela
       doc.setLineWidth(0.5);
@@ -117,7 +125,7 @@ export default function RelatorioPresenca() {
       doc.autoTable({
         head: [colunas],
         body: linhas,
-        startY: 60,  
+        startY: 60,
         theme: 'grid', // Usar o tema de grade para a tabela
         margin: { horizontal: 14 },
         theme: 'striped',
@@ -134,7 +142,6 @@ export default function RelatorioPresenca() {
       doc.text(dataGeracao, 10, doc.internal.pageSize.height - 10);
       doc.text(metodoGeracao, 10, doc.internal.pageSize.height - 5);
 
-
       doc.save(`Relatorio_Presenca_${evento.evento_nome}.pdf`);
     } catch (error) {
       console.error("Erro ao gerar PDF:", error);
@@ -147,10 +154,13 @@ export default function RelatorioPresenca() {
       <MenuLateral />
       <div className={styles.Header}>
         <div className={styles.relatorio}>
-          <h1>RELATÓRIO DE PRESENÇA</h1>
+          {/* <h1>RELATÓRIO DE PRESENÇA</h1> */}
           <h1>{eventoSelecionado}</h1>
-
-          <div className={styles.cadastro}>
+          <br></br>
+          <h1>Evento concluído com sucesso!</h1>
+          <h2>Informações do Evento</h2>
+          <br></br>
+          {/* <div className={styles.cadastro}>
             <h2>Participantes Presentes</h2>
             <div className={styles.listaParticipantes}>
               <ul className={styles.lista}>
@@ -167,6 +177,14 @@ export default function RelatorioPresenca() {
                 )}
               </ul>
             </div>
+          </div> */}
+
+          <div className={styles.infoBox}>
+            <h2>CONTADOR</h2>
+            <p className={styles.total}>Total de Participantes: {totalParticipantes}</p>
+            <p className={styles.ausentes}>Ausentes: {totalAusentes}</p>
+            <p className={styles.presentes}>Presentes: {totalPresentes}</p>
+            <p className={styles.porcentagem}>Percentual: {porcentagemPresentes}%</p>
           </div>
 
           <button

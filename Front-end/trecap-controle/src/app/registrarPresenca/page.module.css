@@ -1,70 +1,61 @@
 /* Estilo geral da página */
 .layout {
   display: flex;
-  /* margin-top: 1rem; */
+  flex-direction: column;
+  min-height: 100vh; /* Garante que o layout ocupe pelo menos 100% da altura da viewport */
+  background-color: gray; /* Ajuste a cor conforme necessário */
+}
+
+.container {
+background-color: white;
+  flex: 1; /* Permite que o container cresça para ocupar o espaço disponível */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 0.1875rem 0.5rem; /* 3px = 0.1875rem */
+  margin: 1rem auto; /* Ajuste a margem para garantir que o container ocupe todo o espaço disponível */
+  height: 100%; /* Garante que o container ocupe toda a altura disponível */
+  max-width: 95vh; /* Ajuste a largura conforme necessário */
+  justify-content: space-between; /* Garante que os itens sejam distribuídos com espaço entre eles */
+  position: relative; /* Necessário para posicionar os botões na parte inferior */
 }
 
 /* Estilo do cabeçalho */
 .Header {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
+  text-align: center;
+  color: var(--purpleMain);
+  font-size: 3rem;
+  margin-bottom: 2rem;
 }
 
-.Header h1 {
+.header h1 {
   text-align: center;
-  color: #694C9F;
-  font-size: 2.25rem;
+  color: var(--purpleMain);
+  font-size: 3rem;
   margin-bottom: 2rem;
   font-family: "Poppins", sans-serif;
-  font-weight: 200;
-  text-transform: uppercase;
-}
-
-/* Estilo da seção de check-in */
-.checkin {
-  width: 100%;
-  max-width: 60rem;
-  margin: 20px auto;
-  padding: 2rem;
-  background-color: var(--purple-300); /* Cor lilás clara */
-  border-radius: 18px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  display: grid;
-  place-items: center;
-  font-family: "Poppins", sans-serif;
-  font-weight: 300;
-}
-
-/* Estilo do título do evento */
-.checkin h1 {
-  text-align: center;
-  color: white;
-  font-size: 32px; /* Tamanho ajustado */
-  margin-bottom: 20px;
-  font-family: "Poppins", sans-serif;
-  font-weight: 300;
+  font-weight: 400;
   text-transform: uppercase;
 }
 
 /* Estilo da seção de cadastro */
-.cadastro {
+/* .cadastro {
   max-width: 60rem;
   margin: 10px auto;
   border-radius: 18px;
   padding: 20px;
-  background-color: var(--purpleMain); /* Cor lilás escura */
+  background-color: var(--purpleMain); 
   margin-top: 10px;
   display: grid;
   place-items: center;
-}
+} */
 
 /* Estilo do título da seção de presença */
 .cadastro h2 {
   text-align: center;
-  color: white;
+  color: var(--purpleMain);
   font-size: 28px; /* Tamanho ajustado */
   margin-bottom: 20px;
   font-family: "Poppins", sans-serif;
@@ -73,30 +64,37 @@
 
 /* Estilo da lista de participantes */
 .listaParticipantes {
-  max-width: 100%;
-  text-transform: uppercase;
-  width: 50rem;
+  width: 100%; /* Garante que a lista de participantes ocupe toda a largura da div */
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  gap: 0.5rem;
+  text-align: left; /* Alinha a lista de participantes à esquerda */
+  margin-top: auto;
 }
 
 .listaParticipantes h3 {
   font-size: 20px; /* Tamanho ajustado */
-  color: white;
+  color: var(--purpleMain);
   text-align: center;
 }
 
 /* Estilo dos itens da lista de participantes */
 .participanteItem {
   display: flex;
-  align-items: center;
-  padding: 0.5rem;
-  margin: 0.5rem 0;
-  background-color: #ffffff; /* Cor de fundo do item */
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 16px; /* Tamanho ajustado */
+  margin-bottom: 1rem;
+  background-color: var(--neutral-100);
   width: 100%;
-  max-width: 800px;
-  justify-content: space-between;
+  padding: 1rem .8rem;
+  cursor: pointer;
+  border-radius: .825rem;
+  transition: .2s transform ease-in-out;
+  border: 1px solid rgb(216, 216, 216);
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  color: var(--purpleMain);
+  text-transform: uppercase;
+  text-align: left; /* Alinha o texto dos itens da lista à esquerda */
+  min-width: 70vh;
 }
 
 /* Estilo do checkbox e label */
@@ -115,23 +113,92 @@
 
 .horario {
   font-size: 14px; /* Tamanho ajustado */
-  margin-left: 10px;
+  margin-left: auto;
+  color: #4CAF50;
+}
+
+.ausente {
+  font-size: 14px; /* Tamanho ajustado */
+  margin-left: auto;
+  color: #FF0000;
 }
 
 /* Estilo dos botões */
-.botaoCadastro {
+.botaoRegistro {
+  position: absolute; /* Posiciona o botão de forma absoluta */
+  bottom: 1rem; /* Ajuste conforme necessário */
+  left: 50%; /* Centraliza horizontalmente */
+  transform: translateX(-50%); /* Centraliza horizontalmente */
   padding: 0.5rem 2rem;
   background-color: var(--purpleButton); /* Cor do botão */
   color: #fff;
   border: none;
   border-radius: 1rem;
   cursor: pointer;
-  font-size: 16px; /* Tamanho consistente */
+  font-size: 1.25rem; /* Tamanho consistente */
   font-family: "Poppins", sans-serif;
   font-weight: 300;
-  margin-top: 1rem;
+  margin: auto;
 }
 
-.botaoCadastro:hover {
+.botaoRegistro:hover {
   background-color: var(--purpleMain);
+}
+
+.paginacao button {
+  background-color: var(--purpleButton);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin: 0 0.25rem;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 2rem;  
+}
+
+.paginacao button:hover {
+  background-color: var(--purpleMain);
+}
+
+.numerosPagina {
+  display: flex;
+  justify-content: center; /* Centraliza os itens horizontalmente */
+  align-items: center;
+}
+
+
+
+.infoBox {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background-color: white;
+  border: 1px solid var(--purpleMain);
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 0.1875rem 0.5rem;
+  font-size: 1.5rem;
+  color: var(--purpleMain);  
+}
+
+.infoBox h2 {
+  margin-bottom: 0.5rem;
+  text-align: center;
+  color: var(--purpleMain);
+}
+
+.total {
+  color: blue;
+}
+
+.presentes {
+  color: #4CAF50;
+}
+
+.ausentes {
+  color: #FF0000;
+}
+
+.porcentagem {
+  color: #FFA500;
 }
