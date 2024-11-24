@@ -94,7 +94,7 @@ export default function Calendario() {
               evento_data_inicio: newEvent.start,
               evento_data_termino: newEvent.end,
               evento_hora: "13:00:00",
-              evento_local: "treino",
+              evento_local: "Sala de Reunião",
               evento_status: 1,
               evento_professor: newEvent.professor
             });
