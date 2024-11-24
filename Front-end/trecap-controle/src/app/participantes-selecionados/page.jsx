@@ -12,7 +12,7 @@ export default function ParticipantesSelecionados() {
   const [loading, setLoading] = useState(true);
   const [horarioInicioEvento, setHorarioInicioEvento] = useState(null); // Estado para armazenar o horário de início
   const [paginaAtual, setPaginaAtual] = useState(1);
-  const itensPorPagina = 10;
+  const itensPorPagina = 12;
   const router = useRouter();
 
   useEffect(() => {
@@ -65,8 +65,9 @@ export default function ParticipantesSelecionados() {
         <div className={styles.container}>
           <div className={styles.header}>
             <h1>{eventoSelecionado}</h1>
-            <div className={styles.cadastro}>
-              <h2>Participantes Selecionados</h2>
+            <div className={styles.cadastro}>              
+              <h2>Antes de iniciar, revise os participantes selecionados.</h2>
+              <br></br>
 
               {loading ? (
                 <p>Carregando participantes...</p>
@@ -84,6 +85,7 @@ export default function ParticipantesSelecionados() {
                 </ul>
               )}
             </div>
+            <div className={styles.paginacao}>
             <div className={styles.numerosPagina}>
               {Array.from({ length: Math.ceil(participantesSelecionados.length / itensPorPagina) }, (_, index) => (
                 <button
@@ -96,7 +98,7 @@ export default function ParticipantesSelecionados() {
               ))}
             </div>
 
-            <div className={styles.botaoContainer}>
+            <div>
               <button className={styles.botaoCadastro} onClick={iniciarChamada}>
                 Iniciar Chamada para Evento
               </button>
@@ -107,6 +109,7 @@ export default function ParticipantesSelecionados() {
           </div>
         </div>
       </div>
+    </div>
     </>
   );
 }

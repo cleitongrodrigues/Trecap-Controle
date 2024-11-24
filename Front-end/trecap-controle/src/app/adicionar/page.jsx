@@ -113,6 +113,12 @@ export default function CheckinEvento() {
     setPaginaAtual(1); // Resetar para a primeira página após a busca
   };
 
+  const limparBusca = () => {
+    setTermoBusca('');
+    setParticipantesFiltrados(participantes);
+    setPaginaAtual(1); // Resetar para a primeira página após limpar a busca
+  };
+
   const mudarPagina = (novaPagina) => {
     setPaginaAtual(novaPagina);
   };
@@ -142,6 +148,7 @@ export default function CheckinEvento() {
                         className={styles.inputBusca}
                       />
                       <button onClick={handleBusca} className={styles.botaoBusca}>Buscar</button>
+                      <button onClick={limparBusca} className={styles.botaoLimpar}>Limpar</button>
                     </div>
                     <div className={styles.listaParticipantes}>
                       <ul className={styles.participantes}>
@@ -150,8 +157,8 @@ export default function CheckinEvento() {
                             <label key={participante.colaborador_id} className={styles.containerInput}>
                               <input
                                 type="checkbox"
-                                checked={participantesSelecionados[indicePrimeiroParticipante + index]}
-                                onChange={() => handleCheckboxChange(indicePrimeiroParticipante + index)}
+                                checked={participantesSelecionados[participantes.indexOf(participante)]}
+                                onChange={() => handleCheckboxChange(participantes.indexOf(participante))}
                                 className={styles.input}
                               />
                               <span className={styles.label}>

@@ -34,6 +34,17 @@
   margin-bottom: 2rem;
 }
 
+.header h1 {
+  text-align: center;
+  /* color: #694C9F; */
+  color: var(--purpleMain);
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
 .paginacao {
   display: flex;
   justify-content: space-between;
@@ -191,25 +202,52 @@
   background-color: var(--purple-300);
 }
 
+.busca {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem; /* Adiciona espaço entre os botões */
+  margin-top: 1rem;
+}
+
 .botaoBusca {
   display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 1.5rem 2rem;
   background-color: var(--purpleButton);
   color: white; 
   border: none; 
   border-radius: 2rem;
-  justify-content: center;
-  align-items: center;
   cursor: pointer;
   transition: background-color 0.3s;
   font-size: 1.25rem;
-  margin: 1rem;
+  height: 1rem;
+  width: 6rem;
+}
+
+.botaoLimpar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background-color: var(--purpleButton);
+  color: white; 
+  border: none; 
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 1.25rem;
   height: 1rem;
   width: 6rem;
 }
 
 .botaoBusca:hover {
-  background-color: var(--purpleDark); /* Ajuste a cor conforme necessário */
+  background-color: var(--purpleMain);
+}
+
+.botaoLimpar:hover {
+  background-color: var(--purpleMain); /* Ajuste a cor conforme necessário */
 }
 
 .busca input{
@@ -222,14 +260,11 @@
   padding: 1.5rem;
   min-width: 95rem;
   font-size: 1.6rem;
-  min-width: 90vh;
+  min-width: 70vh;
   margin-top: auto;
 
 }
 
-.botaoBusca:hover {
-  background-color: var(--purpleMain);
-}
 
 .containerContent{
   width: 100%;

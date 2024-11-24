@@ -96,8 +96,8 @@ export default function RegistrarPresenca() {
       <MenuLateral />
       <div className={styles.layout}>
         <div className={styles.Header}>
-          <h1>{eventoSelecionado}</h1>
           <div className={styles.checkin}>
+          <h1>{eventoSelecionado}</h1>
             <div className={styles.cadastro}>
               <h2>REGISTRO DE PRESENÇA</h2>
 
