@@ -16,7 +16,7 @@ export default function CheckinEvento() {
   const [termoBusca, setTermoBusca] = useState('');
   const [participantesFiltrados, setParticipantesFiltrados] = useState([]);
   const [paginaAtual, setPaginaAtual] = useState(1);
-  const itensPorPagina = 10;
+  const itensPorPagina = 12;
   const router = useRouter();
 
   useEffect(() => {
@@ -142,7 +142,8 @@ export default function CheckinEvento() {
             <div className={styles.header}>     
               <h1>{nomeEvento || "Evento não encontrado"}</h1> {/* Adicione uma mensagem padrão se o nome do evento não estiver disponível */}           
                 <div className={styles.cadastro}>
-                  <h3>Setores Selecionados: {setores.length > 0 ? setores.join(", ") : "Nenhum setor selecionado"}</h3>
+                  <h3>Setores Selecionados:</h3>
+                  <h3>{setores.length > 0 ? setores.join(", ") : "Nenhum setor selecionado"}</h3>
                   <h2>Adicionar Participantes</h2>
                   <div className={styles.containerContent}>
                     <div className={styles.busca}>

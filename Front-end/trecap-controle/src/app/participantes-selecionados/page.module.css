@@ -188,10 +188,28 @@
   cursor: pointer;
   transition: background-color 0.3s;
   font-size: 1.25rem;
+  padding: auto;
 }
 
 .botaoCadastro:hover {
-  background-color: var(--purpleDark); /* Ajuste a cor conforme necessário */
+  background-color: var(--purpleMain); /* Ajuste a cor conforme necessário */
+}
+
+.botaoRetornar {
+  padding: 1.5rem 2rem;
+  background-color: var(--purpleButton);
+  color: white; 
+  border: none; 
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 1.25rem;
+  padding: auto;
+  margin-left: 1rem;
+}
+
+.botaoRetornar:hover {
+  background-color: var(--purpleMain); /* Ajuste a cor conforme necessário */
 }
 
 /* Estilo do footer */

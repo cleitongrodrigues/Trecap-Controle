@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import MenuLateral from "@/components/menuLateral/page";
@@ -9,8 +9,7 @@ import axios from "axios";
 export default function ParticipantesSelecionados() {
   const [participantesSelecionados, setParticipantesSelecionados] = useState([]);
   const [eventoSelecionado, setEventoSelecionado] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [horarioInicioEvento, setHorarioInicioEvento] = useState(null); // Estado para armazenar o horário de início
+  const [loading, setLoading] = useState(true); // Definindo a variável loading
   const [paginaAtual, setPaginaAtual] = useState(1);
   const itensPorPagina = 12;
   const router = useRouter();
@@ -34,30 +33,22 @@ export default function ParticipantesSelecionados() {
         console.error('Erro ao carregar participantes do localStorage:', error);
         setParticipantesSelecionados([]);
       } finally {
-        setLoading(false);
+        setLoading(false); // Atualizando o estado de loading
       }
     }
   }, []);
 
-  const iniciarChamada = () => {
-    const agora = new Date();
-    setHorarioInicioEvento(agora); // Armazena a hora de início do evento
-    localStorage.setItem('horarioInicioEvento', agora.toISOString()); // Armazena como string ISO
-    console.log(`Evento iniciado em: ${agora.toLocaleString('pt-BR')}`); // Exibe no console
+  const totalParticipantes = participantesSelecionados.length;
 
-    // Redireciona para a página de registrar presença
-    router.push('/registrarPresenca');
-  };
+  // Lógica de paginação
+  const indiceUltimoParticipante = paginaAtual * itensPorPagina;
+  const indicePrimeiroParticipante = indiceUltimoParticipante - itensPorPagina;
+  const participantesPaginaAtual = participantesSelecionados.slice(indicePrimeiroParticipante, indiceUltimoParticipante);
+  const numeroPaginas = Math.ceil(totalParticipantes / itensPorPagina);
 
   const mudarPagina = (novaPagina) => {
     setPaginaAtual(novaPagina);
   };
-
-  // Calcular os participantes a serem exibidos na página atual
-  const indiceUltimoParticipante = paginaAtual * itensPorPagina;
-  const indicePrimeiroParticipante = indiceUltimoParticipante - itensPorPagina;
-  const participantesPaginaAtual = participantesSelecionados.slice(indicePrimeiroParticipante, indiceUltimoParticipante);
-  
 
   return (
     <>
@@ -66,7 +57,7 @@ export default function ParticipantesSelecionados() {
         <div className={styles.container}>
           <div className={styles.header}>
             <h1>{eventoSelecionado}</h1>
-            <div className={styles.cadastro}>              
+            <div className={styles.cadastro}>
               <h2>Antes de iniciar, revise os participantes selecionados.</h2>
               <br></br>
 
@@ -87,31 +78,31 @@ export default function ParticipantesSelecionados() {
               )}
             </div>
 
-            <div className={styles.paginacao}>
-            <div className={styles.numerosPagina}>
-              {Array.from({ length: Math.ceil(participantesSelecionados.length / itensPorPagina) }, (_, index) => (
-                <button
-                  key={index}
-                  onClick={() => mudarPagina(index + 1)}
-                  className={paginaAtual === index + 1 ? styles.pagina : styles.pagina}
-                >
-                  {index + 1}
-                </button>
-              ))}
-            </div>
+            {numeroPaginas > 1 && (
+              <div className={styles.paginacao}>
+                <div className={styles.numerosPagina}>
+                  {Array.from({ length: numeroPaginas }, (_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => mudarPagina(index + 1)}
+                      className={paginaAtual === index + 1 ? styles.pagina : styles.pagina}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
-            <div>
-              <button className={styles.botaoCadastro} onClick={iniciarChamada}>
-                Iniciar Chamada para Evento
-              </button>
-              <button className={styles.botaoCadastro} onClick={() => router.back()}>
-                Retornar à seleção de participantes
-              </button>
-            </div>
+            <button className={styles.botaoCadastro} onClick={() => router.push('/registrarPresenca')}>
+              Iniciar Chamada para Evento
+            </button>
+            <button className={styles.botaoRetornar} onClick={() => router.back()}>
+              Retornar à seleção de participantes
+            </button>
           </div>
         </div>
       </div>
-    </div>
     </>
   );
 }

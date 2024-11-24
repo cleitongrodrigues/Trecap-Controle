@@ -177,28 +177,35 @@ background-color: white;
   border-radius: 1rem;
   padding: 1rem;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 0.1875rem 0.5rem;
-  font-size: 1.5rem;
+  font-size: 2rem;
   color: var(--purpleMain);  
+  width: auto;
+  height: relative;
 }
 
 .infoBox h2 {
   margin-bottom: 0.5rem;
   text-align: center;
   color: var(--purpleMain);
+  -webkit-text-stroke: 0.1rem var( --purpleMain);
 }
 
 .total {
   color: blue;
+  -webkit-text-stroke: 0.1rem blue;
 }
 
 .presentes {
   color: #4CAF50;
+  -webkit-text-stroke: 0.1rem #4CAF50;
 }
 
 .ausentes {
   color: #FF0000;
+  -webkit-text-stroke: 0.1rem #FF0000;
 }
 
 .porcentagem {
-  color: #FFA500;
+  color: var(--purpleMain);
+  -webkit-text-stroke: 0.1rem var(--purpleMain);
 }

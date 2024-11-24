@@ -91,9 +91,9 @@ export default function CadastroP() {
     const setoresSelecionados = selectedSetores.filter((setor) => setor.checked);
     if (setoresSelecionados.length === 0) {
       Swal.fire({
-        title: 'Selecione ao menos um SETOR!',
+        title: 'Selecione um SETOR!',
         text: '',
-        icon: 'warning',
+        icon: 'question',
         confirmButtonText: 'OK'
       })
       return;

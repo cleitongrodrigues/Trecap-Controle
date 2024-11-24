@@ -128,15 +128,15 @@ export default function Evento() {
 
         if (dataAtual < dataEventoComTolerancia) {
             Swal.fire({
-                title: 'Calma!',
-                text: 'Este evento ainda não começou!',
+                title: 'Aguarde! Este evento ainda não pode ser inciado!',
+                text: '',
                 icon: 'info',
                 confirmButtonText: 'OK'
               })
         } else if (dataAtual > dataEvento) {
             Swal.fire({
-                title: 'Shiii!',
-                text: 'O prazo para iniciar já encerrou!',
+                title: 'O prazo para iniciar já encerrou!',
+                text: 'Organize outro horário e data para iniciar o evento.',
                 icon: 'warning',
                 confirmButtonText: 'OK'
               })

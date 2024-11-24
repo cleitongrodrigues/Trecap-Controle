@@ -13,7 +13,7 @@ export default function RegistrarPresenca() {
   const [participantesPresentes, setParticipantesPresentes] = useState({});
   const [eventoSelecionado, setEventoSelecionado] = useState("");
   const [paginaAtual, setPaginaAtual] = useState(1);
-  const itensPorPagina = 12;
+  const itensPorPagina = 14;
   const router = useRouter();
 
   useEffect(() => {

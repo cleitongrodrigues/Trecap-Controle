@@ -15,6 +15,7 @@ export default function RelatorioPresenca() {
   const [dataEvento, setDataEvento] = useState("");
   const [horarioEvento, setHorarioEvento] = useState("");
   const [horarioInicioEvento, setHorarioInicioEvento] = useState("");
+  
 
   useEffect(() => {
     async function getEventoNome(eventoId) {
@@ -158,7 +159,6 @@ export default function RelatorioPresenca() {
           <h1>{eventoSelecionado}</h1>
           <br></br>
           <h1>Evento concluído com sucesso!</h1>
-          <h2>Informações do Evento</h2>
           <br></br>
           {/* <div className={styles.cadastro}>
             <h2>Participantes Presentes</h2>
@@ -180,7 +180,7 @@ export default function RelatorioPresenca() {
           </div> */}
 
           <div className={styles.infoBox}>
-            <h2>CONTADOR</h2>
+            <h2>Dados do Evento</h2>
             <p className={styles.total}>Total de Participantes: {totalParticipantes}</p>
             <p className={styles.ausentes}>Ausentes: {totalAusentes}</p>
             <p className={styles.presentes}>Presentes: {totalPresentes}</p>
