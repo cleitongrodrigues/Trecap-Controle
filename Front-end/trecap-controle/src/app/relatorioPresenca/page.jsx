@@ -15,7 +15,7 @@ export default function RelatorioPresenca() {
   const [dataEvento, setDataEvento] = useState("");
   const [horarioEvento, setHorarioEvento] = useState("");
   const [horarioInicioEvento, setHorarioInicioEvento] = useState("");
-  
+
 
   useEffect(() => {
     async function getEventoNome(eventoId) {
@@ -67,6 +67,7 @@ export default function RelatorioPresenca() {
       setHorarioInicioEvento(horarioInicio || "Horário de Início Não Encontrado");
     }
   }, []);
+
 
   const formatarDataHora = (dataHora) => {
     if (!dataHora || !dataHora.isValid()) {
@@ -186,7 +187,7 @@ export default function RelatorioPresenca() {
             <p className={styles.presentes}>Presentes: {totalPresentes}</p>
             <p className={styles.porcentagem}>Percentual: {porcentagemPresentes}%</p>
           </div>
-          
+
 
           <button
             className={styles.botaoImprimir}

@@ -17,8 +17,7 @@ export default function RegistrarPresenca() {
   const router = useRouter();
 
   useEffect(() => {
-    async function getEventoNome(eventoSelecionado)
-    {
+    async function getEventoNome(eventoSelecionado) {
       const response = await axios.get(`http://localhost:3333/Eventos/${eventoSelecionado}`);
       const evento = response.data.dados[0];
       setEventoSelecionado(evento.evento_nome);
@@ -64,7 +63,7 @@ export default function RegistrarPresenca() {
       registros_presenca: 1,
       registros_hora_entrada: hora,
       registros_hora_saida: null,
-      evento_id:  localStorage.getItem('eventoId'), // Substitua pelo ID do evento real
+      evento_id: localStorage.getItem('eventoId'), // Substitua pelo ID do evento real
       colaborador_id: id, // ID do colaborador
     }));
 
@@ -112,11 +111,13 @@ export default function RegistrarPresenca() {
     }
   };
 
+  //Calcula o total de participantes, presentes e ausentes
   const totalParticipantes = participantesSelecionados.length;
   const totalPresentes = Object.keys(participantesPresentes).length;
   const totalAusentes = totalParticipantes - totalPresentes;
   const porcentagemPresentes = ((totalPresentes / totalParticipantes) * 100).toFixed(2);
 
+  // Lógica de paginação 
   const indiceUltimoParticipante = paginaAtual * itensPorPagina;
   const indicePrimeiroParticipante = indiceUltimoParticipante - itensPorPagina;
   const participantesPaginaAtual = participantesSelecionados.slice(indicePrimeiroParticipante, indiceUltimoParticipante);
@@ -132,10 +133,9 @@ export default function RegistrarPresenca() {
       <div className={styles.layout}>
         <div className={styles.container}>
           <div className={styles.header}>
-          <h1>{eventoSelecionado}</h1>
+            <h1>{eventoSelecionado}</h1>
             <div className={styles.cadastro}>
               <h2>REGISTRO DE PRESENÇA</h2>
-
               <div className={styles.listaParticipantes}>
                 <h3>Selecione os participantes presentes:</h3>
                 <br></br>
@@ -186,8 +186,8 @@ export default function RegistrarPresenca() {
           </div>
         </div>
         <div className={styles.infoBox}>
-          <h2>CONTADOR</h2>
-          <p className={styles.total}>Total de Participantes: {totalParticipantes}</p>          
+          <h2>ACOMPANHAMENTO</h2>
+          <p className={styles.total}>Total de Participantes: {totalParticipantes}</p>
           <p className={styles.ausentes}>Ausentes: {totalAusentes}</p>
           <p className={styles.presentes}>Presentes: {totalPresentes}</p>
           <p className={styles.porcentagem}>Percentual: {porcentagemPresentes}%</p>

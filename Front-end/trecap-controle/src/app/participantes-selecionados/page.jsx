@@ -12,7 +12,7 @@ export default function ParticipantesSelecionados() {
   const [eventoSelecionado, setEventoSelecionado] = useState("");
   const [loading, setLoading] = useState(true);
   const [paginaAtual, setPaginaAtual] = useState(1);
-  const itensPorPagina = 14;
+  const itensPorPagina = 12;
   const router = useRouter();
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function ParticipantesSelecionados() {
   const iniciarChamada = () => {
     Swal.fire({
       title: 'Deseja iniciar a chamada para o evento?',
-      text: "Essa ação poderá ser revertida posteriormente.",
+      text: "Essa ação não poderá ser revertida posteriormente.",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#4CAF50',

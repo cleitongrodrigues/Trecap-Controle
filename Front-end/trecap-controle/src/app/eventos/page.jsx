@@ -128,18 +128,18 @@ export default function Evento() {
 
         if (dataAtual < dataEventoComTolerancia) {
             Swal.fire({
-                title: 'Aguarde! Este evento ainda não pode ser inciado!',
+                title: 'Aguarde! Este evento ainda não pode ser iniciado!',
                 text: '',
                 icon: 'info',
                 confirmButtonText: 'OK'
-              })
+            })
         } else if (dataAtual > dataEvento) {
             Swal.fire({
                 title: 'O prazo para iniciar já encerrou!',
                 text: 'Organize outro horário e data para iniciar o evento.',
                 icon: 'warning',
                 confirmButtonText: 'OK'
-              })
+            })
         } else {
             localStorage.setItem('eventoId', evento.evento_id);
             setMensagemErro({});

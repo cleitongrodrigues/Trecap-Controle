@@ -3,7 +3,7 @@
 .Geral {
     padding-top: 5rem;
     display: flex;
-    background-color:gray;
+    background-color: gray;
     min-height: 100vh;
 }
 
@@ -17,7 +17,8 @@
     align-items: center;
     border-radius: 1rem;
     padding: 1rem;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 0.1875rem 0.5rem; /* 3px = 0.1875rem */
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 0.1875rem 0.5rem;
+    /* 3px = 0.1875rem */
     margin: auto;
     /* height: 60rem; */
     min-height: 80vh;
@@ -34,19 +35,23 @@
 }
 
 .containerContent {
-    display: grid; 
-    gap: 2rem; 
+    display: grid;
+    gap: 2rem;
     width: 100%;
-    grid-template-columns: 1fr; /* Todos os itens em uma única coluna */
+    grid-template-columns: 1fr;
+    /* Todos os itens em uma única coluna */
 }
 
 .ContainerDivs {
-    display: flex; /* Para que ícones e texto fiquem alinhados */
-    align-items: center; /* Centraliza verticalmente */
+    display: flex;
+    /* Para que ícones e texto fiquem alinhados */
+    align-items: center;
+    /* Centraliza verticalmente */
     /* background-color: var(--purpleMain); */
     background-color: rgb(236, 231, 231);
     /* background-color: gray; */
-    box-shadow: 0 0 0.125rem 0.1875rem var(--purple-300); /* 2px = 0.125rem, 3px = 0.1875rem */
+    box-shadow: 0 0 0.125rem 0.1875rem var(--purple-300);
+    /* 2px = 0.125rem, 3px = 0.1875rem */
     /* color: white; */
     border-radius: 1rem;
     gap: 1rem;
@@ -62,14 +67,16 @@
 }
 
 .IconeContainer {
-    display: flex; /* Para que o ícone e texto fiquem alinhados */
-    align-items: center; /* Centraliza verticalmente */
+    display: flex;
+    /* Para que o ícone e texto fiquem alinhados */
+    align-items: center;
+    /* Centraliza verticalmente */
 }
 
 .ContainerLabel {
-    flex-grow: 1; 
+    flex-grow: 1;
     font-weight: bold;
-    white-space: nowrap; 
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     min-height: 7rem;
@@ -82,7 +89,7 @@
 
 .labelTitle {
     font-size: 1.4rem;
-    margin: 0; 
+    margin: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -94,8 +101,7 @@
     margin-top: 0.2rem;
 }
 
-.Vazio
-{
+.Vazio {
     background-color: rgb(236, 231, 231);
     /* color: white; */
     font-size: 1.5rem;
@@ -125,16 +131,20 @@
 }
 
 .menuLateral {
-    width: 15.625rem; /* 250px = 15.625rem */
+    width: 15.625rem;
+    /* 250px = 15.625rem */
     background-color: var(--purple-300);
     padding: 2rem;
-    box-shadow: 0.125rem 0 0.3125rem rgba(0, 0, 0, 0.1); /* 2px = 0.125rem, 5px = 0.3125rem */
+    box-shadow: 0.125rem 0 0.3125rem rgba(0, 0, 0, 0.1);
+    /* 2px = 0.125rem, 5px = 0.3125rem */
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 5rem); /* 80px = 5rem */
+    height: calc(100vh - 5rem);
+    /* 80px = 5rem */
     position: fixed;
     left: 0;
-    top: 5rem; /* 80px = 5rem */
+    top: 5rem;
+    /* 80px = 5rem */
 }
 
 /* Estilização do Filtro de Evento */
@@ -148,7 +158,8 @@
     background-color: var(--purple-300);
     padding: 1rem;
     border-radius: 1rem;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 0.1875rem 0.5rem; /* 3px = 0.1875rem */
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 0.1875rem 0.5rem;
+    /* 3px = 0.1875rem */
     transition: all 0.15s ease-in-out;
 }
 
@@ -172,7 +183,8 @@
 }
 
 .FiltroDataContainer input:focus {
-    box-shadow: 0 0 0.125rem 0.1875rem rgba(0, 0, 0, 0.24); /* 2px = 0.125rem, 3px = 0.1875rem */
+    box-shadow: 0 0 0.125rem 0.1875rem rgba(0, 0, 0, 0.24);
+    /* 2px = 0.125rem, 3px = 0.1875rem */
 }
 
 .FiltroDataContainer button {
@@ -195,7 +207,7 @@
     gap: 1rem;
     justify-content: center;
     margin-top: 1rem;
-    margin-top: auto;    
+    margin-top: auto;
 }
 
 .iconesEditar {
@@ -217,29 +229,33 @@
 
 .iconesIniciar {
     border: none;
-  /* background-color: red; */
-  background-color: #FFD54F;
-  color: white;
-  font-weight: 400;
-  font-size: 1.5rem;
-  border-radius: 0.325rem;
-  padding: 1rem 2rem;
-  cursor: pointer;
-  margin-bottom: 2rem;
+    /* background-color: red; */
+    background-color: #FFD54F;
+    color: white;
+    font-weight: 400;
+    font-size: 1.5rem;
+    border-radius: 0.325rem;
+    padding: 1rem 2rem;
+    cursor: pointer;
+    margin-bottom: 2rem;
 }
 
 .iconesIniciar:hover {
     transform: scale(1.04);
 }
 
-@media (max-width: 48rem) { /* 768px = 48rem */
+@media (max-width: 48rem) {
+
+    /* 768px = 48rem */
     .Container {
         max-width: 90%;
         padding: 1rem;
     }
 }
 
-@media (max-width: 30rem) { /* 480px = 30rem */
+@media (max-width: 30rem) {
+
+    /* 480px = 30rem */
     .Container {
         max-width: 100%;
         padding: 0.5rem;
@@ -306,9 +322,7 @@
         font-size: 0.9rem;
     }
 
-    
+
 
 
 }
-
-

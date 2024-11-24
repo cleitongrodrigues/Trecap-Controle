@@ -29,7 +29,7 @@ export default function CheckinEvento() {
 
     if (setoresSelecionados && setoresSelecionados.length > 0) {
       setSetores(setoresSelecionados);
-      
+
       // Faz a requisição para a API de colaboradores filtrada pelos setores
       const fetchParticipantes = async () => {
         try {
@@ -40,7 +40,7 @@ export default function CheckinEvento() {
           // Resolve todas as promessas
           const resultados = await Promise.all(promises);
           const todosParticipantes = resultados.flatMap((res) => res.dados || []);
-          
+
           setParticipantes(todosParticipantes);
           setParticipantesFiltrados(todosParticipantes);
           setParticipantesSelecionados(new Array(todosParticipantes.length).fill(false));
@@ -54,8 +54,7 @@ export default function CheckinEvento() {
       fetchParticipantes();
     }
 
-    async function getEventoNome()
-    {
+    async function getEventoNome() {
       const response = await axios.get(`http://localhost:3333/Eventos/${eventoSelecionado}`);
       const evento = response.data.dados[0];
       setNomeEvento(evento.evento_nome);
@@ -83,7 +82,7 @@ export default function CheckinEvento() {
         id: participante.colaborador_id,
         nome: participante.colaborador_nome
       }));
-    
+
     if (selecionados.length === 0) {
       Swal.fire({
         title: 'ATENÇÃO!',
@@ -93,12 +92,12 @@ export default function CheckinEvento() {
       })
       return;
     }
-  
+
     try {
       // Salvar os participantes selecionados no localStorage
       localStorage.setItem('participantesSelecionados', JSON.stringify(selecionados));
       console.log('Participantes selecionados salvos no localStorage:', selecionados);
-  
+
       // Redirecionar para a página de confirmação
       router.push('/participantes-selecionados');
     } catch (error) {
@@ -136,72 +135,72 @@ export default function CheckinEvento() {
 
   return (
     <>
-      <MenuLateral />      
-        <div className={styles.layout}>
-          <div className={styles.container}>
-            <div className={styles.header}>     
-              <h1>{nomeEvento || "Evento não encontrado"}</h1> {/* Adicione uma mensagem padrão se o nome do evento não estiver disponível */}           
-                <div className={styles.cadastro}>
-                  <h3>Setores Selecionados:</h3>
-                  <h3>{setores.length > 0 ? setores.join(", ") : "Nenhum setor selecionado"}</h3>
-                  <h2>Adicionar Participantes</h2>
-                  <div className={styles.containerContent}>
-                    <div className={styles.busca}>
-                      <input
-                        type="text"
-                        value={termoBusca}
-                        onChange={(e) => setTermoBusca(e.target.value)}
-                        placeholder="Buscar participantes"
-                        className={styles.inputBusca}
-                      />
-                      <button onClick={handleBusca} className={styles.botaoBusca}>Buscar</button>
-                      <button onClick={limparBusca} className={styles.botaoLimpar}>Limpar</button>
-                    </div>
-                    <div className={styles.listaParticipantes}>
-                      <ul className={styles.participantes}>
-                        {participantesPaginaAtual.length > 0 ? (
-                          participantesPaginaAtual.map((participante, index) => (
-                            <label key={participante.colaborador_id} className={styles.containerInput}>
-                              <input
-                                type="checkbox"
-                                checked={participantesSelecionados[participantes.indexOf(participante)]}
-                                onChange={() => handleCheckboxChange(participantes.indexOf(participante))}
-                                className={styles.input}
-                              />
-                              <span className={styles.label}>
-                                {participante.colaborador_nome}
-                              </span>
-                            </label>
-                          ))
-                        ) : (
-                          <p>Nenhum participante encontrado</p>
-                        )}
-                      </ul>
-                    </div>
+      <MenuLateral />
+      <div className={styles.layout}>
+        <div className={styles.container}>
+          <div className={styles.header}>
+            <h1>{nomeEvento || "Evento não encontrado"}</h1> {/* Adicione uma mensagem padrão se o nome do evento não estiver disponível */}
+            <div className={styles.cadastro}>
+              <h3>Setores Selecionados:</h3>
+              <h3>{setores.length > 0 ? setores.join(", ") : "Nenhum setor selecionado"}</h3>
+              <h2>Adicionar Participantes</h2>
+              <div className={styles.containerContent}>
+                <div className={styles.busca}>
+                  <input
+                    type="text"
+                    value={termoBusca}
+                    onChange={(e) => setTermoBusca(e.target.value)}
+                    placeholder="Buscar participantes"
+                    className={styles.inputBusca}
+                  />
+                  <button onClick={handleBusca} className={styles.botaoBusca}>Buscar</button>
+                  <button onClick={limparBusca} className={styles.botaoLimpar}>Limpar</button>
+                </div>
+                <div className={styles.listaParticipantes}>
+                  <ul className={styles.participantes}>
+                    {participantesPaginaAtual.length > 0 ? (
+                      participantesPaginaAtual.map((participante, index) => (
+                        <label key={participante.colaborador_id} className={styles.containerInput}>
+                          <input
+                            type="checkbox"
+                            checked={participantesSelecionados[participantes.indexOf(participante)]}
+                            onChange={() => handleCheckboxChange(participantes.indexOf(participante))}
+                            className={styles.input}
+                          />
+                          <span className={styles.label}>
+                            {participante.colaborador_nome}
+                          </span>
+                        </label>
+                      ))
+                    ) : (
+                      <p>Nenhum participante encontrado</p>
+                    )}
+                  </ul>
+                </div>
 
-                    {mensagemErro && <div className={styles.mensagemErro}>{mensagemErro}</div>}
-                  </div>
-                </div>
-                <div className={styles.paginacao}>
-                  <div className={styles.numerosPagina}>
-                    {Array.from({ length: Math.ceil(participantesFiltrados.length / itensPorPagina) }, (_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => mudarPagina(index + 1)}
-                        className={paginaAtual === index + 1 ? styles.paginaAtiva : styles.pagina}
-                      >
-                        {index + 1}
-                      </button>
-                    ))}
-                  </div>
-                  <div>
-                    <button className={styles.botaoSalvar} onClick={salvarParticipantes}>Salvar</button>
-                    <button className={styles.botaoVoltar} onClick={handleVoltar}>Voltar</button>
-                  </div>
-                </div>
+                {mensagemErro && <div className={styles.mensagemErro}>{mensagemErro}</div>}
+              </div>
+            </div>
+            <div className={styles.paginacao}>
+              <div className={styles.numerosPagina}>
+                {Array.from({ length: Math.ceil(participantesFiltrados.length / itensPorPagina) }, (_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => mudarPagina(index + 1)}
+                    className={paginaAtual === index + 1 ? styles.paginaAtiva : styles.pagina}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+              </div>
+              <div>
+                <button className={styles.botaoSalvar} onClick={salvarParticipantes}>Salvar</button>
+                <button className={styles.botaoVoltar} onClick={handleVoltar}>Voltar</button>
               </div>
             </div>
           </div>
+        </div>
+      </div>
     </>
   );
 }
