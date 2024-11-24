@@ -5,13 +5,14 @@ import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import MenuLateral from "@/components/menuLateral/page";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default function ParticipantesSelecionados() {
   const [participantesSelecionados, setParticipantesSelecionados] = useState([]);
   const [eventoSelecionado, setEventoSelecionado] = useState("");
-  const [loading, setLoading] = useState(true); // Definindo a variável loading
+  const [loading, setLoading] = useState(true);
   const [paginaAtual, setPaginaAtual] = useState(1);
-  const itensPorPagina = 12;
+  const itensPorPagina = 14;
   const router = useRouter();
 
   useEffect(() => {
@@ -33,7 +34,7 @@ export default function ParticipantesSelecionados() {
         console.error('Erro ao carregar participantes do localStorage:', error);
         setParticipantesSelecionados([]);
       } finally {
-        setLoading(false); // Atualizando o estado de loading
+        setLoading(false);
       }
     }
   }, []);
@@ -48,6 +49,22 @@ export default function ParticipantesSelecionados() {
 
   const mudarPagina = (novaPagina) => {
     setPaginaAtual(novaPagina);
+  };
+
+  const iniciarChamada = () => {
+    Swal.fire({
+      title: 'Deseja iniciar a chamada para o evento?',
+      text: "Essa ação poderá ser revertida posteriormente.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#4CAF50',
+      cancelButtonColor: 'red',
+      confirmButtonText: 'Sim, iniciar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        router.push('/registrarPresenca');
+      }
+    });
   };
 
   return (
@@ -85,7 +102,7 @@ export default function ParticipantesSelecionados() {
                     <button
                       key={index}
                       onClick={() => mudarPagina(index + 1)}
-                      className={paginaAtual === index + 1 ? styles.pagina : styles.pagina}
+                      className={paginaAtual === index + 1 ? styles.paginaAtiva : styles.pagina}
                     >
                       {index + 1}
                     </button>
@@ -94,7 +111,7 @@ export default function ParticipantesSelecionados() {
               </div>
             )}
 
-            <button className={styles.botaoCadastro} onClick={() => router.push('/registrarPresenca')}>
+            <button className={styles.botaoCadastro} onClick={iniciarChamada}>
               Iniciar Chamada para Evento
             </button>
             <button className={styles.botaoRetornar} onClick={() => router.back()}>

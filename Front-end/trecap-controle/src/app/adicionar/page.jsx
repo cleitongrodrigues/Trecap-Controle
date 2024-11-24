@@ -16,7 +16,7 @@ export default function CheckinEvento() {
   const [termoBusca, setTermoBusca] = useState('');
   const [participantesFiltrados, setParticipantesFiltrados] = useState([]);
   const [paginaAtual, setPaginaAtual] = useState(1);
-  const itensPorPagina = 12;
+  const itensPorPagina = 10;
   const router = useRouter();
 
   useEffect(() => {

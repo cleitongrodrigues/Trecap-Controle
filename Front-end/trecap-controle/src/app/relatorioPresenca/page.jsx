@@ -186,6 +186,7 @@ export default function RelatorioPresenca() {
             <p className={styles.presentes}>Presentes: {totalPresentes}</p>
             <p className={styles.porcentagem}>Percentual: {porcentagemPresentes}%</p>
           </div>
+          
 
           <button
             className={styles.botaoImprimir}
