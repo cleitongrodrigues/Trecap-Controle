@@ -129,8 +129,10 @@ const ModalEdit = ({ evento, onClose, onSave }) => {
                     title: 'Sucesso!',
                     text: 'Evento atualizado com sucesso.',
                     icon: 'success',
-                    confirmButtonText: 'OK'
-                  })
+                    confirmButtonText: 'OK'                    
+                  }).then(() => {
+                    window.location.reload(); // Recarrega a página
+                });
 
                 const updateEvent = await axios.get(
                     `http://localhost:3333/Eventos/${eventoEditado.evento_id}`
