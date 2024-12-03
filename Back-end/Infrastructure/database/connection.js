@@ -1,19 +1,19 @@
 import mysql from 'mysql2/promise'
 
 // Cleitin
-// const bd_usuario = 'root';
-// const bd_senha = 'root';
-// const bd_servidor = 'localhost';
-// const bd_porta = '3306';
-// const bd_banco = 'trecap_controle';
+const bd_usuario = 'root';
+const bd_senha = 'root';
+const bd_servidor = 'localhost';
+const bd_porta = '3306';
+const bd_banco = 'trecap_controle';
 
 
 // ETEC
-const bd_usuario = 'us_tecdes_223_g1'; 
-const bd_senha = 'ab1506';
-const bd_servidor = '10.67.22.216';
-const bd_porta = '3306';
-const bd_banco = 'bd2_tcc_tecdes_223_g1';
+// const bd_usuario = 'us_tecdes_223_g1'; 
+// const bd_senha = 'ab1506';
+// const bd_servidor = '10.67.22.216';
+// const bd_porta = '3306';
+// const bd_banco = 'bd2_tcc_tecdes_223_g1';
 
 
 // const bd_usuario = 'root';

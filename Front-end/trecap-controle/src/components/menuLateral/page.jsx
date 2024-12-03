@@ -391,7 +391,7 @@ const MenuLateral = () => {
 
                       {editando && (
                         <>
-                          <label className={styles.EscollherArquivo}>
+                          {/* <label className={styles.EscollherArquivo}>
                             Escolher Arquivo
                           </label>
                           <input
@@ -400,7 +400,7 @@ const MenuLateral = () => {
                             id="imageUpload"
                             accept="image/*"
                             onChange={handleImagemChange}
-                          />
+                          /> */}
                         </>
                       )}
 
